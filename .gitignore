@@ -36,3 +36,5 @@ Thumbs.db
 *.mov
 *.wmv
 
+# custom
+includes/config.php
