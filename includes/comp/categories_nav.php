@@ -18,11 +18,11 @@
           </a>
         </li>
 
-        <li>
+        <!-- <li>
           <a href="<?= $site_url ?>/requests/buyer_requests">
             <i class="fa fa-user"></i> Find Job
           </a>
-        </li>
+        </li> -->
 
       </ul>
     </div>
