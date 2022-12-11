@@ -1,5 +1,6 @@
 <div class="table-responsive box-table">
    <h4 class="mt-3 mb-3 ml-2"> <?= $lang['manage_contacts']['my_buyers']; ?> </h4>
+   <a href="<?= $site_url ?>/manage_contacts?my_sellers" class="btn btn-link">My Sellers</a>
    <table class="table table-bordered">
       <!-- table table-hover Starts -->
       <thead>

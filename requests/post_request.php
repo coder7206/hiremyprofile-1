@@ -52,7 +52,7 @@ Please confirm your email to use this feature.
 }else{
 ?>
 
-<div class="container-fluid mt-5 mb-5">
+<div class="container-fluid mt-5" style="margin-top: 210px !important;">
   <h1 class="mb-5">
     <i class="fa fa-plus-circle" aria-hidden="true">
     </i>

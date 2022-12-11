@@ -192,10 +192,11 @@
                 </tbody>
             </table>
             <?php
-            $prop_count = $db->query("SELECT * FROM `proposals` where proposal_seller_id ='$login_seller_id' and proposal_status='active'");
-            $prop_count = $prop_count->fetch();
+            $q_prop_count = $db->query("SELECT * FROM `proposals` where proposal_seller_id ='$login_seller_id' and proposal_status='active'");
+            $o_prop_count = $q_prop_count->rowCount();
+            // echo "<pre>"; print_r($o_prop_count);
             if (empty($count_requests)) {
-                if ($prop_count < 2) {
+                if ($o_prop_count < 2) {
                     echo "<center><h3 class='pb-4 pt-4'>
                         Please create a proposal in order to find relevant job. <a href='" . $site_url . "/requests/post_request'>Click here</a> to create proposal
                     </h3></center>";
