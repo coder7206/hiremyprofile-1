@@ -607,5 +607,4 @@ function get_pagination($filter_type)
       </li>";
    }
 }
-
 ?>

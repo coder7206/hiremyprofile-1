@@ -1,10 +1,11 @@
 <?php
-	session_start();
-	require_once("../includes/db.php");
-	require_once("../social-config.php");
+session_start();
+require_once("../includes/db.php");
+require_once("../social-config.php");
 ?>
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
+
 <head>
 	<title> <?= $site_name; ?> - <?= $lang['titles']['feedback']; ?> </title>
 	<meta charset="utf-8">
@@ -23,40 +24,49 @@
 	<link href="../styles/owl.theme.default.css" rel="stylesheet">
 	<link href="../styles/sweat_alert.css" rel="stylesheet">
 	<link href="../styles/animate.css" rel="stylesheet">
-	<?php if(!empty($site_favicon)){ ?>
+	<?php if (!empty($site_favicon)) { ?>
 		<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
 	<?php } ?>
 	<script type="text/javascript" src="../js/ie.js"></script>
 	<script type="text/javascript" src="../js/sweat_alert.js"></script>
 	<script type="text/javascript" src="../js/jquery.min.js"></script>
 </head>
+
 <body class="is-responsive">
 
 	<?php require_once("../includes/header.php"); ?>
 
-	<div class="container pt-5 pb-5"><!-- Container starts -->
+	<div class="container-fluid pb-5">
+		<!-- Container starts -->
 
 		<h2><a class="text-dark" href="#">General</a></h2>
 
-		<div class="row"><!--- row Starts -->
+		<div class="row">
+			<!--- row Starts -->
 
-			<div class="col-md-8 mb-4 <?=($lang_dir == "right" ? 'order-2 order-sm-1':'')?>"><!--- col-md-8 Starts --->
-				 
-				 <?php include("includes/post-idea.php"); ?>
-			
-			</div><!--- col-md-8 Ends --->
+			<div class="col-md-8 mb-4 <?= ($lang_dir == "right" ? 'order-2 order-sm-1' : '') ?>">
+				<!--- col-md-8 Starts --->
 
-			<div class="col-md-4 <?=($lang_dir == "right" ? 'order-1 order-sm-2':'')?>"><!--- col-md-4 Starts --->
-					
+				<?php include("includes/post-idea.php"); ?>
+
+			</div>
+			<!--- col-md-8 Ends --->
+
+			<div class="col-md-4 <?= ($lang_dir == "right" ? 'order-1 order-sm-2' : '') ?>">
+				<!--- col-md-4 Starts --->
+
 				<?php include("includes/sidebar.php"); ?>
 
-			</div><!--- col-md-4 Ends --->
+			</div>
+			<!--- col-md-4 Ends --->
 
-		</div><!--- row Ends -->
-	
+		</div>
+		<!--- row Ends -->
+
 	</div><!-- Container Ends -->
 
 	<?php require_once("../includes/footer.php"); ?>
 
 </body>
+
 </html>
