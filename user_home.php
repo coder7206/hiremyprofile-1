@@ -570,7 +570,7 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                                                             </div> -->
                                                                         </div>
                                                                     </div>
-                                                                    <p class="my-4"><?= $proposal_title; ?></p>
+                                                                    <p class="my-4"><?= truncate($proposal_title, 75); ?></p>
                                                                     <div class="d-flex justify-content-between align-items-center">
                                                                         <div class="font-weight-bold text-info">
                                                                             <i class="fa fa-star"></i>

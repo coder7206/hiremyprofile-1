@@ -918,7 +918,7 @@ $lang['manage_requests']['no_unapproved'] = "You currently have no unapproved re
 
 $lang['post_request']['heading_1'] = "Chose A Category";
 $lang['post_request']['heading_2'] = "Once you place your order, when would you like your service delivered?";
-$lang['post_request']['heading_3'] = "What is your budget for this service? (Optional)";
+$lang['post_request']['heading_3'] = "What is your budget for this service?";
 // $lang['post_request']['heading_1'] = "";
 
 $lang['post_request']['column_1']['title'] = "Define in Detail";
