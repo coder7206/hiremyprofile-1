@@ -17,13 +17,13 @@
             <i class="fa fa-user"></i> Hire an Expert
           </a>
         </li>
-
-        <!-- <li>
-          <a href="<?= $site_url ?>/requests/buyer_requests">
-            <i class="fa fa-user"></i> Find Job
-          </a>
-        </li> -->
-
+        <?php if (isset($_SESSION['seller_user_name'])) { ?>
+          <li>
+            <a href="<?= $site_url ?>/requests/buyer_requests">
+              <i class="fa fa-user"></i> Find Job
+            </a>
+          </li>
+        <?php } ?>
       </ul>
     </div>
     <div class="col-sm-6 right_text" align="right">
