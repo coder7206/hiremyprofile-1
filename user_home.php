@@ -44,10 +44,16 @@ $count_draft_proposals = $db->count("proposals", array("proposal_seller_id" => $
 
 $count_declined_proposals = $db->count("proposals", array("proposal_seller_id" => $login_seller_id, "proposal_status" => 'declined'));
 
-$select_seller_accounts = $db->select("seller_accounts",array("seller_id" => $login_seller_id));
+$select_seller_accounts = $db->select("seller_accounts", array("seller_id" => $login_seller_id));
 $row_seller_accounts = $select_seller_accounts->fetch();
 $current_balance = $row_seller_accounts->current_balance;
 $month_earnings = $row_seller_accounts->month_earnings;
+
+// POST METHOD IN INDEX.PHP
+$activeTab = "buyer";
+if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
+    $activeTab = "seller";
+}
 ?>
 
 <style>
@@ -61,11 +67,13 @@ $month_earnings = $row_seller_accounts->month_earnings;
         width: auto;
     }
 
-    .about-section-2 .nav.nav-tabs.flex-column.flex-sm-row, .tab-content {
+    .about-section-2 .nav.nav-tabs.flex-column.flex-sm-row,
+    .tab-content {
         width: 100%;
     }
 
-    .about-section-1 .nav-tabs .nav-link.active, .about-section-1 .nav-tabs .nav-item.show .nav-link {
+    .about-section-1 .nav-tabs .nav-link.active,
+    .about-section-1 .nav-tabs .nav-item.show .nav-link {
         color: #fff;
         background-color: #00c8d4;
         width: 30%;
@@ -107,7 +115,26 @@ $month_earnings = $row_seller_accounts->month_earnings;
         display: none;
     }
 </style>
+<script>
+    function myBookmark(x) {
+        var typeId = x.getAttribute('data-bookmark-seller');
+        // console.log(typeId)
+        // typeId == true ? x.classList.toggle("fa-bookmark-o") : x.classList.toggle("fa-bookmark");
+        var form = document.createElement("form");
+        var element1 = document.createElement("input");
 
+        form.method = "POST";
+        form.action = "";
+
+        element1.value = typeId;
+        element1.name = "seller_bookmark";
+        form.appendChild(element1);
+
+        document.body.appendChild(form);
+
+        form.submit();
+    }
+</script>
 <div class="container-fluid pt-5">
     <div class="row">
         <div class="user_border buyer_box col-xl-3 col-lg-4 <?= ($lang_dir == "right" ? 'order-2 order-sm-1' : '') ?> hidden-xs">
@@ -119,14 +146,16 @@ $month_earnings = $row_seller_accounts->month_earnings;
         <div class="col-xl-9 col-lg-8 pb-5">
             <div class="about-section-1">
                 <div class="top_bas nav nav-tabs font-weight-bold text-largest" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link active" data-toggle="tab" href="#Buyer" role="tab" aria-selected="true"
-                       id="buyer_tab">Buyer </a>
-                    <a class="nav-item nav-link" data-toggle="tab" href="#Seller" role="tab" aria-selected="false"
-                       id="seller_tab">Seller</a>
+                    <a class="nav-item nav-link <?= $activeTab == "buyer" ? "active" : "" ?>" data-toggle="tab" href="#Buyer" role="tab" aria-selected="<?= $activeTab == "buyer" ? "true" : "false" ?>" id="buyer_tab">Buyer </a>
+                    <?php if ($activeTab == "seller") { ?>
+                        <a class="nav-item nav-link active" data-toggle="tab" href="#Seller" role="tab" aria-selected="true" id="seller_tab">Seller <i onclick="myBookmark(this)" data-bookmark-seller="no" class="fa fa-bookmark" data-toggle="tooltip" data-placement="top" title="Remove Bookmark"></i></a>
+                    <?php } else { ?>
+                        <a class="nav-item nav-link" data-toggle="tab" href="#Seller" role="tab" aria-selected="false" id="seller_tab">Seller <i onclick="myBookmark(this)" data-bookmark-seller="yes" class="fa fa-bookmark-o" data-toggle="tooltip" data-placement="top" title="Add Bookmark"></i></a>
+                    <?php } ?>
                 </div>
             </div>
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="Buyer" role="tabpanel">
+                <div class="tab-pane fade <?= $activeTab == "buyer" ? "show active" : "" ?>" id="Buyer" role="tabpanel">
                     <div class="about-section-2 pt-5">
                         <div class="col-xs-12">
                             <div class="card rounded-0">
@@ -140,8 +169,7 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                             </a>
                                         </div>
                                         <div class="col-xs-6 text-center border-box">
-                                            <a href="revenue"><img width="" src="images/comp/accounting.png"
-                                                                   alt="accounting">
+                                            <a href="revenue"><img width="" src="images/comp/accounting.png" alt="accounting">
                                                 <h5 class="text-muted pt-2"> <?= $lang["dashboard"]['balance']; ?></h5>
                                                 <h3 class="text-success"><?= showPrice($current_balance); ?></h3>
                                             </a>
@@ -183,10 +211,8 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                         $count_requests = $db->count("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => 'active'));
                                         ?>
                                         <li class="nav-item">
-                                            <a href="#request_active" data-toggle="tab"
-                                               class="nav-link active make-black">
-                                                <?= $lang['tabs']['active_requests']; ?> <span
-                                                        class="badge badge-success"><?= $count_requests; ?></span>
+                                            <a href="#request_active" data-toggle="tab" class="nav-link active make-black">
+                                                <?= $lang['tabs']['active_requests']; ?> <span class="badge badge-success"><?= $count_requests; ?></span>
                                             </a>
                                         </li>
                                         <?php
@@ -194,8 +220,7 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                         ?>
                                         <li class="nav-item">
                                             <a href="#request_pause" data-toggle="tab" class="nav-link make-black">
-                                                <?= $lang['tabs']['pause_requests']; ?> <span
-                                                        class="badge badge-success"><?= $count_requests; ?></span>
+                                                <?= $lang['tabs']['pause_requests']; ?> <span class="badge badge-success"><?= $count_requests; ?></span>
                                             </a>
                                         </li>
                                         <?php
@@ -203,8 +228,7 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                         ?>
                                         <li class="nav-item">
                                             <a href="#request_pending" data-toggle="tab" class="nav-link make-black">
-                                                <?= $lang['tabs']['pending_approval']; ?> <span
-                                                        class="badge badge-success"><?= $count_requests; ?></span>
+                                                <?= $lang['tabs']['pending_approval']; ?> <span class="badge badge-success"><?= $count_requests; ?></span>
                                             </a>
                                         </li>
                                         <?php
@@ -212,8 +236,7 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                         ?>
                                         <li class="nav-item">
                                             <a href="#request_unapproved" data-toggle="tab" class="nav-link make-black">
-                                                <?= $lang['tabs']['unapproved']; ?> <span
-                                                        class="badge badge-success"><?= $count_requests; ?></span>
+                                                <?= $lang['tabs']['unapproved']; ?> <span class="badge badge-success"><?= $count_requests; ?></span>
                                             </a>
                                         </li>
                                     </ul>
@@ -222,54 +245,50 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                             <div class="table-responsive box-table">
                                                 <table class="table table-bordered">
                                                     <thead>
-                                                    <tr>
-                                                        <th><?= $lang['th']['title']; ?></th>
-                                                        <th><?= $lang['th']['description']; ?></th>
-                                                        <th><?= $lang['th']['date']; ?></th>
-                                                        <th><?= $lang['th']['offers']; ?></th>
-                                                        <th><?= $lang['th']['budget']; ?></th>
-                                                        <th><?= $lang['th']['actions']; ?></th>
-                                                    </tr>
+                                                        <tr>
+                                                            <th><?= $lang['th']['title']; ?></th>
+                                                            <th><?= $lang['th']['description']; ?></th>
+                                                            <th><?= $lang['th']['date']; ?></th>
+                                                            <th><?= $lang['th']['offers']; ?></th>
+                                                            <th><?= $lang['th']['budget']; ?></th>
+                                                            <th><?= $lang['th']['actions']; ?></th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <?php
-                                                    $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "active"), "DESC");
-                                                    $count_requests = $get_requests->rowCount();
-                                                    while ($row_requests = $get_requests->fetch()) {
-                                                        $request_id = $row_requests->request_id;
-                                                        $request_title = $row_requests->request_title;
-                                                        $request_description = $row_requests->request_description;
-                                                        $request_date = $row_requests->request_date;
-                                                        $request_budget = $row_requests->request_budget;
-                                                        $count_offers = $db->count("send_offers", array("request_id" => $request_id, "status" => 'active'));
+                                                        <?php
+                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "active"), "DESC");
+                                                        $count_requests = $get_requests->rowCount();
+                                                        while ($row_requests = $get_requests->fetch()) {
+                                                            $request_id = $row_requests->request_id;
+                                                            $request_title = $row_requests->request_title;
+                                                            $request_description = $row_requests->request_description;
+                                                            $request_date = $row_requests->request_date;
+                                                            $request_budget = $row_requests->request_budget;
+                                                            $count_offers = $db->count("send_offers", array("request_id" => $request_id, "status" => 'active'));
                                                         ?>
-                                                        <tr>
-                                                            <td> <?= $request_title; ?> </td>
-                                                            <td><?= $request_description; ?></td>
-                                                            <td> <?= $request_date; ?> </td>
-                                                            <td> <?= $count_offers; ?> </td>
-                                                            <td class="text-success"> <?= showPrice($request_budget); ?> </td>
-                                                            <td class="text-center">
-                                                                <div class="dropdown">
-                                                                    <button class="btn btn-success dropdown-toggle"
-                                                                            data-toggle="dropdown"></button>
-                                                                    <div class="dropdown-menu">
-                                                                        <a href="view_offers?request_id=<?= $request_id; ?>"
-                                                                           target="blank" class="dropdown-item">View
-                                                                            Offers</a>
-                                                                        <a href="pause_request?request_id=<?= $request_id; ?>"
-                                                                           class="dropdown-item">
-                                                                            Pause
-                                                                        </a>
-                                                                        <a href="delete_request?request_id=<?= $request_id; ?>"
-                                                                           class="dropdown-item">
-                                                                            Delete
-                                                                        </a>
+                                                            <tr>
+                                                                <td> <?= $request_title; ?> </td>
+                                                                <td><?= $request_description; ?></td>
+                                                                <td> <?= $request_date; ?> </td>
+                                                                <td> <?= $count_offers; ?> </td>
+                                                                <td class="text-success"> <?= showPrice($request_budget); ?> </td>
+                                                                <td class="text-center">
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
+                                                                        <div class="dropdown-menu">
+                                                                            <a href="view_offers?request_id=<?= $request_id; ?>" target="blank" class="dropdown-item">View
+                                                                                Offers</a>
+                                                                            <a href="pause_request?request_id=<?= $request_id; ?>" class="dropdown-item">
+                                                                                Pause
+                                                                            </a>
+                                                                            <a href="delete_request?request_id=<?= $request_id; ?>" class="dropdown-item">
+                                                                                Delete
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    <?php } ?>
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
                                                     </tbody>
                                                 </table>
                                                 <?php
@@ -287,55 +306,52 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                             <div class="table-responsive box-table">
                                                 <table class="table table-bordered">
                                                     <thead>
-                                                    <tr>
-                                                        <th><?= $lang['th']['title']; ?></th>
-                                                        <th><?= $lang['th']['description']; ?></th>
-                                                        <th><?= $lang['th']['date']; ?></th>
-                                                        <th><?= $lang['th']['offers']; ?></th>
-                                                        <th><?= $lang['th']['budget']; ?></th>
-                                                        <th><?= $lang['th']['actions']; ?></th>
-                                                    </tr>
+                                                        <tr>
+                                                            <th><?= $lang['th']['title']; ?></th>
+                                                            <th><?= $lang['th']['description']; ?></th>
+                                                            <th><?= $lang['th']['date']; ?></th>
+                                                            <th><?= $lang['th']['offers']; ?></th>
+                                                            <th><?= $lang['th']['budget']; ?></th>
+                                                            <th><?= $lang['th']['actions']; ?></th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <?php
-                                                    $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "pause"), "DESC");
+                                                        <?php
+                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "pause"), "DESC");
 
-                                                    $count_requests = $get_requests->rowCount();
-                                                    while ($row_requests = $get_requests->fetch()) {
-                                                        $request_id = $row_requests->request_id;
-                                                        $request_title = $row_requests->request_title;
-                                                        $request_description = $row_requests->request_description;
-                                                        $request_date = $row_requests->request_date;
-                                                        $request_budget = $row_requests->request_budget;
+                                                        $count_requests = $get_requests->rowCount();
+                                                        while ($row_requests = $get_requests->fetch()) {
+                                                            $request_id = $row_requests->request_id;
+                                                            $request_title = $row_requests->request_title;
+                                                            $request_description = $row_requests->request_description;
+                                                            $request_date = $row_requests->request_date;
+                                                            $request_budget = $row_requests->request_budget;
 
-                                                        $count_offers = $db->count("send_offers", array("request_id" => $request_id, "status" => 'active'));
+                                                            $count_offers = $db->count("send_offers", array("request_id" => $request_id, "status" => 'active'));
                                                         ?>
-                                                        <tr>
-                                                            <td> <?= $request_title; ?> </td>
-                                                            <td>
-                                                                <?= $request_description; ?>
-                                                            </td>
-                                                            <td> <?= $request_date; ?></td>
-                                                            <td><?= $count_offers; ?> </td>
-                                                            <td class="text-success"> <?= showPrice($request_budget); ?> </td>
-                                                            <td class="text-center">
-                                                                <div class="dropdown">
-                                                                    <button class="btn btn-success dropdown-toggle"
-                                                                            data-toggle="dropdown"></button>
-                                                                    <div class="dropdown-menu">
-                                                                        <a href="active_request?request_id=<?= $request_id; ?>"
-                                                                           class="dropdown-item">
-                                                                            Activate
-                                                                        </a>
-                                                                        <a href="delete_request?request_id=<?= $request_id; ?>"
-                                                                           class="dropdown-item">
-                                                                            Delete
-                                                                        </a>
+                                                            <tr>
+                                                                <td> <?= $request_title; ?> </td>
+                                                                <td>
+                                                                    <?= $request_description; ?>
+                                                                </td>
+                                                                <td> <?= $request_date; ?></td>
+                                                                <td><?= $count_offers; ?> </td>
+                                                                <td class="text-success"> <?= showPrice($request_budget); ?> </td>
+                                                                <td class="text-center">
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
+                                                                        <div class="dropdown-menu">
+                                                                            <a href="active_request?request_id=<?= $request_id; ?>" class="dropdown-item">
+                                                                                Activate
+                                                                            </a>
+                                                                            <a href="delete_request?request_id=<?= $request_id; ?>" class="dropdown-item">
+                                                                                Delete
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    <?php } ?>
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
                                                     </tbody>
                                                 </table>
                                                 <?php
@@ -351,42 +367,41 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                             <div class="table-responsive box-table">
                                                 <table class="table table-bordered">
                                                     <thead>
-                                                    <tr>
-                                                        <th><?= $lang['th']['title']; ?></th>
-                                                        <th><?= $lang['th']['description']; ?></th>
-                                                        <th><?= $lang['th']['date']; ?></th>
-                                                        <th><?= $lang['th']['offers']; ?></th>
-                                                        <th><?= $lang['th']['budget']; ?></th>
-                                                        <th><?= $lang['th']['actions']; ?></th>
-                                                    </tr>
+                                                        <tr>
+                                                            <th><?= $lang['th']['title']; ?></th>
+                                                            <th><?= $lang['th']['description']; ?></th>
+                                                            <th><?= $lang['th']['date']; ?></th>
+                                                            <th><?= $lang['th']['offers']; ?></th>
+                                                            <th><?= $lang['th']['budget']; ?></th>
+                                                            <th><?= $lang['th']['actions']; ?></th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <?php
-                                                    $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "pending"), "DESC");
-                                                    $count_requests = $get_requests->rowCount();
-                                                    while ($row_requests = $get_requests->fetch()) {
-                                                        $request_id = $row_requests->request_id;
-                                                        $request_title = $row_requests->request_title;
-                                                        $request_description = $row_requests->request_description;
-                                                        $request_date = $row_requests->request_date;
-                                                        $request_budget = $row_requests->request_budget;
+                                                        <?php
+                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "pending"), "DESC");
+                                                        $count_requests = $get_requests->rowCount();
+                                                        while ($row_requests = $get_requests->fetch()) {
+                                                            $request_id = $row_requests->request_id;
+                                                            $request_title = $row_requests->request_title;
+                                                            $request_description = $row_requests->request_description;
+                                                            $request_date = $row_requests->request_date;
+                                                            $request_budget = $row_requests->request_budget;
                                                         ?>
-                                                        <tr>
-                                                            <td> <?= $request_title; ?> </td>
-                                                            <td>
-                                                                <?= $request_description; ?>
-                                                            </td>
-                                                            <td> <?= $request_date; ?>  </td>
-                                                            <td> 0</td>
-                                                            <td class="text-success"> <?= showPrice($request_budget); ?>  </td>
-                                                            <td>
-                                                                <a href="delete_request?request_id=<?= $request_id; ?>"
-                                                                   class="btn btn-outline-danger">
-                                                                    Delete
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    <?php } ?>
+                                                            <tr>
+                                                                <td> <?= $request_title; ?> </td>
+                                                                <td>
+                                                                    <?= $request_description; ?>
+                                                                </td>
+                                                                <td> <?= $request_date; ?> </td>
+                                                                <td> 0</td>
+                                                                <td class="text-success"> <?= showPrice($request_budget); ?> </td>
+                                                                <td>
+                                                                    <a href="delete_request?request_id=<?= $request_id; ?>" class="btn btn-outline-danger">
+                                                                        Delete
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
                                                     </tbody>
                                                 </table>
                                                 <?php
@@ -400,42 +415,41 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                             <div class="table-responsive box-table">
                                                 <table class="table table-bordered">
                                                     <thead>
-                                                    <tr>
-                                                        <th><?= $lang['th']['title']; ?></th>
-                                                        <th><?= $lang['th']['description']; ?></th>
-                                                        <th><?= $lang['th']['date']; ?></th>
-                                                        <th><?= $lang['th']['offers']; ?></th>
-                                                        <th><?= $lang['th']['budget']; ?></th>
-                                                        <th><?= $lang['th']['actions']; ?></th>
-                                                    </tr>
+                                                        <tr>
+                                                            <th><?= $lang['th']['title']; ?></th>
+                                                            <th><?= $lang['th']['description']; ?></th>
+                                                            <th><?= $lang['th']['date']; ?></th>
+                                                            <th><?= $lang['th']['offers']; ?></th>
+                                                            <th><?= $lang['th']['budget']; ?></th>
+                                                            <th><?= $lang['th']['actions']; ?></th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <?php
-                                                    $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "unapproved"), "DESC");
-                                                    $count_requests = $get_requests->rowCount();
-                                                    while ($row_requests = $get_requests->fetch()) {
-                                                        $request_id = $row_requests->request_id;
-                                                        $request_title = $row_requests->request_title;
-                                                        $request_description = $row_requests->request_description;
-                                                        $request_date = $row_requests->request_date;
-                                                        $request_budget = $row_requests->request_budget;
+                                                        <?php
+                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "unapproved"), "DESC");
+                                                        $count_requests = $get_requests->rowCount();
+                                                        while ($row_requests = $get_requests->fetch()) {
+                                                            $request_id = $row_requests->request_id;
+                                                            $request_title = $row_requests->request_title;
+                                                            $request_description = $row_requests->request_description;
+                                                            $request_date = $row_requests->request_date;
+                                                            $request_budget = $row_requests->request_budget;
                                                         ?>
-                                                        <tr>
-                                                            <td> <?= $request_title; ?> </td>
-                                                            <td>
-                                                                <?= $request_description; ?>
-                                                            </td>
-                                                            <td><?= $request_date; ?> </td>
-                                                            <td> 0</td>
-                                                            <td class="text-success"> <?= showPrice($request_budget); ?> </td>
-                                                            <td>
-                                                                <a href="delete_request?request_id=<?= $request_id; ?>"
-                                                                   class="btn btn-outline-danger">
-                                                                    Delete
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    <?php } ?>
+                                                            <tr>
+                                                                <td> <?= $request_title; ?> </td>
+                                                                <td>
+                                                                    <?= $request_description; ?>
+                                                                </td>
+                                                                <td><?= $request_date; ?> </td>
+                                                                <td> 0</td>
+                                                                <td class="text-success"> <?= showPrice($request_budget); ?> </td>
+                                                                <td>
+                                                                    <a href="delete_request?request_id=<?= $request_id; ?>" class="btn btn-outline-danger">
+                                                                        Delete
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
                                                     </tbody>
                                                 </table>
                                                 <?php
@@ -456,15 +470,16 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                     <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["manage_contacts"]; ?></h1>
                                 </div>
                                 <div class="col-md-12">
-                                    <?php include('seller_contacts.php'); ?>
+                                    <?php include('buyer_contacts.php'); ?>
                                 </div>
                             </div>
                             <!-- End Buyer Contacts -->
 
                             <!-- Recently Viewd Start -->
                             <div class="row">
-                                <div class="col-md-12 mt-5 mb-3"><h1
-                                            class="pull-left"> <?= $lang['sidebar']['recently_viewed']; ?> </h1></div>
+                                <div class="col-md-12 mt-5 mb-3">
+                                    <h1 class="pull-left"> <?= $lang['sidebar']['recently_viewed']; ?> </h1>
+                                </div>
                                 <div class="col-md-12 mt-3">
                                     <div class="row">
                                         <?php
@@ -478,7 +493,7 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                  </h3>
                               </center>";
                                         } else {
-                                            ?>
+                                        ?>
                                             <?php
                                             $i = 0;
                                             $select_recent = $db->query("select * from recent_proposals where seller_id='$login_seller_id' order by 1 DESC LIMIT 0,4");
@@ -541,27 +556,24 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                                     } else {
                                                         $enableVideo = 0;
                                                     }
-                                                    ?>
+                                            ?>
                                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 mb-4">
                                                         <div class="card-box card">
                                                             <div class="subcategory">
                                                                 <a href="proposals/<?= $seller_user_name; ?>/<?= $proposal_url; ?>">
                                                                     <picture class="card-img-top">
-                                                                        <img class="rounded-0"
-                                                                             src="<?= $proposal_img1; ?>">
+                                                                        <img class="rounded-0" src="<?= $proposal_img1; ?>">
                                                                     </picture>
                                                                 </a>
                                                                 <div class="card-body">
                                                                     <div class="d-flex">
                                                                         <div class="rounded-circle overflow-hidden d-flex justify-content-center align-items-center user-pic">
-                                                                            <img src="<?= $seller_image; ?>" alt=""
-                                                                                 width="32" height="32">
+                                                                            <img src="<?= $seller_image; ?>" alt="" width="32" height="32">
                                                                         </div>
                                                                         <div class="px-3 d-flex justify-content-between w-100 align-items-center">
                                                                             <div class="">
-                                                                                <a href="<?= $site_url; ?>/<?= $seller_user_name; ?>"
-                                                                                   class="seller-name"><h5
-                                                                                            class="card-title font-weight-bold mb-0"><?= $seller_user_name; ?></h5>
+                                                                                <a href="<?= $site_url; ?>/<?= $seller_user_name; ?>" class="seller-name">
+                                                                                    <h5 class="card-title font-weight-bold mb-0"><?= $seller_user_name; ?></h5>
                                                                                 </a>
                                                                                 <!-- <small class="text-secondary">New Seller</small> -->
                                                                             </div>
@@ -575,10 +587,10 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                                                         <div class="font-weight-bold text-info">
                                                                             <i class="fa fa-star"></i>
                                                                             <span><?php if ($proposal_rating == "0") {
-                                                                                    echo "0.0";
-                                                                                } else {
-                                                                                    printf("%.1f", $average_rating);
-                                                                                } ?></span>
+                                                                                        echo "0.0";
+                                                                                    } else {
+                                                                                        printf("%.1f", $average_rating);
+                                                                                    } ?></span>
                                                                             <span class="font-weight-normal text-secondary">(<?= $count_reviews; ?>)</span>
                                                                         </div>
                                                                         <div class="brand-logo">
@@ -589,11 +601,7 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                                                 <div class=" d-flex justify-content-between align-items-center py-3 px-3 bt-xs-1 ">
                                                                     <ul class="list-inline mb-0">
                                                                         <li class="list-inline-item dropdown">
-                                                                            <a id="dropdownMenuButton"
-                                                                               data-toggle="dropdown"
-                                                                               aria-haspopup="true"
-                                                                               aria-expanded="false"
-                                                                               class="text-muted fa fa-bars"></a>
+                                                                            <a id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="text-muted fa fa-bars"></a>
                                                                             <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                                               <a class="dropdown-item" href="#">Action</a>
                                                                               <a class="dropdown-item" href="#">Another action</a>
@@ -622,8 +630,10 @@ $month_earnings = $row_seller_accounts->month_earnings;
 
                             <!-- Buy again Start -->
                             <div class="row">
-                                <div class="col-md-12 mt-5 mb-3"><h1 class="pull-left"> Buy again from your favorite
-                                        sellers </h1></div>
+                                <div class="col-md-12 mt-5 mb-3">
+                                    <h1 class="pull-left"> Buy again from your favorite
+                                        sellers </h1>
+                                </div>
 
                                 <?php include('buy_it_again.php'); ?>
                             </div>
@@ -635,13 +645,11 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                         <div class="carousel-inner">
                                             <?php include('buyer_videos.php'); ?>
                                         </div>
-                                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
-                                           data-slide="prev">
-                <span class="fa fa-chevron-left" aria-hidden="true">
-                </span>
+                                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                            <span class="fa fa-chevron-left" aria-hidden="true">
+                                            </span>
                                         </a>
-                                        <a class="carousel-control-next" href="#carouselExampleControls" role="button"
-                                           data-slide="next">
+                                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
                                             <span class="fa fa-chevron-right" aria-hidden="true"></span>
                                         </a>
                                     </div>
@@ -651,7 +659,7 @@ $month_earnings = $row_seller_accounts->month_earnings;
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="Seller" role="tabpanel">
+                <div class="tab-pane fade <?= $activeTab == "seller" ? "show active" : "" ?>" id="Seller" role="tabpanel">
                     <div class="about-section-2 pt-5">
                         <div class="">
                             <div class="row">
@@ -722,7 +730,8 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                 <div class="col-md-12 mt-3">
                                     <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["view_proposals"]; ?></h1>
                                 </div>
-                                <?php $active = true; include('proposals/user_view_proposal.php'); ?>
+                                <?php $active = true;
+                                include('proposals/user_view_proposal.php'); ?>
                             </div>
                             <!-- End Proposal -->
                             <!-- Buyer Contacts -->
@@ -732,7 +741,7 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                     <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["manage_contacts"]; ?> </h1>
                                 </div>
                                 <div class="col-md-12 mt-3">
-                                    <?php $count_my_sellers = 0; include('buyer_contacts.php'); ?>
+                                    <?php include('seller_contacts.php'); ?>
                                 </div>
                             </div>
                             <!-- End Buyer Contacts -->
@@ -743,13 +752,11 @@ $month_earnings = $row_seller_accounts->month_earnings;
                                         <div class="carousel-inner">
                                             <?php include('seller_videos.php'); ?>
                                         </div>
-                                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
-                                           data-slide="prev">
-                <span class="fa fa-chevron-left" aria-hidden="true">
-                </span>
+                                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                            <span class="fa fa-chevron-left" aria-hidden="true">
+                                            </span>
                                         </a>
-                                        <a class="carousel-control-next" href="#carouselExampleControls" role="button"
-                                           data-slide="next">
+                                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
                                             <span class="fa fa-chevron-right" aria-hidden="true"></span>
                                         </a>
                                     </div>
@@ -792,7 +799,7 @@ $month_earnings = $row_seller_accounts->month_earnings;
 </div>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
 
         // $(".carousel-indicators").css({"bottom": "75px"});
 
@@ -805,32 +812,40 @@ $month_earnings = $row_seller_accounts->month_earnings;
 
         if (active_length == 1) {
             slider.carousel('pause');
-            $(".carousel-indicators").css({"bottom": "75px"});
+            $(".carousel-indicators").css({
+                "bottom": "75px"
+            });
         }
 
-        $("#demo3").on('slide.bs.carousel', function (event) {
+        $("#demo3").on('slide.bs.carousel', function(event) {
             var eq = event.to;
             var video = $(event.relatedTarget).find("video");
             if (video.length == 1) {
                 slider.carousel('pause');
-                $(".carousel-indicators").css({"bottom": "75px"});
+                $(".carousel-indicators").css({
+                    "bottom": "75px"
+                });
                 video.trigger('play');
             } else {
-                $(".carousel-indicators").css({"bottom": "20px"});
+                $(".carousel-indicators").css({
+                    "bottom": "20px"
+                });
             }
         });
 
-        $('video').on('ended', function () {
-            slider.carousel({'pause': false});
+        $('video').on('ended', function() {
+            slider.carousel({
+                'pause': false
+            });
         });
 
-        $('#buyer_tab').on('click', function () {
+        $('#buyer_tab').on('click', function() {
             $('.seller_tab').addClass('hide');
             $('.buyer_tab').removeClass('hide');
             $('.seller_box').addClass('hide');
             $('.buyer_box').removeClass('hide');
         });
-        $('#seller_tab').on('click', function () {
+        $('#seller_tab').on('click', function() {
             $('.buyer_tab').addClass('hide');
             $('.seller_tab').removeClass('hide');
             $('.buyer_box').addClass('hide');
@@ -838,5 +853,4 @@ $month_earnings = $row_seller_accounts->month_earnings;
         });
 
     });
-
 </script>
