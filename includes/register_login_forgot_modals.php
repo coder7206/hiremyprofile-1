@@ -53,12 +53,53 @@
           <div class="line mt-3"><span></span></div>
         <?php } ?>
         <form action="" method="post" class="pb-3">
-          <div class="form-group">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <input type="text" class="form-control" name="name" placeholder="<?= $lang['placeholder']['full_name']; ?>" value="<?php if (isset($_SESSION['name'])) echo $_SESSION['name']; ?>" required="">
+            </div>
+            <div class="form-group col-md-6">
+              <input type="email" class="form-control" name="email" placeholder="<?= $lang['placeholder']['email']; ?>" value="<?php if (isset($_SESSION['email'])) echo $_SESSION['email']; ?>" required="">
+              <?php if (in_array("Email has already been taken. Try logging in instead.", $error_array)) echo "<span style='color:red;'>Email has already been taken. Try logging in instead.</span> <br>"; ?>
+            </div>
+
+            <div class="form-group col-md-12">
+              <input type="text" class="form-control" name="u_name" placeholder="Enter Your Username <?= $lang['warning']['no_spaces']; ?>" value="<?php if (isset($_SESSION['u_name'])) echo $_SESSION['u_name']; ?>" required="">
+              <small class="form-text text-muted"><?= $lang['warning']['note']; ?></small>
+              <?php
+                if (in_array("Opps! This username has already been taken. Please try another one", $error_array))
+                  echo "<span style='color:red;'>{$lang['warning']['username_already']}</span> <br>";
+
+                if (in_array("Username must be greater that 4 characters long or less than 25 characters.", $error_array))
+                  echo "<span style='color:red;'>{$lang['warning']['username_greater']}</span> <br>";
+
+                if (in_array("Spaces Are Not Allowed In Username. Please Remove The Spaces.", $error_array))
+                  echo "<span style='color:red;'>{$lang['warning']['spaces_not_allowed']}</span> <br>";
+              ?>
+            </div>
+
+            <div class="form-group col-md-6">
+              <input type="password" class="form-control" name="pass" placeholder="<?= $lang['placeholder']['password']; ?>" required="">
+            </div>
+            <div class="form-group col-md-6">
+              <input type="password" class="form-control" name="con_pass" placeholder="<?= $lang['placeholder']['password_confirm']; ?>" required="">
+              <?php if (in_array("Passwords don't match. Please try again.", $error_array)) echo "<span style='color:red;'>{$lang['warning']['dont_match']}</span> <br>"; ?>
+            </div>
+
+            <div class="form-group col-md-12">
+              <hr class="">
+              <input type="hidden" style="position: relative; top: 1px;" id="check" value="1" checked required="" />
+              <label for="check">
+                By clicking "Register Now" button, you agree our
+                <a class="text-success" href="<?= $site_url; ?>/terms_and_conditions">Terms And Conditions</a>
+              </label>
+            </div>
+          </div>
+          <!-- <div class="form-group">
             <label class="form-control-label font-weight-bold"> <?= $lang['label']['full_name']; ?> </label>
             <input type="text" class="form-control" name="name" placeholder="<?= $lang['placeholder']['full_name']; ?>" value="<?php if (isset($_SESSION['name'])) echo $_SESSION['name']; ?>" required="">
-          </div>
+          </div> -->
 
-          <div class="form-group">
+          <!-- <div class="form-group">
 
             <label class="form-control-label font-weight-bold">
 
@@ -82,15 +123,15 @@
             if (in_array("Spaces Are Not Allowed In Username. Please Remove The Spaces.", $error_array)) echo "<span style='color:red;'>{$lang['warning']['spaces_not_allowed']}</span> <br>";
             ?>
 
-          </div>
+          </div> -->
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label class="form-control-label font-weight-bold"> <?= $lang['label']['email']; ?> </label>
             <input type="email" class="form-control" name="email" placeholder="<?= $lang['placeholder']['email']; ?>" value="<?php if (isset($_SESSION['email'])) echo $_SESSION['email']; ?>" required="">
             <?php if (in_array("Email has already been taken. Try logging in instead.", $error_array)) echo "<span style='color:red;'>Email has already been taken. Try logging in instead.</span> <br>"; ?>
-          </div>
+          </div> -->
 
-          <div class="form-group phoneNo">
+          <!-- <div class="form-group phoneNo">
             <label class="form-control-label font-weight-bold">
               <?= $lang['label']['phone']; ?>
               <?= ($make_phone_number_required == 1) ? $lang['label']['phone_required'] : $lang['label']['phone_optional']; ?>
@@ -102,9 +143,9 @@
               <input type="text" class="form-control w-750" name="phone" placeholder="<?= $lang['placeholder']['phone']; ?>" value="<?php if (isset($_SESSION['phone'])) echo $_SESSION['phone']; ?>" <?= ($make_phone_number_required == 1) ? "required" : ""; ?> />
 
             </div>
-          </div>
+          </div> -->
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label class="form-control-label font-weight-bold"> <?= $lang['label']['password']; ?> </label>
             <input type="password" class="form-control" name="pass" placeholder="<?= $lang['placeholder']['password']; ?>" required="">
           </div>
@@ -113,15 +154,7 @@
             <label class="form-control-label font-weight-bold"> <?= $lang['label']['password_confirm']; ?> </label>
             <input type="password" class="form-control" name="con_pass" placeholder="<?= $lang['placeholder']['password_confirm']; ?>" required="">
             <?php if (in_array("Passwords don't match. Please try again.", $error_array)) echo "<span style='color:red;'>{$lang['label']['dont_match']}</span> <br>"; ?>
-          </div>
-
-          <div class="form-group">
-            <input type="checkbox" style="position: relative; top: 1px;" id="check" value="1" required="" />
-            <label for="check">
-              I Accept
-              <a class="text-success" href="<?= $site_url; ?>/terms_and_conditions">Terms And Conditions</a>
-            </label>
-          </div>
+          </div> -->
 
           <?php if (isset($_GET['referral'])) { ?>
             <input type="hidden" class="form-control" name="referral" value="<?= $input->get('referral'); ?>">

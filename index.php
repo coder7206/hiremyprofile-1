@@ -13,11 +13,11 @@ $site_title = $row_general_settings->site_title;
 
 // FOR BOOKMARK
 if ($_POST) {
-	if ($_POST['seller_bookmark'] == "yes") {
+	if (isset($_POST['seller_bookmark']) && $_POST['seller_bookmark'] == "yes") {
 		setcookie("bkmark_seller_" . $_SESSION['seller_user_name'], true, strtotime('+30 days'), "/", "", false, false); // 30 days expiray
 		header('Location: ' . $site_url);
 		exit;
-	} else if ($_POST['seller_bookmark'] == "no") {
+	} else if (isset($_POST['seller_bookmark']) && $_POST['seller_bookmark'] == "no") {
 		setcookie("bkmark_seller_" . $_SESSION['seller_user_name'], "", strtotime('-30 days'), "/", "", false, false);
 		header('Location: ' . $site_url);
 		exit;
