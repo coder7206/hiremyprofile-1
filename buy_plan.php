@@ -496,7 +496,7 @@ if (isset($_GET['pid'])) {
             <?php } ?>
             <?php require_once("includes/footer.php"); ?>
 
-            <script src="js/paypal.js" id="paypal-js" data-base-url="<?= $site_url; ?>" data-payment-type="proposal"></script>
+            <script src="<?=$site_url?>/js/paypal.js" id="paypal-js" data-base-url="<?= $site_url; ?>" data-payment-type="proposal"></script>
 
         </body>
 

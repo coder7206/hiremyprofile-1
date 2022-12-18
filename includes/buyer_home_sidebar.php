@@ -7,37 +7,37 @@
   </div>
 </div>
 <style>
-    .bbw{
-        border-bottom: 1px solid #fff !important;
-    }
+  .bbw {
+    border-bottom: 1px solid #fff !important;
+  }
 </style>
 <div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row bbw">
-    <h6 class="mb-0 text-white"> <i class="fa fa-list-ol"></i> <span>Available Proposal Points</span></h6>
-    <label class="mb-0 text-white font-weight-bold"><?php echo $row_sellers->no_of_gigs; ?></label>
+  <h6 class="mb-0 text-white"> <i class="fa fa-list-ol"></i> <span>Available Proposal Points</span></h6>
+  <label class="mb-0 text-white font-weight-bold"><?php echo $row_sellers->no_of_gigs; ?></label>
 </div>
 
 <div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row bbw">
-    <h6 class="mb-0 text-white"> <i class="fa fa-hand-o-up"></i> <span>Available Bids Credit</span></h6>
-    <label class="mb-0 text-white font-weight-bold"><?php echo $row_sellers->bids_per_month; ?></label>
+  <h6 class="mb-0 text-white"> <i class="fa fa-hand-o-up"></i> <span>Available Bids Credit</span></h6>
+  <label class="mb-0 text-white font-weight-bold"><?php echo $row_sellers->bids_per_month; ?></label>
 </div>
 
 <div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row bbw">
-    <h6 class="mb-0 text-white"> <i class="fa fa-plus"></i> <span>No of skills to be listed</span></h6>
-    <label class="mb-0 text-white font-weight-bold"><?php echo $row_sellers->skills; ?></label>
+  <h6 class="mb-0 text-white"> <i class="fa fa-plus"></i> <span>No of skills to be listed</span></h6>
+  <label class="mb-0 text-white font-weight-bold"><?php echo $row_sellers->skills; ?></label>
 </div>
 
 <div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row bbw">
-    <h6 class="mb-0 text-white"> <i class="fa fa-dollar"></i> <span>Order Processing Fee</span></h6>
-    <label class="mb-0 text-white font-weight-bold"><?php echo $row_sellers->comission_per_sale; ?>%</label>
+  <h6 class="mb-0 text-white"> <i class="fa fa-dollar"></i> <span>Order Processing Fee</span></h6>
+  <label class="mb-0 text-white font-weight-bold"><?php echo $row_sellers->comission_per_sale; ?>%</label>
 </div>
 
 <div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row bbw">
-    <h6 class="mb-0 text-white"> <i class="fa fa-credit-card"></i> <span>Number of profolios remaining</span></h6>
-    <label class="mb-0 text-white font-weight-bold"><?php echo $row_sellers->create_porfolio; ?>%</label>
+  <h6 class="mb-0 text-white"> <i class="fa fa-credit-card"></i> <span>Number of portfolios remaining</span></h6>
+  <label class="mb-0 text-white font-weight-bold"><?php echo $row_sellers->create_porfolio; ?></label>
 </div>
 <div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row bbw">
-    <h6 class="mb-0 text-white"> <i class="fa fa-bookmark"></i> <span>Can bookmakrd projects</span></h6>
-    <label class="mb-0 text-white font-weight-bold"><?php echo $row_sellers->project_bookmarks; ?>%</label>
+  <h6 class="mb-0 text-white"> <i class="fa fa-bookmark"></i> <span>Can bookmark projects</span></h6>
+  <label class="mb-0 text-white font-weight-bold"><?php echo $row_sellers->project_bookmarks; ?></label>
 </div>
 <div class="card card1 theme-bg text-white border-0 px-sm-4 px-2  py-3">
   <div class="d-flex align-items-center justify-content-space-between">

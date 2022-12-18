@@ -26,7 +26,7 @@ if($paymentGateway == 1){
   $row_plugin = $get_plugin->fetch();
   $paymentGatewayVersion = $row_plugin->version;
 }else{
-  $enable_2checkout = "no"; 
+  $enable_2checkout = "no";
   $paymentGatewayVersion = 0.0;
 }
 $enable_mercadopago = $row_payment_settings->enable_mercadopago;
@@ -57,7 +57,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header"><!-- modal-header Starts -->
-        <h5 class="modal-title"> 
+        <h5 class="modal-title">
           <span class="float-left">Payment For Order Tip.</span>
         </h5>
         <button class="closeExtendTimePayment close" data-dismiss="modal">
@@ -86,7 +86,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
           <hr>
           <?php } ?>
           <?php } ?>
-          
+
           <?php if($enable_paypal == "yes"){ ?>
           <div class="payment-option">
             <input type="radio" name="payment_option" id="paypal" class="radio-custom" <?php if($current_balance < $amount){ echo "checked"; } ?>>
@@ -106,8 +106,8 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
           </div>
           <?php } ?>
 
-          <?php 
-            if($enable_2checkout == "yes" AND $paymentGatewayVersion >= 1.2){ 
+          <?php
+            if($enable_2checkout == "yes" AND $paymentGatewayVersion >= 1.2){
               include("$dir/plugins/paymentGateway/paymentMethod2.php");
             }
           ?>
@@ -120,7 +120,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
             <input type="radio" name="payment_option" id="mercadopago" class="radio-custom"
                 <?php
                 if($current_balance < $amount){
-                  if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1"){ 
+                  if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1"){
                   echo "checked";
                   }
                 }
@@ -138,7 +138,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
             <input type="radio" name="payment_option" id="coinpayments" class="radio-custom"
               <?php
                 if($current_balance < $amount){
-                  if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0"){ 
+                  if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0"){
                     echo "checked";
                   }
                 }
@@ -147,7 +147,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
             <label for="coinpayments" class="radio-custom-label"></label>
             <img src="images/coinpayments.png">
           </div>
-          <?php } ?> 
+          <?php } ?>
 
           <?php if($enable_paystack == "yes"){ ?>
           <?php if($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1" or $enable_coinpayments == "yes"){ ?>
@@ -157,7 +157,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
             <input type="radio" name="payment_option" id="paystack" class="radio-custom"
               <?php
                 if($current_balance < $amount){
-                  if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no"){ 
+                  if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no"){
                   echo "checked";
                   }
                 }
@@ -165,7 +165,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
             <label for="paystack" class="radio-custom-label"></label>
             <img src="images/paystack.png" class="img-fluid">
           </div>
-          <?php } ?>   
+          <?php } ?>
           <?php if($enable_dusupay == "yes"){ ?>
           <?php if($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1" or $enable_coinpayments =="yes" or $enable_paystack == "yes"){ ?>
           <hr>
@@ -174,8 +174,8 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
             <input type="radio" name="payment_option" id="mobile-money" class="radio-custom"
               <?php
                 if($current_balance < $amount){
-                  if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "no"){ 
-                    echo "checked"; 
+                  if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "no"){
+                    echo "checked";
                   }
                 }
               ?>
@@ -183,7 +183,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
             <label for="mobile-money" class="radio-custom-label"></label>
             <img src="images/dusupay.png" class="img-fluid">
           </div>
-          <?php } ?> 
+          <?php } ?>
         </div>
       </div>
       <div class="modal-footer">
@@ -201,7 +201,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
           <div id="paypal-form" class="paypal-button-container"></div>
         <?php } ?>
 
-        <?php 
+        <?php
         if($enable_stripe == "yes"){
         ?>
         <form action="orderIncludes/charge/stripe" method="post" id="credit-card-form">
@@ -210,7 +210,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 
         </form>
         <?php } ?>
-        
+
         <?php if($enable_2checkout == "yes" AND $paymentGatewayVersion >= 1.2){ ?>
         <form action='plugins/paymentGateway/orderTip/2checkout_charge' id="2checkout-form" method='post'>
             <input name='2Checkout' type='submit' class="btn btn-success btn-block" value='<?= $lang['button']['pay_with_2checkout']; ?>'/>
@@ -229,7 +229,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
         </form><!--- paystack-form Ends --->
         <?php } ?>
 
-        <?php 
+        <?php
            if($enable_dusupay == "yes"){
               $main_modal = "payment-modal";
               $form_action = "orderIncludes/charge/dusupay";
@@ -251,21 +251,21 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 
 <?php include("../../includes/comp/dusupay_payment_modal.php"); ?>
 
-<script 
-   src="js/paypal.js" 
-   id="paypal-js" 
-   data-base-url="<?= $site_url; ?>" 
+<script
+   src="<?=$site_url?>/js/paypal.js"
+   id="paypal-js"
+   data-base-url="<?= $site_url; ?>"
    data-payment-type="orderTip">
 </script>
 
 <script>
-  
+
 $(document).ready(function(){
 
   // $("#payment-modal").modal('show');
 
   $('#payment-modal').modal({ backdrop: 'static', show: true });
-  
+
   $("body").css('overflowY', 'hidden');
 
   $('#payment-modal').on('hidden.bs.modal', function (e) {

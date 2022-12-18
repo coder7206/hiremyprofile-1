@@ -275,7 +275,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
 
 <?php include("../includes/comp/mobile_money_modal.php"); ?>
 
-<script src="../js/paypal.js" id="paypal-js" data-base-url="<?= $site_url; ?>" data-payment-type="featured_listing">
+<script src="<?=$site_url?>/js/paypal.js" id="paypal-js" data-base-url="<?= $site_url; ?>" data-payment-type="featured_listing">
 </script>
 
 <script>

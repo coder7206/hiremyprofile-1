@@ -716,7 +716,7 @@ $('#mercadopago').click(function(){
 <?php } ?>
 <?php require_once("includes/footer.php"); ?>
 
-<script src="js/paypal.js" id="paypal-js" data-namespace="paypal_sdk" data-base-url="<?= $site_url; ?>" data-payment-type="proposal"></script>
+<script src="<?=$site_url?>/js/paypal.js" id="paypal-js" data-namespace="paypal_sdk" data-base-url="<?= $site_url; ?>" data-payment-type="proposal"></script>
 
 </body>
 </html>

@@ -500,6 +500,6 @@ $('#mercadopago').click(function(){
 </script>
 <?php } ?>
 <?php require_once("includes/footer.php"); ?>
-<script src="js/paypal.js" id="paypal-js" data-base-url="<?= $site_url; ?>" data-payment-type="cart"></script>
+<script src="<?=$site_url?>/js/paypal.js" id="paypal-js" data-base-url="<?= $site_url; ?>" data-payment-type="cart"></script>
 </body>
 </html>
