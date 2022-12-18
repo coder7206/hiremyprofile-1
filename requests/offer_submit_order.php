@@ -6,9 +6,9 @@ require_once("../includes/db.php");
 require_once("../functions/processing_fee.php");
 
 if(!isset($_SESSION['seller_user_name'])){
-   
+
 echo "<script>window.open('../login','_self')</script>";
-   
+
 }
 
 $login_seller_user_name = $_SESSION['seller_user_name'];
@@ -26,7 +26,7 @@ $paypal_sandbox = $row_payment_settings->paypal_sandbox;
 if($paypal_sandbox == "on"){
    $paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
 }elseif($paypal_sandbox == "off"){
-   $paypal_url = "https://www.paypal.com/cgi-bin/webscr";   
+   $paypal_url = "https://www.paypal.com/cgi-bin/webscr";
 }
 $enable_stripe = $row_payment_settings->enable_stripe;
 $enable_dusupay = $row_payment_settings->enable_dusupay;
@@ -54,7 +54,7 @@ if($paymentGateway == 1){
    }
 
 }else{
-   $enable_2checkout = "no"; 
+   $enable_2checkout = "no";
 }
 
 $select_seller_accounts = $db->select("seller_accounts",array("seller_id" => $login_seller_id));
@@ -169,10 +169,10 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
                <img src="../images/credit_cards.jpg" class="img-fluid">
             </div>
                <?php } ?>
-            <?php 
-            if($enable_2checkout == "yes"){ 
+            <?php
+            if($enable_2checkout == "yes"){
                include("../plugins/paymentGateway/paymentMethod2.php");
-            } 
+            }
             ?>
                 <?php if($enable_mercadopago == "1"){ ?>
                 <?php if($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes"){ ?>
@@ -182,7 +182,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
                   <input type="radio" name="payment_option" id="mercadopago" class="radio-custom"
                             <?php
                             if($current_balance < $amount){
-                               if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1"){ 
+                               if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1"){
                                echo "checked";
                                }
                             }
@@ -191,7 +191,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
                   <img src="../images/mercadopago.png" class="img-fluid">
                </div>
                 <?php } ?>
-                              
+
                 <?php if($enable_coinpayments == "yes"){ ?>
                 <?php if($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1"){ ?>
                 <hr>
@@ -200,7 +200,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
                   <input type="radio" name="payment_option" id="coinpayments" class="radio-custom"
                             <?php
                             if($current_balance < $amount){
-                            if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0"){ 
+                            if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0"){
                               echo "checked";
                             }
                             }
@@ -217,7 +217,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
                   <input type="radio" name="payment_option" id="paystack" class="radio-custom"
                             <?php
                             if($current_balance < $amount){
-                            if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no"){ 
+                            if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no"){
                             echo "checked";
                             }
                             }
@@ -225,7 +225,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
                   <label for="paystack" class="radio-custom-label"></label>
                   <img src="../images/paystack.png" class="img-fluid">
                </div>
-                <?php } ?>   
+                <?php } ?>
                 <?php if($enable_dusupay == "yes"){ ?>
                 <?php if($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1" or $enable_coinpayments =="yes" or $enable_paystack == "yes"){ ?>
             <hr>
@@ -234,8 +234,8 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
                   <input type="radio" name="payment_option" id="mobile-money" class="radio-custom"
                               <?php
                                    if($current_balance < $amount){
-                                   if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "no"){ 
-                                    echo "checked"; 
+                                   if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "no"){
+                                    echo "checked";
                                    }
                                    }
                                ?>>
@@ -296,7 +296,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
             </form><!--- paystack-form Ends --->
             <?php } ?>
 
-            <?php 
+            <?php
                if($enable_dusupay == "yes"){
                   $main_modal = "offer-order-modal";
                   $form_action = "dusupay_charge";
@@ -311,16 +311,16 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 
 <?php include("../includes/comp/dusupay_payment_modal.php"); ?>
 
-<script 
-   src="../js/paypal.js" id="paypal-js" 
-   data-base-url="<?= $site_url; ?>" 
+<script
+   src="<?=$site_url?>/js/paypal.js" id="paypal-js"
+   data-base-url="<?= $site_url; ?>"
    data-payment-type="request_offer">
 </script>
 
 <script>
 
 $(document).ready(function(){
-   
+
    $("#offer-order-modal").modal('show');
 
    $(".offer-div").hide();
@@ -452,7 +452,7 @@ $(document).ready(function(){
    });
 
    $('#paystack').click(function(){
-      
+
       $('#mobile-money-form').hide();
       $('#credit-card-form').hide();
       $('#2checkout-form').hide();
@@ -473,7 +473,7 @@ $(document).ready(function(){
       $('#mercadopago-form').hide();
       $('#mobile-money-form').show();
    });
-   
+
 });
 
 </script>

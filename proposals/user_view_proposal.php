@@ -86,7 +86,7 @@ if ($totalProposal >= $num_gigs) {
 	</ul>
 	<div class="tab-content">
 		<div id="active-proposals" class="tab-pane fade show active">
-			<div class="table-responsive box-table mt-4">
+			<div class="table-responsive box-table mt-4" style="min-height: 250px;">
 				<table class="table table-bordered">
 					<thead>
 						<tr>
@@ -130,11 +130,11 @@ if ($totalProposal >= $num_gigs) {
 											<?php } else { ?>
 												<a href="#" class="dropdown-item text-success">Already Featured </a>
 											<?php } ?>
-											<a href="pause_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Deactivate Proposal</a>
-											<a href="view_coupons?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Coupons</a>
-											<a href="view_referrals?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Referrals</a>
-											<a href="edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
-											<a href="delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
+											<a href="<?= $site_url; ?>/proposals/pause_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Deactivate Proposal</a>
+											<a href="<?= $site_url; ?>/proposals/view_coupons?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Coupons</a>
+											<a href="<?= $site_url; ?>/proposals/view_referrals?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Referrals</a>
+											<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
+											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
 										</div>
 									</div>
 									<script>
@@ -142,12 +142,16 @@ if ($totalProposal >= $num_gigs) {
 											proposal_id = "<?= $proposal_id; ?>";
 											$.ajax({
 												method: "POST",
-												url: "pay_featured_listing",
+												url: "<?= $site_url; ?>/proposals/pay_featured_listing",
 												data: {
 													proposal_id: proposal_id
 												}
 											}).done(function(data) {
 												$("#featured-proposal-modal").html(data);
+											})
+											.fail((jqXHR, textStatus, errorThrown) => {
+												console.log('fail', jqXHR.status);
+												alert(jqXHR.status)
 											});
 										});
 									</script>

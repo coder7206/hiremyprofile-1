@@ -299,7 +299,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 <?php include("../includes/comp/dusupay_payment_modal.php"); ?>
 
 <script
-   src="../js/paypal.js"
+   src="<?=$site_url?>/js/paypal.js"
    id="paypal-js"
    data-base-url="<?= $site_url; ?>"
    data-payment-type="message_offer">

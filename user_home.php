@@ -730,8 +730,11 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                 <div class="col-md-12 mt-3">
                                     <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["view_proposals"]; ?></h1>
                                 </div>
-                                <?php $active = true;
-                                include('proposals/user_view_proposal.php'); ?>
+                                <div class="append-modal"></div>
+                                <?php
+                                $active = "active";
+                                include('proposals/user_view_proposal.php');
+                                ?>
                             </div>
                             <!-- End Proposal -->
                             <!-- Buyer Contacts -->
@@ -779,6 +782,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
 <!-- Container ends -->
 <br>
 <div class="append-modal"></div>
+<div id="featured-proposal-modal"></div>
 <div id="quota-finish" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
