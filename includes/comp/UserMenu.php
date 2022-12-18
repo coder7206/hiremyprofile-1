@@ -6,7 +6,8 @@
     <div class="dropdown-menu notifications-dropdown">
     </div>
   </li>
-  <li class="list-inline-item align-middle px-lg-3 px-1">
+  <li class="list-inline-item align-middle position-relative">
+    <span class="total-user-count count c-messages-header"></span>
     <a data-toggle="dropdown" title="<?= $lang['popup']['inbox']; ?>" class="fa fa-envelope-o fa-2x message menuItem"></a>
     <div class="dropdown-menu messages-dropdown">
     </div>

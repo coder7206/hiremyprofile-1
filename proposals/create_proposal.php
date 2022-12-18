@@ -41,7 +41,8 @@ $enable_delivery = false;
   <link href="../font_awesome/css/font-awesome.css" rel="stylesheet">
   <link href="../styles/owl.carousel.css" rel="stylesheet">
   <link href="../styles/owl.theme.default.css" rel="stylesheet">
-  <link href="../styles/tagsinput.css" rel="stylesheet">
+  <!-- <link href="../styles/tagsinput.css" rel="stylesheet">-->
+  <link rel="stylesheet" type="text/css" href="../styles/amsify.suggestags.css">
   <link href="../styles/sweat_alert.css" rel="stylesheet">
   <link href="../styles/animate.css" rel="stylesheet">
   <link href="../styles/croppie.css" rel="stylesheet">
@@ -218,8 +219,13 @@ $enable_delivery = false;
   <?php } ?>
 
   <?php require_once("../includes/footer.php"); ?>
-  <script src="../js/tagsinput.js"></script>
-
+  <script type="text/javascript" src="<?= $site_url; ?>/js/jquery.amsify.suggestags.js"></script>
+  <script
+    type="text/javascript"
+    id="tags-js"
+    src="<?= $site_url; ?>/js/tags.js"
+    data-base-url="<?= $site_url; ?>"
+  ></script>
 </body>
 
 </html>

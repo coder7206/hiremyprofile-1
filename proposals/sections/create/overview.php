@@ -5,16 +5,143 @@ if (empty($form_data)) {
     $form_data = $input->post();
 }
 
-?>
+function insertPackages($proposal_id)
+{
+    global $db;
+    $insertPackage1 = $db->insert("proposal_packages", array("proposal_id" => $proposal_id, "package_name" => 'Basic', "price" => 5));
+    $insertPackage2 = $db->insert("proposal_packages", array("proposal_id" => $proposal_id, "package_name" => 'Standard', "price" => 10));
+    $insertPackage3 = $db->insert("proposal_packages", array("proposal_id" => $proposal_id, "package_name" => 'Advance', "price" => 15));
+    if ($insertPackage3) {
+        return true;
+    }
+}
 
+include("sanitize_url.php");
+
+if (isset($_POST['submit'])) {
+    if ($row_sellers->no_of_gigs > 0) {
+        $rules = array(
+            "proposal_title" => "required",
+            "proposal_cat_id" => "required",
+            "proposal_child_id" => "required",
+            "proposal_tags" => "required",
+        );
+
+        $messages = array(
+            "proposal_cat_id" => "you must need to select a category",
+            "proposal_child_id" => "you must need to select a child category",
+            "proposal_enable_referrals" => "you must need to enable or disable proposal referrals.",
+            "proposal_img1" => "Proposal Image 1 Is Required.", "direct_order" => "Please make a order type choice"
+        );
+        $val = new Validator($_POST, $rules, $messages);
+        if ($val->run() == false) {
+            Flash::add("form_errors", $val->get_all_errors());
+            Flash::add("form_data", $_POST);
+            echo "<script> window.open('create_proposal','_self');</script>";
+        } else {
+            $proposal_title = $input->post('proposal_title');
+
+            $sanitize_url = proposalUrl($proposal_title);
+            $select_proposals = $db->select("proposals", array("proposal_seller_id" => $login_seller_id, "proposal_url" => $sanitize_url));
+            $count_proposals = $select_proposals->rowCount();
+
+            if ($count_proposals == 1) {
+                echo "<script>
+      swal({
+      type: 'warning',
+      text: 'Opps! Your Already Made A Proposal With Same Title Try Another.',
+      })</script>";
+            } else {
+                $proposal_referral_code = mt_rand();
+                $get_general_settings = $db->select("general_settings");
+                $row_general_settings = $get_general_settings->fetch();
+                $proposal_email = $row_general_settings->proposal_email;
+                $site_email_address = $row_general_settings->site_email_address;
+                $site_logo = $row_general_settings->site_logo;
+
+                $data = $input->post();
+                unset($data['submit']);
+                $data['proposal_url'] = $sanitize_url;
+                $data['proposal_seller_id'] = $login_seller_id;
+                $data['proposal_featured'] = "no";
+                if ($enable_referrals == "no") {
+                    $data['proposal_enable_referrals'] = "no";
+                }
+                if (isset($_POST['direct_order'])) {
+                    $direct_order = 2;
+                } else {
+                    $direct_order = 1;
+                }
+                $data['proposal_price'] = 0;
+                $data['delivery_id'] = $db->query("select * from delivery_times")->fetch()->delivery_id;
+                $data['level_id'] = $login_seller_level;
+                $data['language_id'] = $login_seller_language;
+                $data['proposal_status'] = "draft";
+                $data['direct_order'] = $direct_order;
+
+                $insert_proposal = $db->insert("proposals", $data);
+
+                if ($insert_proposal) {
+
+                    $proposal_id = $db->lastInsertId();
+
+                    $db->insert("instant_deliveries", ["proposal_id" => $proposal_id]);
+                    $updat_membership_stats = $db->query("update sellers  set no_of_gigs = no_of_gigs - 1 where seller_id = $row_sellers->seller_id");
+
+                    if ($videoPlugin == 1) {
+                        $cat_id = $input->post("proposal_cat_id");
+                        $child_id = $input->post("proposal_child_id");
+                        include("$dir/plugins/videoPlugin/proposals/checkVideo.php");
+                    } else {
+                        $redirect = "instant_delivery";
+                    }
+
+                    insertPackages($proposal_id);
+
+                    echo "<script>
+        swal({
+          type: 'success',
+          text: 'Details Saved.',
+          timer: 2000,
+          onOpen: function(){
+            swal.showLoading()
+          }
+        }).then(function(){
+          window.open('edit_proposal?proposal_id=$proposal_id&$redirect','_self')
+        });
+        </script>";
+                } else {
+                    echo $insert_proposal;
+                    echo '<script>alert("NO NOT DONE")</script>';
+                }
+            }
+        }
+    } else {
+        echo "<script>alert('Please upgrade you membership plan')</script>";
+    }
+}
+
+?>
+<script>
+    $(function() {
+        $('#direct_order').popover('show')
+
+        $("#direct_order").on('change', function() {
+            if ($("#direct_order").is(":checked"))
+                $('#direct_order').popover('show')
+            else
+                $('#direct_order').popover('hide')
+        })
+    });
+</script>
 <form action="#" method="post" class="proposal-form">
     <!--- form Starts -->
     <div class="row">
         <div class="col-xs-12">
             <div class="float-right switch-box">
                 <span class="text"><?= $lang['edit_proposal']['direct_order']['enable']; ?></span>
-                <label class="switch">
-                    <input type="checkbox" name="direct_order" id="direct_order" value="1" checked />
+                <label class="switch" id="switchOrder">
+                    <input type="checkbox" name="direct_order" id="direct_order" value="1" checked data-toggle="popover" data-placement="right" data-trigger="manual" data-offset="0 72px" title="Information" data-content="when its off Buyer send you message only not Buy directly" />
                     <span class="slider instant-slider direct_order"></span>
                 </label>
             </div>
@@ -173,6 +300,8 @@ while ($row_delivery_times = $get_delivery_times->fetch()) {
         <div class="col-md-3"><?= $lang['label']['tags']; ?></div>
         <div class="col-md-9">
             <input type="text" name="proposal_tags" class="form-control" data-role="tagsinput">
+            <small>Press enter to add your own tags after adding word.</small>
+            <br /><small>Enter at leaset 2 characters to get suggestions.</small>
             <small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_tags']); ?></small>
         </div>
     </div>
@@ -195,121 +324,3 @@ while ($row_delivery_times = $get_delivery_times->fetch()) {
     //     return true;
     // });
 </script>
-<?php
-
-function insertPackages($proposal_id)
-{
-    global $db;
-    $insertPackage1 = $db->insert("proposal_packages", array("proposal_id" => $proposal_id, "package_name" => 'Basic', "price" => 5));
-    $insertPackage2 = $db->insert("proposal_packages", array("proposal_id" => $proposal_id, "package_name" => 'Standard', "price" => 10));
-    $insertPackage3 = $db->insert("proposal_packages", array("proposal_id" => $proposal_id, "package_name" => 'Advance', "price" => 15));
-    if ($insertPackage3) {
-        return true;
-    }
-}
-
-include("sanitize_url.php");
-
-if (isset($_POST['submit'])) {
-    if ($row_sellers->no_of_gigs > 0) {
-        $rules = array(
-            "proposal_title" => "required",
-            "proposal_cat_id" => "required",
-            "proposal_child_id" => "required",
-            "proposal_tags" => "required",
-        );
-
-        $messages = array(
-            "proposal_cat_id" => "you must need to select a category",
-            "proposal_child_id" => "you must need to select a child category",
-            "proposal_enable_referrals" => "you must need to enable or disable proposal referrals.",
-            "proposal_img1" => "Proposal Image 1 Is Required.", "direct_order" => "Please make a order type choice"
-        );
-        $val = new Validator($_POST, $rules, $messages);
-        if ($val->run() == false) {
-            Flash::add("form_errors", $val->get_all_errors());
-            Flash::add("form_data", $_POST);
-            echo "<script> window.open('create_proposal','_self');</script>";
-        } else {
-            $proposal_title = $input->post('proposal_title');
-
-
-            $sanitize_url = proposalUrl($proposal_title);
-            $select_proposals = $db->select("proposals", array("proposal_seller_id" => $login_seller_id, "proposal_url" => $sanitize_url));
-            $count_proposals = $select_proposals->rowCount();
-            if ($count_proposals == 1) {
-                echo "<script>
-      swal({
-      type: 'warning',
-      text: 'Opps! Your Already Made A Proposal With Same Title Try Another.',
-      })</script>";
-            } else {
-                $proposal_referral_code = mt_rand();
-                $get_general_settings = $db->select("general_settings");
-                $row_general_settings = $get_general_settings->fetch();
-                $proposal_email = $row_general_settings->proposal_email;
-                $site_email_address = $row_general_settings->site_email_address;
-                $site_logo = $row_general_settings->site_logo;
-
-                $data = $input->post();
-                unset($data['submit']);
-                $data['proposal_url'] = $sanitize_url;
-                $data['proposal_seller_id'] = $login_seller_id;
-                $data['proposal_featured'] = "no";
-                if ($enable_referrals == "no") {
-                    $data['proposal_enable_referrals'] = "no";
-                }
-                if (isset($_POST['direct_order'])) {
-                    $direct_order = 2;
-                } else {
-                    $direct_order = 1;
-                }
-                $data['proposal_price'] = 0;
-                $data['delivery_id'] = $db->query("select * from delivery_times")->fetch()->delivery_id;
-                $data['level_id'] = $login_seller_level;
-                $data['language_id'] = $login_seller_language;
-                $data['proposal_status'] = "draft";
-                $data['direct_order'] = $direct_order;
-                $insert_proposal = $db->insert("proposals", $data);
-
-                if ($insert_proposal) {
-
-                    $proposal_id = $db->lastInsertId();
-
-                    $db->insert("instant_deliveries", ["proposal_id" => $proposal_id]);
-                    $updat_membership_stats = $db->query("update sellers  set no_of_gigs = no_of_gigs - 1 where seller_id = $row_sellers->seller_id");
-
-                    if ($videoPlugin == 1) {
-                        $cat_id = $input->post("proposal_cat_id");
-                        $child_id = $input->post("proposal_child_id");
-                        include("$dir/plugins/videoPlugin/proposals/checkVideo.php");
-                    } else {
-                        $redirect = "instant_delivery";
-                    }
-
-                    insertPackages($proposal_id);
-
-                    echo "<script>
-        swal({
-          type: 'success',
-          text: 'Details Saved.',
-          timer: 2000,
-          onOpen: function(){
-            swal.showLoading()
-          }
-        }).then(function(){
-          window.open('edit_proposal?proposal_id=$proposal_id&$redirect','_self')
-        });
-        </script>";
-                } else {
-                    echo $insert_proposal;
-                    echo '<script>alert("NO NOT DONE")</script>';
-                }
-            }
-        }
-    } else {
-        echo "<script>alert('Please upgrade you membership plan')</script>";
-    }
-}
-
-?>

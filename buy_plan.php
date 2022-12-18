@@ -49,7 +49,6 @@ if ($paymentGateway == 1) {
     } else {
         $enable_2checkout = "no";
     }
-
 } else {
     $enable_2checkout = "no";
 }
@@ -78,7 +77,7 @@ if (isset($_GET['pid'])) {
         $proposal_title = $row_plan->plan_name;
         $sub_total = $row_plan->plan_price_month;
 
-        ?>
+?>
         <!DOCTYPE html>
 
         <html lang="en" class="ui-toolkit">
@@ -107,419 +106,401 @@ if (isset($_GET['pid'])) {
                 <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
             <?php } ?>
         </head>
-        <body class="is-responsive">
-        <?php
-        require_once("includes/header.php");
 
-        if ($seller_verification != "ok") {
-            echo "
+        <body class="is-responsive">
+            <?php
+            require_once("includes/header.php");
+
+            if ($seller_verification != "ok") {
+                echo "
                 <div class='alert alert-danger rounded-0 mt-0 text-center'>
                 Please confirm your email to use this feature.
                 </div>";
-        } else {
+            } else {
 
-            $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_settings->site_logo);
+                $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_settings->site_logo);
 
-            $coupon_usage = "no";
-            $coupon_type = "";
+                $coupon_usage = "no";
+                $coupon_type = "";
 
 
             ?>
-            <div class="container mt-5 mb-5">
-                <div class="row">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <?php if ($current_balance >= $sub_total) { ?>
+                <div class="container mt-5 mb-5">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <?php if ($current_balance >= $sub_total) { ?>
+                                    <div class="col-md-12 mb-3">
+                                        <div class="card payment-options">
+                                            <div class="card-header">
+                                                <h5><i class="fa fa-dollar"></i> Available Shopping Balance</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-1">
+                                                        <input id="shopping-balance" type="radio" name="method" class="form-control radio-input" checked>
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <p class="lead mt-2">
+                                                            Personal Balance - <?= $login_seller_user_name; ?>
+                                                            <span class="text-success font-weight-bold"><?= showPrice($current_balance); ?></span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
                                 <div class="col-md-12 mb-3">
                                     <div class="card payment-options">
                                         <div class="card-header">
-                                            <h5><i class="fa fa-dollar"></i> Available Shopping Balance</h5>
+                                            <h5><i class="fa fa-credit-card"></i> Payment Options</h5>
                                         </div>
                                         <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-1">
-                                                    <input id="shopping-balance" type="radio" name="method"
-                                                           class="form-control radio-input" checked>
-                                                </div>
-                                                <div class="col-11">
-                                                    <p class="lead mt-2">
-                                                        Personal Balance - <?= $login_seller_user_name; ?>
-                                                        <span class="text-success font-weight-bold"><?= showPrice($current_balance); ?></span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php } ?>
-                            <div class="col-md-12 mb-3">
-                                <div class="card payment-options">
-                                    <div class="card-header">
-                                        <h5><i class="fa fa-credit-card"></i> Payment Options</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <?php if ($enable_paypal == "yes") { ?>
-                                            <div class="row">
-                                                <div class="col-1">
-                                                    <input id="paypal" type="radio" name="method"
-                                                           class="form-control radio-input"
-                                                        <?php
-                                                        if ($current_balance < $sub_total) {
-                                                            echo "checked";
-                                                        }
-                                                        ?>>
-                                                </div>
-                                                <div class="col-11">
-                                                    <img src="images/paypal.png" height="50" class="ml-2 width-xs-100">
-                                                </div>
-                                            </div>
-                                        <?php } ?>
-                                        <?php if ($enable_stripe == "yes") { ?>
                                             <?php if ($enable_paypal == "yes") { ?>
-                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-1">
+                                                        <input id="paypal" type="radio" name="method" class="form-control radio-input" <?php
+                                                                                                                                        if ($current_balance < $sub_total) {
+                                                                                                                                            echo "checked";
+                                                                                                                                        }
+                                                                                                                                        ?>>
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <img src="images/paypal.png" height="50" class="ml-2 width-xs-100">
+                                                    </div>
+                                                </div>
                                             <?php } ?>
-                                            <div class="row">
-                                                <div class="col-1">
-                                                    <input id="credit-card" type="radio" name="method"
-                                                           class="form-control radio-input"
-                                                        <?php
-                                                        if ($current_balance < $sub_total) {
-                                                            if ($enable_paypal == "no") {
-                                                                echo "checked";
-                                                            }
-                                                        }
-                                                        ?>>
-                                                </div>
-                                                <div class="col-11">
-                                                    <img src="images/credit_cards.jpg" height="50"
-                                                         class="ml-2 width-xs-100">
-                                                </div>
-                                            </div>
-                                        <?php } ?>
-                                        <?php if ($enable_tazapay == "yes") { ?>
                                             <?php if ($enable_stripe == "yes") { ?>
-                                                <hr>
+                                                <?php if ($enable_paypal == "yes") { ?>
+                                                    <hr>
+                                                <?php } ?>
+                                                <div class="row">
+                                                    <div class="col-1">
+                                                        <input id="credit-card" type="radio" name="method" class="form-control radio-input" <?php
+                                                                                                                                            if ($current_balance < $sub_total) {
+                                                                                                                                                if ($enable_paypal == "no") {
+                                                                                                                                                    echo "checked";
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                            ?>>
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <img src="images/credit_cards.jpg" height="50" class="ml-2 width-xs-100">
+                                                    </div>
+                                                </div>
                                             <?php } ?>
-                                            <div class="row">
-                                                <div class="col-1">
-                                                    <input id="taza-pay" type="radio" name="method"
-                                                           class="form-control radio-input"
-                                                        <?php
-                                                        if ($current_balance < $sub_total) {
-                                                            if ($enable_paypal == "no") {
-                                                                echo "checked";
-                                                            }
-                                                        }
-                                                        ?>>
+                                            <?php if ($enable_tazapay == "yes") { ?>
+                                                <?php if ($enable_stripe == "yes") { ?>
+                                                    <hr>
+                                                <?php } ?>
+                                                <div class="row">
+                                                    <div class="col-1">
+                                                        <input id="taza-pay" type="radio" name="method" class="form-control radio-input" <?php
+                                                                                                                                            if ($current_balance < $sub_total) {
+                                                                                                                                                if ($enable_paypal == "no") {
+                                                                                                                                                    echo "checked";
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                            ?>>
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <img src="images/tazapay.svg" height="50" class="ml-2 width-xs-100">
+                                                    </div>
                                                 </div>
-                                                <div class="col-11">
-                                                    <img src="images/tazapay.svg" height="50"
-                                                         class="ml-2 width-xs-100">
-                                                </div>
-                                            </div>
-                                        <?php } ?>
-                                        <?php
-                                        if ($enable_2checkout == "yes") {
-                                            require_once("plugins/paymentGateway/paymentMethod1.php");
-                                        }
-                                        ?>
+                                            <?php } ?>
+                                            <?php
+                                            if ($enable_2checkout == "yes") {
+                                                require_once("plugins/paymentGateway/paymentMethod1.php");
+                                            }
+                                            ?>
 
-                                        <?php if ($enable_mercadopago == "1") { ?>
-                                            <?php if ($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes") { ?>
-                                                <hr>
+                                            <?php if ($enable_mercadopago == "1") { ?>
+                                                <?php if ($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes") { ?>
+                                                    <hr>
+                                                <?php } ?>
+                                                <div class="row">
+                                                    <div class="col-1">
+                                                        <input id="mercadopago" type="radio" name="method" class="form-control radio-input" <?php
+                                                                                                                                            if ($current_balance < $sub_total) {
+                                                                                                                                                if ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1") {
+                                                                                                                                                    echo "checked";
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                            ?>>
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <img src="images/mercadopago.png" height="50" class="ml-2 width-xs-100">
+                                                    </div>
+                                                </div>
                                             <?php } ?>
-                                            <div class="row">
-                                                <div class="col-1">
-                                                    <input id="mercadopago" type="radio" name="method"
-                                                           class="form-control radio-input"
-                                                        <?php
-                                                        if ($current_balance < $sub_total) {
-                                                            if ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1") {
-                                                                echo "checked";
-                                                            }
-                                                        }
-                                                        ?>>
-                                                </div>
-                                                <div class="col-11">
-                                                    <img src="images/mercadopago.png" height="50"
-                                                         class="ml-2 width-xs-100">
-                                                </div>
-                                            </div>
-                                        <?php } ?>
 
-                                        <?php if ($enable_coinpayments == "yes") { ?>
-                                            <?php if ($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1") { ?>
-                                                <hr>
+                                            <?php if ($enable_coinpayments == "yes") { ?>
+                                                <?php if ($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1") { ?>
+                                                    <hr>
+                                                <?php } ?>
+                                                <div class="row">
+                                                    <div class="col-1">
+                                                        <input id="coinpayments" type="radio" name="method" class="form-control radio-input" <?php
+                                                                                                                                                if ($current_balance < $sub_total) {
+                                                                                                                                                    if ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0") {
+                                                                                                                                                        echo "checked";
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                                ?>>
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <img src="images/coinpayments.png" height="50" class="ml-2 width-xs-100">
+                                                    </div>
+                                                </div>
                                             <?php } ?>
-                                            <div class="row">
-                                                <div class="col-1">
-                                                    <input id="coinpayments" type="radio" name="method"
-                                                           class="form-control radio-input"
-                                                        <?php
-                                                        if ($current_balance < $sub_total) {
-                                                            if ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0") {
-                                                                echo "checked";
-                                                            }
-                                                        }
-                                                        ?>>
-                                                </div>
-                                                <div class="col-11">
-                                                    <img src="images/coinpayments.png" height="50"
-                                                         class="ml-2 width-xs-100">
-                                                </div>
-                                            </div>
-                                        <?php } ?>
 
-                                        <?php if ($enable_paystack == "yes") { ?>
-                                            <?php if ($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1" or $enable_coinpayments == "yes") { ?>
-                                                <hr>
+                                            <?php if ($enable_paystack == "yes") { ?>
+                                                <?php if ($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1" or $enable_coinpayments == "yes") { ?>
+                                                    <hr>
+                                                <?php } ?>
+                                                <div class="row">
+                                                    <div class="col-1">
+                                                        <input id="paystack" type="radio" name="method" class="form-control radio-input" <?php
+                                                                                                                                            if ($current_balance < $sub_total) {
+                                                                                                                                                if ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no") {
+                                                                                                                                                    echo "checked";
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                            ?>>
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <img src="images/paystack.png" height="50" class="ml-2 width-xs-100">
+                                                    </div>
+                                                </div>
                                             <?php } ?>
-                                            <div class="row">
-                                                <div class="col-1">
-                                                    <input id="paystack" type="radio" name="method"
-                                                           class="form-control radio-input"
-                                                        <?php
-                                                        if ($current_balance < $sub_total) {
-                                                            if ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no") {
-                                                                echo "checked";
-                                                            }
-                                                        }
-                                                        ?>>
-                                                </div>
-                                                <div class="col-11">
-                                                    <img src="images/paystack.png" height="50"
-                                                         class="ml-2 width-xs-100">
-                                                </div>
-                                            </div>
-                                        <?php } ?>
 
-                                        <?php if ($enable_dusupay == "yes") { ?>
-                                            <?php if ($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1" or $enable_paystack == "yes" or $enable_coinpayments == "yes") { ?>
-                                                <hr>
+                                            <?php if ($enable_dusupay == "yes") { ?>
+                                                <?php if ($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1" or $enable_paystack == "yes" or $enable_coinpayments == "yes") { ?>
+                                                    <hr>
+                                                <?php } ?>
+                                                <div class="row">
+                                                    <div class="col-1">
+                                                        <input id="mobile-money" type="radio" name="method" class="form-control radio-input" <?php
+                                                                                                                                                if ($current_balance < $sub_total) {
+                                                                                                                                                    if ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "no") {
+                                                                                                                                                        echo "checked";
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                                ?>>
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <img src="images/dusupay.png" height="50" class="ml-2 width-xs-100">
+                                                    </div>
+                                                </div>
                                             <?php } ?>
-                                            <div class="row">
-                                                <div class="col-1">
-                                                    <input id="mobile-money" type="radio" name="method"
-                                                           class="form-control radio-input"
-                                                        <?php
-                                                        if ($current_balance < $sub_total) {
-                                                            if ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "no") {
-                                                                echo "checked";
-                                                            }
-                                                        }
-                                                        ?>>
-                                                </div>
-                                                <div class="col-11">
-                                                    <img src="images/dusupay.png" height="50" class="ml-2 width-xs-100">
-                                                </div>
-                                            </div>
-                                        <?php } ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!--        order summary-->
-                    <div class="col-md-5">
-                        <div class="card checkout-details">
-                            <div class="card-header">
-                                <h5><i class="fa fa-file-text-o"></i> Order Summary </h5>
-                            </div>
-                            <div class="card-body">
-
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-<!--                                        <img src="--><?//= $proposal_img1; ?><!--" class="img-fluid">-->
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h5><?= $proposal_title; ?></h5>
-                                    </div>
+                        <!--        order summary-->
+                        <div class="col-md-5">
+                            <div class="card checkout-details">
+                                <div class="card-header">
+                                    <h5><i class="fa fa-file-text-o"></i> Order Summary </h5>
                                 </div>
+                                <div class="card-body">
 
-                                <hr>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <!--                                        <img src="--><? //= $proposal_img1;
+                                                                                                        ?>
+                                            <!--" class="img-fluid">-->
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h5><?= $proposal_title; ?></h5>
+                                        </div>
+                                    </div>
 
-                                <h6>Membership Plan Price: <span class="float-right"><?= showPrice($sub_total); ?> </span>
-                                </h6>
+                                    <hr>
 
-                                <h6>Proposal's Quantity: <span class="float-right"><?= $proposal_qty; ?></span></h6>
+                                    <h6>Membership Plan Price: <span class="float-right"><?= showPrice($sub_total); ?> </span>
+                                    </h6>
 
-                                <h5 class="font-weight-bold">
-                                    Proposal's Total: <span
-                                            class="float-right total-price"><?= showPrice($sub_total); ?></span>
-                                </h5>
-                                <hr>
-                                <?php include("checkoutPayMethodstazapay.php"); ?>
+                                    <h6>Proposal's Quantity: <span class="float-right"><?= $proposal_qty; ?></span></h6>
+
+                                    <h5 class="font-weight-bold">
+                                        Proposal's Total: <span class="float-right total-price"><?= showPrice($sub_total); ?></span>
+                                    </h5>
+                                    <hr>
+                                    <?php include("checkoutPayMethodstazapay.php"); ?>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <script>
-                $(document).ready(function () {
-                    <?php if($current_balance >= $sub_total){ ?>
-                    $('.total-price').html('<?= showPrice($sub_total); ?>');
-                    $('.processing-fee').hide();
-                    <?php }else{ ?>
-                    $('.total-price').html('<?= showPrice($total); ?>');
-                    $('.processing-fee').show();
-                    <?php } ?>
-                    <?php if($current_balance >= $sub_total){ ?>
-                    $('#mercadopago-form').hide();
-                    $('#mobile-money-form').hide();
-                    $('#coinpayments-form').hide();
-                    $('#paypal-form').hide();
-                    $('#paystack-form').hide();
-                    $('#credit-card-form').hide();
-                    $('#2checkout-form').hide();
-                    <?php }else{ ?>
-                    $('#shopping-balance-form').hide();
-                    <?php } ?>
-                    <?php if($current_balance < $sub_total){ ?>
-                    <?php if($enable_paypal == "yes"){ ?>
-                    <?php }else{ ?>
-                    $('#paypal-form').hide();
-                    <?php } ?>
-                    <?php } ?>
+                <script>
+                    $(document).ready(function() {
+                        <?php if ($current_balance >= $sub_total) { ?>
+                            $('.total-price').html('<?= showPrice($sub_total); ?>');
+                            $('.processing-fee').hide();
+                        <?php } else { ?>
+                            $('.total-price').html('<?= showPrice($total); ?>');
+                            $('.processing-fee').show();
+                        <?php } ?>
+                        <?php if ($current_balance >= $sub_total) { ?>
+                            $('#mercadopago-form').hide();
+                            $('#mobile-money-form').hide();
+                            $('#coinpayments-form').hide();
+                            $('#paypal-form').hide();
+                            $('#paystack-form').hide();
+                            $('#credit-card-form').hide();
+                            $('#2checkout-form').hide();
+                        <?php } else { ?>
+                            $('#shopping-balance-form').hide();
+                        <?php } ?>
+                        <?php if ($current_balance < $sub_total) { ?>
+                            <?php if ($enable_paypal == "yes") { ?>
+                            <?php } else { ?>
+                                $('#paypal-form').hide();
+                            <?php } ?>
+                        <?php } ?>
 
-                    <?php if($current_balance < $sub_total){ ?>
-                    <?php if($enable_paypal == "yes"){ ?>
-                    $('#credit-card-form').hide();
-                    $('#2checkout-form').hide();
-                    $('#mobile-money-form').hide();
-                    $('#mercadopago-form').hide();
-                    $('#coinpayments-form').hide();
-                    $('#paystack-form').hide();
-                    <?php }elseif($enable_paypal == "no" and $enable_stripe == "yes"){ ?>
-                    $('#2checkout-form').hide();
-                    $('#coinpayments-form').hide();
-                    $('#mercadopago-form').hide();
-                    $('#mobile-money-form').hide();
-                    $('#paystack-form').hide();
-                    <?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "yes") { ?>
-                    $('#coinpayments-form').hide();
-                    $('#mercadopago-form').hide();
-                    $('#mobile-money-form').hide();
-                    $('#paystack-form').hide();
-                    <?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1") { ?>
-                    $('#coinpayments-form').hide();
-                    $('#mobile-money-form').hide();
-                    $('#paystack-form').hide();
-                    <?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "yes") { ?>
-                    $('#mobile-money-form').hide();
-                    $('#paystack-form').hide();
-                    <?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "yes") { ?>
-                    $('#mobile-money-form').hide();
-                    <?php } ?>
-                    <?php } ?>
+                        <?php if ($current_balance < $sub_total) { ?>
+                            <?php if ($enable_paypal == "yes") { ?>
+                                $('#credit-card-form').hide();
+                                $('#2checkout-form').hide();
+                                $('#mobile-money-form').hide();
+                                $('#mercadopago-form').hide();
+                                $('#coinpayments-form').hide();
+                                $('#paystack-form').hide();
+                            <?php } elseif ($enable_paypal == "no" and $enable_stripe == "yes") { ?>
+                                $('#2checkout-form').hide();
+                                $('#coinpayments-form').hide();
+                                $('#mercadopago-form').hide();
+                                $('#mobile-money-form').hide();
+                                $('#paystack-form').hide();
+                            <?php } elseif ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "yes") { ?>
+                                $('#coinpayments-form').hide();
+                                $('#mercadopago-form').hide();
+                                $('#mobile-money-form').hide();
+                                $('#paystack-form').hide();
+                            <?php } elseif ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1") { ?>
+                                $('#coinpayments-form').hide();
+                                $('#mobile-money-form').hide();
+                                $('#paystack-form').hide();
+                            <?php } elseif ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "yes") { ?>
+                                $('#mobile-money-form').hide();
+                                $('#paystack-form').hide();
+                            <?php } elseif ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "yes") { ?>
+                                $('#mobile-money-form').hide();
+                            <?php } ?>
+                        <?php } ?>
 
-                    $('#shopping-balance').click(function () {
-                        $('.total-price').html('<?= showPrice($sub_total); ?>');
-                        $('.processing-fee').hide();
-                        $('#mobile-money-form').hide();
-                        $('#credit-card-form').hide();
-                        $('#2checkout-form').hide();
-                        $('#coinpayments-form').hide();
-                        $('#paystack-form').hide();
-                        $('#mercadopago-form').hide();
-                        $('#paypal-form').hide();
-                        $('#shopping-balance-form').show();
+                        $('#shopping-balance').click(function() {
+                            $('.total-price').html('<?= showPrice($sub_total); ?>');
+                            $('.processing-fee').hide();
+                            $('#mobile-money-form').hide();
+                            $('#credit-card-form').hide();
+                            $('#2checkout-form').hide();
+                            $('#coinpayments-form').hide();
+                            $('#paystack-form').hide();
+                            $('#mercadopago-form').hide();
+                            $('#paypal-form').hide();
+                            $('#shopping-balance-form').show();
+                        });
+                        $('#paypal').click(function() {
+                            $('.total-price').html('<?= showPrice($total); ?>');
+                            $('.processing-fee').show();
+                            $('#mobile-money-form').hide();
+                            $('#credit-card-form').hide();
+                            $('#2checkout-form').hide();
+                            $('#paypal-form').show();
+                            $('#shopping-balance-form').hide();
+                            $('#coinpayments-form').hide();
+                            $('#paystack-form').hide();
+                            $('#mercadopago-form').hide();
+                        });
+                        $('#credit-card').click(function() {
+                            $('.total-price').html('<?= showPrice($total); ?>');
+                            $('.processing-fee').show();
+                            $('#mobile-money-form').hide();
+                            $('#credit-card-form').show();
+                            $('#2checkout-form').hide();
+                            $('#paypal-form').hide();
+                            $('#shopping-balance-form').hide();
+                            $('#coinpayments-form').hide();
+                            $('#paystack-form').hide();
+                            $('#mercadopago-form').hide();
+                        });
+                        $('#2checkout').click(function() {
+                            $('.total-price').html('<?= showPrice($total); ?>');
+                            $('.processing-fee').show();
+                            $('#mobile-money-form').hide();
+                            $('#credit-card-form').hide();
+                            $('#2checkout-form').show();
+                            $('#paypal-form').hide();
+                            $('#shopping-balance-form').hide();
+                            $('#coinpayments-form').hide();
+                            $('#paystack-form').hide();
+                            $('#mercadopago-form').hide();
+                        });
+                        $('#mobile-money').click(function() {
+                            $('.total-price').html('<?= showPrice($total); ?>');
+                            $('.processing-fee').show();
+                            $('#mobile-money-form').show();
+                            $('#credit-card-form').hide();
+                            $('#2checkout-form').hide();
+                            $('#paypal-form').hide();
+                            $('#shopping-balance-form').hide();
+                            $('#coinpayments-form').hide();
+                            $('#paystack-form').hide();
+                            $('#mercadopago-form').hide();
+                        });
+                        $('#coinpayments').click(function() {
+                            $('.total-price').html('<?= showPrice($total); ?>');
+                            $('.processing-fee').show();
+                            $('#2checkout-form').hide();
+                            $('#mercadopago-form').hide();
+                            $('#mobile-money-form').hide();
+                            $('#credit-card-form').hide();
+                            $('#coinpayments-form').show();
+                            $('#paystack-form').hide();
+                            $('#paypal-form').hide();
+                            $('#shopping-balance-form').hide();
+                        });
+                        $('#paystack').click(function() {
+                            $('.total-price').html('<?= showPrice($total); ?>');
+                            $('.processing-fee').show();
+                            $('#mercadopago-form').hide();
+                            $('#mobile-money-form').hide();
+                            $('#credit-card-form').hide();
+                            $('#2checkout-form').hide();
+                            $('#coinpayments-form').hide();
+                            $('#paystack-form').show();
+                            $('#paypal-form').hide();
+                            $('#shopping-balance-form').hide();
+                        });
+                        $('#mercadopago').click(function() {
+                            $('.total-price').html('<?= showPrice($total); ?>');
+                            $('.processing-fee').show();
+                            $('#mercadopago-form').show();
+                            $('#mobile-money-form').hide();
+                            $('#credit-card-form').hide();
+                            $('#2checkout-form').hide();
+                            $('#coinpayments-form').hide();
+                            $('#paystack-form').hide();
+                            $('#paypal-form').hide();
+                            $('#shopping-balance-form').hide();
+                        });
                     });
-                    $('#paypal').click(function () {
-                        $('.total-price').html('<?= showPrice($total); ?>');
-                        $('.processing-fee').show();
-                        $('#mobile-money-form').hide();
-                        $('#credit-card-form').hide();
-                        $('#2checkout-form').hide();
-                        $('#paypal-form').show();
-                        $('#shopping-balance-form').hide();
-                        $('#coinpayments-form').hide();
-                        $('#paystack-form').hide();
-                        $('#mercadopago-form').hide();
-                    });
-                    $('#credit-card').click(function () {
-                        $('.total-price').html('<?= showPrice($total); ?>');
-                        $('.processing-fee').show();
-                        $('#mobile-money-form').hide();
-                        $('#credit-card-form').show();
-                        $('#2checkout-form').hide();
-                        $('#paypal-form').hide();
-                        $('#shopping-balance-form').hide();
-                        $('#coinpayments-form').hide();
-                        $('#paystack-form').hide();
-                        $('#mercadopago-form').hide();
-                    });
-                    $('#2checkout').click(function () {
-                        $('.total-price').html('<?= showPrice($total); ?>');
-                        $('.processing-fee').show();
-                        $('#mobile-money-form').hide();
-                        $('#credit-card-form').hide();
-                        $('#2checkout-form').show();
-                        $('#paypal-form').hide();
-                        $('#shopping-balance-form').hide();
-                        $('#coinpayments-form').hide();
-                        $('#paystack-form').hide();
-                        $('#mercadopago-form').hide();
-                    });
-                    $('#mobile-money').click(function () {
-                        $('.total-price').html('<?= showPrice($total); ?>');
-                        $('.processing-fee').show();
-                        $('#mobile-money-form').show();
-                        $('#credit-card-form').hide();
-                        $('#2checkout-form').hide();
-                        $('#paypal-form').hide();
-                        $('#shopping-balance-form').hide();
-                        $('#coinpayments-form').hide();
-                        $('#paystack-form').hide();
-                        $('#mercadopago-form').hide();
-                    });
-                    $('#coinpayments').click(function () {
-                        $('.total-price').html('<?= showPrice($total); ?>');
-                        $('.processing-fee').show();
-                        $('#2checkout-form').hide();
-                        $('#mercadopago-form').hide();
-                        $('#mobile-money-form').hide();
-                        $('#credit-card-form').hide();
-                        $('#coinpayments-form').show();
-                        $('#paystack-form').hide();
-                        $('#paypal-form').hide();
-                        $('#shopping-balance-form').hide();
-                    });
-                    $('#paystack').click(function () {
-                        $('.total-price').html('<?= showPrice($total); ?>');
-                        $('.processing-fee').show();
-                        $('#mercadopago-form').hide();
-                        $('#mobile-money-form').hide();
-                        $('#credit-card-form').hide();
-                        $('#2checkout-form').hide();
-                        $('#coinpayments-form').hide();
-                        $('#paystack-form').show();
-                        $('#paypal-form').hide();
-                        $('#shopping-balance-form').hide();
-                    });
-                    $('#mercadopago').click(function () {
-                        $('.total-price').html('<?= showPrice($total); ?>');
-                        $('.processing-fee').show();
-                        $('#mercadopago-form').show();
-                        $('#mobile-money-form').hide();
-                        $('#credit-card-form').hide();
-                        $('#2checkout-form').hide();
-                        $('#coinpayments-form').hide();
-                        $('#paystack-form').hide();
-                        $('#paypal-form').hide();
-                        $('#shopping-balance-form').hide();
-                    });
-                });
-            </script>
-        <?php } ?>
-        <?php require_once("includes/footer.php"); ?>
+                </script>
+            <?php } ?>
+            <?php require_once("includes/footer.php"); ?>
 
-        <script src="js/paypal.js" id="paypal-js" data-base-url="<?= $site_url; ?>"
-                data-payment-type="proposal"></script>
+            <script src="js/paypal.js" id="paypal-js" data-base-url="<?= $site_url; ?>" data-payment-type="proposal"></script>
 
         </body>
+
         </html>
-        <?php
+<?php
     }
 }
