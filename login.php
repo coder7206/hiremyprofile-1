@@ -4,7 +4,7 @@ session_start();
 require_once("includes/db.php");
 require_once("social-config.php");
 
-if(isset($_SESSION['seller_user_name'])){
+if (isset($_SESSION['seller_user_name'])) {
 	echo "<script> window.open('index','_self'); </script>";
 }
 
@@ -18,7 +18,7 @@ if(isset($_SESSION['seller_user_name'])){
 	<title><?= $site_name; ?> - <?= $lang['titles']['login']; ?></title>
 
 	<meta charset="utf-8">
-	
+
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="Login or register for an account on <?= $site_name; ?>, a fast growing freelance marketplace, where sellers provide their services at extremely affordable prices.">
 	<meta name="keywords" content="<?= $site_keywords; ?>">
@@ -35,160 +35,156 @@ if(isset($_SESSION['seller_user_name'])){
 	<script type="text/javascript" src="js/ie.js"></script>
 	<script type="text/javascript" src="js/sweat_alert.js"></script>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
-	
-	<?php if(!empty($site_favicon)){ ?>
-   		<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
+
+	<?php if (!empty($site_favicon)) { ?>
+		<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
 	<?php } ?>
 
 </head>
 
 <body class="is-responsive">
 
-<?php require_once("includes/header.php"); ?>
+	<?php require_once("includes/header.php"); ?>
 
-<div class="container mt-5">
+	<div class="container-fluid">
 
-	<div class="row justify-content-center">
+		<div class="row justify-content-center">
 
-		<div class="col-lg-5 col-md-7">
+			<div class="col-lg-5 col-md-7">
 
-			<h2 class="text-center"><?= str_replace('{site_name}',$site_name,$lang['login']['title']); ?></h2>
+				<h2 class="text-center"><?= str_replace('{site_name}', $site_name, $lang['login']['title']); ?></h2>
 
-			<div class="box-login mt-4">
+				<div class="box-login mt-4">
 
-				<h2 class="text-center mb-3 mt-3"><i class="fa fa-unlock-alt" ></i></h2>
+					<h2 class="text-center mb-3 mt-3"><i class="fa fa-unlock-alt"></i></h2>
 
-				<?php 
+					<?php
+					$form_errors = Flash::render("login2_errors");
 
-				$form_errors = Flash::render("login2_errors");
+					if (is_array($form_errors)) {
+					?>
 
-				if(is_array($form_errors)){
+						<div class="alert alert-danger">
+							<!--- alert alert-danger Starts --->
 
-				?>
+							<ul class="list-unstyled mb-0">
+								<?php $i = 0;
+								foreach ($form_errors as $error) {
+									$i++; ?>
+									<li class="list-unstyled-item"><?= $i ?>. <?= ucfirst($error); ?></li>
+								<?php } ?>
+							</ul>
 
-				<div class="alert alert-danger"><!--- alert alert-danger Starts --->
+						</div>
+						<!--- alert alert-danger Ends --->
+					<?php } ?>
 
-				<ul class="list-unstyled mb-0">
-				<?php $i = 0; foreach ($form_errors as $error) { $i++; ?>
-				<li class="list-unstyled-item"><?= $i ?>. <?= ucfirst($error); ?></li>
-				<?php } ?>
-				</ul>
+					<?php if ($enable_social_login == "yes") { ?>
 
-				</div><!--- alert alert-danger Ends --->
-				<?php } ?>
+					<div class="text-center">
+						<?php if (!empty($fb_app_id) & !empty($fb_app_secret)) { ?>
+							<button class="btn facebook-btn social-btn" type="button" onclick="window.location = '<?= $fLoginURL ?>';"><span><i class="fa fa-facebook" aria-hidden="true"></i>
+								Sign in with Facebook</span> </button>
+						<?php } ?>
+						<?php if (!empty($g_client_id) & !empty($g_client_secret)) { ?>
+							<button class="btn google-btn social-btn" type="button" onclick="window.location = '<?= $gLoginURL ?>';"><span><i class="fa fa-google" aria-hidden="true"></i>
+								Sign in with Google+</span> </button>
+						<?php } ?>
+					</div>
+					<div class="text-center pt-2 pb-2"><?= $lang['modals']['login']['or']; ?></div>
 
-				<form action="" method="post">
+					<hr class="mb-0 mt-0">
 
-					<div class="form-group">
+					<div class="line mt-3"><span></span></div>
 
-						<input type="text" name="seller_user_name" class="form-control" placeholder="<?= $lang['placeholder']['username_or_email']; ?>" required>
-				
-	            </div>
+					<div class="clearfix"></div>
 
-	            <div class="form-group">
+					<?php } ?>
 
-					<input type="password" name="seller_pass" class="form-control" placeholder="<?= $lang['placeholder']['password']; ?>" required>
-				
-	            </div>
+					<form action="" method="post">
 
-	            <div class="form-group">
+						<div class="form-group">
 
-					<input type="submit" name="access" class="btn btn-success btn-block" value="<?= $lang['button']['login']; ?>" required>
-				
-	            </div>
+							<input type="text" name="seller_user_name" class="form-control" placeholder="<?= $lang['placeholder']['username_or_email']; ?>" required>
 
-				</form>
-				<?php if($enable_social_login == "yes"){ ?>
+						</div>
 
-				<div class="text-center pt-2 pb-2"><?= $lang['modals']['login']['or']; ?></div>
+						<div class="form-group">
 
-				<hr class="mb-0 mt-0">
+							<input type="password" name="seller_pass" class="form-control" placeholder="<?= $lang['placeholder']['password']; ?>" required>
 
-				<div class="line mt-3"><span></span></div>
+						</div>
 
-				<div class="text-center">
+						<div class="form-group">
+
+							<input type="submit" name="access" class="btn btn-success btn-block" value="<?= $lang['button']['login']; ?>" required>
+
+						</div>
+
+					</form>
+
+					<div class="text-center mt-3">
+
+						<a href="#" data-toggle="modal" data-target="#register-modal">
+
+							<i class="fa fa-user-plus"></i> <?= $lang['modals']['login']['not_registerd']; ?>
+
+						</a>
+
+						&nbsp; &nbsp; | &nbsp; &nbsp;
+
+						<a href="#" data-toggle="modal" data-target="#forgot-modal">
+
+							<i class="fa fa-meh-o"></i> <?= $lang['modals']['login']['forgot_password']; ?>
+
+						</a>
+
+					</div>
+
+				</div>
 
 
-				<?php if(!empty($fb_app_id) & !empty($fb_app_secret)){ ?>
-				<a href="#" onclick="window.location='<?= $fLoginURL ?>';" class="btn btn-primary text-white" >
-					<i class="fa fa-facebook"></i> FACEBOOK
-				</a>
-				<?php } ?>
-					
-				<?php if(!empty($g_client_id) & !empty($g_client_secret)){ ?>
-				<a href="#" onclick="window.location = '<?= $gLoginURL ?>';" class="btn btn-danger text-white">
-					<i class="fa fa-google"></i> GOOGLE
-				</a>
-				<?php } ?>
-				
-				</div>			
-
-				<div class="clearfix"></div>
-
-            <?php } ?>
-            
-				<div class="text-center mt-3">
-
-					<a href="#" data-toggle="modal" data-target="#register-modal">
-
-					<i class="fa fa-user-plus"></i> <?= $lang['modals']['login']['not_registerd']; ?>
-
-               </a>
-
-					&nbsp; &nbsp; | &nbsp; &nbsp;
-
-               <a href="#" data-toggle="modal" data-target="#forgot-modal">
-
-                  <i class="fa fa-meh-o"></i>	<?= $lang['modals']['login']['forgot_password']; ?>
-
-               </a>
-
-             </div>
-   
-            </div>
-
+			</div>
 
 		</div>
 
 	</div>
 
-</div>
-    
-<?php
-    
-   if(isset($_POST['access'])){
-	
-	$rules = array(
-	"seller_user_name" => "required",
-	"seller_pass" => "required");
-	$messages = array("seller_user_name" => "Username Is Required.","seller_pass" => "Password Is Required.");
-	$val = new Validator($_POST,$rules,$messages);
+	<?php
 
-	if($val->run() == false){
+	if (isset($_POST['access'])) {
 
-		Flash::add("login2_errors",$val->get_all_errors());
-		echo "<script>window.open('login','_self')</script>";
+		$rules = array(
+			"seller_user_name" => "required",
+			"seller_pass" => "required"
+		);
+		$messages = array("seller_user_name" => "Username Is Required.", "seller_pass" => "Password Is Required.");
+		$val = new Validator($_POST, $rules, $messages);
 
-	}else{
+		if ($val->run() == false) {
 
-		$seller_user_name = $input->post('seller_user_name');
-		$seller_pass = $input->post('seller_pass');
-		
-		// $select_seller = $db->query("select * from sellers where seller_user_name=:u_name OR seller_email=:u_email",array(":u_name"=>$seller_user_name,":u_email"=>$seller_user_name));
+			Flash::add("login2_errors", $val->get_all_errors());
+			echo "<script>window.open('login','_self')</script>";
+		} else {
 
-		$select_seller = $db->query("select * from sellers where binary seller_user_name like :u_name OR seller_email=:u_email",array(":u_name"=>$seller_user_name,":u_email"=>$seller_user_name));
+			$seller_user_name = $input->post('seller_user_name');
+			$seller_pass = $input->post('seller_pass');
 
-		$row_seller = $select_seller->fetch();
-		@$hashed_password = $row_seller->seller_pass;
-		@$seller_status = $row_seller->seller_status;
-		$decrypt_password = password_verify($seller_pass, $hashed_password);
-		
-		if($decrypt_password == 0){
-			
-		echo "
-				
+			// $select_seller = $db->query("select * from sellers where seller_user_name=:u_name OR seller_email=:u_email",array(":u_name"=>$seller_user_name,":u_email"=>$seller_user_name));
+
+			$select_seller = $db->query("select * from sellers where binary seller_user_name like :u_name OR seller_email=:u_email", array(":u_name" => $seller_user_name, ":u_email" => $seller_user_name));
+
+			$row_seller = $select_seller->fetch();
+			@$hashed_password = $row_seller->seller_pass;
+			@$seller_status = $row_seller->seller_status;
+			$decrypt_password = password_verify($seller_pass, $hashed_password);
+
+			if ($decrypt_password == 0) {
+
+				echo "
+
 		<script>
-	    
+
          swal({
            type: 'warning',
            html: $('<div>').text('{$lang['alert']['incorrect_login']}'),
@@ -197,15 +193,14 @@ if(isset($_SESSION['seller_user_name'])){
          })
 
 	   </script>";
-			
-		}else{
-			
-		if($seller_status == "block-ban"){
-				
-			echo "
-				
+			} else {
+
+				if ($seller_status == "block-ban") {
+
+					echo "
+
 			<script>
-	    
+
             swal({
               type: 'warning',
               html: $('<div>').text('{$lang['alert']['blocked']}'),
@@ -214,9 +209,8 @@ if(isset($_SESSION['seller_user_name'])){
             });
 
 	    	</script>";
-			
-		}elseif($seller_status == "deactivated"){
-			echo "
+				} elseif ($seller_status == "deactivated") {
+					echo "
 			<script>
 			swal({
 			  type: 'warning',
@@ -225,25 +219,25 @@ if(isset($_SESSION['seller_user_name'])){
 			  customClass: 'animated tada'
 			})
 			</script>";
-		}else{
+				} else {
 
-			// $select_seller = $db->select("sellers",array("seller_user_name"=>$seller_user_name,"seller_pass"=>$hashed_password));
-	    	$select_seller = $db->query("select * from sellers where seller_email=:u_email OR seller_user_name=:u_name AND seller_pass=:u_pass",array("u_email"=>$seller_user_name,"u_name"=>$seller_user_name,"u_pass"=>$hashed_password));
+					// $select_seller = $db->select("sellers",array("seller_user_name"=>$seller_user_name,"seller_pass"=>$hashed_password));
+					$select_seller = $db->query("select * from sellers where seller_email=:u_email OR seller_user_name=:u_name AND seller_pass=:u_pass", array("u_email" => $seller_user_name, "u_name" => $seller_user_name, "u_pass" => $hashed_password));
 
-	    	$row_seller = $select_seller->fetch();
+					$row_seller = $select_seller->fetch();
 
-				if($select_seller){
-					
-					$update_seller = $db->update("sellers",array("seller_status"=>'online',"seller_ip"=>$ip),array("seller_id"=>$row_seller->seller_id,"seller_pass"=>$hashed_password));
-//					$seller_user_name = ucfirst(strtolower($row_seller->seller_user_name));
-					$seller_user_name = ucfirst($row_seller->seller_user_name);
-					$_SESSION['sessionStart'] = $row_seller->seller_user_name;
+					if ($select_seller) {
 
-					echo "
+						$update_seller = $db->update("sellers", array("seller_status" => 'online', "seller_ip" => $ip), array("seller_id" => $row_seller->seller_id, "seller_pass" => $hashed_password));
+						//					$seller_user_name = ucfirst(strtolower($row_seller->seller_user_name));
+						$seller_user_name = ucfirst($row_seller->seller_user_name);
+						$_SESSION['sessionStart'] = $row_seller->seller_user_name;
+
+						echo "
 					<script>
 					swal({
 						type: 'success',
-						text: '".str_replace('{seller_user_name}',$seller_user_name,$lang['alert']['successfully_login'])."',
+						text: '" . str_replace('{seller_user_name}', $seller_user_name, $lang['alert']['successfully_login']) . "',
 						timer: 4000,
 						onOpen: function(){
 						swal.showLoading()
@@ -252,21 +246,17 @@ if(isset($_SESSION['seller_user_name'])){
 						window.open('$site_url','_self')
 					})
 					</script>";
+					}
 				}
-
 			}
-			
 		}
-		
 	}
-	
-}
 
 
-    
-?>
 
-<?php require_once("includes/footer.php"); ?>
+	?>
+
+	<?php require_once("includes/footer.php"); ?>
 
 </body>
 
