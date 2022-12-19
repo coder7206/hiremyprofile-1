@@ -261,9 +261,9 @@
                         <tr>
                             <td width="1000">
                                 <?php if (!empty($request_seller_image)) { ?>
-                                    <img src="<?= $request_seller_image; ?>" class="request-img rounded-circle mt-0">
+                                    <img src="<?= $request_seller_image; ?>" class="request-img rounded-circle mt-0 contact-image">
                                 <?php } else { ?>
-                                    <img src="../user_images/empty-image.png" class="request-img rounded-circle mt-0">
+                                    <img src="../user_images/empty-image.png" class="request-img rounded-circle mt-0 contact-image">
                                 <?php } ?>
                                 <div class="request-description">
                                     <h6> <?= $request_seller_user_name; ?> </h6>

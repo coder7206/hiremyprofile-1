@@ -197,7 +197,9 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                 <!-- <div class="col-md-12 mt-5 mb-3">
            <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["buyer_requests"]; ?></h1>
           </div> -->
-                                <?php include('requests/user_buyer_requests.php'); ?>
+                                <div class="col-md-12">
+                                    <?php include('requests/user_buyer_requests.php'); ?>
+                                </div>
                             </div>
                             <!-- End Buyer Request -->
                             <!-- Start Manage Request -->
@@ -276,12 +278,12 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                                     <div class="dropdown">
                                                                         <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
                                                                         <div class="dropdown-menu">
-                                                                            <a href="view_offers?request_id=<?= $request_id; ?>" target="blank" class="dropdown-item">View
+                                                                            <a href="<?=$site_url?>/requests/view_offers?request_id=<?= $request_id; ?>" target="blank" class="dropdown-item">View
                                                                                 Offers</a>
-                                                                            <a href="pause_request?request_id=<?= $request_id; ?>" class="dropdown-item">
+                                                                            <a href="<?=$site_url?>/requests/pause_request?request_id=<?= $request_id; ?>" class="dropdown-item">
                                                                                 Pause
                                                                             </a>
-                                                                            <a href="delete_request?request_id=<?= $request_id; ?>" class="dropdown-item">
+                                                                            <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="dropdown-item">
                                                                                 Delete
                                                                             </a>
                                                                         </div>
@@ -341,10 +343,10 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                                     <div class="dropdown">
                                                                         <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
                                                                         <div class="dropdown-menu">
-                                                                            <a href="active_request?request_id=<?= $request_id; ?>" class="dropdown-item">
+                                                                            <a href="<?=$site_url?>/requests/active_request?request_id=<?= $request_id; ?>" class="dropdown-item">
                                                                                 Activate
                                                                             </a>
-                                                                            <a href="delete_request?request_id=<?= $request_id; ?>" class="dropdown-item">
+                                                                            <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="dropdown-item">
                                                                                 Delete
                                                                             </a>
                                                                         </div>
@@ -396,7 +398,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                                 <td> 0</td>
                                                                 <td class="text-success"> <?= showPrice($request_budget); ?> </td>
                                                                 <td>
-                                                                    <a href="delete_request?request_id=<?= $request_id; ?>" class="btn btn-outline-danger">
+                                                                    <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="btn btn-outline-danger">
                                                                         Delete
                                                                     </a>
                                                                 </td>
@@ -444,7 +446,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                                 <td> 0</td>
                                                                 <td class="text-success"> <?= showPrice($request_budget); ?> </td>
                                                                 <td>
-                                                                    <a href="delete_request?request_id=<?= $request_id; ?>" class="btn btn-outline-danger">
+                                                                    <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="btn btn-outline-danger">
                                                                         Delete
                                                                     </a>
                                                                 </td>
@@ -777,7 +779,6 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
 
     </div>
 </div>
-
 
 <!-- Container ends -->
 <br>
