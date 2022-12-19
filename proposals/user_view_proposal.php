@@ -124,7 +124,7 @@ if ($totalProposal >= $num_gigs) {
 									<div class="dropdown">
 										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
 										<div class="dropdown-menu">
-											<a href="<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
+											<a href="<?= $site_url; ?>/proposals/<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
 											<?php if ($proposal_featured == "no") { ?>
 												<a href="#" class="dropdown-item" id="featured-button-<?= $proposal_id; ?>">Make Proposal Featured</a>
 											<?php } else { ?>
@@ -168,7 +168,7 @@ if ($totalProposal >= $num_gigs) {
 			</div>
 		</div>
 		<div id="pause-proposals" class="tab-pane fade show <?= (isset($_GET['paused'])) ? "active" : ""; ?>">
-			<div class="table-responsive box-table mt-4">
+			<div class="table-responsive box-table mt-4" style="min-height: 250px;">
 				<table class="table table-bordered">
 					<thead>
 						<tr>
@@ -217,13 +217,13 @@ if ($totalProposal >= $num_gigs) {
 									<div class="dropdown">
 										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
 										<div class="dropdown-menu">
-											<a href="<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
+											<a href="<?= $site_url; ?>/proposals/<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
 											<a href="activate_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" <?= $onclick; ?>>
 												Activate
 											</a>
-											<a href="view_referrals?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Referrals</a>
-											<a href="edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
-											<a href="delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
+											<a href="<?= $site_url; ?>/proposals/view_referrals?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Referrals</a>
+											<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
+											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
 										</div>
 									</div>
 								</td>
@@ -239,7 +239,7 @@ if ($totalProposal >= $num_gigs) {
 			</div>
 		</div>
 		<div id="pending-proposals" class="tab-pane fade show <?= (isset($_GET['pending'])) ? "active" : ""; ?>">
-			<div class="table-responsive box-table mt-4">
+			<div class="table-responsive box-table mt-4" style="min-height: 250px;">
 				<table class="table table-bordered">
 					<thead>
 						<tr>
@@ -277,9 +277,9 @@ if ($totalProposal >= $num_gigs) {
 									<div class="dropdown">
 										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
 										<div class="dropdown-menu">
-											<a href="<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
-											<a href="edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
-											<a href="delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
+											<a href="<?= $site_url; ?>/proposals/<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
+											<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
+											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
 										</div>
 									</div>
 								</td>
@@ -295,7 +295,7 @@ if ($totalProposal >= $num_gigs) {
 			</div>
 		</div>
 		<div id="modification-proposals" class="tab-pane fade show <?= (isset($_GET['modification'])) ? "active" : ""; ?>">
-			<div class="table-responsive box-table mt-4">
+			<div class="table-responsive box-table mt-4" style="min-height: 250px;">
 				<table class="table table-bordered">
 					<thead>
 						<tr>
@@ -323,10 +323,10 @@ if ($totalProposal >= $num_gigs) {
 									<div class="dropdown">
 										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
 										<div class="dropdown-menu">
-											<a href="submit_approval?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Submit For Approval </a>
-											<a href="<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
-											<a href="edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
-											<a href="delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
+											<a href="<?= $site_url; ?>/proposals/submit_approval?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Submit For Approval </a>
+											<a href="<?= $site_url; ?>/proposals/<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
+											<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
+											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
 										</div>
 									</div>
 								</td>
@@ -342,7 +342,7 @@ if ($totalProposal >= $num_gigs) {
 			</div>
 		</div>
 		<div id="draft-proposals" class="tab-pane fade show <?= (isset($_GET['draft'])) ? "active" : ""; ?>">
-			<div class="table-responsive box-table mt-4">
+			<div class="table-responsive box-table mt-4" style="min-height: 250px;">
 				<table class="table table-bordered">
 					<thead>
 						<tr>
@@ -380,8 +380,8 @@ if ($totalProposal >= $num_gigs) {
 									<div class="dropdown">
 										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
 										<div class="dropdown-menu">
-											<a href="edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
-											<a href="delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
+											<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
+											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
 										</div>
 									</div>
 								</td>
@@ -397,7 +397,7 @@ if ($totalProposal >= $num_gigs) {
 			</div>
 		</div>
 		<div id="declined-proposals" class="tab-pane fade show <?= (isset($_GET['declined'])) ? "active" : ""; ?>">
-			<div class="table-responsive box-table mt-4">
+			<div class="table-responsive box-table mt-4" style="min-height: 250px;">
 				<table class="table table-bordered">
 					<thead>
 						<tr>
@@ -435,7 +435,7 @@ if ($totalProposal >= $num_gigs) {
 									<div class="dropdown">
 										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
 										<div class="dropdown-menu">
-											<a href="delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
+											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
 										</div>
 									</div>
 								</td>

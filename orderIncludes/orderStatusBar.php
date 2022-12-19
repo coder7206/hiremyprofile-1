@@ -1,5 +1,5 @@
 <?php if($order_status == "pending" or $order_status == "progress" or $order_status == "delivered" or $order_status == "revision requested" or $order_status == "cancellation requested"){ ?>
-<div id="order-status-bar">
+<div id="order-status-bar" style="margin-top: 181px;">
   <div class="container">
     <div class="row">
       <div class="col-md-10 offset-md-1">
@@ -8,7 +8,7 @@
         </h5>
         <h5 class="float-right mt-2">
           Status: <span class="text-muted">
-          <?php if($order_status == "progress"){ echo "In"; } ?> 
+          <?php if($order_status == "progress"){ echo "In"; } ?>
           <?= ucwords($order_status); ?>
           </span>
         </h5>
@@ -36,7 +36,7 @@
     <div class="row">
     <!--  <div class="col-md-10 offset-md-1"> -->
       <div class="container">
-        <div class="col-md-10 offset-md-1"> 
+        <div class="col-md-10 offset-md-1">
           <?php if($seller_id == $login_seller_id){ ?>
           <h5 class="float-left mt-2">
             <i class="fa fa-lg fa-check-circle"></i> Order Delivered. You Earned <?= showPrice($seller_price); ?>

@@ -38,7 +38,7 @@ $proposal_url = urlencode($input->get('proposal_url'));
 
 if (isset($_SESSION['admin_email'])) {
     $get_proposal = $db->query("select * from proposals where proposal_url=:url and proposal_seller_id='$proposal_seller_id' AND NOT proposal_status='deleted'", array("url" => $proposal_url));
-} elseif (isset($_SESSION['seller_user_name']) AND $_SESSION['seller_user_name'] == $username) {
+} elseif (isset($_SESSION['seller_user_name']) and $_SESSION['seller_user_name'] == $username) {
     $get_proposal = $db->query("select * from proposals where proposal_url=:url and proposal_seller_id='$proposal_seller_id' and not proposal_status in ('trash','deleted')", array("url" => $proposal_url));
 } else {
     $get_proposal = $db->query("select * from proposals where proposal_url=:url and proposal_seller_id='$proposal_seller_id' and not proposal_status in ('draft','admin_pause','pause','pending','trash','declined','modification','trash','deleted')", array("url" => $proposal_url));
@@ -212,7 +212,6 @@ if ($videoPlugin == 1) {
     $get_schedule = $db->select("video_schedules", array("id" => $days_within_scheduled));
     $schedule = $get_schedule->fetch();
     $schedule_title = @$schedule->title;
-
 } else {
     $enableVideo = 0;
 }
@@ -222,6 +221,7 @@ $show_img1 = getImageUrl2("proposals", "proposal_img1", $proposal_img1);
 ?>
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
+
 <head>
     <title><?= $site_name; ?> - <?= $proposal_title; ?></title>
     <meta charset="utf-8">
@@ -229,7 +229,7 @@ $show_img1 = getImageUrl2("proposals", "proposal_img1", $proposal_img1);
     <meta name="description" content="<?= $proposal_short_desc; ?>">
     <meta name="keywords" content="<?= $proposal_tags; ?>">
     <meta name="author" content="<?= $proposal_seller_user_name; ?>">
-    <meta property="og:image" content="<?= $show_img1; ?>"/>
+    <meta property="og:image" content="<?= $show_img1; ?>" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
     <link href="../../styles/bootstrap.css" rel="stylesheet">
     <link href="../../styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
@@ -256,223 +256,240 @@ $show_img1 = getImageUrl2("proposals", "proposal_img1", $proposal_img1);
         <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
     <?php } ?>
 </head>
+
 <body class="is-responsive">
-<script src="//platform-api.sharethis.com/js/sharethis.js#property=5c812224d11c6a0011c485fd&product=inline-share-buttons"></script>
-<?php
+    <script src="//platform-api.sharethis.com/js/sharethis.js#property=5c812224d11c6a0011c485fd&product=inline-share-buttons"></script>
+    <?php
 
-require_once("../includes/header.php");
+    require_once("../includes/header.php");
 
-$show_img1 = getImageUrl2("proposals", "proposal_img1", $proposal_img1);
-$show_img2 = getImageUrl2("proposals", "proposal_img2", $proposal_img2);
-$show_img3 = getImageUrl2("proposals", "proposal_img3", $proposal_img3);
-$show_img4 = getImageUrl2("proposals", "proposal_img4", $proposal_img4);
-$show_video = getImageUrl2("proposals", "proposal_video", $proposal_video);
+    $show_img1 = getImageUrl2("proposals", "proposal_img1", $proposal_img1);
+    $show_img2 = getImageUrl2("proposals", "proposal_img2", $proposal_img2);
+    $show_img3 = getImageUrl2("proposals", "proposal_img3", $proposal_img3);
+    $show_img4 = getImageUrl2("proposals", "proposal_img4", $proposal_img4);
+    $show_video = getImageUrl2("proposals", "proposal_video", $proposal_video);
 
-$img_2_extension = pathinfo($proposal_img2, PATHINFO_EXTENSION);
-$img_3_extension = pathinfo($proposal_img3, PATHINFO_EXTENSION);
-$img_4_extension = pathinfo($proposal_img4, PATHINFO_EXTENSION);
+    $img_2_extension = pathinfo($proposal_img2, PATHINFO_EXTENSION);
+    $img_3_extension = pathinfo($proposal_img3, PATHINFO_EXTENSION);
+    $img_4_extension = pathinfo($proposal_img4, PATHINFO_EXTENSION);
 
-if ($deviceType == "phone") {
-    include("../screens/mobile_proposal.php");
-} else {
-    include("../screens/desktop_proposal.php");
-}
+    if ($deviceType == "phone") {
+        include("../screens/mobile_proposal.php");
+    } else {
+        include("../screens/desktop_proposal.php");
+    }
 
-?>
+    ?>
 
-<div id="image-modal" class="modal fade"><!-- report-modal modal fade Starts -->
-    <div class="modal-dialog" style="max-width:800px;"><!-- modal-dialog Starts -->
-        <div class="modal-content"><!-- modal-content Starts -->
-            <div class="modal-header"><!-- modal-header Starts -->
-                Proposal Image
-                <button class="close" data-dismiss="modal"><span>&times;</span></button>
-            </div><!-- modal-header Ends -->
-            <div class="modal-body text-center"><!-- modal-body p-0 Starts -->
+    <div id="image-modal" class="modal fade">
+        <!-- report-modal modal fade Starts -->
+        <div class="modal-dialog" style="max-width:800px;">
+            <!-- modal-dialog Starts -->
+            <div class="modal-content">
+                <!-- modal-content Starts -->
+                <div class="modal-header">
+                    <!-- modal-header Starts -->
+                    Proposal Image
+                    <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div><!-- modal-header Ends -->
+                <div class="modal-body text-center">
+                    <!-- modal-body p-0 Starts -->
 
-                <img src="<?= $show_img1; ?>" class='img-fluid'>
+                    <img src="<?= $show_img1; ?>" class='img-fluid'>
 
-            </div><!-- modal-body p-0 Ends -->
-        </div><!-- modal-content Ends -->
-    </div><!-- modal-dialog Ends -->
-</div><!-- report-modal modal fade Ends -->
+                </div><!-- modal-body p-0 Ends -->
+            </div><!-- modal-content Ends -->
+        </div><!-- modal-dialog Ends -->
+    </div><!-- report-modal modal fade Ends -->
 
-<div id="report-modal" class="modal fade"><!-- report-modal modal fade Starts -->
-    <div class="modal-dialog"><!-- modal-dialog Starts -->
-        <div class="modal-content"><!-- modal-content Starts -->
-            <div class="modal-header p-2 pl-3 pr-3"><!-- modal-header Starts -->
-                Report This Proposal
-                <button class="close" data-dismiss="modal"><span>&times;</span></button>
-            </div><!-- modal-header Ends -->
-            <div class="modal-body"><!-- modal-body p-0 Starts -->
-                <h6>Let us know why you would like to report this Proposal.</h6>
-                <form action="" method="post">
-                    <div class="form-group mt-3"><!--- form-group Starts --->
-                        <select class="form-control float-right" name="reason" required="">
-                            <option value="">Select</option>
-                            <option>Non Original Content</option>
-                            <option>Inappropriate Proposal</option>
-                            <option>Trademark Violation</option>
-                            <option>Copyrights Violation</option>
-                        </select>
-                    </div><!--- form-group Ends --->
-                    <br>
-                    <br>
-                    <div class="form-group mt-1 mb-3"><!--- form-group Starts --->
-                        <label> Additional Information </label>
-                        <textarea name="additional_information" rows="3" class="form-control" required=""></textarea>
-                    </div><!--- form-group Ends --->
-                    <button type="submit" name="submit_report" class="float-right btn btn-sm btn-success">
-                        Submit Report
-                    </button>
-                </form>
-                <?php
-                if (isset($_POST['submit_report'])) {
+    <div id="report-modal" class="modal fade">
+        <!-- report-modal modal fade Starts -->
+        <div class="modal-dialog">
+            <!-- modal-dialog Starts -->
+            <div class="modal-content">
+                <!-- modal-content Starts -->
+                <div class="modal-header p-2 pl-3 pr-3">
+                    <!-- modal-header Starts -->
+                    Report This Proposal
+                    <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div><!-- modal-header Ends -->
+                <div class="modal-body">
+                    <!-- modal-body p-0 Starts -->
+                    <h6>Let us know why you would like to report this Proposal.</h6>
+                    <form action="" method="post">
+                        <div class="form-group mt-3">
+                            <!--- form-group Starts --->
+                            <select class="form-control float-right" name="reason" required="">
+                                <option value="">Select</option>
+                                <option>Non Original Content</option>
+                                <option>Inappropriate Proposal</option>
+                                <option>Trademark Violation</option>
+                                <option>Copyrights Violation</option>
+                            </select>
+                        </div>
+                        <!--- form-group Ends --->
+                        <br>
+                        <br>
+                        <div class="form-group mt-1 mb-3">
+                            <!--- form-group Starts --->
+                            <label> Additional Information </label>
+                            <textarea name="additional_information" rows="3" class="form-control" required=""></textarea>
+                        </div>
+                        <!--- form-group Ends --->
+                        <button type="submit" name="submit_report" class="float-right btn btn-sm btn-success">
+                            Submit Report
+                        </button>
+                    </form>
+                    <?php
+                    if (isset($_POST['submit_report'])) {
 
-                    $reason = $input->post('reason');
-                    $additional_information = $input->post('additional_information');
-                    $date = date("F d, Y");
+                        $reason = $input->post('reason');
+                        $additional_information = $input->post('additional_information');
+                        $date = date("F d, Y");
 
-                    $insert = $db->insert("reports", array("reporter_id" => $login_seller_id, "content_id" => $proposal_id, "content_type" => "proposal", "reason" => $reason, "additional_information" => $additional_information, "date" => $date));
+                        $insert = $db->insert("reports", array("reporter_id" => $login_seller_id, "content_id" => $proposal_id, "content_type" => "proposal", "reason" => $reason, "additional_information" => $additional_information, "date" => $date));
 
-                    $insert_notification = $db->insert("admin_notifications", array("seller_id" => $login_seller_id, "content_id" => $proposal_id, "reason" => "proposal_report", "date" => $date, "status" => "unread"));
+                        $insert_notification = $db->insert("admin_notifications", array("seller_id" => $login_seller_id, "content_id" => $proposal_id, "reason" => "proposal_report", "date" => $date, "status" => "unread"));
 
-                    if ($insert_notification) {
-                        send_report_email("proposal", $proposal_seller_user_name, $proposal_url, $date);
-                        echo "<script>alert('Your Report Has Been Successfully Submitted.')</script>";
-                        echo "<script>window.open('$proposal_url','_self')</script>";
+                        if ($insert_notification) {
+                            send_report_email("proposal", $proposal_seller_user_name, $proposal_url, $date);
+                            echo "<script>alert('Your Report Has Been Successfully Submitted.')</script>";
+                            echo "<script>window.open('$proposal_url','_self')</script>";
+                        }
                     }
-                }
-                ?>
-            </div><!-- modal-body p-0 Ends -->
-        </div><!-- modal-content Ends -->
-    </div><!-- modal-dialog Ends -->
-</div><!-- report-modal modal fade Ends -->
+                    ?>
+                </div><!-- modal-body p-0 Ends -->
+            </div><!-- modal-content Ends -->
+        </div><!-- modal-dialog Ends -->
+    </div><!-- report-modal modal fade Ends -->
 
-<script type="text/javascript" src="../../js/green-audio-player.min.js"></script>
+    <script type="text/javascript" src="../../js/green-audio-player.min.js"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        new GreenAudioPlayer('.audio-player .player-1', {
-            showTooltips: true,
-            showDownloadButton: false,
-            enableKeystrokes: true
-        });
-
-        <?php if(!empty($proposal_img3)){ ?>
-        new GreenAudioPlayer('.audio-player .player-2', {
-            showTooltips: true,
-            showDownloadButton: false,
-            enableKeystrokes: true
-        });
-        <?php } ?>
-
-        <?php if(!empty($proposal_img4)){ ?>
-        new GreenAudioPlayer('.audio-player .player-3', {
-            showTooltips: true,
-            showDownloadButton: false,
-            enableKeystrokes: true
-        });
-        <?php } ?>
-
-    });
-</script>
-
-<script type="text/javascript">
-
-    $(document).ready(function () {
-
-        $(".carousel-item").mouseover(function () {
-            $(this).find(".slide-fullscreen").css('opacity', 1);
-        });
-
-        $(".carousel-item").mouseleave(function () {
-            $(this).find(".slide-fullscreen").css('opacity', 0);
-        });
-
-        $(".slide-fullscreen").click(function () {
-            var action = $(this).data('action');
-            var img = $('#image-modal .modal-body img');
-            if (action == "img-1") {
-                img.attr("src", "<?= $show_img1; ?>");
-            } else if (action == "img-2") {
-                img.attr("src", "<?= $show_img2; ?>");
-            } else if (action == "img-3") {
-                img.attr("src", "<?= $show_img3; ?>");
-            } else if (action == "img-4") {
-                img.attr("src", "<?= $show_img4; ?>");
-            }
-
-            $("#image-modal").modal('show');
-
-        });
-
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            var newForm = e.target.getAttribute("formid"); // newly activated tab
-            var prevForm = e.relatedTarget.getAttribute("formid"); // previous active tab
-            $("select[form=" + prevForm + "]").attr('form', newForm);
-            $("input[form=" + prevForm + "]").attr('form', newForm);
-        })
-
-        function convert_price(amount, name) {
-            $.ajax({
-                method: "POST",
-                url: "../ajax/convert_price",
-                data: {amount: amount},
-                success: function (data) {
-                    $(name).html(data);
-                    $('#wait').removeClass("loader");
-                }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            new GreenAudioPlayer('.audio-player .player-1', {
+                showTooltips: true,
+                showDownloadButton: false,
+                enableKeystrokes: true
             });
-        }
 
-        function changePrice(name, price, checked) {
-
-            var value = $(name + '-num').first().text();
-            var num = parseFloat(value);
-            var calc = parseFloat(num) + parseFloat(price);
-            var calc_minus = parseFloat(num) - parseFloat(price);
-            if (checked) {
-                amount = calc;
-                $(name + '-num').html(calc);
-            } else {
-                amount = calc_minus;
-                $(name + '-num').html(calc_minus);
-            }
-
-            convert_price(amount, name);
-
-        }
-
-        $(".buyables li label input").click(function (event) {
-            $('#wait').addClass("loader");
-            var id = $(this).data("packagenum");
-            var price = parseFloat($(this).parent().find(".num").text());
-            <?php if($proposal_price == 0){ ?>
-            changePrice('.total-price-' + id, price, this.checked);
-            <?php }else{ ?>
-            changePrice('.total-price', price, this.checked);
+            <?php if (!empty($proposal_img3)) { ?>
+                new GreenAudioPlayer('.audio-player .player-2', {
+                    showTooltips: true,
+                    showDownloadButton: false,
+                    enableKeystrokes: true
+                });
             <?php } ?>
-        });
 
-        <?php if($enableVideo == 1){ ?>
-        $("form input[name='proposal_minutes']").keyup(function (event) {
-            if ($(this).val() != 0) {
-                $('#wait').addClass("loader");
-                var quantity = $(this).val();
-                var price = <?= $proposal_price; ?>;
-                var calc = price * quantity;
-                convert_price(calc, ".total-price");
+            <?php if (!empty($proposal_img4)) { ?>
+                new GreenAudioPlayer('.audio-player .player-3', {
+                    showTooltips: true,
+                    showDownloadButton: false,
+                    enableKeystrokes: true
+                });
+            <?php } ?>
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $(".carousel-item").mouseover(function() {
+                $(this).find(".slide-fullscreen").css('opacity', 1);
+            });
+
+            $(".carousel-item").mouseleave(function() {
+                $(this).find(".slide-fullscreen").css('opacity', 0);
+            });
+
+            $(".slide-fullscreen").click(function() {
+                var action = $(this).data('action');
+                var img = $('#image-modal .modal-body img');
+                if (action == "img-1") {
+                    img.attr("src", "<?= $show_img1; ?>");
+                } else if (action == "img-2") {
+                    img.attr("src", "<?= $show_img2; ?>");
+                } else if (action == "img-3") {
+                    img.attr("src", "<?= $show_img3; ?>");
+                } else if (action == "img-4") {
+                    img.attr("src", "<?= $show_img4; ?>");
+                }
+
+                $("#image-modal").modal('show');
+
+            });
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+                var newForm = e.target.getAttribute("formid"); // newly activated tab
+                var prevForm = e.relatedTarget.getAttribute("formid"); // previous active tab
+                $("select[form=" + prevForm + "]").attr('form', newForm);
+                $("input[form=" + prevForm + "]").attr('form', newForm);
+            })
+
+            function convert_price(amount, name) {
+                $.ajax({
+                    method: "POST",
+                    url: "../ajax/convert_price",
+                    data: {
+                        amount: amount
+                    },
+                    success: function(data) {
+                        $(name).html(data);
+                        $('#wait').removeClass("loader");
+                    }
+                });
             }
-        });
-        <?php } ?>
 
-        $('#good').hide();
-        $('#bad').hide();
-    });
-</script>
-<?php
-include("../screens/includes/proposal_footer.php");
-include("../includes/footer.php");
-?>
+            function changePrice(name, price, checked) {
+
+                var value = $(name + '-num').first().text();
+                var num = parseFloat(value);
+                var calc = parseFloat(num) + parseFloat(price);
+                var calc_minus = parseFloat(num) - parseFloat(price);
+                if (checked) {
+                    amount = calc;
+                    $(name + '-num').html(calc);
+                } else {
+                    amount = calc_minus;
+                    $(name + '-num').html(calc_minus);
+                }
+
+                convert_price(amount, name);
+
+            }
+
+            $(".buyables li label input").click(function(event) {
+                $('#wait').addClass("loader");
+                var id = $(this).data("packagenum");
+                var price = parseFloat($(this).parent().find(".num").text());
+                <?php if ($proposal_price == 0) { ?>
+                    changePrice('.total-price-' + id, price, this.checked);
+                <?php } else { ?>
+                    changePrice('.total-price', price, this.checked);
+                <?php } ?>
+            });
+
+            <?php if ($enableVideo == 1) { ?>
+                $("form input[name='proposal_minutes']").keyup(function(event) {
+                    if ($(this).val() != 0) {
+                        $('#wait').addClass("loader");
+                        var quantity = $(this).val();
+                        var price = <?= $proposal_price; ?>;
+                        var calc = price * quantity;
+                        convert_price(calc, ".total-price");
+                    }
+                });
+            <?php } ?>
+
+            $('#good').hide();
+            $('#bad').hide();
+        });
+    </script>
+    <?php
+    include("../screens/includes/proposal_footer.php");
+    include("../includes/footer.php");
+    ?>
 </body>
+
 </html>
