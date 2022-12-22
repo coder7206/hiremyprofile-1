@@ -17,7 +17,7 @@
 </div>
 </div>
 <?php }elseif($order_status == "cancelled"){ ?>
-<div id="order-status-bar">
+  <div id="order-status-bar" style="margin-top: 180px;">
   <div class="container">
     <div class="row">
       <div class="col-md-10 offset-md-1">
@@ -32,7 +32,7 @@
   </div>
 </div>
 <?php }elseif($order_status == "completed" ){ ?>
-<div id="order-status-bar" class="completed text-white">
+<div id="order-status-bar" class="completed text-white" style="margin-top: 180px;">
     <div class="row">
     <!--  <div class="col-md-10 offset-md-1"> -->
       <div class="container">

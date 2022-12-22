@@ -155,11 +155,12 @@ function watermarkImage($image, $data)
   <?php require_once("orderIncludes/orderDetails.php"); ?>
   <?php require_once("orderIncludes/orderStatusBar.php"); ?>
 
-  <div class="container order-page" style="margin-top: 10px !important;">
+  <div class="container order-page" style="margin-top: 15px !important;">
     <div class="row">
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-10 offset-md-1">
+            <h1 class="mb-4"> Order Management </h1>
             <ul class="nav nav-tabs mb-3 mt-3">
               <li class="nav-item">
                 <a href="#order-activity" data-toggle="tab" class="nav-link active make-black ">Order Activity</a>
