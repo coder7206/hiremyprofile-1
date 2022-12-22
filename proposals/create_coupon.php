@@ -52,7 +52,7 @@ $login_seller_language = $row_login_seller->seller_language;
 </head>
 <body class="is-responsive">
 <?php require_once("../includes/user_header.php"); ?>
-<div class="container mb-4 mt-4"><!--- container Starts --->
+<div class="container pb-5" style="margin-top: 200px;"><!--- container Starts --->
 <div class="row">
 <div class="col-md-10">
         <div class="card"><!--- card Starts --->

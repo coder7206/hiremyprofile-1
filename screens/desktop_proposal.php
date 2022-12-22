@@ -393,14 +393,14 @@
         $('.mp-gig-top-nav li.btns').removeClass("d-none");
         $('.mp-gig-top-nav').css({
           position: 'fixed',
-          zIndex: "100",
+          zIndex: "2",
           top: "0px"
         });
       } else {
         $('.mp-gig-top-nav li.btns').addClass("d-none");
         $('.mp-gig-top-nav').css({
           position: 'sticky',
-          zIndex: "10"
+          zIndex: "1"
         });
       }
     });

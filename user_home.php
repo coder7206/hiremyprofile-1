@@ -192,16 +192,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                 </div>
                             </div>
                             <!-- Order End -->
-                            <!-- Buyer Request -->
-                            <div class="row">
-                                <!-- <div class="col-md-12 mt-5 mb-3">
-           <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["buyer_requests"]; ?></h1>
-          </div> -->
-                                <div class="col-md-12">
-                                    <?php include('requests/user_buyer_requests.php'); ?>
-                                </div>
-                            </div>
-                            <!-- End Buyer Request -->
+
                             <!-- Start Manage Request -->
                             <div class="row">
                                 <div class="col-md-12 mt-5 mb-3">
@@ -258,7 +249,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "active"), "DESC");
+                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "active"), "DESC LIMIT 5");
                                                         $count_requests = $get_requests->rowCount();
                                                         while ($row_requests = $get_requests->fetch()) {
                                                             $request_id = $row_requests->request_id;
@@ -283,7 +274,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                                             <a href="<?=$site_url?>/requests/pause_request?request_id=<?= $request_id; ?>" class="dropdown-item">
                                                                                 Pause
                                                                             </a>
-                                                                            <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="dropdown-item">
+                                                                            <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this job?');">
                                                                                 Delete
                                                                             </a>
                                                                         </div>
@@ -319,7 +310,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "pause"), "DESC");
+                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "pause"), "DESC LIMIT 5");
 
                                                         $count_requests = $get_requests->rowCount();
                                                         while ($row_requests = $get_requests->fetch()) {
@@ -346,7 +337,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                                             <a href="<?=$site_url?>/requests/active_request?request_id=<?= $request_id; ?>" class="dropdown-item">
                                                                                 Activate
                                                                             </a>
-                                                                            <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="dropdown-item">
+                                                                            <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this job?');">
                                                                                 Delete
                                                                             </a>
                                                                         </div>
@@ -380,7 +371,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "pending"), "DESC");
+                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "pending"), "DESC LIMIT 5");
                                                         $count_requests = $get_requests->rowCount();
                                                         while ($row_requests = $get_requests->fetch()) {
                                                             $request_id = $row_requests->request_id;
@@ -398,7 +389,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                                 <td> 0</td>
                                                                 <td class="text-success"> <?= showPrice($request_budget); ?> </td>
                                                                 <td>
-                                                                    <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="btn btn-outline-danger">
+                                                                    <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this job?');">
                                                                         Delete
                                                                     </a>
                                                                 </td>
@@ -428,7 +419,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "unapproved"), "DESC");
+                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "unapproved"), "DESC LIMIT 5");
                                                         $count_requests = $get_requests->rowCount();
                                                         while ($row_requests = $get_requests->fetch()) {
                                                             $request_id = $row_requests->request_id;
@@ -446,7 +437,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                                 <td> 0</td>
                                                                 <td class="text-success"> <?= showPrice($request_budget); ?> </td>
                                                                 <td>
-                                                                    <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="btn btn-outline-danger">
+                                                                    <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this job?');">
                                                                         Delete
                                                                     </a>
                                                                 </td>

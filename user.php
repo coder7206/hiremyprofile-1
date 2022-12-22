@@ -34,16 +34,18 @@ $select_seller = $db->query("select * from sellers where seller_user_name=:u_nam
 $count_seller = $select_seller->rowCount();
 
 
-/* seller skills details*/
-$select_memb_plan_detail = $db->select("`memb_plan_detail` mp LEFT JOIN `membership_table` m ON mp.memb_tbl_id = m.id WHERE mp.seller_id = $login_seller_id AND mp.memb_status = 'Active' AND mp.memb_end_date >= CURRENT_TIMESTAMP ORDER BY mp.id DESC LIMIT 1");
-$row_plan_detail = $select_memb_plan_detail->fetch();
+if (isset($_SESSION['seller_user_name'])) {
+  /* seller skills details*/
+  $select_memb_plan_detail = $db->select("`memb_plan_detail` mp LEFT JOIN `membership_table` m ON mp.memb_tbl_id = m.id WHERE mp.seller_id = $login_seller_id AND mp.memb_status = 'Active' AND mp.memb_end_date >= CURRENT_TIMESTAMP ORDER BY mp.id DESC LIMIT 1");
+  $row_plan_detail = $select_memb_plan_detail->fetch();
+}
 
 $select_sellers = $db->select("sellers", array("seller_user_name" => $get_seller_user_name));
 $rows_seller = $select_sellers->fetch();
 
 $num_of_skills = $rows_seller->skills;
 
-if ($row_plan_detail) {
+if (isset($row_plan_detail) && $row_plan_detail) {
   // $memb_tbl_id = $row_plan_detail->memb_tbl_id;
 } else {
   // free plan
@@ -54,7 +56,6 @@ if ($row_plan_detail) {
 // print("<pre>" . print_r($row_plan_detail, true) . "</pre>");
 // exit;
 /* seller skills details*/
-
 
 if ($count_seller == 0) {
   echo "<script>window.open('index','_self');</script>";
