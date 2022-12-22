@@ -65,18 +65,18 @@ while ($row_inbox_messages = $get_inbox_messages->fetch()) {
 
 	<li href="#" class="inboxMsg media inboxMsg">
 
-		<a href="../<?= $sender_profile_link; ?>">
+		<a href="<?=$site_url?>/<?= $sender_profile_link; ?>">
 			<?php if (!empty($sender_image)) { ?>
 				<img src="<?= $sender_image; ?>" class="rounded-circle mr-3" width="40">
 			<?php } else { ?>
-				<img src="../user_images/empty-image.png" class="rounded-circle mr-3" width="40">
+				<img src="<?=$site_url?>/user_images/empty-image.png" class="rounded-circle mr-3" width="40">
 			<?php } ?>
 		</a>
 
 		<div class="media-body">
 			<h6 class="mt-0 mb-1">
 
-				<a href="../<?= $sender_profile_link; ?>"><?= $sender_user_name; ?></a>
+				<a href="<?=$site_url?>/<?= $sender_profile_link; ?>"><?= $sender_user_name; ?></a>
 				<!-- <?= $sender_user_name; ?> -->
 
 				<small class="text-muted"><?= $message_date; ?></small>
