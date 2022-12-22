@@ -584,7 +584,12 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                                             </div> -->
                                                                         </div>
                                                                     </div>
-                                                                    <p class="my-4"><?= truncate($proposal_title, 75); ?></p>
+                                                                    <p class="my-4">
+                                                                        <?= truncate($proposal_title, 150); ?>
+                                                                        <a href="<?= $site_url; ?>/<?= $seller_user_name; ?>" class="btn-link">
+                                                                            Read more
+                                                                        </a>
+                                                                    </p>
                                                                     <div class="d-flex justify-content-between align-items-center">
                                                                         <div class="font-weight-bold text-info">
                                                                             <i class="fa fa-star"></i>
