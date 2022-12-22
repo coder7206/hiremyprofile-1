@@ -43,11 +43,13 @@ if (!$count_reviews == 0) {
 $level_title = $db->select("seller_levels_meta", ["level_id" => $seller_level, "language_id" => $siteLanguage])->fetch()->title;
 $count_proposals = $db->count("proposals", ["proposal_seller_id" => $seller_id, "proposal_status" => 'active']);
 
-$follow_data = $db->select('follow_following_unfllow', array('followed_id' => $seller_id, 'follower_id' => $login_seller_id, 'status' => 'active'));
-$follow_tbl_data = $follow_data->fetch();
+if (isset($login_seller_id)) {
+  $follow_data = $db->select('follow_following_unfllow', array('followed_id' => $seller_id, 'follower_id' => $login_seller_id, 'status' => 'active'));
+  $follow_tbl_data = $follow_data->fetch();
+}
 // print("<pre>" . print_r($follow_tbl_data, true) . "</pre>");
 // exit;
-$follow_id = $follow_tbl_data ? $follow_tbl_data->id : 0;
+$follow_id = isset($follow_tbl_data) && $follow_tbl_data ? $follow_tbl_data->id : 0;
 
 ?>
 <div class="col-md-12 user-header pl-5 pr-5 pt-5 pb-5" style="margin-top: 115px;background: url(<?= $seller_cover_image; ?>);">

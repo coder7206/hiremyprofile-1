@@ -46,9 +46,9 @@ $buyer_image = $row_buyer->seller_image;
 <?php if(!empty($site_favicon)){ ?>
 
 <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
-   
+
 <?php } ?>
-	
+
 <script type="text/javascript" src="js/jquery.min.js"></script>
 
 </head>
@@ -65,7 +65,7 @@ $count_orders = $sel_orders->rowCount();
 
 ?>
 
-<div class="container-fluid mt-5">
+<div class="container" style="margin-top: 200px !important;">
 
 <div class="row">
 
@@ -88,7 +88,7 @@ $count_orders = $sel_orders->rowCount();
 	<table class="table table-bordered">
 
 		<thead>
-			
+
 			<tr>
 
 				<th>ORDER SUMMARY</th>
@@ -129,33 +129,33 @@ $count_orders = $sel_orders->rowCount();
 
 					<a href="order_details?order_id=<?= $order_id; ?>" class="make-black">
 						<img class="order-proposal-image" src="<?= $proposal_img1; ?>">
-						<p class="order-proposal-title"><?= $proposal_title; ?></p>	
+						<p class="order-proposal-title"><?= $proposal_title; ?></p>
 					</a>
-					
+
 				</td>
 
 				<td><?= $order_date; ?></td>
 				<td><?= $order_due; ?></td>
 				<td><?= showPrice($order_price); ?></td>
-				
+
 				<td><button class="btn btn-success"><?= ucwords($order_status); ?></button></td>
 
 			</tr>
-            
+
          <?php } ?>
-			
+
 		</tbody>
 
 	</table>
-    
+
     <?php
-            
+
     if($count_orders == 0){
-        
+
         echo "<center><h3 class='pb-4 pt-4'><i class='fa fa-meh-o'></i> No gigs sold at the momment.</h3></center>";
-    
+
     }
-        
+
 	?>
 
 	</div>

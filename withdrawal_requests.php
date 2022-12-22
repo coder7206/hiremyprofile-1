@@ -4,12 +4,12 @@ session_start();
 
 include("includes/db.php");
 
-if(!isset($_SESSION['seller_user_name'])){
+if (!isset($_SESSION['seller_user_name'])) {
 	echo "<script>window.open('login.php','_self')</script>";
 }
 
 $login_seller_user_name = $_SESSION['seller_user_name'];
-$select_login_seller = $db->select("sellers",array("seller_user_name" => $login_seller_user_name));
+$select_login_seller = $db->select("sellers", array("seller_user_name" => $login_seller_user_name));
 $row_login_seller = $select_login_seller->fetch();
 $login_seller_id = $row_login_seller->seller_id;
 
@@ -29,177 +29,198 @@ $login_seller_id = $row_login_seller->seller_id;
 
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
 	<link href="styles/bootstrap.css" rel="stylesheet">
-    <link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
+	<link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
 	<link href="styles/styles.css" rel="stylesheet">
 	<link href="styles/user_nav_styles.css" rel="stylesheet">
 	<link href="font_awesome/css/font-awesome.css" rel="stylesheet">
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 
-	<?php if(!empty($site_favicon)){ ?>
-   
-    <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
-       
-    <?php } ?>
+	<?php if (!empty($site_favicon)) { ?>
+
+		<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
+
+	<?php } ?>
 
 </head>
 
 <body class="is-responsive">
 
-<?php include("includes/user_header.php"); ?>
+	<?php include("includes/user_header.php"); ?>
 
-<div class="container"><!-- container Starts -->
+	<div class="container" style="margin-top: 200px;">
+		<!-- container Starts -->
 
-<div class="row"><!-- row Starts -->
+		<div class="row">
+			<!-- row Starts -->
 
-<div class="col-md-12 mt-5"><!-- col-md-12 mt-5 Starts -->
+			<div class="col-md-12 mt-5">
+				<!-- col-md-12 mt-5 Starts -->
 
-<h1 class="mb-4"> Withdrawal Requests </h1>
+				<h1 class="mb-4"> Withdrawal Requests </h1>
 
-<div class="table-responsive box-table"><!-- table-responsive box-table Starts -->
+				<div class="table-responsive box-table">
+					<!-- table-responsive box-table Starts -->
 
-<table class="table table-hover"><!-- table table-hover Starts -->
+					<table class="table table-hover">
+						<!-- table table-hover Starts -->
 
-<thead>
+						<thead>
 
-<tr>
+							<tr>
 
-<th><?= $lang['th']['no']; ?></th>
+								<th><?= $lang['th']['no']; ?></th>
 
-<th><?= $lang['th']['ref_no']; ?></th>
+								<th><?= $lang['th']['ref_no']; ?></th>
 
-<th><?= $lang['th']['date']; ?></th>
+								<th><?= $lang['th']['date']; ?></th>
 
-<th><?= $lang['th']['amount']; ?></th>
+								<th><?= $lang['th']['amount']; ?></th>
 
-<th><?= $lang['th']['method']; ?></th>
+								<th><?= $lang['th']['method']; ?></th>
 
-<th><?= $lang['th']['status']; ?></th>
+								<th><?= $lang['th']['status']; ?></th>
 
-</tr>
+							</tr>
 
-</thead>
+						</thead>
 
-<tbody>
+						<tbody>
 
-<?php
+							<?php
 
-$i = 0;
+							$i = 0;
 
-$get = $db->select("payouts",array('seller_id'=>$login_seller_id),"DESC");
+							$get = $db->select("payouts", array('seller_id' => $login_seller_id), "DESC");
+							$count = $get->rowCount();
+							if ($count > 0) {
+								while ($row = $get->fetch()) {
 
-while($row = $get->fetch()){
+									$id = $row->id;
+									$ref = $row->ref;
+									$seller_id = $row->seller_id;
+									$amount = $row->amount;
+									$method = $row->method;
+									$date = $row->date;
+									$status = $row->status;
 
-$id = $row->id;
-$ref = $row->ref;
-$seller_id = $row->seller_id;
-$amount = $row->amount;
-$method = $row->method;
-$date = $row->date;
-$status = $row->status;
+									if ($method == "bank_transfer") {
+										$m_text = "Bank Transfer";
+									} else {
+										$m_text = ucfirst($method);
+									}
 
-if($method == "bank_transfer") {
-	$m_text = "Bank Transfer";
-}else{
-	$m_text = ucfirst($method);
-}
+									$i++;
+							?>
 
-$i++;
-?>
+								<tr>
 
-<tr>
+									<td> <?= $i; ?> </td>
 
-<td> <?= $i; ?> </td>
+									<td class="text-danger"> <?= $ref; ?> </td>
 
-<td class="text-danger"> <?= $ref; ?> </td>
+									<td> <?= $date; ?> </td>
 
-<td> <?= $date; ?> </td>
+									<td class="text-success"> <?= "$s_currency$amount.00"; ?> </td>
 
-<td class="text-success"> <?= "$s_currency$amount.00"; ?>  </td>
+									<td class="text-success"> <?= $m_text; ?> </td>
 
-<td class="text-success"> <?= $m_text; ?>  </td>
+									<td class="<?php if ($status == "pending" or $status == "declined") {
+													echo "text-danger";
+												} else {
+													echo "text-success";
+												} ?>">
 
-<td class="<?php if($status == "pending" OR $status == "declined"){ echo "text-danger"; }else{ echo "text-success"; } ?>"> 
+										<?= ucfirst($status); ?>
 
-<?= ucfirst($status); ?>
+										<?php if ($method == "moneygram" and $status == "completed" and $paymentGateway == 1) { ?>
+											<a href="#" data-toggle="modal" data-target="#ref-<?= $id; ?>" class="float-right small">View Ref No</a>
+										<?php } ?>
 
-<?php if($method == "moneygram" and $status == "completed" and $paymentGateway == 1){ ?>
-<a href="#" data-toggle="modal" data-target="#ref-<?= $id; ?>" class="float-right small">View Ref No</a>
-<?php } ?>
+										<?php if ($status == "declined") { ?>
 
-<?php if($status == "declined"){ ?>
+											<a href="#" data-toggle="modal" data-target="#reason-<?= $id; ?>" class="float-right small">View Reason</a>
 
-<a href="#" data-toggle="modal" data-target="#reason-<?= $id; ?>" class="float-right small">View Reason</a>
+										<?php } ?>
 
-<?php } ?>
+									</td>
 
-</td>
+								</tr>
 
-</tr>
+								<?php
+								if ($paymentGateway == 1) {
+									include("plugins/paymentGateway/refModal.php");
+								}
+								?>
 
-<?php
-if($paymentGateway == 1){
-	include("plugins/paymentGateway/refModal.php");
-}
-?>
+								<div id="reason-<?= $id; ?>" class="modal fade">
+									<!-- reason modal fade Starts -->
 
-<div id="reason-<?= $id; ?>" class="modal fade" ><!-- reason modal fade Starts -->
+									<div class="modal-dialog">
+										<!-- modal-dialog Starts -->
 
-<div class="modal-dialog"><!-- modal-dialog Starts -->
+										<div class="modal-content">
+											<!-- modal-content Starts -->
 
-<div class="modal-content"><!-- modal-content Starts -->
+											<div class="modal-header">
+												<!-- modal-header Starts -->
 
-<div class="modal-header"><!-- modal-header Starts -->
+												<h5 class="modal-title"> Reason </h5>
 
-<h5 class="modal-title"> Reason </h5> 
+												<button class="close" data-dismiss="modal"> <span> &times; </span> </button>
 
-<button class="close" data-dismiss="modal"> <span> &times; </span> </button>
+											</div><!-- modal-header Ends -->
 
-</div><!-- modal-header Ends -->
+											<div class="modal-body text-center">
+												<!-- modal-body Starts -->
 
-<div class="modal-body text-center"><!-- modal-body Starts -->
+												<p><?= $row->message; ?></p>
 
-<p><?= $row->message; ?></p>
+											</div><!-- modal-body Ends -->
 
-</div><!-- modal-body Ends -->
+										</div><!-- modal-content Ends -->
 
-</div><!-- modal-content Ends -->
+									</div><!-- modal-dialog Ends -->
 
-</div><!-- modal-dialog Ends -->
+								</div><!-- reason modal fade Ends -->
 
-</div><!-- reason modal fade Ends -->
+								<?php if (isset($_GET['id']) and $_GET['id'] == $id) { ?>
 
-<?php if(isset($_GET['id']) and $_GET['id'] == $id){ ?>
+									<script type="text/javascript">
+										$(document).ready(function() {
 
-<script type="text/javascript">
-$(document).ready(function(){
+											<?php if ($status == "completed" and $method == "moneygram" and $paymentGateway == 1) { ?>
+												$('#ref-<?= $id; ?>').modal('show');
+											<?php } elseif ($status == "declined") { ?>
+												$('#reason-<?= $id; ?>').modal('show');
+											<?php } ?>
 
-	<?php if($status == "completed" and $method == "moneygram" and $paymentGateway == 1){ ?>
-		$('#ref-<?= $id; ?>').modal('show');
-	<?php }elseif($status == "declined"){ ?>
-		$('#reason-<?= $id; ?>').modal('show');
-	<?php } ?>
+										});
+									</script>
 
-});
-</script>
+								<?php } ?>
 
-<?php } ?>
 
+							<?php
+								}
+							} else {
+							?>
+								<tr class="table-danger">
+									<td colspan="6">0 records found.</td>
+								</tr>
+							<?php } ?>
+						</tbody>
 
-<?php } ?>
+					</table><!-- table table-hover Ends -->
 
-</tbody>
+				</div><!-- table-responsive box-table Ends -->
 
-</table><!-- table table-hover Ends -->
+			</div><!-- col-md-12 mt-5 Ends -->
 
-</div><!-- table-responsive box-table Ends -->
+		</div><!-- row Ends -->
 
-</div><!-- col-md-12 mt-5 Ends -->
+	</div><!-- container Ends -->
 
-</div><!-- row Ends -->
-
-</div><!-- container Ends -->
-
-<?php include("includes/footer.php"); ?>
+	<?php include("includes/footer.php"); ?>
 
 </body>
 
