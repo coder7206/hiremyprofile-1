@@ -46,8 +46,11 @@ $child_title = $row_meta->child_title;
 	<div class="form-group row">
 		<!--- form-group row Starts --->
 		<div class="col-md-3"><?= $lang['label']['proposal_title']; ?></div>
-		<div class="col-md-9"><textarea name="proposal_title" rows="2" placeholder="I Will" required="" class="form-control"><?= $d_proposal_title; ?></textarea></div>
-		<small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_description']); ?></small>
+		<div class="col-md-9">
+			<textarea name="proposal_title" id="proposal_title" rows="2" placeholder="I Will" required="" class="form-control" maxlength="100"><?= $d_proposal_title; ?></textarea>
+			<small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_description']); ?></small>
+			<span class="text-danger">Your proposal must be at least <span id="typed-characters"><?=strlen($d_proposal_title) > 100 ? 0 : 100 - strlen($d_proposal_title); ?>/100</span> characters.</span>
+		</div>
 	</div>
 	<!--- form-group row Ends --->
 
@@ -176,3 +179,16 @@ $child_title = $row_meta->child_title;
 
 </form>
 <!--- form Ends -->
+<script>
+    const textAreaElement = document.querySelector("#proposal_title");
+    const typedCharactersElement = document.querySelector("#typed-characters");
+    const maximumCharacters = 100;
+
+    textAreaElement.addEventListener("keydown", (event) => {
+        const typedCharacters = textAreaElement.value.length;
+        if (typedCharacters > maximumCharacters) {
+            return false;
+        }
+        typedCharactersElement.textContent = typedCharacters + "/" + maximumCharacters;
+    });
+</script>
