@@ -49,7 +49,41 @@ if (isset($_GET['seller_skill'])) {
 	</div>
 </div>
 
+
 <div class="card border-success mb-3">
+	<div class="card-header bg-success">
+		<h3 class="<?= ($lang_dir == "right" ? 'float-right' : 'float-left') ?> text-white h5">Skills</h3>
+		<button class="btn btn-secondary btn-sm <?= ($lang_dir == "right" ? 'float-left' : 'float-right') ?> clear_seller_skill clearlink" onclick="clearSkill()">
+			<?= $lang['sidebar']['clear_filter']; ?>
+		</button>
+	</div>
+	<div class="card-body">
+		<ul class="nav flex-wrap flex-row">
+			<?php
+			$qSkills = $db->select("seller_skills");
+			$tSkills = $qSkills->rowCount();
+			if ($tSkills > 0) {
+				while ($oSkill = $qSkills->fetch()) {
+					$tagTitle = $oSkill->skill_title;
+					$tagId = $oSkill->skill_id;
+					if (!empty($tagTitle)) {
+			?>
+					<li class="nav-item col-12 checkbox checkbox-success">
+						<label>
+							<input type="checkbox" value="<?= $tagId; ?>" name="sellerSkills" class="get_seller_skill" <?php if (isset($sellerSkills["$tagId"])) {
+																													echo "checked";
+																												} ?>>
+							<span><?= $tagTitle; ?></span>
+						</label>
+					</li>
+			<?php }
+			}
+		}?>
+		</ul>
+	</div>
+</div>
+
+<!-- <div class="card border-success mb-3">
 	<div class="card-header bg-success">
 		<h3 class="<?= ($lang_dir == "right" ? 'float-right' : 'float-left') ?> text-white h5"><?= $lang["sidebar"]["seller_location"]; ?></h3>
 		<button class="btn btn-secondary btn-sm <?= ($lang_dir == "right" ? 'float-left' : 'float-right') ?> clear_seller_country clearlink" onclick="clearCountry()">
@@ -76,7 +110,7 @@ if (isset($_GET['seller_skill'])) {
 			} ?>
 		</ul>
 	</div>
-</div>
+</div> -->
 
 <div class="card border-success mb-3">
 	<div class="card-header bg-success">
@@ -135,39 +169,6 @@ if (isset($_GET['seller_skill'])) {
 			<?php }
 				}
 			} ?>
-		</ul>
-	</div>
-</div>
-
-<div class="card border-success mb-3">
-	<div class="card-header bg-success">
-		<h3 class="<?= ($lang_dir == "right" ? 'float-right' : 'float-left') ?> text-white h5">Skills</h3>
-		<button class="btn btn-secondary btn-sm <?= ($lang_dir == "right" ? 'float-left' : 'float-right') ?> clear_seller_skill clearlink" onclick="clearSkill()">
-			<?= $lang['sidebar']['clear_filter']; ?>
-		</button>
-	</div>
-	<div class="card-body">
-		<ul class="nav flex-wrap flex-row">
-			<?php
-			$qSkills = $db->select("seller_skills");
-			$tSkills = $qSkills->rowCount();
-			if ($tSkills > 0) {
-				while ($oSkill = $qSkills->fetch()) {
-					$tagTitle = $oSkill->skill_title;
-					$tagId = $oSkill->skill_id;
-					if (!empty($tagTitle)) {
-			?>
-					<li class="nav-item col-6 checkbox checkbox-success">
-						<label>
-							<input type="checkbox" value="<?= $tagId; ?>" name="sellerSkills" class="get_seller_skill" <?php if (isset($sellerSkills["$tagId"])) {
-																													echo "checked";
-																												} ?>>
-							<span><?= $tagTitle; ?></span>
-						</label>
-					</li>
-			<?php }
-			}
-		}?>
 		</ul>
 	</div>
 </div>

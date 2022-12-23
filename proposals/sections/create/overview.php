@@ -141,7 +141,7 @@ if (isset($_POST['submit'])) {
             <div class="float-right switch-box">
                 <span class="text"><?= $lang['edit_proposal']['direct_order']['enable']; ?></span>
                 <label class="switch" id="switchOrder">
-                    <input type="checkbox" name="direct_order" id="direct_order" value="1" checked data-toggle="popover" data-placement="right" data-trigger="manual" data-offset="0 72px" title="Information" data-content="when its off Buyer send you message only not Buy directly" />
+                    <input type="checkbox" name="direct_order" id="direct_order" value="1" checked data-toggle="popover" data-placement="right" data-trigger="manual" data-offset="0 72px" title="Information" data-content="When its off, Buyer can't buy this service directly." />
                     <span class="slider instant-slider direct_order"></span>
                 </label>
             </div>
