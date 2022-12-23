@@ -486,9 +486,42 @@ $img_4_extension = pathinfo($d_proposal_img4, PATHINFO_EXTENSION);
         });
       });
 
+      let charLimit = 2000;
       $('textarea[name="proposal_desc"]').summernote({
         placeholder: 'Write Your Description Here.',
         height: 200,
+        callbacks: {
+          onKeydown: function(e) {
+            let characters = $('textarea[name="proposal_desc"]').summernote('code').replace(/(<([^>]+)>)/ig, "");
+            let totalCharacters = characters.length;
+            $("body #typed-characters").html(totalCharacters + " / " + charLimit);
+            var t = e.currentTarget.innerText;
+            if (t.trim().length >= charLimit) {
+              if (e.keyCode != 8 && !(e.keyCode >= 37 && e.keyCode <= 40) && e.keyCode != 46 && !(e.keyCode == 88 && e.ctrlKey) && !(e.keyCode == 67 && e.ctrlKey)) e.preventDefault();
+            }
+          },
+          onKeyup: function(e) {
+            var t = e.currentTarget.innerText;
+            $('body textarea[name="proposal_desc"]').html(charLimit - t.trim().length);
+          },
+          onPaste: function(e) {
+            let characters = $('textarea[name="proposal_desc"]').summernote('code').replace(/(<([^>]+)>)/ig, "");
+            let totalCharacters = characters.length;
+
+            $("body #typed-characters").html(totalCharacters + " / " + charLimit);
+            var t = e.currentTarget.innerText;
+            var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+            e.preventDefault();
+            var maxPaste = bufferText.length;
+            if (t.length + bufferText.length > charLimit) {
+              maxPaste = charLimit - t.length;
+            }
+            if (maxPaste > 0) {
+              document.execCommand('insertText', false, bufferText.substring(0, maxPaste));
+            }
+            $('textarea[name="proposal_desc"]').html(charLimit - t.length);
+          }
+        },
       });
 
     });
@@ -496,12 +529,7 @@ $img_4_extension = pathinfo($d_proposal_img4, PATHINFO_EXTENSION);
   <?php require_once("../includes/footer.php"); ?>
   <!-- <script src="../js/tagsinput.js"></script> -->
   <script type="text/javascript" src="<?= $site_url; ?>/js/jquery.amsify.suggestags.js"></script>
-  <script
-    type="text/javascript"
-    id="tags-js"
-    src="<?= $site_url; ?>/js/tags.js"
-    data-base-url="<?= $site_url; ?>"
-  ></script>
+  <script type="text/javascript" id="tags-js" src="<?= $site_url; ?>/js/tags.js" data-base-url="<?= $site_url; ?>"></script>
 </body>
 
 </html>

@@ -174,8 +174,11 @@ if (isset($_POST['submit'])) {
             </div>
         <?php } ?>
         <div class="col-md-3"><?= $lang['label']['proposal_title']; ?></div>
-        <div class="col-md-9"><textarea name="proposal_title" rows="3" required="" placeholder="I Will" class="form-control"></textarea></div>
-        <small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_description']); ?></small>
+        <div class="col-md-9">
+            <textarea name="proposal_title" id="proposal_title" rows="3" required="" placeholder="I Will" class="form-control" maxlength="100"></textarea>
+            <small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_description']); ?></small>
+            <span class="text-danger">Your proposal must be at least <span id="typed-characters">100</span> characters.</span>
+        </div>
     </div>
     <!--- form-group row Ends --->
 
@@ -318,9 +321,15 @@ while ($row_delivery_times = $get_delivery_times->fetch()) {
 </form>
 <!--- form Ends -->
 <script>
-    // $(".direct_order").click(function() {
-    //     var checkBoxes = $("#direct_order");
-    //     checkBoxes.prop("checked", !checkBoxes.prop("checked"));
-    //     return true;
-    // });
+    const textAreaElement = document.querySelector("#proposal_title");
+    const typedCharactersElement = document.querySelector("#typed-characters");
+    const maximumCharacters = 100;
+
+    textAreaElement.addEventListener("keydown", (event) => {
+        const typedCharacters = textAreaElement.value.length;
+        if (typedCharacters > maximumCharacters) {
+            return false;
+        }
+        typedCharactersElement.textContent = typedCharacters + "/" + maximumCharacters;
+    });
 </script>
