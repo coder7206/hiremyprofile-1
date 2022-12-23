@@ -117,7 +117,7 @@
           <a class="nav-link text-muted dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <?= $lang["menu"]['settings']; ?>
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" href="<?= $site_url; ?>/settings?profile_settings">
             <?= $lang["menu"]['profile_settings']; ?>
             </a>
