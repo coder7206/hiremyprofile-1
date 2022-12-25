@@ -170,7 +170,7 @@ $count_offers = $get_offers->rowCount();
 												<img src="<?=$site_url?>/images/level_badge_3.png" class="level-badge">
 											<?php } ?>
 										</div>
-										<div class="offer-seller mb-4">
+										<div class="offer-seller mb-1">
 											<p class="font-weight-bold mb-1">
 												<a href="<?=$site_url?>/<?= $sender_user_name; ?>" class="text-dark" target="_blank">
 													<?= $sender_user_name; ?>
@@ -195,6 +195,7 @@ $count_offers = $get_offers->rowCount();
 												<a href="<?=$site_url?>/<?= $sender_user_name; ?>" class="text-success" target="_blank"> User Profile </a>
 											</p>
 										</div>
+										<p><small><i class="fa fa-thumbs-o-up" data-toggle="tooltip" data-placement="top" title="Recommend"></i> 0 recommendation</small></p>
 										<a href="<?=$site_url?>/conversations/message?seller_id=<?= $sender_id; ?>&offer_id=<?= $offer_id; ?>" class="btn btn-sm btn-success rounded-0">
 											Contact Now
 										</a>
