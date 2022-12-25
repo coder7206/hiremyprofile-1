@@ -231,7 +231,7 @@
                         <strong class="card-title"> Website Statistics</strong>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered links-table">
+                        <table class="table table-bordered links-table table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Summary:</th>
@@ -239,6 +239,11 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr onclick="location.href='index?view_orders'">
+                                    <td>Order Cancel Requests</td>
+                                    <td><span class="badge badge-danger"><?= $count_orders_cancel; ?></span></td>
+                                </tr>
+
                                 <tr onclick="location.href='index?view_support_requests'">
                                     <td>Open Support Requests</td>
                                     <td><span class="badge badge-success"><?= $count_support_tickets; ?></span></td>
