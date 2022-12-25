@@ -188,7 +188,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                     <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["buying_orders"]; ?></h1>
                                 </div>
                                 <div class="col-md-12">
-                                    <?php include('user_buying_orders.php'); ?>
+                                    <?php $homePerPage = 5;  include('user_buying_orders.php'); ?>
                                 </div>
                             </div>
                             <!-- Order End -->

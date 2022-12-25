@@ -81,6 +81,7 @@ $website = $row_app_license->website;
 $count_sellers = $db->count("sellers");
 $count_notifications = $db->count("admin_notifications", array("status" => "unread"));
 $count_orders = $db->count("orders", array("order_active" => "yes"));
+$count_orders_cancel = $db->count("orders", array("order_status" => "cancellation requested"));
 $count_proposals = $db->count("proposals", array("proposal_status" => "pending"));
 $count_support_tickets = $db->count("support_tickets", array("status" => "open"));
 $count_requests = $db->count("buyer_requests", array("request_status" => "pending"));

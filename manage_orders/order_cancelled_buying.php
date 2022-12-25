@@ -1,106 +1,52 @@
-
-
 <div class="table-responsive box-table mt-3">
-
-
-	<table class="table table-bordered">
-
+	<table class="table table-bordered" id="orderCancelled">
 		<thead>
-			
-			<tr> 
-
+			<tr>
 				<th><?= $lang['th']['order_summary']; ?></th>
 				<th><?= $lang['th']['order_date']; ?></th>
 				<th><?= $lang['th']['due_on']; ?></th>
 				<th><?= $lang['th']['total']; ?></th>
 				<th><?= $lang['th']['status2']; ?></th>
-				
-
 			</tr>
-
 		</thead>
-
 		<tbody>
-            
-            <?php
-
-
-                $sel_orders = $db->select("orders",array("buyer_id" => $login_seller_id,"order_status" => "cancelled"),"DESC");
-            
-                $count_orders = $sel_orders->rowCount();
-
-                while($row_orders = $sel_orders->fetch()){
-
-                $order_id = $row_orders->order_id;
-
-                $proposal_id = $row_orders->proposal_id;
-
-                $order_price = $row_orders->order_price;
-
-                $order_status = $row_orders->order_status;
-
-                $order_number = $row_orders->order_number;
-
-                $order_duration = intval($row_orders->order_duration);
-
-                $order_date = $row_orders->order_date;
-
-                $order_due = date("F d, Y", strtotime($order_date . " + $order_duration days"));
-
-
-				$select_proposals = $db->select("proposals",array("proposal_id" => $proposal_id));
-
-				$row_proposals = $select_proposals->fetch();
-
-				$proposal_title = $row_proposals->proposal_title;
-
-                $proposal_img1 = getImageUrl2("proposals","proposal_img1",$row_proposals->proposal_img1);
-
-
-            ?>
-
-
-			<tr>
-
-				<td>
-
-					<a href="order_details?order_id=<?= $order_id; ?>" class="make-black">
-
-						<img class="order-proposal-image" src="<?= $proposal_img1; ?>">
-
-						<p class="order-proposal-title"><?= $proposal_title; ?></p>
-						
-
-					</a>
-					
+			<tr class="table-info">
+				<td colspan="5">
+					data fetching...
 				</td>
-
-				<td><?= $order_date; ?></td>
-				<td><?= $order_due; ?></td>
-				<td><?= showPrice($order_price); ?></td>
-				<td><button class="btn btn-success"><?= ucwords($order_status); ?></button></td>
-				
-
-
 			</tr>
-            
-            <?php } ?>
-			
-
-
 		</tbody>
-		
-
-
 	</table>
-    
-<?php
-            
-   if($count_orders == 0){
-                
-      echo "<center><h3 class='pb-4 pt-4'><i class='fa fa-smile-o'></i> {$lang['buying_orders']['no_cancelled']} </h3></center>";
-   }
-            
-?>
-
+	<nav id="pagination-order-cancelled" aria-label="Cancelled order navigation">
+	</nav>
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		var activeOrder = function(userId, status, limit, page = 1) {
+			return $.ajax({
+				url: "<?= $site_url ?>/ajax/order_data.php",
+				dataType: "json",
+				data: {
+					user_id: userId,
+					status: status,
+					limit: limit,
+					page: page,
+				}
+			}).done(function(data) {
+				$('body #orderCancelled tbody').html(data.data);
+				$('body #pagination-order-cancelled').html(data.pagination);
+				$('body #wait').removeClass("loader");
+			});
+		}
+		activeOrder(<?= $login_seller_id ?>, 'cancelled', <?= isset($homePerPage) ? $homePerPage : 10 ?>);
+
+		//executes code below when user click on pagination links
+		$("body #pagination-order-cancelled").on("click", ".pagination a", function(e) {
+			e.preventDefault();
+			var page = $(this).attr("data-page"); //get page number from link
+			$('body #wait').addClass("loader");
+			activeOrder(<?= $login_seller_id ?>, 'cancelled', <?= isset($homePerPage) ? $homePerPage : 10 ?>, page);
+		})
+	});
+</script>
