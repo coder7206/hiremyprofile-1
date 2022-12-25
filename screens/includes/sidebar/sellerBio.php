@@ -36,7 +36,7 @@
           <?= ucfirst($proposal_seller_user_name); ?>
         </a> <span class="divider"> </span> <span class="text-muted"><?= $level_title; ?></span>
       </h3>
-      <div class="star-rating text-warning text-center pb-3">
+      <div class="star-rating text-warning text-center pb-1">
       <?php
       for ($seller_i = 0; $seller_i < $average_rating; $seller_i++) {
         echo " <i class='fa fa-star'></i> ";
@@ -48,6 +48,7 @@
       <span class="text-white m-1"><strong>
         <?php printf("%.1f", $average); ?></strong> (<?= $count_reviews; ?>)</span>
       </div>
+      <p><small><i class="fa fa-thumbs-o-up" data-toggle="tooltip" data-placement="top" title="Recommend"></i> 0 recommendation</small></p>
       <?php if ($proposal_seller_vacation == "on") { ?>
         <a href="#" class="btn btn-lg btn-block btn-message rounded-0">Sorry I’m away</a>
       <?php } else { ?>
