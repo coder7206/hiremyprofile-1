@@ -149,6 +149,10 @@ if ($a_feedback == 1) {
 		include("feedback/ideas/view.php");
 	}
 
+	if (isset($_GET['idea-comments'])) {
+		include("feedback/ideas/comments.php");
+	}
+
 	if (isset($_GET['delete_idea'])) {
 		include("feedback/ideas/delete.php");
 	}
