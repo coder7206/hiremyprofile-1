@@ -17,7 +17,7 @@ if (isset($_REQUEST["page"])) {
 }
 
 $limit = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 10;
-$buyerId = $_REQUEST['user_id'];
+$sellerId = $_REQUEST['user_id'];
 $status = $_REQUEST['status'];
 
 $statusArray = ['yes', 'delivered', 'completed', 'cancelled'];
@@ -27,21 +27,21 @@ $pagePosition = (($pageNumber - 1) * $limit);
 
 if (in_array($status, $statusArray)) {
     if ($status == 'yes') {
-        $spQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id  AND order_active=:order_active";
-        $sQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id  AND order_active=:order_active LIMIT " . $pagePosition . ", " . $limit;
-        $sBind = ["buyer_id" => $buyerId, "order_active" => $status];
-        $noResult = $lang['buying_orders']['no_active'];
+        $spQuery = "SELECT * FROM orders WHERE seller_id=:seller_id  AND order_active=:order_active";
+        $sQuery = "SELECT * FROM orders WHERE seller_id=:seller_id  AND order_active=:order_active LIMIT " . $pagePosition . ", " . $limit;
+        $sBind = ["seller_id" => $sellerId, "order_active" => $status];
+        $noResult = $lang['selling_orders']['no_active'];
     } else {
-        $spQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id  AND order_status=:order_status";
-        $sQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id  AND order_status=:order_status LIMIT " . $pagePosition . ", " . $limit;
-        $sBind = ["buyer_id" => $buyerId, "order_status" => $status];
-        $noResult = $status == 'delivered' ? $lang['buying_orders']['no_delivered'] : ($status == 'completed' ? $lang['buying_orders']['no_completed'] : ($status == 'cancelled' ? $lang['buying_orders']['no_cancelled'] : ''));
+        $spQuery = "SELECT * FROM orders WHERE seller_id=:seller_id  AND order_status=:order_status";
+        $sQuery = "SELECT * FROM orders WHERE seller_id=:seller_id  AND order_status=:order_status LIMIT " . $pagePosition . ", " . $limit;
+        $sBind = ["seller_id" => $sellerId, "order_status" => $status];
+        $noResult = $status == 'delivered' ? $lang['selling_orders']['no_delivered'] : ($status == 'completed' ? $lang['selling_orders']['no_completed'] : ($status == 'cancelled' ? $lang['selling_orders']['no_cancelled'] : ''));
     }
 } else {
-    $spQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id";
-    $sQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id LIMIT " . $pagePosition . ", " . $limit;
-    $sBind = ["buyer_id" => $buyerId];
-    $noResult = $lang['buying_orders']['no_all'];
+    $spQuery = "SELECT * FROM orders WHERE seller_id=:seller_id";
+    $sQuery = "SELECT * FROM orders WHERE seller_id=:seller_id LIMIT " . $pagePosition . ", " . $limit;
+    $sBind = ["seller_id" => $sellerId];
+    $noResult = $lang['selling_orders']['no_all'];
 }
 
 //get total number of records from database for pagination
@@ -65,15 +65,15 @@ if ($rowCount > 0) {
         $order_price = $oResult->order_price;
         $order_status = $oResult->order_status;
         $order_number = $oResult->order_number;
-        $order_duration = substr($oResult->order_duration, 0, 1);
+        $order_duration = intval($oResult->order_duration);
         $order_date = $oResult->order_date;
         $order_due = date("F d, Y", strtotime($order_date . " + $order_duration days"));
 
         $select_proposals = $db->select("proposals", array("proposal_id" => $proposal_id));
         $row_proposals = $select_proposals->fetch();
         $proposal_title = $row_proposals->proposal_title;
-
         $proposal_img1 = getImageUrl2("proposals", "proposal_img1", $row_proposals->proposal_img1);
+
         $data .= "<tr>";
         $data .= "<td>";
         $data .= "<a href='" . $site_url . "/order_details?order_id=" . $order_id . "' class='make-black'>

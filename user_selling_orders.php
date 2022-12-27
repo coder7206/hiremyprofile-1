@@ -1,40 +1,40 @@
 <ul class="nav nav-tabs flex-column flex-sm-row ">
 	<li class="nav-item">
-        <?php
-        $count_orders = $db->count("orders",array("seller_id" => $login_seller_id, "order_active" => 'yes'));
-        ?>                   
+		<?php
+		$count_orders = $db->count("orders", array("seller_id" => $login_seller_id, "order_active" => 'yes'));
+		?>
 		<a href="#seller_active" data-toggle="tab" class="nav-link make-black active ">
 			<?= $lang['tabs']['active']; ?> <span class="badge badge-success"><?= $count_orders; ?></span>
 		</a>
 	</li>
 	<li class="nav-item">
-        <?php
-        $count_orders = $db->count("orders",array("seller_id" => $login_seller_id, "order_status" => 'delivered'));
-        ?>
+		<?php
+		$count_orders = $db->count("orders", array("seller_id" => $login_seller_id, "order_status" => 'delivered'));
+		?>
 		<a href="#seller_delivered" data-toggle="tab" class="nav-link make-black">
-			<?= $lang['tabs']['delivered']; ?> <span class="badge badge-success"><?= $count_orders; ?></span>			
+			<?= $lang['tabs']['delivered']; ?> <span class="badge badge-success"><?= $count_orders; ?></span>
 		</a>
 	</li>
-	<li class="nav-item">        
-        <?php
-        $count_orders = $db->count("orders",array("seller_id" => $login_seller_id, "order_status" => 'completed'));
-        ?>
+	<li class="nav-item">
+		<?php
+		$count_orders = $db->count("orders", array("seller_id" => $login_seller_id, "order_status" => 'completed'));
+		?>
 		<a href="#seller_completed" data-toggle="tab" class="nav-link make-black">
 			<?= $lang['tabs']['completed']; ?> <span class="badge badge-success"><?= $count_orders; ?></span>
 		</a>
 	</li>
 	<li class="nav-item">
-        <?php
-  		$count_orders = $db->count("orders",array("seller_id" => $login_seller_id, "order_status" => 'cancelled'));
-        ?>
+		<?php
+		$count_orders = $db->count("orders", array("seller_id" => $login_seller_id, "order_status" => 'cancelled'));
+		?>
 		<a href="#seller_cancelled" data-toggle="tab" class="nav-link make-black">
 			<?= $lang['tabs']['cancelled']; ?> <span class="badge badge-success"><?= $count_orders; ?></span>
 		</a>
 	</li>
 	<li class="nav-item">
-        <?php
-        $count_orders = $db->count("orders",array("seller_id" => $login_seller_id));
-        ?>
+		<?php
+		$count_orders = $db->count("orders", array("seller_id" => $login_seller_id));
+		?>
 		<a href="#seller_all" data-toggle="tab" class="nav-link make-black">
 			<?= $lang['tabs']['all']; ?> <span class="badge badge-success"><?= $count_orders; ?></span>
 		</a>
