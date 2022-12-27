@@ -513,4 +513,64 @@ $(document).ready(function () {
 	});
 	/*follower and following js*/
 	$('.sticky').addClass('fixed');
+
+	// REport Modal
+	$('#report-modal-uni').on('show.bs.modal', function (event) {
+		var button = $(event.relatedTarget) // Button that triggered the modal
+		var contentID = button.data('content-id')
+		var contentType = button.data('content-type')
+		var url = button.data('url')
+		var modal = $(this)
+
+		modal.find('input[name="content_id"]').val(contentID)
+		modal.find('input[name="content_type"]').val(contentType)
+		modal.find('input[name="url"]').val(url)
+	})
+
+	// Attach a submit handler to the report form
+	$("form#reportUni").submit(function (event) {
+		// Stop form from submitting normally
+		event.preventDefault();
+		// Get some values from elements on the page:
+		var $form = $(this),
+			reason = $form.find("select[name='reason']").val(),
+			additional_information = $form.find("textarea[name='additional_information']").val(),
+			reporter_id = $form.find("input[name='reporter_id']").val(),
+			content_id = $form.find("input[name='content_id']").val(),
+			content_type = $form.find("input[name='content_type']").val(),
+			url = $form.find("input[name='url']").val();
+
+		var formData = {
+			reason,
+			additional_information,
+			reporter_id,
+			content_id,
+			content_type,
+			url,
+		}
+		$.ajax({
+			method: "POST",
+			url: base_url + "/ajax/report",
+			data: formData,
+			dataType: 'json',
+			beforeSend: function () { // Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+				$('#wait').addClass('loader')
+			},
+			success: function (data) {
+				swal({
+					type: 'success',
+					text: 'Your Report Has Been Successfully Submitted.',
+					timer: 2000,
+					onOpen: function () {
+						swal.showLoading()
+					}
+				})
+				$('#report-modal-uni').modal('hide')
+				$("#reportUni")[0].reset();
+			},
+			complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+				$('#wait').removeClass('loader')
+			},
+		});
+	})
 });

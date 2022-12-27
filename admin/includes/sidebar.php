@@ -80,7 +80,7 @@ echo "<script>window.open('login','_self');</script>";
 
 <?php } ?>
 
-  <?php 
+  <?php
     if($a_video_schedules AND $videoPlugin == 1){
       include("../plugins/videoPlugin/admin/includes/sidebar.php");
     }
@@ -113,7 +113,7 @@ echo "<script>window.open('login','_self');</script>";
 <?php if($a_payouts == 1){ ?>
 
   <li class="menu-item-has-children dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="payouts"> 
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="payouts">
       <i class="menu-icon fa fa-money"></i> Payouts
     </a>
     <ul class="sub-menu children dropdown-menu">
@@ -128,13 +128,16 @@ echo "<script>window.open('login','_self');</script>";
 <?php if($a_reports == 1){ ?>
 
   <li class="menu-item-has-children dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Reports"> 
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Reports">
     <i class="menu-icon fa fa-flag" ></i>Reports / Abuses
   </a>
   <ul class="sub-menu children dropdown-menu">
     <li><i class="fa  fa-arrow-circle-right"></i><a href="index?order_reports">Order Reports</a></li>
     <li><i class="fa  fa-arrow-circle-right"></i><a href="index?message_reports">Message Reports</a></li>
     <li><i class="fa  fa-arrow-circle-right"></i><a href="index?proposal_reports">Proposal Reports</a></li>
+    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?job_reports">Job Reports</a></li>
+    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?offer_reports">Offer Reports</a></li>
+    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?users_reports">User Reports</a></li>
   </ul>
   </li>
 
@@ -314,7 +317,7 @@ echo "<script>window.open('login','_self');</script>";
           <li><i class="menu-icon fa fa-arrow-circle-right"></i><a href="index?view_slides"> View Slides</a></li>
       </ul>
   </li>
-  
+
   <?php } ?>
 
   <?php if($a_terms == 1){ ?>
@@ -342,7 +345,7 @@ echo "<script>window.open('login','_self');</script>";
   <li>
       <a href="index?view_orders"> <i class="menu-icon fa fa-eye"></i> View Orders </a>
   </li>
-  
+
   <?php } ?>
 
   <?php if($a_referrals == 1){ ?>
@@ -358,7 +361,7 @@ echo "<script>window.open('login','_self');</script>";
   </li>
 
   <li>
-    <a href="index?view_proposal_referrals"> 
+    <a href="index?view_proposal_referrals">
       <i class="menu-icon fa fa-universal-access"></i>View Proposal Referrals
       <?php if(!$count_proposals_referrals == 0){ ?>
         <span class="badge badge-success"><?= $count_proposals_referrals;?></span>
@@ -384,7 +387,7 @@ echo "<script>window.open('login','_self');</script>";
   <?php if($a_knowledge_bank == 1){ ?>
 
   <li class="menu-item-has-children dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Seller Skills"> 
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Seller Skills">
   <i class="menu-icon fa fa-book"></i> Knowledge Bank
   </a>
           <ul class="sub-menu children dropdown-menu">
@@ -400,7 +403,7 @@ echo "<script>window.open('login','_self');</script>";
   <?php if($a_currencies == 1){ ?>
 
   <li class="menu-item-has-children dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Seller Skills"> 
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Seller Skills">
       <i class="menu-icon fa fa-money"></i> Site Currencies
     </a>
     <ul class="sub-menu children dropdown-menu">
@@ -418,7 +421,7 @@ echo "<script>window.open('login','_self');</script>";
   <?php if($a_languages == 1){ ?>
 
   <li class="menu-item-has-children dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Languages"> 
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Languages">
       <i class="menu-icon fa fa-language"></i> Languages
     </a>
     <ul class="sub-menu children dropdown-menu">
@@ -428,7 +431,7 @@ echo "<script>window.open('login','_self');</script>";
       <li><i class="menu-icon fa fa-arrow-circle-right"></i><a href="index?view_languages"> View Languages</a></li>
     </ul>
   </li>
-  
+
   <?php } ?>
 
     <?php if($a_m_plan == 1){ ?>
@@ -477,8 +480,8 @@ echo "<script>window.open('login','_self');</script>";
   <?php } ?>
 
   <li>
-    <a href="logout"> 
-      <i class="menu-icon fa fa-power-off"></i> Logout 
+    <a href="logout">
+      <i class="menu-icon fa fa-power-off"></i> Logout
     </a>
   </li>
 
