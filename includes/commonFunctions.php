@@ -171,3 +171,109 @@ function truncate($str, $width = 25)
 {
    return strtok(wordwrap($str, $width, "...\n"), "\n");
 }
+
+/**
+ * Pagination function
+ *
+ * @param [type] $itemPerPage
+ * @param [type] $currentPage
+ * @param [type] $totalRecords
+ * @param [type] $totalPages
+ * @return void
+ */
+function paginate($itemPerPage, $currentPage, $totalRecords, $totalPages)
+{
+    $pagination = '';
+    if ($totalPages > 0 && $totalPages != 1 && $currentPage <= $totalPages) { //verify total pages and current page number
+        $pagination .= '<ul class="pagination justify-content-center">';
+
+        $right_links = $currentPage + 3;
+        $previous = $currentPage - 3; //previous link
+        $nex = $currentPage + 1; //next link
+        $first_link = true; //boolean var to decide our first link
+
+        if ($currentPage > 1) {
+            $previous_link = ($previous == 0) ? 1 : $previous;
+            $pagination .= '<li class="page-item first"><a class="page-link" href="#" data-page="1" title="First">&laquo;</a></li>'; //first link
+            $pagination .= '<li class="page-item"><a class="page-link" href="#" data-page="' . abs($previous_link) . '" title="Previous">&lt;</a></li>'; //previous link
+            for ($i = ($currentPage - 2); $i < $currentPage; $i++) { //Create left-hand side links
+                if ($i > 0) {
+                    $pagination .= '<li class="page-item"><a class="page-link" href="#" data-page="' . $i . '" title="Page' . $i . '">' . $i . '</a></li>';
+                }
+            }
+            $first_link = false; //set first link to false
+        }
+
+        if ($first_link) { //if current active page is first link
+            $pagination .= '<li class="page-item first active disabled"><a class="page-link" href="#">' . $currentPage . '<span class="sr-only">(current)</span></li>';
+        } elseif ($currentPage == $totalPages) { //if it's the last active link
+            $pagination .= '<li class="page-item last active disabled"><a class="page-link" href="#">' . $currentPage . '<span class="sr-only">(current)</span></li>';
+        } else { //regular current link
+            $pagination .= '<li class="page-item active disabled"><a class="page-link" href="#">' . $currentPage . '</a></li>';
+        }
+
+        for ($i = $currentPage + 1; $i < $right_links; $i++) { //create right-hand side links
+            if ($i <= $totalPages) {
+                $pagination .= '<li class="page-item"><a class="page-link" href="#" data-page="' . $i . '" title="Page ' . $i . '">' . $i . '</a></li>';
+            }
+        }
+        if ($currentPage < $totalPages) {
+            $next_link = ($i > $totalPages) ? $totalPages : $i;
+            $pagination .= '<li class="page-item"><a class="page-link" href="#" data-page="' . $next_link . '" title="Next">&gt;</a></li>'; //next link
+            $pagination .= '<li class="page-item last"><a class="page-link" href="#" data-page="' . $totalPages . '" title="Last">&raquo;</a></li>'; //last link
+        }
+
+        $pagination .= '</ul>';
+    }
+    return $pagination; //return pagination links
+}
+
+
+function pagination($itemPerPage, $currentPage, $totalRecords, $totalPages, $url)
+{
+   // echo $currentPage . PHP_EOL . $totalRecords . PHP_EOL . $totalPages;
+   $pagination = '';
+
+    if ($totalPages > 0 && $totalPages != 1 && $currentPage <= $totalPages) { //verify total pages and current page number
+        $pagination .= '<ul class="pagination justify-content-center">';
+
+        $right_links = $currentPage + 3;
+        $previous = $currentPage - 3; //previous link
+        $nex = $currentPage + 1; //next link
+        $first_link = true; //boolean var to decide our first link
+
+        if ($currentPage > 1) {
+            $previous_link = ($previous == 0) ? 1 : $previous;
+            $pagination .= '<li class="page-item first"><a class="page-link" href="' . $url . '1" title="First">&laquo;</a></li>'; //first link
+            $pagination .= '<li class="page-item"><a class="page-link" href="' . $url . abs($previous_link) . '" title="Previous">&lt;</a></li>'; //previous link
+            for ($i = ($currentPage - 2); $i < $currentPage; $i++) { //Create left-hand side links
+                if ($i > 0) {
+                    $pagination .= '<li class="page-item"><a class="page-link" href="' . $url . $i . '" title="Page' . $i . '">' . $i . '</a></li>';
+                }
+            }
+            $first_link = false; //set first link to false
+        }
+
+        if ($first_link) { //if current active page is first link
+            $pagination .= '<li class="page-item first active disabled"><a class="page-link" href="' . $url . $currentPage . '">' . $currentPage . '<span class="sr-only">(current)</span></li>';
+        } elseif ($currentPage == $totalPages) { //if it's the last active link
+            $pagination .= '<li class="page-item active last disabled"><a href="' . $url . $currentPage . '" class="page-link">' . $currentPage . '</a></li>';
+        } else { //regular current link
+            $pagination .= '<li class="page-item active disabled"><a class="page-link" href="' . $url . $currentPage . '">' . $currentPage . '</a></li>';
+        }
+
+        for ($i = $currentPage + 1; $i < $right_links; $i++) { //create right-hand side links
+            if ($i <= $totalPages) {
+                $pagination .= '<li class="page-item"><a class="page-link" href="' . $url . $i . '" title="Page ' . $i . '">' . $i . '</a></li>';
+            }
+        }
+        if ($currentPage < $totalPages) {
+            $next_link = ($i > $totalPages) ? $totalPages : $i;
+            $pagination .= '<li class="page-item"><a class="page-link" href="' . $url . $next_link . '" title="Next">&gt;</a></li>'; //next link
+            $pagination .= '<li class="page-item last"><a class="page-link" href="' . $url . $totalPages . '" title="Last">&raquo;</a></li>'; //last link
+        }
+
+        $pagination .= '</ul>';
+    }
+    return $pagination; //return pagination links
+}

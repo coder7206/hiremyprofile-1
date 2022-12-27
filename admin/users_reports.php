@@ -10,25 +10,20 @@ if (!isset($_SESSION['admin_email'])) {
 
 ?>
 
-
     <div class="breadcrumbs">
 
         <div class="col-sm-4">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1><i class="menu-icon fa fa-flag"></i> Reports / Order Reports </h1>
+                    <h1><i class="menu-icon fa fa-flag"></i> Reports / User Reports </h1>
                 </div>
             </div>
         </div>
-
 
     </div>
 
 
     <div class="container">
-
-
-
 
         <div class="row">
             <!--- 3 row Starts --->
@@ -42,11 +37,7 @@ if (!isset($_SESSION['admin_email'])) {
                     <div class="card-header">
                         <!--- card-header Starts --->
 
-                        <h4 class="h4">
-
-                            View All Order Reports
-
-                        </h4>
+                        <h4 class="h4">View All User Reports</h4>
 
                     </div>
                     <!--- card-header Ends --->
@@ -69,7 +60,7 @@ if (!isset($_SESSION['admin_email'])) {
 
                                         <th> Reporter </th>
 
-                                        <th> Order </th>
+                                        <th> User </th>
 
                                         <th> Reason </th>
 
@@ -91,7 +82,7 @@ if (!isset($_SESSION['admin_email'])) {
 
                                     $i = 0;
 
-                                    $select_reports = $db->select("reports", array('content_type' => 'order'));
+                                    $select_reports = $db->select("reports", array('content_type' => 'user'));
 
                                     while ($row_reports = $select_reports->fetch()) {
 
@@ -109,11 +100,14 @@ if (!isset($_SESSION['admin_email'])) {
 
                                         $status = $row_reports->status;
 
+
                                         $select_seller = $db->select("sellers", array("seller_id" => $reporter_id));
+
                                         $reporter_user_name = $select_seller->fetch()->seller_user_name;
 
-                                        $get_orders = $db->select("orders", array("order_id" => $content_id));
-                                        $order_number = $get_orders->fetch()->order_number;
+                                        $select_seller = $db->select("sellers", array("seller_id" => $content_id));
+
+                                        $seller_user_name = $select_seller->fetch()->seller_user_name;
 
                                         $i++;
 
@@ -122,26 +116,44 @@ if (!isset($_SESSION['admin_email'])) {
                                         <tr>
 
                                             <td><?= $i; ?></td>
-                                            <td><a href="../<?= $reporter_user_name; ?>" target="_blank" class="text-success"><?= $reporter_user_name; ?></a></td>
-                                            <td><a href="index?single_order=<?= $content_id; ?>" target="_blank" class="text-success">#<?= $order_number; ?></a></td>
-                                            <td><?= $reason; ?></td>
-                                            <td><?= $additional_information; ?></td>
-                                            <td><?= $date; ?></td>
 
                                             <td>
+                                                <a href="../<?= $reporter_user_name; ?>" target="_blank" class="text-success"><?= $reporter_user_name; ?></a>
+                                            </td>
+
+                                            <td>
+                                                <a href="../<?= $seller_user_name; ?>" target="_blank" class="text-success"><?= $seller_user_name; ?></a>
+                                            </td>
+
+                                            <td><?= $reason; ?></td>
+
+                                            <td><?= $additional_information; ?></td>
+
+                                            <td>
+                                                <?= $date; ?>
+                                            </td>
+
+                                            <td>
+
                                                 <div class="dropdown">
                                                     <!--- dropdown Starts --->
-                                                    <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">
-                                                        Actions
-                                                    </button>
+
+                                                    <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Actions</button>
+
                                                     <div class="dropdown-menu" style="min-width:50px !important;">
-                                                        <a class="dropdown-item" href="index?delete_order_report=<?= $id; ?>">
+
+                                                        <a class="dropdown-item" href="index?type=users&delete_report=<?= $id; ?>">
+
                                                             <i class="fa fa-trash"></i> Delete
+
                                                         </a>
+
                                                     </div>
                                                     <!--- dropdown-menu Ends --->
+
                                                 </div>
                                                 <!--- dropdown Ends --->
+
                                             </td>
 
                                         </tr>
@@ -157,7 +169,6 @@ if (!isset($_SESSION['admin_email'])) {
                         </div>
                         <!--- table-responsive Ends --->
 
-
                     </div>
                     <!--- card-body Ends --->
 
@@ -169,8 +180,6 @@ if (!isset($_SESSION['admin_email'])) {
 
         </div>
         <!--- 3 row Ends --->
-
-
 
     </div>
 

@@ -33,7 +33,7 @@
 						$link_title = $row_footer_links->link_title;
 						$link_url = $row_footer_links->link_url;
 					?>
-						<li class="list-unstyled-item"><a href="<?= $site_url.$link_url; ?>"><?= $link_title; ?></a></li>
+						<li class="list-unstyled-item"><a href="<?= $site_url . $link_url; ?>"><?= $link_title; ?></a></li>
 					<?php } ?>
 				</ul>
 			</div>
@@ -49,7 +49,7 @@
 						$link_title = $row_footer_links->link_title;
 						$link_url = $row_footer_links->link_url;
 					?>
-						<li class="list-unstyled-item"><a href="<?= $site_url.$link_url; ?>"><i class="fa <?= $icon_class; ?>"></i> <?= $link_title; ?></a></li>
+						<li class="list-unstyled-item"><a href="<?= $site_url . $link_url; ?>"><i class="fa <?= $icon_class; ?>"></i> <?= $link_title; ?></a></li>
 					<?php } ?>
 				</ul>
 			</div>
@@ -104,6 +104,53 @@
 	</section>
 <?php } ?>
 <section class="messagePopup animated slideInRight"></section>
+
+<div id="report-modal-uni" class="modal fade" role="dialog">
+	<!-- report-modal modal fade Starts -->
+	<div class="modal-dialog">
+		<!-- modal-dialog Starts -->
+		<div class="modal-content">
+			<!-- modal-content Starts -->
+			<div class="modal-header p-2 pl-3 pr-3">
+				<!-- modal-header Starts -->
+				Report this item
+				<button class="close" data-dismiss="modal"><span>&times;</span></button>
+			</div><!-- modal-header Ends -->
+			<div class="modal-body">
+				<!-- modal-body p-0 Starts -->
+				<h6>Let us know why you would like to report this item.</h6>
+				<form action="#" method="post" id="reportUni">
+					<div class="form-group mt-3">
+						<!--- form-group Starts --->
+						<select class="form-control float-right" name="reason" required="">
+							<option value="">Select</option>
+							<option>Non Original Content</option>
+							<option>Inappropriate Proposal</option>
+							<option>Trademark Violation</option>
+							<option>Copyrights Violation</option>
+						</select>
+					</div>
+					<!--- form-group Ends --->
+					<br>
+					<br>
+					<div class="form-group mt-1 mb-3">
+						<!--- form-group Starts --->
+						<label> Additional Information </label>
+						<textarea name="additional_information" rows="3" class="form-control" required=""></textarea>
+					</div>
+					<!--- form-group Ends --->
+					<button type="submit" name="submit_report" class="float-right btn btn-sm btn-success">
+						Submit Report
+					</button>
+					<input type="hidden" name="reporter_id" value="<?=$login_seller_id?>" required />
+					<input type="hidden" name="content_id" value="" required />
+					<input type="hidden" name="content_type" value="" required />
+					<input type="hidden" name="url" value="" required />
+				</form>
+			</div><!-- modal-body p-0 Ends -->
+		</div><!-- modal-content Ends -->
+	</div><!-- modal-dialog Ends -->
+</div><!-- report-modal modal fade Ends -->
 
 <link rel="stylesheet" href="<?= $site_url; ?>/styles/msdropdown.css" />
 <?php

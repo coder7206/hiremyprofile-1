@@ -134,6 +134,23 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
 
         form.submit();
     }
+    $(function(){
+        // $("a#buyer_tab").click(function(){
+        //     $('#buyer-sidebar').show();
+        //     $('#seller-sidebar').hide();
+        // });
+        $('.nav-tabs a').click(function(){
+            var tabValue = $(this).data('value')
+            if (tabValue == "buyer") {
+                $('body #buyer-sidebar').show();
+                $('body #seller-sidebar').hide();
+            } else {
+                $('body #seller-sidebar').show();
+                $('body #buyer-sidebar').hide();
+            }
+            $(this).tab('show');
+        })
+    })
 </script>
 <div class="container-fluid pt-5">
     <div class="row">
@@ -146,11 +163,11 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
         <div class="col-xl-9 col-lg-8 pb-5">
             <div class="about-section-1">
                 <div class="top_bas nav nav-tabs font-weight-bold text-largest" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link <?= $activeTab == "buyer" ? "active" : "" ?>" data-toggle="tab" href="#Buyer" role="tab" aria-selected="<?= $activeTab == "buyer" ? "true" : "false" ?>" id="buyer_tab">Buyer </a>
+                    <a class="nav-item nav-link <?= $activeTab == "buyer" ? "active" : "" ?>" data-toggle="tab" data-value="buyer" href="#Buyer" role="tab" aria-selected="<?= $activeTab == "buyer" ? "true" : "false" ?>" id="buyer_tab">Buyer </a>
                     <?php if ($activeTab == "seller") { ?>
-                        <a class="nav-item nav-link active" data-toggle="tab" href="#Seller" role="tab" aria-selected="true" id="seller_tab">Seller <i onclick="myBookmark(this)" data-bookmark-seller="no" class="fa fa-bookmark" data-toggle="tooltip" data-placement="top" title="Remove Bookmark"></i></a>
+                        <a class="nav-item nav-link active" data-toggle="tab" data-value="seller" href="#Seller" role="tab" aria-selected="true" id="seller_tab">Seller <i onclick="myBookmark(this)" data-bookmark-seller="no" class="fa fa-bookmark" data-toggle="tooltip" data-placement="top" title="Remove Bookmark"></i></a>
                     <?php } else { ?>
-                        <a class="nav-item nav-link" data-toggle="tab" href="#Seller" role="tab" aria-selected="false" id="seller_tab">Seller <i onclick="myBookmark(this)" data-bookmark-seller="yes" class="fa fa-bookmark-o" data-toggle="tooltip" data-placement="top" title="Add Bookmark"></i></a>
+                        <a class="nav-item nav-link" data-toggle="tab" data-value="seller" href="#Seller" role="tab" aria-selected="false" id="seller_tab">Seller <i onclick="myBookmark(this)" data-bookmark-seller="yes" class="fa fa-bookmark-o" data-toggle="tooltip" data-placement="top" title="Add Bookmark"></i></a>
                     <?php } ?>
                 </div>
             </div>
@@ -188,7 +205,8 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                     <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["buying_orders"]; ?></h1>
                                 </div>
                                 <div class="col-md-12">
-                                    <?php $homePerPage = 5;  include('user_buying_orders.php'); ?>
+                                    <?php $homePerPage = 5;
+                                    include('user_buying_orders.php'); ?>
                                 </div>
                             </div>
                             <!-- Order End -->
@@ -199,260 +217,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                     <h1 class="pull-left"> <?= $lang["titles"]["manage_requests"]; ?> </h1>
                                 </div>
                                 <div class="col-md-12">
-                                    <ul class="nav nav-tabs flex-column flex-sm-row">
-                                        <?php
-                                        $count_requests = $db->count("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => 'active'));
-                                        ?>
-                                        <li class="nav-item">
-                                            <a href="#request_active" data-toggle="tab" class="nav-link active make-black">
-                                                <?= $lang['tabs']['active_requests']; ?> <span class="badge badge-success"><?= $count_requests; ?></span>
-                                            </a>
-                                        </li>
-                                        <?php
-                                        $count_requests = $db->count("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => 'pause'));
-                                        ?>
-                                        <li class="nav-item">
-                                            <a href="#request_pause" data-toggle="tab" class="nav-link make-black">
-                                                <?= $lang['tabs']['pause_requests']; ?> <span class="badge badge-success"><?= $count_requests; ?></span>
-                                            </a>
-                                        </li>
-                                        <?php
-                                        $count_requests = $db->count("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => 'pending'));
-                                        ?>
-                                        <li class="nav-item">
-                                            <a href="#request_pending" data-toggle="tab" class="nav-link make-black">
-                                                <?= $lang['tabs']['pending_approval']; ?> <span class="badge badge-success"><?= $count_requests; ?></span>
-                                            </a>
-                                        </li>
-                                        <?php
-                                        $count_requests = $db->count("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => 'unapproved'))
-                                        ?>
-                                        <li class="nav-item">
-                                            <a href="#request_unapproved" data-toggle="tab" class="nav-link make-black">
-                                                <?= $lang['tabs']['unapproved']; ?> <span class="badge badge-success"><?= $count_requests; ?></span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content mt-4">
-                                        <div id="request_active" class="tab-pane fade show active">
-                                            <div class="table-responsive box-table">
-                                                <table class="table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th><?= $lang['th']['title']; ?></th>
-                                                            <th><?= $lang['th']['description']; ?></th>
-                                                            <th><?= $lang['th']['date']; ?></th>
-                                                            <th><?= $lang['th']['offers']; ?></th>
-                                                            <th><?= $lang['th']['budget']; ?></th>
-                                                            <th><?= $lang['th']['actions']; ?></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "active"), "DESC LIMIT 5");
-                                                        $count_requests = $get_requests->rowCount();
-                                                        while ($row_requests = $get_requests->fetch()) {
-                                                            $request_id = $row_requests->request_id;
-                                                            $request_title = $row_requests->request_title;
-                                                            $request_description = $row_requests->request_description;
-                                                            $request_date = $row_requests->request_date;
-                                                            $request_budget = $row_requests->request_budget;
-                                                            $count_offers = $db->count("send_offers", array("request_id" => $request_id, "status" => 'active'));
-                                                        ?>
-                                                            <tr>
-                                                                <td> <?= $request_title; ?> </td>
-                                                                <td><?= $request_description; ?></td>
-                                                                <td> <?= $request_date; ?> </td>
-                                                                <td> <?= $count_offers; ?> </td>
-                                                                <td class="text-success"> <?= showPrice($request_budget); ?> </td>
-                                                                <td class="text-center">
-                                                                    <div class="dropdown">
-                                                                        <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
-                                                                        <div class="dropdown-menu">
-                                                                            <a href="<?=$site_url?>/requests/view_offers?request_id=<?= $request_id; ?>" target="blank" class="dropdown-item">View
-                                                                                Offers</a>
-                                                                            <a href="<?=$site_url?>/requests/pause_request?request_id=<?= $request_id; ?>" class="dropdown-item">
-                                                                                Pause
-                                                                            </a>
-                                                                            <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this job?');">
-                                                                                Delete
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        <?php } ?>
-                                                    </tbody>
-                                                </table>
-                                                <?php
-                                                if ($count_requests == 0) {
-                                                    echo "<center>
-                             <h3 class='pt-4 pb-4'>
-                                <i class='fa fa-meh-o'></i> {$lang['manage_requests']['no_active']}
-                             </h3>
-                          </center>";
-                                                }
-                                                ?>
-                                            </div>
-                                        </div>
-                                        <div id="request_pause" class="tab-pane fade">
-                                            <div class="table-responsive box-table">
-                                                <table class="table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th><?= $lang['th']['title']; ?></th>
-                                                            <th><?= $lang['th']['description']; ?></th>
-                                                            <th><?= $lang['th']['date']; ?></th>
-                                                            <th><?= $lang['th']['offers']; ?></th>
-                                                            <th><?= $lang['th']['budget']; ?></th>
-                                                            <th><?= $lang['th']['actions']; ?></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "pause"), "DESC LIMIT 5");
-
-                                                        $count_requests = $get_requests->rowCount();
-                                                        while ($row_requests = $get_requests->fetch()) {
-                                                            $request_id = $row_requests->request_id;
-                                                            $request_title = $row_requests->request_title;
-                                                            $request_description = $row_requests->request_description;
-                                                            $request_date = $row_requests->request_date;
-                                                            $request_budget = $row_requests->request_budget;
-
-                                                            $count_offers = $db->count("send_offers", array("request_id" => $request_id, "status" => 'active'));
-                                                        ?>
-                                                            <tr>
-                                                                <td> <?= $request_title; ?> </td>
-                                                                <td>
-                                                                    <?= $request_description; ?>
-                                                                </td>
-                                                                <td> <?= $request_date; ?></td>
-                                                                <td><?= $count_offers; ?> </td>
-                                                                <td class="text-success"> <?= showPrice($request_budget); ?> </td>
-                                                                <td class="text-center">
-                                                                    <div class="dropdown">
-                                                                        <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
-                                                                        <div class="dropdown-menu">
-                                                                            <a href="<?=$site_url?>/requests/active_request?request_id=<?= $request_id; ?>" class="dropdown-item">
-                                                                                Activate
-                                                                            </a>
-                                                                            <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this job?');">
-                                                                                Delete
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        <?php } ?>
-                                                    </tbody>
-                                                </table>
-                                                <?php
-                                                if ($count_requests == 0) {
-                                                    echo "<center>
-                              <h3 class='pt-4 pb-4'><i class='fa fa-smile-o'></i> {$lang['manage_requests']['no_pause']} </h3>
-                              </center>";
-                                                }
-                                                ?>
-                                            </div>
-                                        </div>
-                                        <div id="request_pending" class="tab-pane fade">
-                                            <div class="table-responsive box-table">
-                                                <table class="table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th><?= $lang['th']['title']; ?></th>
-                                                            <th><?= $lang['th']['description']; ?></th>
-                                                            <th><?= $lang['th']['date']; ?></th>
-                                                            <th><?= $lang['th']['offers']; ?></th>
-                                                            <th><?= $lang['th']['budget']; ?></th>
-                                                            <th><?= $lang['th']['actions']; ?></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "pending"), "DESC LIMIT 5");
-                                                        $count_requests = $get_requests->rowCount();
-                                                        while ($row_requests = $get_requests->fetch()) {
-                                                            $request_id = $row_requests->request_id;
-                                                            $request_title = $row_requests->request_title;
-                                                            $request_description = $row_requests->request_description;
-                                                            $request_date = $row_requests->request_date;
-                                                            $request_budget = $row_requests->request_budget;
-                                                        ?>
-                                                            <tr>
-                                                                <td> <?= $request_title; ?> </td>
-                                                                <td>
-                                                                    <?= $request_description; ?>
-                                                                </td>
-                                                                <td> <?= $request_date; ?> </td>
-                                                                <td> 0</td>
-                                                                <td class="text-success"> <?= showPrice($request_budget); ?> </td>
-                                                                <td>
-                                                                    <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this job?');">
-                                                                        Delete
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                        <?php } ?>
-                                                    </tbody>
-                                                </table>
-                                                <?php
-                                                if ($count_requests == 0) {
-                                                    echo "<center><h3 class='pt-4 pb-4'><i class='fa fa-smile-o'></i> {$lang['manage_requests']['no_pending']} </h3></center>";
-                                                }
-                                                ?>
-                                            </div>
-                                        </div>
-                                        <div id="request_unapproved" class="tab-pane fade">
-                                            <div class="table-responsive box-table">
-                                                <table class="table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th><?= $lang['th']['title']; ?></th>
-                                                            <th><?= $lang['th']['description']; ?></th>
-                                                            <th><?= $lang['th']['date']; ?></th>
-                                                            <th><?= $lang['th']['offers']; ?></th>
-                                                            <th><?= $lang['th']['budget']; ?></th>
-                                                            <th><?= $lang['th']['actions']; ?></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        $get_requests = $db->select("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => "unapproved"), "DESC LIMIT 5");
-                                                        $count_requests = $get_requests->rowCount();
-                                                        while ($row_requests = $get_requests->fetch()) {
-                                                            $request_id = $row_requests->request_id;
-                                                            $request_title = $row_requests->request_title;
-                                                            $request_description = $row_requests->request_description;
-                                                            $request_date = $row_requests->request_date;
-                                                            $request_budget = $row_requests->request_budget;
-                                                        ?>
-                                                            <tr>
-                                                                <td> <?= $request_title; ?> </td>
-                                                                <td>
-                                                                    <?= $request_description; ?>
-                                                                </td>
-                                                                <td><?= $request_date; ?> </td>
-                                                                <td> 0</td>
-                                                                <td class="text-success"> <?= showPrice($request_budget); ?> </td>
-                                                                <td>
-                                                                    <a href="<?=$site_url?>/requests/delete_request?request_id=<?= $request_id; ?>" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this job?');">
-                                                                        Delete
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                        <?php } ?>
-                                                    </tbody>
-                                                </table>
-                                                <?php
-                                                if ($count_requests == 0) {
-                                                    echo "<center><h3 class='pt-4 pb-4'><i class='fa fa-smile-o'></i> {$lang['manage_requests']['no_unapproved']} </h3></center>";
-                                                }
-                                                ?>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <?php include('requests/manage_requests_body.php'); ?>
                                 </div>
                             </div>
                             <!-- End Magage Request -->
@@ -704,9 +469,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
-                                    <br>
-                                    <br>
+                                <div class="col-md-12 mt-5">
                                     <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["selling_orders"]; ?></h1>
                                 </div>
                                 <div class="col-md-12 mt-3">
@@ -719,7 +482,27 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                     <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["buyer_requests"]; ?></h1>
                                 </div>
                                 <div class="col-md-12">
-                                    <?php include('requests/user_buyer_requests.php'); ?>
+                                    <?php
+                                    $request_child_ids = array();
+
+                                    $select_proposals = $db->query("select DISTINCT proposal_child_id from proposals where proposal_seller_id='$login_seller_id' and proposal_status='active'");
+                                    while ($row_proposals = $select_proposals->fetch()) {
+                                        $proposal_child_id = $row_proposals->proposal_child_id;
+                                        array_push($request_child_ids, $proposal_child_id);
+                                    }
+
+                                    $where_child_id = array();
+                                    foreach ($request_child_ids as $child_id) {
+                                        $where_child_id[] = "child_id=" . $child_id;
+                                    }
+
+                                    if (count($where_child_id) > 0) {
+                                        $requests_query = " and (" . implode(" or ", $where_child_id) . ")";
+                                        $child_cats_query = "(" . implode(" or ", $where_child_id) . ")";
+                                    }
+                                    $relevant_requests = $row_general_settings->relevant_requests;
+                                    include('requests/user_buyer_requests.php');
+                                    ?>
                                 </div>
                             </div>
                             <!-- End Buyer Request  -->
@@ -768,11 +551,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                     </div>
                 </div>
             </div>
-
-
-
         </div>
-
     </div>
 </div>
 

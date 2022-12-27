@@ -1,83 +1,51 @@
-
 <div class="table-responsive box-table mt-3">
-
-	<table class="table table-bordered">
-
+	<table class="table table-bordered" id="orderSellerAll">
 		<thead>
-			
-			<tr> 
-
+			<tr>
 				<th><?= $lang['th']['order_summary']; ?></th>
 				<th><?= $lang['th']['order_date']; ?></th>
 				<th><?= $lang['th']['due_on']; ?></th>
 				<th><?= $lang['th']['total']; ?></th>
 				<th><?= $lang['th']['status2']; ?></th>
-				
 			</tr>
-
 		</thead>
-
 		<tbody>
-
-			<tr>
-                
-               <?php
-
-					$sel_orders = $db->select("orders",array("seller_id" => $login_seller_id),"DESC");
-					$count_orders = $sel_orders->rowCount();
-					while($row_orders = $sel_orders->fetch()){
-
-					$order_id = $row_orders->order_id;
-					$proposal_id = $row_orders->proposal_id;
-					$order_price = $row_orders->order_price;
-					$order_status = $row_orders->order_status;
-					$order_number = $row_orders->order_number;
-					$order_duration = intval($row_orders->order_duration);
-					$order_date = $row_orders->order_date;
-					$order_due = date("F d, Y", strtotime($order_date . " + $order_duration days"));
-
-					$select_proposals = $db->select("proposals",array("proposal_id" => $proposal_id));
-					$row_proposals = $select_proposals->fetch();
-					$proposal_title = $row_proposals->proposal_title;
-               $proposal_img1 = getImageUrl2("proposals","proposal_img1",$row_proposals->proposal_img1);
-
-               ?>
-
-				<td>
-
-					<a href="order_details?order_id=<?= $order_id; ?>" class="make-black">
-
-						<img class="order-proposal-image " src="<?= $proposal_img1; ?>">
-
-						<p class="order-proposal-title"><?= $proposal_title; ?></p>
-						
-
-					</a>
-					
+			<tr class="table-info">
+				<td colspan="5">
+					data fetching...
 				</td>
-
-				<td><?= $order_date; ?></td>
-				<td><?= $order_due; ?></td>
-				<td><?= showPrice($order_price); ?></td>
-				<td><button class="btn btn-success"><?= ucwords($order_status); ?></button></td>
-				
-
-
 			</tr>
-            
-            <?php } ?>
-			
 		</tbody>
-
 	</table>
-    
-    <?php
-            
-         if( $count_orders == 0){
-             
-             echo "<center><h3 class='pb-4 pt-4'><i class='fa fa-meh-o'></i> {$lang['selling_orders']['no_all']} </h3></center>";
-         }
-                     
-     ?>
-
+	<nav id="pagination-seller-order-all" aria-label="Active order navigation">
+	</nav>
 </div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var allSellerOrder = function(userId, status, limit, page = 1) {
+			return $.ajax({
+				url: "<?= $site_url ?>/ajax/order_seller_data.php",
+				dataType: "json",
+				data: {
+					user_id: userId,
+					status: status,
+					limit: limit,
+					page: page,
+				}
+			}).done(function(data) {
+				$('body #orderSellerAll tbody').html(data.data);
+				$('body #pagination-seller-order-all').html(data.pagination);
+				$('body #wait').removeClass("loader");
+			});
+		}
+		allSellerOrder(<?= $login_seller_id ?>, 'all', <?= isset($homePerPage) ? $homePerPage : 10 ?>);
+
+		//executes code below when user click on pagination links
+		$("body #pagination-seller-order-all").on("click", ".pagination a", function(e) {
+			e.preventDefault();
+			var page = $(this).attr("data-page"); //get page number from link
+			$('body #wait').addClass("loader");
+			allSellerOrder(<?= $login_seller_id ?>, 'all', <?= isset($homePerPage) ? $homePerPage : 10 ?>, page);
+		})
+	});
+</script>

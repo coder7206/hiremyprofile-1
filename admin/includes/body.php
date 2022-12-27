@@ -286,6 +286,15 @@ if ($a_reports == 1) {
 	if (isset($_GET['proposal_reports'])) {
 		include("proposal_reports.php");
 	}
+	if (isset($_GET['users_reports'])) {
+		include("users_reports.php");
+	}
+	if (isset($_GET['job_reports'])) {
+		include("job_reports.php");
+	}
+	if (isset($_GET['offer_reports'])) {
+		include("offer_reports.php");
+	}
 	if (isset($_GET['delete_order_report'])) {
 		include("delete_order_report.php");
 	}
@@ -294,6 +303,9 @@ if ($a_reports == 1) {
 	}
 	if (isset($_GET['delete_proposal_report'])) {
 		include("delete_proposal_report.php");
+	}
+	if (isset($_GET['delete_report'])) {
+		include("delete_report.php");
 	}
 }
 

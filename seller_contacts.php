@@ -13,16 +13,36 @@
       </thead>
       <tbody>
          <?php
-         $sel_my_buyers =  $db->select("my_buyers", array("seller_id" => $login_seller_id));
-         while ($row_my_buyers = $sel_my_buyers->fetch()) {
-            $buyer_id = $row_my_buyers->buyer_id;
-            $completed_orders = $row_my_buyers->completed_orders;
-            $amount_spent = $row_my_buyers->amount_spent;
-            $last_order_date = $row_my_buyers->last_order_date;
-            $select_buyer = $db->select("sellers", array("seller_id" => $buyer_id));
-            $row_buyer = $select_buyer->fetch();
-            $buyer_user_name = $row_buyer->seller_user_name;
-            $buyer_image = getImageUrl2("sellers", "seller_image", $row_buyer->seller_image);
+         $limit = 10;
+         if (isset($_GET["page"])) {
+            $pageNumber = filter_var($_GET["page"], FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_STRIP_HIGH); //filter number
+            if (!is_numeric($pageNumber)) {
+                die('Invalid page number!');
+            } //incase of invalid page number
+        } else {
+            $pageNumber = 1; //if there's no page number, set it to 1
+        }
+         $start_from =  (($pageNumber - 1) * $limit);
+         $where_limit = " order by id DESC LIMIT $start_from, $limit";
+
+         $sel_my_buyers_page =  $db->query("SELECT * FROM my_buyers WHERE seller_id=:seller_id", array("seller_id" => $login_seller_id));
+         $totalRows = $sel_my_buyers_page->rowCount();
+         $row_my_buyers_page = $sel_my_buyers_page->fetch();
+
+         //break records into pages
+         $totalPages = ceil($totalRows / $limit);
+         if ($totalRows > 0) {
+            $sel_my_buyers =  $db->query("SELECT * FROM my_buyers WHERE seller_id=:seller_id $where_limit", array("seller_id" => $login_seller_id));
+
+            while ($row_my_buyers = $sel_my_buyers->fetch()) {
+               $buyer_id = $row_my_buyers->buyer_id;
+               $completed_orders = $row_my_buyers->completed_orders;
+               $amount_spent = $row_my_buyers->amount_spent;
+               $last_order_date = $row_my_buyers->last_order_date;
+               $select_buyer = $db->select("sellers", array("seller_id" => $buyer_id));
+               $row_buyer = $select_buyer->fetch();
+               $buyer_user_name = $row_buyer->seller_user_name;
+               $buyer_image = getImageUrl2("sellers", "seller_image", $row_buyer->seller_image);
          ?>
             <tr>
                <td>
@@ -48,13 +68,23 @@
                   </a>
                </td>
             </tr>
+         <?php
+         }
+      } else {
+      ?>
+      <tr class="table-danger">
+               <td colspan="5">
+                  <center>
+                     <h3 class='pb-4 pt-4'>
+                        <i class='fa fa-meh-o'></i> <?= $lang['manage_contacts']['no_buyers'] ?>
+                     </h3>
+                  </center>
+               </td>
+            </tr>
          <?php } ?>
       </tbody>
    </table>
-   <?php
-   $count_my_buyers = $db->count("my_buyers", array("seller_id" => $login_seller_id));
-   if ($count_my_buyers == 0) {
-      echo "<center><h3 class='pb-4 pt-4'><i class='fa fa-meh-o'></i> {$lang['manage_contacts']['no_buyers']} </h3></center>";
-   }
-   ?>
+   <nav id="pagination-seller-contacts" aria-label="Active request navigation">
+      <?=pagination($limit, $pageNumber, $totalRows, $totalPages, $site_url . "/manage_contacts?page=");?>
+   </nav>
 </div>
