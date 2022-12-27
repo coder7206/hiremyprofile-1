@@ -134,6 +134,23 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
 
         form.submit();
     }
+    $(function(){
+        // $("a#buyer_tab").click(function(){
+        //     $('#buyer-sidebar').show();
+        //     $('#seller-sidebar').hide();
+        // });
+        $('.nav-tabs a').click(function(){
+            var tabValue = $(this).data('value')
+            if (tabValue == "buyer") {
+                $('body #buyer-sidebar').show();
+                $('body #seller-sidebar').hide();
+            } else {
+                $('body #seller-sidebar').show();
+                $('body #buyer-sidebar').hide();
+            }
+            $(this).tab('show');
+        })
+    })
 </script>
 <div class="container-fluid pt-5">
     <div class="row">
@@ -146,11 +163,11 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
         <div class="col-xl-9 col-lg-8 pb-5">
             <div class="about-section-1">
                 <div class="top_bas nav nav-tabs font-weight-bold text-largest" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link <?= $activeTab == "buyer" ? "active" : "" ?>" data-toggle="tab" href="#Buyer" role="tab" aria-selected="<?= $activeTab == "buyer" ? "true" : "false" ?>" id="buyer_tab">Buyer </a>
+                    <a class="nav-item nav-link <?= $activeTab == "buyer" ? "active" : "" ?>" data-toggle="tab" data-value="buyer" href="#Buyer" role="tab" aria-selected="<?= $activeTab == "buyer" ? "true" : "false" ?>" id="buyer_tab">Buyer </a>
                     <?php if ($activeTab == "seller") { ?>
-                        <a class="nav-item nav-link active" data-toggle="tab" href="#Seller" role="tab" aria-selected="true" id="seller_tab">Seller <i onclick="myBookmark(this)" data-bookmark-seller="no" class="fa fa-bookmark" data-toggle="tooltip" data-placement="top" title="Remove Bookmark"></i></a>
+                        <a class="nav-item nav-link active" data-toggle="tab" data-value="seller" href="#Seller" role="tab" aria-selected="true" id="seller_tab">Seller <i onclick="myBookmark(this)" data-bookmark-seller="no" class="fa fa-bookmark" data-toggle="tooltip" data-placement="top" title="Remove Bookmark"></i></a>
                     <?php } else { ?>
-                        <a class="nav-item nav-link" data-toggle="tab" href="#Seller" role="tab" aria-selected="false" id="seller_tab">Seller <i onclick="myBookmark(this)" data-bookmark-seller="yes" class="fa fa-bookmark-o" data-toggle="tooltip" data-placement="top" title="Add Bookmark"></i></a>
+                        <a class="nav-item nav-link" data-toggle="tab" data-value="seller" href="#Seller" role="tab" aria-selected="false" id="seller_tab">Seller <i onclick="myBookmark(this)" data-bookmark-seller="yes" class="fa fa-bookmark-o" data-toggle="tooltip" data-placement="top" title="Add Bookmark"></i></a>
                     <?php } ?>
                 </div>
             </div>
@@ -188,7 +205,8 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                     <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["buying_orders"]; ?></h1>
                                 </div>
                                 <div class="col-md-12">
-                                    <?php $homePerPage = 5;  include('user_buying_orders.php'); ?>
+                                    <?php $homePerPage = 5;
+                                    include('user_buying_orders.php'); ?>
                                 </div>
                             </div>
                             <!-- Order End -->
@@ -199,7 +217,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                     <h1 class="pull-left"> <?= $lang["titles"]["manage_requests"]; ?> </h1>
                                 </div>
                                 <div class="col-md-12">
-                                <?php include('requests/manage_requests_body.php'); ?>
+                                    <?php include('requests/manage_requests_body.php'); ?>
                                 </div>
                             </div>
                             <!-- End Magage Request -->
@@ -465,25 +483,25 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                 </div>
                                 <div class="col-md-12">
                                     <?php
-                                        $request_child_ids = array();
+                                    $request_child_ids = array();
 
-                                        $select_proposals = $db->query("select DISTINCT proposal_child_id from proposals where proposal_seller_id='$login_seller_id' and proposal_status='active'");
-                                        while ($row_proposals = $select_proposals->fetch()) {
+                                    $select_proposals = $db->query("select DISTINCT proposal_child_id from proposals where proposal_seller_id='$login_seller_id' and proposal_status='active'");
+                                    while ($row_proposals = $select_proposals->fetch()) {
                                         $proposal_child_id = $row_proposals->proposal_child_id;
                                         array_push($request_child_ids, $proposal_child_id);
-                                        }
+                                    }
 
-                                        $where_child_id = array();
-                                        foreach ($request_child_ids as $child_id) {
+                                    $where_child_id = array();
+                                    foreach ($request_child_ids as $child_id) {
                                         $where_child_id[] = "child_id=" . $child_id;
-                                        }
+                                    }
 
-                                        if (count($where_child_id) > 0) {
+                                    if (count($where_child_id) > 0) {
                                         $requests_query = " and (" . implode(" or ", $where_child_id) . ")";
                                         $child_cats_query = "(" . implode(" or ", $where_child_id) . ")";
-                                        }
-                                        $relevant_requests = $row_general_settings->relevant_requests;
-                                        include('requests/user_buyer_requests.php');
+                                    }
+                                    $relevant_requests = $row_general_settings->relevant_requests;
+                                    include('requests/user_buyer_requests.php');
                                     ?>
                                 </div>
                             </div>
@@ -533,11 +551,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                     </div>
                 </div>
             </div>
-
-
-
         </div>
-
     </div>
 </div>
 

@@ -38,7 +38,7 @@ if (isset($_GET['n_id'])) {
     $update_notification = $db->update("notifications", ["status" => 'read'], ["notification_id" => $notification_id]);
     if ($update_notification) {
       if ($reason == "modification" or $reason == "approved" or $reason == "declined") {
-        echo "<script>window.open('proposals/view_proposals','_self');</script>";
+        echo "<script>window.open('proposals/view_proposals?{$reason}','_self')</script>";
       } else if ($reason == "offer") {
         echo "<script>window.open('$site_url/requests/view_offers?request_id=$order_id','_self')</script>";
       } elseif ($reason == "approved_request" or $reason == "unapproved_request") {

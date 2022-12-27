@@ -153,7 +153,7 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 											<a href="<?= $site_url; ?>/proposals/view_coupons?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Coupons</a>
 											<a href="<?= $site_url; ?>/proposals/view_referrals?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Referrals</a>
 											<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
-											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
+											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this proposal?')"> Delete </a>
 										</div>
 									</div>
 									<script>
@@ -270,7 +270,7 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 											</a>
 											<a href="<?= $site_url; ?>/proposals/view_referrals?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Referrals</a>
 											<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
-											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
+											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this proposal?')"> Delete </a>
 										</div>
 									</div>
 								</td>
@@ -354,7 +354,7 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 											<div class="dropdown-menu">
 												<a href="<?= $site_url; ?>/proposals/<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
 												<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
-												<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
+												<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this proposal?')"> Delete </a>
 											</div>
 										</div>
 									</td>
@@ -429,7 +429,7 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 											<a href="<?= $site_url; ?>/proposals/submit_approval?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Submit For Approval </a>
 											<a href="<?= $site_url; ?>/proposals/<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
 											<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
-											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
+											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this proposal?')"> Delete </a>
 										</div>
 									</div>
 								</td>
@@ -511,7 +511,7 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 											<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
 											<div class="dropdown-menu">
 												<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
-												<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
+												<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this proposal?')"> Delete </a>
 											</div>
 										</div>
 									</td>
@@ -592,7 +592,7 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 										<div class="dropdown">
 											<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
 											<div class="dropdown-menu">
-												<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>
+												<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this proposal?')"> Delete </a>
 											</div>
 										</div>
 									</td>
