@@ -188,8 +188,8 @@ $count_offers = $get_offers->rowCount();
 												echo " <i class='fa fa-star-o'></i> ";
 											}
 											?>
-											<span class="text-white m-1"><strong>
-												<?php printf("%.1f", $average); ?></strong> (<?= $count_reviews; ?>)</span>
+											<span class="text-dark m-1"><strong>
+												<?php printf("%.1f", $average); ?></strong> (<?=$count_reviews?>)</span>
 											</div>
 											<p class="user-link">
 												<a href="<?=$site_url?>/<?= $sender_user_name; ?>" class="text-success" target="_blank"> User Profile </a>

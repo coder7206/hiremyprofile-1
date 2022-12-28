@@ -1,6 +1,6 @@
 <?php
 $activetab = (isset($_GET['offers'])) ? 'offers' : "active";
-$limit = isset($homePerPage) ? $homePerPage : 5;
+$limit = 5; //isset($homePerPage) ? $homePerPage : 5;
 ?>
 <ul class="nav nav-tabs mt-3">
     <!-- nav nav-tabs Starts -->
@@ -98,13 +98,14 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
                     $where_limit = " order by 1 DESC LIMIT $start_from, $limit";
 
                     if (!isset($_SESSION['seller_user_name']) or (!empty($requests_query) or $relevant_requests == "no")) {
-                        $q_page =  $db->query("SELECT * FROM buyer_requests WHERE request_status=:request_status " . $requests_query . " AND seller_id=:seller_id", array("request_status" => "active", "seller_id" => $login_seller_id));
+                        $q_page =  $db->query("SELECT * FROM buyer_requests WHERE request_status=:request_status " . $requests_query . " AND NOT seller_id=:seller_id", array("request_status" => "active", "seller_id" => $login_seller_id));
+
                         $totalDRows = $q_page->rowCount();
 
                         //break records into pages
                         $totalDPages = ceil($totalDRows / $limit);
                         if ($totalDRows > 0) {
-                            $select_requests =  $db->query("SELECT * FROM buyer_requests WHERE request_status=:request_status " . $requests_query . " AND seller_id=:seller_id $where_limit", array("request_status" => 'active', "seller_id" => $login_seller_id));
+                            $select_requests =  $db->query("SELECT * FROM buyer_requests WHERE request_status=:request_status " . $requests_query . " AND NOT seller_id=:seller_id $where_limit", array("request_status" => 'active', "seller_id" => $login_seller_id));
 
                             while ($row_requests = $select_requests->fetch()) {
                                 $request_id = $row_requests->request_id;
@@ -133,7 +134,6 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
                                 $count_offers = $db->count("send_offers", array("request_id" => $request_id, "sender_id" => $login_seller_id));
 
                                 if ($count_offers == 0) {
-
                     ?>
                                     <tr id="request_tr_<?= $request_id; ?>">
                                         <td>

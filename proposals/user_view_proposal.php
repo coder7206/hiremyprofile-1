@@ -43,15 +43,14 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 
 <div class="col-md-12">
 	<div class="alert alert-info">
-		You can post <?php echo $row_login_seller->no_of_gigs ?> number of proposals.
+		You can post <?php echo $totalProposal >= $num_gigs ? 0 : $num_gigs-$totalProposal ?> number of proposals.
 	</div>
-	<a <?php if ($totalProposal >= $num_gigs) {
-			echo '';
-		} else {
-			echo 'href="create_proposal"';
-		} ?> class="btn btn-success pull-right">
-		<i class="fa fa-plus-circle"></i> <?= $lang['button']['add_new_proposal']; ?>
-	</a>
+	<?php if ($totalProposal >= $num_gigs) { ?>
+		<a class="btn btn-success pull-right" disabled href="#"><i class="fa fa-plus-circle"></i> <?= $lang['button']['add_new_proposal']; ?></a>
+	<?php } else { ?>
+		<a class="btn btn-success pull-right" href="<?=$site_url?>/proposals/create_proposal"><i class="fa fa-plus-circle"></i> <?= $lang['button']['add_new_proposal']; ?></a>
+	<?php } ?>
+
 	<div class="clearfix"></div>
 	<ul class="nav nav-tabs flex-column flex-sm-row mt-4">
 		<li class="nav-item">

@@ -45,7 +45,7 @@
         echo " <i class='fa fa-star-o'></i> ";
       }
       ?>
-      <span class="text-white m-1"><strong>
+      <span class="text-dark m-1"><strong>
         <?php printf("%.1f", $average); ?></strong> (<?= $count_reviews; ?>)</span>
       </div>
       <p><small><i class="fa fa-thumbs-o-up" data-toggle="tooltip" data-placement="top" title="Recommend"></i> 0 recommendation</small></p>
