@@ -36,7 +36,7 @@ $login_seller_id = $row_login_seller->seller_id;
 
 <body class="is-responsive">
     <?php require_once("../includes/user_header.php"); ?>
-    <div class="container mb-3" style="margin-top: 160px;">
+    <div class="container mb-3" style="margin-top: 195px;">
         <div class="row">
             <div class="col-md-12 mb-4">
                 <h1 class="pull-left"> <?= $lang["titles"]["manage_requests"]; ?> </h1>
