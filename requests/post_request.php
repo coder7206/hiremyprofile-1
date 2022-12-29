@@ -14,6 +14,49 @@ $get_payment_settings = $db->select("payment_settings");
 $row_payment_settings = $get_payment_settings->fetch();
 $min_proposal_price = $row_payment_settings->min_proposal_price;
 
+if (isset($_POST['submit'])) {
+	$rules = array(
+		"request_title" => "required",
+		"request_description" => "required",
+		"cat_id" => "required",
+		"child_id" => "required",
+		"request_budget" => "number|required",
+		"delivery_time" => "required"
+	);
+	$messages = array("cat_id" => "you need to select a category", "child_id" => "you need to select a child category");
+	$val = new Validator($_POST, $rules, $messages);
+	if ($val->run() == false) {
+		Flash::add("form_errors", $val->get_all_errors());
+		Flash::add("form_data", $_POST);
+		echo "<script> window.open('post_request','_self');</script>";
+	} else {
+		$request_title = $input->post('request_title');
+		$request_description = $input->post('request_description');
+		$cat_id = $input->post('cat_id');
+		$child_id = $input->post('child_id');
+		$request_budget = $input->post('request_budget');
+		$delivery_time = $input->post('delivery_time');
+		$request_file = $_FILES['request_file']['name'];
+		$request_file_tmp = $_FILES['request_file']['tmp_name'];
+		$request_date = date("F d, Y");
+		$allowed = array('jpeg', 'jpg', 'gif', 'png', 'tif', 'avi', 'mpeg', 'mpg', 'mov', 'rm', '3gp', 'flv', 'mp4', 'zip', 'rar', 'mp3', 'wav', 'pdf', 'docx', 'txt');
+		$file_extension = pathinfo($request_file, PATHINFO_EXTENSION);
+
+		if (!empty($request_file)) {
+			if (!in_array($file_extension, $allowed)) {
+				echo "<script>alert('{$lang['alert']['extension_not_supported']}')</script>";
+				echo "<script>window.open('post_request','_self')</script>";
+				exit();
+			}
+			$request_file = pathinfo($request_file, PATHINFO_FILENAME);
+			$request_file = $request_file . "_" . time() . ".$file_extension";
+			uploadToS3("request_files/$request_file", $request_file_tmp);
+		}
+		$isS3 = $enable_s3;
+
+		$insert_request = $db->insert("buyer_requests", array("seller_id" => $login_seller_id, "cat_id" => $cat_id, "child_id" => $child_id, "request_title" => $request_title, "request_description" => $request_description, "request_file" => $request_file, "delivery_time" => $delivery_time, "request_budget" => $request_budget, "request_date" => $request_date, "isS3" => $isS3, "request_status" => 'pending'));
+	}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
@@ -44,6 +87,20 @@ $min_proposal_price = $row_payment_settings->min_proposal_price;
 
 <body class="is-responsive">
 	<?php
+	if (isset($insert_request) && $insert_request) {
+		echo "<script>
+			swal({
+			  type: 'success',
+			  text: 'Your request has been submitted successfully!',
+			  timer: 3000,
+			  onOpen: function(){
+				  swal.showLoading()
+			  }
+			}).then(function(){
+				  window.open('manage_requests.php','_self');
+			});
+		</script>";
+	}
 	require_once("../includes/user_header.php");
 	if ($seller_verification != "ok") {
 		echo "
@@ -84,7 +141,7 @@ Please confirm your email to use this feature.
 					<?php } ?>
 					<div class="card rounded-0">
 						<div class="card-body">
-							<form method="post" enctype="multipart/form-data">
+							<form method="post" enctype="multipart/form-data" name="jobForm" onsubmit="return validateForm()">
 								<div class="row row-1">
 									<div class="col-md-2 d-md-block d-none">
 										<!--<i class="fa fa-pencil-square-o fa-4x text-success"></i>-->
@@ -94,7 +151,8 @@ Please confirm your email to use this feature.
 										<div class="row">
 											<div class="col-xl-9 col-lg-12">
 												<div class="form-group">
-													<input type="text" name="request_title" placeholder="<?= $lang['placeholder']['request_title']; ?>" class="form-control input-lg" required="" value="<?php isset($form_data['request_title']) ? $form_data['request_title'] : "";  ?>">
+													<input type="text" name="request_title" id="request_title" placeholder="<?= $lang['placeholder']['request_title']; ?>" class="form-control input-lg" required="" value="<?php isset($form_data['request_title']) ? $form_data['request_title'] : "";  ?>" minlength="30" maxlength="150">
+													<span class="text-dark">min: 30 max: 150 <span class="text-danger" id="title-typed-characters">0</span> characters.</span>
 												</div>
 												<div class="form-group">
 													<textarea name="request_description" id="textarea" rows="5" cols="73" maxlength="380" class="form-control" placeholder="<?= $lang['placeholder']['request_desc']; ?>" required=""><?php if (isset($form_data['request_description'])) {
@@ -105,7 +163,7 @@ Please confirm your email to use this feature.
 													<input type="file" name="request_file" id="file">
 													<div class="font-weight-bold pull-right">
 														<span class="descCount"> 0
-														</span> / 380 Max
+														</span> / 50 min. words
 													</div>
 												</div>
 											</div>
@@ -210,9 +268,46 @@ Please confirm your email to use this feature.
 			<!--- row Ends --->
 		</div>
 		<!--- container-fluid Ends --->
-
 	<?php } ?>
 	<script>
+		const textAreaElement = document.querySelector("#request_title");
+		const typedCharactersElement = document.querySelector("#title-typed-characters");
+		const maximumCharacters = 150;
+
+		textAreaElement.addEventListener("keydown", (event) => {
+			const typedCharacters = textAreaElement.value.length;
+			if (typedCharacters > maximumCharacters) {
+				return false;
+			}
+			typedCharactersElement.textContent = typedCharacters;
+		});
+
+		function wordCount(field, minWord = 50) {
+			var number = 0;
+
+			// Split the value of input by
+			// space to count the words
+			var matches = $(field).val().split(" ");
+
+			// Count number of words
+			number = matches.filter(function(word) {
+				return word.length > 0;
+			}).length;
+
+			// Final number of words
+			$(".descCount").text(number);
+		}
+
+		function validateForm() {
+			var count = $(".descCount").text();
+
+			if (count < 50) {
+				alert("Please enter at least 50 words.");
+				$("textarea").focus();
+				return false;
+			}
+		}
+
 		$(document).ready(function() {
 			$('.h-2').css("visibility", "hidden");
 			$('.h-3').css("visibility", "hidden");
@@ -260,10 +355,20 @@ Please confirm your email to use this feature.
 				$('.h-4').css("visibility", "hidden");
 			});
 
-			$("#textarea").keydown(function() {
-				var textarea = $("#textarea").val();
-				$(".descCount").text(textarea.length);
-			});
+			$("textarea")
+				.each(function() {
+					var input = "#" + this.id;
+
+					// Count words when keyboard
+					// key is released
+					$(this).keyup(function() {
+						wordCount(input);
+					});
+				});
+			// $("#textarea").keydown(function() {
+			// 	var textarea = $("#textarea").val();
+			// 	$(".descCount").text(textarea.length);
+			// });
 
 			$("#sub-category").hide();
 
@@ -284,63 +389,7 @@ Please confirm your email to use this feature.
 
 		});
 	</script>
-	<?php
-	if (isset($_POST['submit'])) {
-		$rules = array(
-			"request_title" => "required",
-			"request_description" => "required",
-			"cat_id" => "required",
-			"child_id" => "required",
-			"request_budget" => "number|required",
-			"delivery_time" => "required"
-		);
-		$messages = array("cat_id" => "you need to select a category", "child_id" => "you need to select a child category");
-		$val = new Validator($_POST, $rules, $messages);
-		if ($val->run() == false) {
-			Flash::add("form_errors", $val->get_all_errors());
-			Flash::add("form_data", $_POST);
-			echo "<script> window.open('post_request','_self');</script>";
-		} else {
-			$request_title = $input->post('request_title');
-			$request_description = $input->post('request_description');
-			$cat_id = $input->post('cat_id');
-			$child_id = $input->post('child_id');
-			$request_budget = $input->post('request_budget');
-			$delivery_time = $input->post('delivery_time');
-			$request_file = $_FILES['request_file']['name'];
-			$request_file_tmp = $_FILES['request_file']['tmp_name'];
-			$request_date = date("F d, Y");
-			$allowed = array('jpeg', 'jpg', 'gif', 'png', 'tif', 'avi', 'mpeg', 'mpg', 'mov', 'rm', '3gp', 'flv', 'mp4', 'zip', 'rar', 'mp3', 'wav', 'pdf', 'docx', 'txt');
-			$file_extension = pathinfo($request_file, PATHINFO_EXTENSION);
-			if (!empty($request_file)) {
-				if (!in_array($file_extension, $allowed)) {
-					echo "<script>alert('{$lang['alert']['extension_not_supported']}')</script>";
-					echo "<script>window.open('post_request','_self')</script>";
-					exit();
-				}
-				$request_file = pathinfo($request_file, PATHINFO_FILENAME);
-				$request_file = $request_file . "_" . time() . ".$file_extension";
-				uploadToS3("request_files/$request_file", $request_file_tmp);
-			}
-			$isS3 = $enable_s3;
-			$insert_request = $db->insert("buyer_requests", array("seller_id" => $login_seller_id, "cat_id" => $cat_id, "child_id" => $child_id, "request_title" => $request_title, "request_description" => $request_description, "request_file" => $request_file, "delivery_time" => $delivery_time, "request_budget" => $request_budget, "request_date" => $request_date, "isS3" => $isS3, "request_status" => 'pending'));
-			if ($insert_request) {
-				echo "<script>
-			    swal({
-			      type: 'success',
-			      text: 'Your request has been submitted successfully!',
-			      timer: 3000,
-			      onOpen: function(){
-			      	swal.showLoading()
-			      }
-			    }).then(function(){
-			      	window.open('manage_requests.php','_self');
-			    });
-			</script>";
-			}
-		}
-	}
-	?>
+
 	<?php require_once("../includes/footer.php"); ?>
 </body>
 
