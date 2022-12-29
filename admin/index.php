@@ -88,6 +88,26 @@ $count_requests = $db->count("buyer_requests", array("request_status" => "pendin
 $count_referrals = $db->count("referrals", array("status" => "pending"));
 $count_proposals_referrals = $db->count("proposal_referrals", array("status" => "pending"));
 
+
+$order_reports = $db->count("reports", array("content_type" => "order", "status" => ""));
+$message_reports = $db->count("reports", array("content_type" => "message", "status" => ""));
+$proposal_reports = $db->count("reports", array("content_type" => "proposal", "status" => ""));
+$job_reports = $db->count("reports", array("content_type" => "buyer_requests", "status" => ""));
+$view_offers_reports = $db->count("reports", array("content_type" => "view_offers", "status" => ""));
+$user_reports = $db->count("reports", array("content_type" => "user", "status" => ""));
+
+$total_reports = $order_reports + $message_reports + $proposal_reports + $job_reports + $view_offers_reports + $user_reports;
+
+// feedbacks
+$qFeedbacks = $db->query("SELECT ideas.id, COUNT(DISTINCT comments.id) totalComments FROM ideas LEFT JOIN comments ON ideas.id = comments.idea_id GROUP BY ideas.id;");
+$totalPendingFeedback = 0;
+if ($qFeedbacks->rowCount() > 0) {
+	while ($oFeedbacks = $qFeedbacks->fetch()) {
+		if ($oFeedbacks->totalComments == 0) {
+			$totalPendingFeedback++;
+		}
+	}
+}
 function autoLoader($className)
 {
 	require_once("../functions/$className.php");

@@ -51,6 +51,8 @@ if (isset($_GET['n_id'])) {
         echo "<script>window.open('proposal_referrals','_self');</script>";
       } elseif ($reason == "ticket_reply") {
         echo "<script>window.open('support?view_conversation&ticket_id=$order_id','_self');</script>";
+      } elseif ($reason == "feedback_respond") {
+        echo "<script>window.open('feedback/idea?id=$order_id','_self');</script>";
       } else {
         echo "<script>window.open('order_details?order_id=$order_id','_self');</script>";
       }
