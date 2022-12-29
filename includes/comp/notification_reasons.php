@@ -113,3 +113,7 @@ if($reason == "following"){
 if($reason == "unfollow"){
     return "Unfollow you";
 }*/
+
+if($reason == "feedback_respond"){
+    return "Has feedback response.";
+}

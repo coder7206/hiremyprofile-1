@@ -52,7 +52,6 @@ echo "<script>window.open('login','_self');</script>";
 <?php } ?>
 
 <?php if($a_blog == 1){ ?>
-
   <li class="menu-item-has-children dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class="menu-icon fa fa fa-rss"></i> Blog
@@ -66,14 +65,21 @@ echo "<script>window.open('login','_self');</script>";
 
 <?php } ?>
 
-<?php if($a_blog == 1){ ?>
+<?php if($a_feedback == 1){ ?>
 
   <li class="menu-item-has-children dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class="menu-icon fa fa-comments"></i> Feedback
+      <?php if(!$totalPendingFeedback == 0){ ?>
+      <span class="badge badge-success"><?= $totalPendingFeedback; ?></span>
+    <?php } ?>
     </a>
     <ul class="sub-menu children dropdown-menu">
-      <li><i class="fa fa-arrow-circle-right"></i><a href="index?ideas"> Ideas </a></li>
+      <li><i class="fa fa-arrow-circle-right"></i><a href="index?ideas"> Ideas
+      <?php if(!$totalPendingFeedback == 0){ ?>
+      <span class="badge badge-success"><?= $totalPendingFeedback; ?></span>
+    <?php } ?>
+      </a></li>
       <li><i class="fa fa-arrow-circle-right"></i><a href="index?comments"> Comments </a></li>
     </ul>
   </li><!-- li Ends --->
@@ -130,14 +136,43 @@ echo "<script>window.open('login','_self');</script>";
   <li class="menu-item-has-children dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Reports">
     <i class="menu-icon fa fa-flag" ></i>Reports / Abuses
+    <?php if(!$total_reports == 0){ ?>
+      <span class="badge badge-success"><?= $total_reports; ?></span>
+    <?php } ?>
   </a>
   <ul class="sub-menu children dropdown-menu">
-    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?order_reports">Order Reports</a></li>
-    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?message_reports">Message Reports</a></li>
-    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?proposal_reports">Proposal Reports</a></li>
-    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?job_reports">Job Reports</a></li>
-    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?offer_reports">Offer Reports</a></li>
-    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?users_reports">User Reports</a></li>
+    <li>
+      <i class="fa  fa-arrow-circle-right"></i>
+      <a href="index?order_reports">Order Reports
+      <?php if(!$order_reports == 0){ ?>
+      <span class="badge badge-success"><?= $order_reports; ?></span>
+      <?php } ?>
+      </a></li>
+    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?message_reports">Message Reports
+      <?php if(!$message_reports == 0){ ?>
+      <span class="badge badge-success"><?= $message_reports; ?></span>
+      <?php } ?>
+    </a></li>
+    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?proposal_reports">Proposal Reports
+    <?php if(!$proposal_reports == 0){ ?>
+      <span class="badge badge-success"><?= $proposal_reports; ?></span>
+      <?php } ?>
+    </a></li>
+    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?job_reports">Job Reports
+    <?php if(!$job_reports == 0){ ?>
+      <span class="badge badge-success"><?= $job_reports; ?></span>
+      <?php } ?>
+    </a></li>
+    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?offer_reports">Offer Reports
+    <?php if(!$view_offers_reports == 0){ ?>
+      <span class="badge badge-success"><?= $view_offers_reports; ?></span>
+      <?php } ?>
+    </a></li>
+    <li><i class="fa  fa-arrow-circle-right"></i><a href="index?users_reports">User Reports
+    <?php if(!$user_reports == 0){ ?>
+      <span class="badge badge-success"><?= $user_reports; ?></span>
+      <?php } ?>
+    </a></li>
   </ul>
   </li>
 
@@ -343,7 +378,11 @@ echo "<script>window.open('login','_self');</script>";
   <?php if($a_orders == 1){ ?>
 
   <li>
-      <a href="index?view_orders"> <i class="menu-icon fa fa-eye"></i> View Orders </a>
+      <a href="index?view_orders"> <i class="menu-icon fa fa-eye"></i> View Orders
+      <?php if(!$count_orders_cancel == 0){ ?>
+        <span class="badge badge-danger"><?= $count_orders_cancel;?></span>
+      <?php } ?>
+      </a>
   </li>
 
   <?php } ?>

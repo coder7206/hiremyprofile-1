@@ -241,7 +241,35 @@
                             <tbody>
                                 <tr onclick="location.href='index?view_orders'">
                                     <td>Order Cancel Requests</td>
-                                    <td><span class="badge badge-danger"><?= $count_orders_cancel; ?></span></td>
+                                    <td><span class="badge badge-success"><?= $count_orders_cancel; ?></span></td>
+                                </tr>
+                                <tr onclick="location.href='index?ideas'">
+                                    <td>Feedbacks</td>
+                                    <td><span class="badge badge-success"><?= $totalPendingFeedback; ?></span></td>
+                                </tr>
+                                <tr onclick="location.href='index?order_reports'">
+                                    <td>Order Reports</td>
+                                    <td><span class="badge badge-success"><?= $order_reports; ?></span></td>
+                                </tr>
+                                <tr onclick="location.href='index?message_reports'">
+                                    <td>Message Reports</td>
+                                    <td><span class="badge badge-success"><?= $message_reports; ?></span></td>
+                                </tr>
+                                <tr onclick="location.href='index?proposal_reports'">
+                                    <td>Proposal Reports</td>
+                                    <td><span class="badge badge-success"><?= $proposal_reports; ?></span></td>
+                                </tr>
+                                <tr onclick="location.href='index?job_reports'">
+                                    <td>Job Reports</td>
+                                    <td><span class="badge badge-success"><?= $job_reports; ?></span></td>
+                                </tr>
+                                <tr onclick="location.href='index?offer_reports'">
+                                    <td>Offer Reports</td>
+                                    <td><span class="badge badge-success"><?= $view_offers_reports; ?></span></td>
+                                </tr>
+                                <tr onclick="location.href='index?users_reports'">
+                                    <td>User Reports</td>
+                                    <td><span class="badge badge-success"><?= $user_reports; ?></span></td>
                                 </tr>
 
                                 <tr onclick="location.href='index?view_support_requests'">
