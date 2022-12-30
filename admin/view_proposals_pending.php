@@ -2,397 +2,263 @@
 
 @session_start();
 
-if(!isset($_SESSION['admin_email'])){
-	
-echo "<script>window.open('login','_self');</script>";
-	
-}else{
-	
-	
-$count_all_proposals = $db->query("select * from proposals where proposal_status not in ('modification','draft','deleted')")->rowCount();
-$count_active_proposals = $db->count("proposals",array("proposal_status" => "active"));
-$count_featured_proposals = $db->count("proposals",array("proposal_status" => "active","proposal_featured" => "yes"));
-$count_pending_proposals = $db->count("proposals",array("proposal_status" => "pending"));
-$count_pause_proposals = $db->query("select * from proposals where proposal_status='pause' or proposal_status='admin_pause'")->rowCount();
-$count_trash_proposals = $db->count("proposals",array("proposal_status" => "trash"));
+if (!isset($_SESSION['admin_email'])) {
 
+    echo "<script>window.open('login','_self');</script>";
+} else {
 ?>
 
-<div class="breadcrumbs">
-            <div class="col-sm-4">
-                <div class="page-header float-left">
-                    <div class="page-title">
-                        <h1><i class="menu-icon fa fa-table"></i> Proposals / Pending Proposals</h1>
-                    </div>
+    <div class="breadcrumbs">
+        <div class="col-sm-4">
+            <div class="page-header float-left">
+                <div class="page-title">
+                    <h1><i class="menu-icon fa fa-table"></i> Proposals / Pending Proposals</h1>
                 </div>
             </div>
-            <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li class="active">Pending Proposals</li>
-                        </ol>
-                    </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="page-header float-right">
+                <div class="page-title">
+                    <ol class="breadcrumb text-right">
+                        <li class="active">Pending Proposals</li>
+                    </ol>
                 </div>
             </div>
-    
+        </div>
+
     </div>
 
-<div class="container">
+    <div class="container-fluid">
 
-<div class="row "><!--- 1 row Starts --->
+        <div class="row ">
+            <!--- 1 row Starts --->
 
-<div class="col-lg-12"><!--- col-lg-12 Starts --->
+            <div class="col-lg-12">
+                <!--- col-lg-12 Starts --->
 
-<div class="p-3 mb-3  "><!--- p-3 mb-3 filter-form Starts --->
+                <div class="p-3 mb-3  ">
+                    <!--- p-3 mb-3 filter-form Starts --->
 
-<h2 class="pb-4">Filter Proposals/Services</h2>
+                    <h2 class="pb-4">Filter Proposals/Services</h2>
 
-<form class="form-inline pb-2" method="get" action="filter_proposals.php">
+                    <?php include("includes/proposal_filter.php") ?>
 
-<div class="form-group">
+                </div>
+                <!--- p-3 mb-3 filter-form Ends --->
 
-<label> Delivery Time: </label>
 
-<select name="delivery_id" required class="form-control mb-2 mr-sm-2 mb-sm-0">
 
-<option value=""> Select A Delivery Time </option>
+            </div>
+            <!--- col-lg-12 Ends --->
 
-<?php
+        </div>
+        <!--- 1 row Ends --->
 
-$get_delivery_times = $db->select("delivery_times");
 
-while($row_delivery_times = $get_delivery_times->fetch()){
+        <div class="row mt-3">
+            <!--- 2 row mt-3 Starts --->
 
-$delivery_id = $row_delivery_times->delivery_id;
+            <div class="col-lg-12">
+                <!--- col-lg-12 Starts --->
 
-$delivery_title= $row_delivery_times->delivery_title;
-    
-echo "<option value='$delivery_id'>$delivery_title</option>";
-    
-}
+                <div class="card">
+                    <!--- card Starts --->
 
-?>
+                    <div class="card-header">
+                        <!--- card-header Starts --->
 
-</select>
+                        <h4 class="h4">
 
-</div>
+                            Proposals
+                        </h4>
 
+                    </div>
+                    <!--- card-header Ends --->
 
-<div class="form-group">
+                    <div class="card-body">
+                        <!--- card-body Starts --->
+                        <?php include("includes/proposal_nav.php") ?>
 
-<label> Seller Level: </label>
+                        <div class="table-responsive mt-4">
+                            <!--- table-responsive mt-4 Starts --->
 
-<select name="level_id" required class="form-control mb-2 mr-sm-2 mb-sm-0">
+                            <table class="table  table-bordered table-striped">
+                                <!--- table table-hover table-bordered Starts --->
 
-<option value=""> Select A Seller Level </option>
+                                <thead>
+                                    <!--- thead Starts --->
 
-<?php
+                                    <tr>
 
-$get_seller_levels = $db->select("seller_levels");
+                                        <th>Proposal's Title</th>
 
-while($row_seller_levels = $get_seller_levels->fetch()){
-    
-$level_id = $row_seller_levels->level_id;
+                                        <th>Proposal's Display Image</th>
 
-$level_title = $db->select("seller_levels_meta",array("level_id"=>$level_id,"language_id"=>$adminLanguage))->fetch()->title;
-    
-echo "<option value='$level_id'>$level_title</option>";
-    
-}
+                                        <th>Proposal's Price</th>
 
-?>
+                                        <th>Proposal's Category</th>
 
-</select>
+                                        <th>Proposal's Order Queue</th>
 
-</div>
+                                        <th>Proposal's Status</th>
 
+                                        <th>Proposal's Action Options</th>
 
+                                    </tr>
 
-<div class="form-group">
+                                </thead>
+                                <!--- thead Ends --->
 
-<label> Category: </label>
+                                <tbody>
+                                    <!--- tbody Starts --->
 
-<select name="cat_id" required class="form-control mb-2 mr-sm-2 mb-sm-0">
+                                    <?php
 
-<option value=""> Select A Category </option>
+                                    $get_proposals = $db->query("select * from proposals where proposal_status='pending' order by 1 DESC");
 
-<?php
+                                    while ($row_proposals = $get_proposals->fetch()) {
 
-$get_categories = $db->select("categories");
+                                        $proposal_id = $row_proposals->proposal_id;
 
-while($row_categories = $get_categories->fetch()){
-    
-$cat_id = $row_categories->cat_id;
+                                        $proposal_title = $row_proposals->proposal_title;
 
-$get_meta = $db->select("cats_meta",array("cat_id" => $cat_id, "language_id" => $adminLanguage));
+                                        $proposal_url = $row_proposals->proposal_url;
 
-$cat_title = $get_meta->fetch()->cat_title;
-    
-echo "<option value='$cat_id'>$cat_title</option>";
+                                        $proposal_price = $row_proposals->proposal_price;
 
-}
+                                        $proposal_img1 = getImageUrl2("proposals", "proposal_img1", $row_proposals->proposal_img1);
 
-?>
+                                        $proposal_cat_id = $row_proposals->proposal_cat_id;
 
-</select>
+                                        $proposal = $row_proposals->proposal_cat_id;
 
-</div>
+                                        $proposal_seller_id = $row_proposals->proposal_seller_id;
 
-<button type="submit" class="btn btn-success"> Filter</button>
+                                        $proposal_status = $row_proposals->proposal_status;
 
-</form>
-</div><!--- p-3 mb-3 filter-form Ends --->
-    
+                                        $proposal_seller_id = $row_proposals->proposal_seller_id;
 
+                                        $proposal_featured = $row_proposals->proposal_featured;
 
-</div><!--- col-lg-12 Ends --->
+                                        if ($proposal_price == 0) {
 
-</div><!--- 1 row Ends --->
+                                            $proposal_price = "";
 
+                                            $get_p = $db->select("proposal_packages", array("proposal_id" => $proposal_id));
 
-<div class="row mt-3"><!--- 2 row mt-3 Starts --->
+                                            while ($row = $get_p->fetch()) {
 
-<div class="col-lg-12"><!--- col-lg-12 Starts --->
+                                                $proposal_price .= " | $s_currency" . $row->price;
+                                            }
+                                        } else {
 
-<div class="card"><!--- card Starts --->
+                                            $proposal_price = "$s_currency" . $proposal_price;
+                                        }
 
-<div class="card-header"><!--- card-header Starts --->
+                                        $select_seller = $db->select("sellers", array("seller_id" => $proposal_seller_id));
 
-<h4 class="h4">
+                                        $seller_user_name = $select_seller->fetch()->seller_user_name;
 
-Proposals
-</h4>
 
-</div><!--- card-header Ends --->
+                                        $select_orders = $db->query("select * from orders where proposal_id='$proposal_id' AND NOT order_status='complete' AND proposal_id='$proposal_id' AND NOT order_status='cancelled'");
 
-<div class="card-body"><!--- card-body Starts --->
+                                        $proposal_order_queue = $select_orders->rowCount();
 
-<a href="index?view_proposals" class="mr-2">
 
-All (<?= $count_all_proposals; ?>)
+                                        $get_meta = $db->select("cats_meta", array("cat_id" => $proposal_cat_id, "language_id" => $adminLanguage));
 
-</a>
+                                        $cat_title = $get_meta->fetch()->cat_title;
+                                    ?>
 
-<span class="mr-2">|</span>
+                                        <tr>
 
+                                            <td><?= $proposal_title; ?></td>
 
-<a href="index?view_proposals_active" class=" mr-2">
+                                            <td>
 
-Active (<?= $count_active_proposals; ?>)
+                                                <img src="<?= $proposal_img1; ?>" width="70" height="60">
 
-</a>
+                                            </td>
 
-<span class="mr-2">|</span>
+                                            <td><?= $proposal_price; ?></td>
 
+                                            <td><?= $cat_title; ?></td>
 
-<a href="index?view_proposals_featured" class="mr-2">
+                                            <td><?= $proposal_order_queue; ?></td>
 
-Featured (<?= $count_featured_proposals; ?>)
+                                            <td><?= ucfirst($proposal_status); ?></td>
+                                            <td>
 
-</a>
 
-<span class="mr-2">|</span>
+                                                <a title="Preview this Proposal" href="../proposals/<?= $seller_user_name; ?>/<?= $proposal_url; ?>" target="_blank">
 
+                                                    <i class="fa fa-eye"></i> Preview
 
-<a href="index?view_proposals_pending" class="make-black font-weight-bold mr-2">
+                                                </a>
 
-Pending Approval (<?= $count_pending_proposals; ?>)
+                                                <br>
 
-</a>
+                                                <a title="Submit this Proposal to seller for modification" href="index?submit_modification=<?= $proposal_id; ?>">
 
-<span class="mr-2">|</span>
+                                                    <i class="fa fa-edit"></i> Submit For Modification
 
+                                                </a>
 
+                                                <br>
 
-<a href="index?view_proposals_paused" class="mr-2">
+                                                <a title="Approve this Proposal" href="index?approve_proposal=<?= $proposal_id; ?>">
 
-Paused (<?= $count_pause_proposals; ?>)
+                                                    <i class="fa fa-check-square-o"></i> Approve
 
-</a>
+                                                </a>
 
-<span class="mr-2">|</span>
+                                                <br>
 
+                                                <a title="Decline this Proposal" href="index?decline_proposal=<?= $proposal_id; ?>">
 
-<a href="index?view_proposals_trash" class="mr-2">
+                                                    <i class="fa fa-ban"></i> Decline
 
-Trash (<?= $count_trash_proposals; ?>)
+                                                </a>
 
-</a>
+                                            </td>
 
+                                        </tr>
 
-<div class="table-responsive mt-4"><!--- table-responsive mt-4 Starts --->
+                                    <?php } ?>
 
-<table class="table  table-bordered table-striped"><!--- table table-hover table-bordered Starts --->
+                                </tbody>
+                                <!--- tbody Ends --->
 
-<thead><!--- thead Starts --->
+                            </table>
+                            <!--- table table-hover table-bordered Ends --->
 
-<tr>
 
-<th>Proposal's Title</th>
+                            <?php if ($count_pending_proposals == 0) {
 
-<th>Proposal's Display Image</th>
+                                echo "<center><h3 class='pt-3 pb-3'> No Proposals pending for approval</h3></center>";
+                            }
 
-<th>Proposal's Price</th>
 
-<th>Proposal's Category</th>
 
-<th>Proposal's Order Queue</th>
 
-<th>Proposal's Status</th>
+                            ?>
 
-<th>Proposal's Action Options</th>
+                        </div>
+                        <!--- table-responsive mt-4 Ends --->
 
-</tr>
 
-</thead><!--- thead Ends --->
+                    </div>
+                    <!--- card-body Ends --->
 
-<tbody><!--- tbody Starts --->
+                </div>
+                <!--- card Ends --->
 
-<?php
+            </div>
+            <!--- col-lg-12 Ends --->
 
-$get_proposals = $db->query("select * from proposals where proposal_status='pending' order by 1 DESC");
+        </div>
+        <!--- 2 row mt-3 Ends --->
 
-while($row_proposals = $get_proposals->fetch()){
-
-$proposal_id = $row_proposals->proposal_id;
-
-$proposal_title = $row_proposals->proposal_title;
-
-$proposal_url = $row_proposals->proposal_url;
-
-$proposal_price = $row_proposals->proposal_price;
-
-$proposal_img1 = getImageUrl2("proposals","proposal_img1",$row_proposals->proposal_img1);
-
-$proposal_cat_id = $row_proposals->proposal_cat_id;
-
-$proposal = $row_proposals->proposal_cat_id;
-
-$proposal_seller_id = $row_proposals->proposal_seller_id;
-
-$proposal_status = $row_proposals->proposal_status;
-
-$proposal_seller_id = $row_proposals->proposal_seller_id;
-
-$proposal_featured = $row_proposals->proposal_featured;
-
-if($proposal_price == 0){
-
-$proposal_price = "";
-
-$get_p = $db->select("proposal_packages",array("proposal_id" => $proposal_id));
-
-while($row = $get_p->fetch()){
-
-$proposal_price .=" | $s_currency" . $row->price;
-
-}
-
-}else{
-
-$proposal_price = "$s_currency" . $proposal_price;
-
-}
-
-$select_seller = $db->select("sellers",array("seller_id" => $proposal_seller_id));
-
-$seller_user_name = $select_seller->fetch()->seller_user_name;
-
-
-$select_orders = $db->query("select * from orders where proposal_id='$proposal_id' AND NOT order_status='complete' AND proposal_id='$proposal_id' AND NOT order_status='cancelled'");
-
-$proposal_order_queue = $select_orders->rowCount();
-
-
-$get_meta = $db->select("cats_meta",array("cat_id" => $proposal_cat_id, "language_id" => $adminLanguage));
-
-$cat_title = $get_meta->fetch()->cat_title;
-?>
-
-<tr>
-
-<td><?= $proposal_title; ?></td>
-
-<td>
-
-<img src="<?= $proposal_img1; ?>" width="70" height="60">
-
-</td>
-
-<td><?= $proposal_price; ?></td>
-
-<td><?= $cat_title; ?></td>
-
-<td><?= $proposal_order_queue; ?></td>
-
-<td><?= ucfirst($proposal_status); ?></td>
-<td>
-
-    
-<a title="Preview this Proposal" href="../proposals/<?= $seller_user_name; ?>/<?= $proposal_url; ?>" target="_blank">
-
-<i class="fa fa-eye"></i> Preview
-
-</a>
-
-<br>
-
-<a title="Submit this Proposal to seller for modification" href="index?submit_modification=<?= $proposal_id; ?>">
-
-<i class="fa fa-edit"></i> Submit For Modification
-
-</a>
-
-<br>
-
-<a title="Approve this Proposal" href="index?approve_proposal=<?= $proposal_id; ?>">
-
-<i class="fa fa-check-square-o"></i> Approve
-
-</a>
-
-<br>
-
-<a title="Decline this Proposal" href="index?decline_proposal=<?= $proposal_id; ?>">
-
-<i class="fa fa-ban"></i> Decline
-
-</a>
-
-</td>
-
-</tr>
-
-<?php } ?>
-
-</tbody><!--- tbody Ends --->
-
-</table><!--- table table-hover table-bordered Ends --->
-    
-    
-    <?php if($count_pending_proposals == 0){
-    
-        echo "<center><h3 class='pt-3 pb-3'> No Proposals pending for approval</h3></center>";
-      
-     }
-    
-    
-    
-    
-    ?>
-
-</div><!--- table-responsive mt-4 Ends --->
-
-
-</div><!--- card-body Ends --->
-
-</div><!--- card Ends --->
-
-</div><!--- col-lg-12 Ends --->
-
-</div><!--- 2 row mt-3 Ends --->
-    
-</div>
+    </div>
 
 <?php } ?>

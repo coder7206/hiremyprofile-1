@@ -202,6 +202,9 @@ if ($a_proposals == 1) {
 	if (isset($_GET['view_proposals_trash'])) {
 		include("view_proposals_trash.php");
 	}
+	if (isset($_GET['view_proposals_deleted'])) {
+		include("view_proposals_deleted.php");
+	}
 	if (isset($_GET['pause_proposal'])) {
 		include("pause_proposal.php");
 	}

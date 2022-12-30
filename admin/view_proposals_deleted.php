@@ -1,5 +1,4 @@
 <?php
-
 @session_start();
 
 if (!isset($_SESSION['admin_email'])) {
@@ -12,7 +11,7 @@ if (!isset($_SESSION['admin_email'])) {
         <div class="col-sm-4">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1><i class="menu-icon fa fa-table"></i> Proposals / Active Proposals</h1>
+                    <h1><i class="menu-icon fa fa-table"></i> Proposals / Delete Requests</h1>
                 </div>
             </div>
         </div>
@@ -20,7 +19,7 @@ if (!isset($_SESSION['admin_email'])) {
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <li class="active">Active Proposals</li>
+                        <li class="active">Trash</li>
                     </ol>
                 </div>
             </div>
@@ -77,7 +76,6 @@ if (!isset($_SESSION['admin_email'])) {
                         <!--- card-body Starts --->
                         <?php include("includes/proposal_nav.php") ?>
 
-
                         <div class="table-responsive mt-4">
                             <!--- table-responsive mt-4 Starts --->
 
@@ -113,7 +111,7 @@ if (!isset($_SESSION['admin_email'])) {
 
                                     <?php
 
-                                    $get_proposals = $db->query("select * from proposals where proposal_status='active' AND proposal_featured='yes' order by 1 DESC");
+                                    $get_proposals = $db->query("select * from proposals where proposal_status='deleted' order by 1 DESC");
 
                                     while ($row_proposals = $get_proposals->fetch()) {
 
@@ -138,7 +136,6 @@ if (!isset($_SESSION['admin_email'])) {
                                         $proposal_seller_id = $row_proposals->proposal_seller_id;
 
                                         $proposal_featured = $row_proposals->proposal_featured;
-                                        $proposal_toprated = $row_proposals->proposal_toprated;
 
                                         if ($proposal_price == 0) {
 
@@ -187,57 +184,26 @@ if (!isset($_SESSION['admin_email'])) {
 
                                             <td><?= $proposal_order_queue; ?></td>
 
-                                            <td><?= ucfirst($proposal_status); ?></td>
+                                            <td>Delete Requests</td>
 
                                             <td>
 
-                                                <a title="View Proposal" href="../proposals/<?= $seller_user_name; ?>/<?= $proposal_url; ?>" target="_blank">
+                                                <a href="index?restore_proposal=<?= $proposal_id; ?>">
 
-                                                    <i class="fa fa-eye"></i>
+                                                    <i class="fa fa-reply"></i> Restore Proposal
 
                                                 </a>
 
+                                                <br>
 
-                                                <?php if ($proposal_featured == "yes") { ?>
+                                                <a href="index?delete_proposal=<?= $proposal_id; ?>&ref=deleted" onclick="return confirm('Are you sure you want to delete this proposal?')">
 
-                                                    <a class="text-success" title="Remove Proposal From Featured Listing." href="index?remove_feature_proposal=<?= $proposal_id; ?>" />
-
-                                                    <i class="fa fa-star-half-o"></i>
-
-                                                    </a>
-
-                                                <?php } else { ?>
-
-                                                    <a href="index?feature_proposal=<?= $proposal_id; ?>" title="Make Your Proposal Featured">
-                                                        <i class="fa fa-star"></i>
-                                                    </a>
-
-                                                <?php } ?>
-
-                                                <?php if ($proposal_toprated == 0) { ?>
-                                                    <a href="index?toprated_proposal=<?= $proposal_id; ?>" title="Make Your Proposal Top Rated">
-                                                        <i class="fa fa-heart" aria-hidden="true"></i>
-                                                    </a>
-                                                <?php } else { ?>
-                                                    <a class="text-danger" href="index?removetoprated_proposal=<?= $proposal_id; ?>" title="Remove Proposal From Top Rated Listing.">
-                                                        <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                                                    </a>
-                                                <?php } ?>
-
-                                                <a title="Pause/Deactivate Proposal" href="index?pause_proposal=<?= $proposal_id; ?>">
-
-                                                    <i class="fa fa-pause-circle"></i>
-                                                </a>
-
-
-
-                                                <a title="Delete Proposal" href="index?move_to_trash=<?= $proposal_id; ?>">
-
-                                                    <i class="fa fa-trash"></i>
+                                                    <i class="fa fa-trash"></i> Delete Permanently
 
                                                 </a>
 
                                             </td>
+
 
 
                                         </tr>
@@ -250,20 +216,15 @@ if (!isset($_SESSION['admin_email'])) {
                             </table>
                             <!--- table table-hover table-bordered Ends --->
 
-                            <?php if ($count_active_proposals == 0) {
 
-                                echo "<center><h3 class='pt-3 pb-3'> No active Proposals at the momment</h3></center>";
+                            <?php if ($count_trash_proposals == 0) {
+
+                                echo "<center><h3 class='pt-3 pb-3'> Currently no Proposals deletion requests</h3></center>";
                             }
-
-
-
-
                             ?>
 
                         </div>
                         <!--- table-responsive mt-4 Ends --->
-
-
                     </div>
                     <!--- card-body Ends --->
 

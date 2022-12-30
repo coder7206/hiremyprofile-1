@@ -43,12 +43,12 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 
 <div class="col-md-12">
 	<div class="alert alert-info">
-		You can post <?php echo $totalProposal >= $num_gigs ? 0 : $num_gigs-$totalProposal ?> number of proposals.
+		You can post <?php echo $totalProposal >= $num_gigs ? 0 : $num_gigs - $totalProposal ?> number of proposals.
 	</div>
 	<?php if ($totalProposal >= $num_gigs) { ?>
 		<a class="btn btn-success pull-right" disabled href="#"><i class="fa fa-plus-circle"></i> <?= $lang['button']['add_new_proposal']; ?></a>
 	<?php } else { ?>
-		<a class="btn btn-success pull-right" href="<?=$site_url?>/proposals/create_proposal"><i class="fa fa-plus-circle"></i> <?= $lang['button']['add_new_proposal']; ?></a>
+		<a class="btn btn-success pull-right" href="<?= $site_url ?>/proposals/create_proposal"><i class="fa fa-plus-circle"></i> <?= $lang['button']['add_new_proposal']; ?></a>
 	<?php } ?>
 
 	<div class="clearfix"></div>
@@ -119,62 +119,62 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 						if ($totalDRows > 0) {
 							$select_proposals =  $db->query("SELECT * FROM proposals WHERE proposal_seller_id=:proposal_seller_id AND proposal_status=:proposal_status $where_limit", array("proposal_seller_id" => $login_seller_id, "proposal_status" => 'active'));
 
-						while ($row_proposals = $select_proposals->fetch()) {
-							$proposal_id = $row_proposals->proposal_id;
-							$proposal_title = $row_proposals->proposal_title;
-							$proposal_views = $row_proposals->proposal_views;
-							$proposal_price = $row_proposals->proposal_price;
-							if ($proposal_price == 0) {
-								$get_p = $db->select("proposal_packages", array("proposal_id" => $proposal_id, "package_name" => "Basic"));
-								$proposal_price = $get_p->fetch()->price;
-							}
-							$proposal_img1 = getImageUrl2("proposals", "proposal_img1", $row_proposals->proposal_img1);
-							$proposal_url = $row_proposals->proposal_url;
-							$proposal_featured = $row_proposals->proposal_featured;
-							$count_orders = $db->count("orders", array("proposal_id" => $proposal_id));
+							while ($row_proposals = $select_proposals->fetch()) {
+								$proposal_id = $row_proposals->proposal_id;
+								$proposal_title = $row_proposals->proposal_title;
+								$proposal_views = $row_proposals->proposal_views;
+								$proposal_price = $row_proposals->proposal_price;
+								if ($proposal_price == 0) {
+									$get_p = $db->select("proposal_packages", array("proposal_id" => $proposal_id, "package_name" => "Basic"));
+									$proposal_price = $get_p->fetch()->price;
+								}
+								$proposal_img1 = getImageUrl2("proposals", "proposal_img1", $row_proposals->proposal_img1);
+								$proposal_url = $row_proposals->proposal_url;
+								$proposal_featured = $row_proposals->proposal_featured;
+								$count_orders = $db->count("orders", array("proposal_id" => $proposal_id));
 						?>
-							<tr>
-								<td class="proposal-title"> <?= $proposal_title; ?> </td>
-								<td class="text-success"> <?= showPrice($proposal_price); ?> </td>
-								<td><?= $proposal_views; ?></td>
-								<td><?= $count_orders; ?></td>
-								<td class="text-center">
-									<div class="dropdown">
-										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
-										<div class="dropdown-menu">
-											<a href="<?= $site_url; ?>/proposals/<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
-											<?php if ($proposal_featured == "no") { ?>
-												<a href="#" class="dropdown-item" id="featured-button-<?= $proposal_id; ?>">Make Proposal Featured</a>
-											<?php } else { ?>
-												<a href="#" class="dropdown-item text-success">Already Featured </a>
-											<?php } ?>
-											<a href="<?= $site_url; ?>/proposals/pause_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Deactivate Proposal</a>
-											<a href="<?= $site_url; ?>/proposals/view_coupons?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Coupons</a>
-											<a href="<?= $site_url; ?>/proposals/view_referrals?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Referrals</a>
-											<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
-											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this proposal?')"> Delete </a>
+								<tr>
+									<td class="proposal-title"> <?= $proposal_title; ?> </td>
+									<td class="text-success"> <?= showPrice($proposal_price); ?> </td>
+									<td><?= $proposal_views; ?></td>
+									<td><?= $count_orders; ?></td>
+									<td class="text-center">
+										<div class="dropdown">
+											<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
+											<div class="dropdown-menu">
+												<a href="<?= $site_url; ?>/proposals/<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
+												<?php if ($proposal_featured == "no") { ?>
+													<a href="#" class="dropdown-item" id="featured-button-<?= $proposal_id; ?>">Make Proposal Featured</a>
+												<?php } else { ?>
+													<a href="#" class="dropdown-item text-success">Already Featured </a>
+												<?php } ?>
+												<a href="<?= $site_url; ?>/proposals/pause_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Deactivate Proposal</a>
+												<a href="<?= $site_url; ?>/proposals/view_coupons?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Coupons</a>
+												<a href="<?= $site_url; ?>/proposals/view_referrals?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Referrals</a>
+												<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
+												<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this proposal?')"> Delete </a>
+											</div>
 										</div>
-									</div>
-									<script>
-										$("#featured-button-<?= $proposal_id; ?>").click(function() {
-											proposal_id = "<?= $proposal_id; ?>";
-											$.ajax({
-													method: "POST",
-													url: "<?= $site_url; ?>/proposals/pay_featured_listing",
-													data: {
-														proposal_id: proposal_id
-													}
-												}).done(function(data) {
-													$("#featured-proposal-modal").html(data);
-												})
-												.fail((jqXHR, textStatus, errorThrown) => {
-													console.log('fail', jqXHR.status);
-													alert(jqXHR.status)
-												});
-										});
-									</script>
-								</td>
-							</tr>
+										<script>
+											$("#featured-button-<?= $proposal_id; ?>").click(function() {
+												proposal_id = "<?= $proposal_id; ?>";
+												$.ajax({
+														method: "POST",
+														url: "<?= $site_url; ?>/proposals/pay_featured_listing",
+														data: {
+															proposal_id: proposal_id
+														}
+													}).done(function(data) {
+														$("#featured-proposal-modal").html(data);
+													})
+													.fail((jqXHR, textStatus, errorThrown) => {
+														console.log('fail', jqXHR.status);
+														alert(jqXHR.status)
+													});
+											});
+										</script>
+									</td>
+								</tr>
 							<?php }
 						} else {
 							?>
@@ -229,51 +229,51 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 						if ($totalDRows > 0) {
 							$select_proposals =  $db->query("SELECT * FROM proposals WHERE proposal_seller_id=:proposal_seller_id AND (proposal_status='pause' or proposal_status='admin_pause') $where_limit", array("proposal_seller_id" => $login_seller_id));
 
-						while ($row_proposals = $select_proposals->fetch()) {
-							$proposal_id = $row_proposals->proposal_id;
-							$proposal_title = $row_proposals->proposal_title;
-							$proposal_views = $row_proposals->proposal_views;
-							$proposal_price = $row_proposals->proposal_price;
-							if ($proposal_price == 0) {
-								$get_p = $db->select("proposal_packages", array("proposal_id" => $proposal_id, "package_name" => "Basic"));
-								$proposal_price = $get_p->fetch()->price;
-							}
-							$proposal_img1 = getImageUrl2("proposals", "proposal_img1", $row_proposals->proposal_img1);
-							$proposal_url = $row_proposals->proposal_url;
-							$proposal_featured = $row_proposals->proposal_featured;
-							$proposal_status = $row_proposals->proposal_status;
+							while ($row_proposals = $select_proposals->fetch()) {
+								$proposal_id = $row_proposals->proposal_id;
+								$proposal_title = $row_proposals->proposal_title;
+								$proposal_views = $row_proposals->proposal_views;
+								$proposal_price = $row_proposals->proposal_price;
+								if ($proposal_price == 0) {
+									$get_p = $db->select("proposal_packages", array("proposal_id" => $proposal_id, "package_name" => "Basic"));
+									$proposal_price = $get_p->fetch()->price;
+								}
+								$proposal_img1 = getImageUrl2("proposals", "proposal_img1", $row_proposals->proposal_img1);
+								$proposal_url = $row_proposals->proposal_url;
+								$proposal_featured = $row_proposals->proposal_featured;
+								$proposal_status = $row_proposals->proposal_status;
 
-							$count_orders = $db->count("orders", array("proposal_id" => $proposal_id));
+								$count_orders = $db->count("orders", array("proposal_id" => $proposal_id));
 
-							if ($proposal_status == "admin_pause") {
-								$onclick = <<<EOT
+								if ($proposal_status == "admin_pause") {
+									$onclick = <<<EOT
 								onclick="return confirm('{$lang['view_proposals']['admin_pause_proposal']}')"
 								EOT;
-							} else {
-								$onclick = "";
-							}
+								} else {
+									$onclick = "";
+								}
 
 						?>
-							<tr>
-								<td class="proposal-title"> <?= $proposal_title; ?> </td>
-								<td class="text-success"> <?= showPrice($proposal_price); ?> </td>
-								<td><?= $proposal_views; ?></td>
-								<td><?= $count_orders; ?></td>
-								<td class="text-center">
-									<div class="dropdown">
-										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
-										<div class="dropdown-menu">
-											<a href="<?= $site_url; ?>/proposals/<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
-											<a href="activate_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" <?= $onclick; ?>>
-												Activate
-											</a>
-											<a href="<?= $site_url; ?>/proposals/view_referrals?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Referrals</a>
-											<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
-											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this proposal?')"> Delete </a>
+								<tr>
+									<td class="proposal-title"> <?= $proposal_title; ?> </td>
+									<td class="text-success"> <?= showPrice($proposal_price); ?> </td>
+									<td><?= $proposal_views; ?></td>
+									<td><?= $count_orders; ?></td>
+									<td class="text-center">
+										<div class="dropdown">
+											<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
+											<div class="dropdown-menu">
+												<a href="<?= $site_url; ?>/proposals/<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
+												<a href="activate_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" <?= $onclick; ?>>
+													Activate
+												</a>
+												<a href="<?= $site_url; ?>/proposals/view_referrals?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Referrals</a>
+												<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
+												<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this proposal?')"> Delete </a>
+											</div>
 										</div>
-									</div>
-								</td>
-							</tr>
+									</td>
+								</tr>
 							<?php }
 						} else {
 							?>
@@ -410,29 +410,29 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 						if ($totalDRows > 0) {
 							$select_proposals =  $db->query("SELECT * FROM proposals WHERE proposal_seller_id=:proposal_seller_id AND proposal_status=:proposal_status $where_limit", array("proposal_seller_id" => $login_seller_id, "proposal_status" => 'modification'));
 
-						while ($row_proposals = $select_proposals->fetch()) {
-							$proposal_id = $row_proposals->proposal_id;
-							$proposal_title = $row_proposals->proposal_title;
-							$proposal_url = $row_proposals->proposal_url;
-							$select_modification = $db->select("proposal_modifications", array("proposal_id" => $proposal_id));
-							$row_modification = $select_modification->fetch();
-							$modification_message = $row_modification->modification_message;
+							while ($row_proposals = $select_proposals->fetch()) {
+								$proposal_id = $row_proposals->proposal_id;
+								$proposal_title = $row_proposals->proposal_title;
+								$proposal_url = $row_proposals->proposal_url;
+								$select_modification = $db->select("proposal_modifications", array("proposal_id" => $proposal_id));
+								$row_modification = $select_modification->fetch();
+								$modification_message = $row_modification->modification_message;
 						?>
-							<tr>
-								<td class="proposal-title"> <?= $proposal_title; ?> </td>
-								<td> <?= $modification_message; ?></td>
-								<td class="text-center">
-									<div class="dropdown">
-										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
-										<div class="dropdown-menu">
-											<a href="<?= $site_url; ?>/proposals/submit_approval?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Submit For Approval </a>
-											<a href="<?= $site_url; ?>/proposals/<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
-											<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
-											<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this proposal?')"> Delete </a>
+								<tr>
+									<td class="proposal-title"> <?= $proposal_title; ?> </td>
+									<td> <?= $modification_message; ?></td>
+									<td class="text-center">
+										<div class="dropdown">
+											<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
+											<div class="dropdown-menu">
+												<a href="<?= $site_url; ?>/proposals/submit_approval?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Submit For Approval </a>
+												<a href="<?= $site_url; ?>/proposals/<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
+												<a href="<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
+												<a href="<?= $site_url; ?>/proposals/delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this proposal?')"> Delete </a>
+											</div>
 										</div>
-									</div>
-								</td>
-							</tr>
+									</td>
+								</tr>
 							<?php }
 						} else {
 							?>
