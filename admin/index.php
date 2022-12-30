@@ -96,6 +96,8 @@ $job_reports = $db->count("reports", array("content_type" => "buyer_requests", "
 $view_offers_reports = $db->count("reports", array("content_type" => "view_offers", "status" => ""));
 $user_reports = $db->count("reports", array("content_type" => "user", "status" => ""));
 
+$proposal_del_requests = $db->count("proposals", array("proposal_status" => "deleted"));
+
 $total_reports = $order_reports + $message_reports + $proposal_reports + $job_reports + $view_offers_reports + $user_reports;
 
 // feedbacks

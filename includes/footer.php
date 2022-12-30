@@ -128,6 +128,7 @@
 							<option>Inappropriate Proposal</option>
 							<option>Trademark Violation</option>
 							<option>Copyrights Violation</option>
+							<option>Other</option>
 						</select>
 					</div>
 					<!--- form-group Ends --->

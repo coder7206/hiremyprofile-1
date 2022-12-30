@@ -23,7 +23,7 @@ if (!isset($_SESSION['admin_email'])) {
     </div>
 
 
-    <div class="container">
+    <div class="container-fluid">
 
         <div class="row">
             <!--- 3 row Starts --->
@@ -82,7 +82,7 @@ if (!isset($_SESSION['admin_email'])) {
 
                                     $i = 0;
 
-                                    $select_reports = $db->select("reports", array('content_type' => 'view_offers'));
+                                    $select_reports = $db->select("reports", array('content_type' => 'view_offers', 'status' => ''));
 
                                     while ($row_reports = $select_reports->fetch()) {
 
@@ -129,7 +129,7 @@ if (!isset($_SESSION['admin_email'])) {
                                             </td>
 
                                             <td>
-                                                <a href="../requests/view_offers?request_id=<?=$reqId?>" target="_blank" class="text-success"><?= $reqTitle; ?> - <?= $reqUserName ?></a>
+                                                <a href="../requests/view_offers?request_id=<?= $reqId ?>" target="_blank" class="text-success"><?= $reqTitle; ?> - <?= $reqUserName ?></a>
                                             </td>
 
                                             <td><?= $reason; ?></td>
@@ -148,11 +148,11 @@ if (!isset($_SESSION['admin_email'])) {
                                                     <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Actions</button>
 
                                                     <div class="dropdown-menu" style="min-width:50px !important;">
-
+                                                        <a class="dropdown-item" href="index?type=offer&action=taken&delete_report=<?= $id; ?>">
+                                                            <i class="fa fa-check-square-o"></i> Action Taken
+                                                        </a>
                                                         <a class="dropdown-item" href="index?type=offer&delete_report=<?= $id; ?>">
-
                                                             <i class="fa fa-trash"></i> Delete
-
                                                         </a>
 
                                                     </div>

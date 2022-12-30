@@ -14,6 +14,7 @@ if ($edit_proposal->rowCount() == 0) {
   echo "<script>window.open('view_proposals','_self');</script>";
 }
 $row_proposal = $edit_proposal->fetch();
+// echo "<pre>"; print_r($row_proposal); exit;
 $d_proposal_title = $row_proposal->proposal_title;
 $d_direct_order = $row_proposal->direct_order;
 if ($d_direct_order == 2) {
@@ -40,6 +41,7 @@ $d_proposal_img2_s3 = $row_proposal->proposal_img2_s3;
 $d_proposal_img3_s3 = $row_proposal->proposal_img3_s3;
 $d_proposal_img4_s3 = $row_proposal->proposal_img4_s3;
 $d_proposal_video_s3 = $row_proposal->proposal_video_s3;
+$proposal_yt_url = $row_proposal->proposal_yt_url;
 
 
 $d_delivery_id = $row_proposal->delivery_id;

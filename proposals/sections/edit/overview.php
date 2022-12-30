@@ -15,7 +15,7 @@ $child_title = $row_meta->child_title;
 ?>
 <script>
     $(function() {
-		<?php if ($check) { ?>
+		<?php if ($check and (!isset($_GET['video']) and !isset($_GET['instant_delivery']) and !isset($_GET['publish']))) { ?>
         $('#direct_order').popover('show')
 		<?php } ?>
         $("#direct_order").on('change', function() {
@@ -47,9 +47,9 @@ $child_title = $row_meta->child_title;
 		<!--- form-group row Starts --->
 		<div class="col-md-3"><?= $lang['label']['proposal_title']; ?></div>
 		<div class="col-md-9">
-			<textarea name="proposal_title" id="proposal_title" rows="2" placeholder="I Will" required="" class="form-control" maxlength="100"><?= $d_proposal_title; ?></textarea>
-			<small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_description']); ?></small>
-			<span class="text-danger">Your proposal must be at least <span id="typed-characters"><?=strlen($d_proposal_title) > 100 ? 0 : 100 - strlen($d_proposal_title); ?>/100</span> characters.</span>
+			<textarea name="proposal_title" id="proposal_title" rows="2" placeholder="I Will" required="" class="form-control" minlength="50"><?= $d_proposal_title; ?></textarea>
+			<small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_title']); ?></small>
+			<span class="text-dark d-block">min. characters 50.  <span class="pull-right"><i class="text-danger" id="typed-characters"><?=strlen($d_proposal_title) ?></i> characters</span></span>
 		</div>
 	</div>
 	<!--- form-group row Ends --->
@@ -186,9 +186,9 @@ $child_title = $row_meta->child_title;
 
     textAreaElement.addEventListener("keydown", (event) => {
         const typedCharacters = textAreaElement.value.length;
-        if (typedCharacters > maximumCharacters) {
-            return false;
-        }
-        typedCharactersElement.textContent = typedCharacters + "/" + maximumCharacters;
+        // if (typedCharacters > maximumCharacters) {
+        //     return false;
+        // }
+        typedCharactersElement.textContent = typedCharacters;
     });
 </script>

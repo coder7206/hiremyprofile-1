@@ -62,6 +62,7 @@ $proposal_img2 = $row_proposal->proposal_img2;
 $proposal_img3 = $row_proposal->proposal_img3;
 $proposal_img4 = $row_proposal->proposal_img4;
 $proposal_video = $row_proposal->proposal_video;
+$proposal_yt_url = $row_proposal->proposal_yt_url;
 if ($paymentGateway == 1) {
     $proposal_video_type = $row_proposal->proposal_video_type;
 } else {

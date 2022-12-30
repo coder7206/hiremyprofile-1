@@ -115,5 +115,11 @@ if($reason == "unfollow"){
 }*/
 
 if($reason == "feedback_respond"){
-    return "Has feedback response.";
+    return "has given feedback response.";
+}
+
+$reports = ['offer_report_action_taken', 'users_report_action_taken', 'order_report_action_taken', 'proposal_report_action_taken', 'job_report_action_taken', 'message_report_action_taken'];
+
+if (in_array($reason, $reports)) {
+	return "has taken action against your report";
 }

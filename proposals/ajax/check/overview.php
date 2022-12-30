@@ -115,4 +115,3 @@ if(isset($_POST["proposal_id"])){
 	}
 	die();
 }
-?>

@@ -282,6 +282,11 @@
                                     <td><span class="badge badge-success"><?= $count_proposals; ?></span></td>
                                 </tr>
 
+                                <tr onclick="location.href='index?view_proposals_deleted'">
+                                    <td>Proposals Deletion Requests</td>
+                                    <td><span class="badge badge-danger"><?= $proposal_del_requests; ?></span></td>
+                                </tr>
+
                                 <tr onclick="location.href='index?buyer_requests'">
                                     <td>Buyer Requests Awaiting Approval</td>
                                     <td><span class="badge badge-success"><?= $count_requests; ?></span></td>
