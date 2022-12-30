@@ -25,11 +25,7 @@ if (!isset($_SESSION['admin_email'])) {
     </div>
 
 
-    <div class="container">
-
-
-
-
+    <div class="container-fluid">
         <div class="row">
             <!--- 3 row Starts --->
 
@@ -91,7 +87,7 @@ if (!isset($_SESSION['admin_email'])) {
 
                                     $i = 0;
 
-                                    $select_reports = $db->select("reports", array('content_type' => 'order'));
+                                    $select_reports = $db->select("reports", array('content_type' => 'order', 'status' => ''));
 
                                     while ($row_reports = $select_reports->fetch()) {
 
@@ -135,6 +131,9 @@ if (!isset($_SESSION['admin_email'])) {
                                                         Actions
                                                     </button>
                                                     <div class="dropdown-menu" style="min-width:50px !important;">
+                                                        <a class="dropdown-item" href="index?type=order&action=taken&delete_report=<?= $id; ?>">
+                                                            <i class="fa fa-check-square-o"></i> Action Taken
+                                                        </a>
                                                         <a class="dropdown-item" href="index?delete_order_report=<?= $id; ?>">
                                                             <i class="fa fa-trash"></i> Delete
                                                         </a>
