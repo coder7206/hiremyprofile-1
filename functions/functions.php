@@ -164,10 +164,6 @@ function get_category_pagination()
 
 /// get_category_pagination Function Ends ///
 
-
-
-
-
 /// get_featured_proposals Function Starts ///
 
 function get_featured_proposals()
@@ -186,14 +182,7 @@ function get_featured_pagination()
 
 	get_pagination("featured");
 }
-
-
 /// get_featured_pagination Function Ends ///
-
-
-
-
-
 
 /// get_top_proposals Function Starts ///
 
@@ -349,10 +338,10 @@ function freelancersQueryWhere($type)
 	}
 
 	// echo "<pre>";
-		// print_r($_GET);
+	// print_r($_GET);
 	// 	print_r($values);
 	// 	print_r($where_path);
-		// exit;
+	// exit;
 	$query_where = "where";
 	if (count($where_online) > 0) {
 		$query_where .= addAnd($query_where) . " (" . implode(" or ", $where_online) . ")";
@@ -369,7 +358,7 @@ function freelancersQueryWhere($type)
 
 	if ($type == "query_where") {
 		// if ($query_where != "where") {
-			return [$query_where != "where" ? $query_where : "", $where_skill];
+		return [$query_where != "where" ? $query_where : "", $where_skill];
 		// }
 	} elseif ($type == "where_path") {
 		return $where_path;
@@ -417,10 +406,10 @@ function get_freelancers()
 		$query = "select DISTINCT s.* from sellers s JOIN proposals ON s.seller_id=proposals.proposal_seller_id and proposals.proposal_status='active' $where_limit";
 		$sellers = $db->query($query);
 	}
-// 	print_r($where_path);
-// 	echo $query;
-// 	echo "<pre>";
-// print_r($values);
+	// 	print_r($where_path);
+	// 	echo $query;
+	// 	echo "<pre>";
+	// print_r($values);
 	if ($sellers->rowCount() > 0) {
 		$sellersCount = 0;
 		while ($seller = $sellers->fetch()) {
