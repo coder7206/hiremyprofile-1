@@ -98,7 +98,6 @@ function watermarkImage($image, $data)
 <html lang="en" class="ui-toolkit">
 
 <head>
-
   <title><?= $site_name; ?> - Order Management For: #<?= $order_number; ?></title>
 
   <meta charset="utf-8">
@@ -161,6 +160,9 @@ function watermarkImage($image, $data)
         <div class="row">
           <div class="col-md-10 offset-md-1">
             <h1 class="mb-4"> Order Management </h1>
+
+            <a href="<?=$site_url?>/customer_support?enquiry_id=1&order_number=<?=$order_number?>" class="btn btn-success"><i class="fa fa-envelope-o" aria-hidden="true"></i> Contact Support</a>
+
             <ul class="nav nav-tabs mb-3 mt-3">
               <li class="nav-item">
                 <a href="#order-activity" data-toggle="tab" class="nav-link active make-black ">Order Activity</a>
