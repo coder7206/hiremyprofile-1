@@ -1,13 +1,10 @@
 <?php
 session_start();
-
 require_once("../includes/db.php");
 
- if(!isset($_SESSION['seller_user_name'])){
-
- echo "<script>window.open('../login','_self')</script>";
-
- }
+if (!isset($_SESSION['seller_user_name'])) {
+  echo "<script>window.open('../login','_self')</script>";
+}
 
 $login_seller_user_name = $_SESSION['seller_user_name'];
 $select_login_seller = $db->select("sellers", array("seller_user_name" => $login_seller_user_name));
@@ -73,7 +70,7 @@ $relevant_requests = $row_general_settings->relevant_requests;
           <div class="input-group">
             <input type="text" id="search-input" placeholder="Search Buyer Requests" class="form-control">
             <span class="input-group-btn">
-              <button class="btn btn-success"> <i class="fa fa-search"></i> </button>
+              <button class="btn btn-success" id="req-search"> <i class="fa fa-search"></i> </button>
             </span>
           </div>
         </div>
@@ -110,38 +107,7 @@ $relevant_requests = $row_general_settings->relevant_requests;
       </div>
     </div>
   </div>
-  <script>
-    $(document).ready(function() {
-      $('#search-input').keyup(function() {
-        var search = $(this).val();
-        $('#load-data').html("");
-        $.ajax({
-          url: "load_search_data",
-          method: "POST",
-          data: {
-            search: search
-          },
-          success: function(data) {
-            $('#load-data').html(data);
-          }
-        });
-      });
-      $('#sub-category').change(function() {
-        var child_id = $(this).val();
-        $('#load-data').html("");
-        $.ajax({
-          url: "load_category_data",
-          method: "POST",
-          data: {
-            child_id: child_id
-          },
-          success: function(data) {
-            $('#load-data').html(data);
-          }
-        });
-      });
-    });
-  </script>
+
   <?php require_once("../includes/footer.php"); ?>
 </body>
 
