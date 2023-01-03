@@ -483,24 +483,6 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                 </div>
                                 <div class="col-md-12">
                                     <?php
-                                    $request_child_ids = array();
-
-                                    $select_proposals = $db->query("select DISTINCT proposal_child_id from proposals where proposal_seller_id='$login_seller_id' and proposal_status='active'");
-                                    while ($row_proposals = $select_proposals->fetch()) {
-                                        $proposal_child_id = $row_proposals->proposal_child_id;
-                                        array_push($request_child_ids, $proposal_child_id);
-                                    }
-
-                                    $where_child_id = array();
-                                    foreach ($request_child_ids as $child_id) {
-                                        $where_child_id[] = "child_id=" . $child_id;
-                                    }
-
-                                    if (count($where_child_id) > 0) {
-                                        $requests_query = " and (" . implode(" or ", $where_child_id) . ")";
-                                        $child_cats_query = "(" . implode(" or ", $where_child_id) . ")";
-                                    }
-                                    $relevant_requests = $row_general_settings->relevant_requests;
                                     include('requests/user_buyer_requests.php');
                                     ?>
                                 </div>

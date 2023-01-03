@@ -1,17 +1,17 @@
 <?php
 require_once("config.php");
-if(isset($_SESSION['sessionStart'])){
+if (isset($_SESSION['sessionStart'])) {
 	$_SESSION['seller_user_name'] = $_SESSION['sessionStart'];
 	unset($_SESSION['sessionStart']);
 }
 
-if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
+if (empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)) {
 	echo "<script>window.open('install','_self'); </script>";
 	exit();
-}else{
+} else {
 
-	define('ROOTPATH',str_replace(array("includes"),'',__DIR__));
-	$dir = str_replace(array("includes"),'',__DIR__);
+	define('ROOTPATH', str_replace(array("includes"), '', __DIR__));
+	$dir = str_replace(array("includes"), '', __DIR__);
 
 	require_once "$dir/libs/database.php";
 	require_once "$dir/libs/input.php";
@@ -22,32 +22,31 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 	require_once "s3-config.php";
 
 	$core = new Core;
-	$paymentGateway = $core->checkPlugin("paymentGateway","site");
-	$videoPlugin = $core->checkPlugin("videoPlugin","site");
-	$notifierPlugin = $core->checkPlugin("notifierPlugin","site");
+	$paymentGateway = $core->checkPlugin("paymentGateway", "site");
+	$videoPlugin = $core->checkPlugin("videoPlugin", "site");
+	$notifierPlugin = $core->checkPlugin("notifierPlugin", "site");
 
 	$db->query("SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION'");
 
-	if(!isset($_SESSION['siteLanguage'])){
-		$_SESSION['siteLanguage'] = $db->select("languages",["default_lang" =>1])->fetch()->id;
+	if (!isset($_SESSION['siteLanguage'])) {
+		$_SESSION['siteLanguage'] = $db->select("languages", ["default_lang" => 1])->fetch()->id;
 	}
 
-	if(isset($_SESSION['seller_user_name'])){
-        $select_sellers = $db->select("sellers", array("seller_user_name" => $_SESSION['seller_user_name']));
-        $row_sellers = $select_sellers->fetch();
+	if (isset($_SESSION['seller_user_name'])) {
+		$select_sellers = $db->select("sellers", array("seller_user_name" => $_SESSION['seller_user_name']));
+		$row_sellers = $select_sellers->fetch();
 
-        $checkuser = $db->select("memb_plan_detail where seller_id = $row_sellers->seller_id and memb_status = 'active'  order by id desc LIMIT 1");
-        $row_purchsed = $checkuser->fetch();
-        if ($row_purchsed) {
-            $exp_date = $row_purchsed->memb_end_date;
-            $row_purchsed_detail = $db->select("membership_table where id = " . $row_purchsed->memb_tbl_id . "  LIMIT 1");
-            $row_purchsed_plan = $row_purchsed_detail->fetch();
-        } else {
-            $exp_date = 'new update';
-            $row_purchsed_detail = $db->select("membership_table where id = 1  LIMIT 1");
-            $row_purchsed_plan = $row_purchsed_detail->fetch();
-
-        }
+		$checkuser = $db->select("memb_plan_detail where seller_id = $row_sellers->seller_id and memb_status = 'active'  order by id desc LIMIT 1");
+		$row_purchsed = $checkuser->fetch();
+		if ($row_purchsed) {
+			$exp_date = $row_purchsed->memb_end_date;
+			$row_purchsed_detail = $db->select("membership_table where id = " . $row_purchsed->memb_tbl_id . "  LIMIT 1");
+			$row_purchsed_plan = $row_purchsed_detail->fetch();
+		} else {
+			$exp_date = 'new update';
+			$row_purchsed_detail = $db->select("membership_table where id = 1  LIMIT 1");
+			$row_purchsed_plan = $row_purchsed_detail->fetch();
+		}
 	}
 
 	$siteLanguage = $_SESSION['siteLanguage'];
@@ -62,12 +61,12 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 	$site_author = $row_general_settings->site_author;
 	$enable_mobile_logo = $row_general_settings->enable_mobile_logo;
 
-	$site_favicon = getImageUrl2("general_settings","site_favicon",$row_general_settings->site_favicon);
+	$site_favicon = getImageUrl2("general_settings", "site_favicon", $row_general_settings->site_favicon);
 	$site_logo_type = $row_general_settings->site_logo_type;
 	$site_logo_text = $row_general_settings->site_logo_text;
-	$site_logo_image = getImageUrl2("general_settings","site_logo_image",$row_general_settings->site_logo_image);
-	$site_logo = getImageUrl2("general_settings","site_logo",$row_general_settings->site_logo);
-	$site_mobile_logo = getImageUrl2("general_settings","site_mobile_logo",$row_general_settings->site_mobile_logo);
+	$site_logo_image = getImageUrl2("general_settings", "site_logo_image", $row_general_settings->site_logo_image);
+	$site_logo = getImageUrl2("general_settings", "site_logo", $row_general_settings->site_logo);
+	$site_mobile_logo = getImageUrl2("general_settings", "site_mobile_logo", $row_general_settings->site_mobile_logo);
 	$site_timezone = $row_general_settings->site_timezone;
 	$tinymce_api_key = $row_general_settings->tinymce_api_key;
 	$google_app_link = $row_general_settings->google_app_link;
@@ -92,7 +91,7 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 	$enable_websocket = $row_general_settings->enable_websocket;
 	$websocket_address = $row_general_settings->websocket_address;
 
-	$get_currencies = $db->select("currencies",array("id" => $site_currency));
+	$get_currencies = $db->select("currencies", array("id" => $site_currency));
 	$row_currencies = $get_currencies->fetch();
 	$s_currency_name = $row_currencies->name;
 	$s_currency = $row_currencies->symbol;
@@ -111,7 +110,7 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 	$row_api_settings = $get_api_settings->fetch();
 	$enable_s3 = $row_api_settings->enable_s3;
 
-	$get_bar = $db->select("announcement_bar",['language_id'=>$siteLanguage]);
+	$get_bar = $db->select("announcement_bar", ['language_id' => $siteLanguage]);
 	$row_bar = $get_bar->fetch();
 	$enable_bar = $row_bar->enable_bar;
 	$bg_color = $row_bar->bg_color;
@@ -130,44 +129,43 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 
 	date_default_timezone_set($site_timezone);
 
-	$row_language = $db->select("languages",array("id"=>$siteLanguage))->fetch();
+	$row_language = $db->select("languages", array("id" => $siteLanguage))->fetch();
 	$lang_dir = $row_language->direction;
 	$template_folder = $row_language->template_folder;
-	require($dir."languages/".strtolower($row_language->title).".php");
+	require($dir . "languages/" . strtolower($row_language->title) . ".php");
 
 	require_once "$dir/screens/detect.php";
 	$detect = new Mobile_Detect;
 	$deviceType = ($detect->isMobile() ? ($detect->isTablet() ? 'tablet' : 'phone') : 'computer');
-	if($deviceType == "phone"){
+	if ($deviceType == "phone") {
 		$proposals_stylesheet = '<link href="styles/mobile_proposals.css" rel="stylesheet">';
-	}else{
+	} else {
 		$proposals_stylesheet = '<link href="styles/desktop_proposals.css" rel="stylesheet">';
 	}
 
-	if(isset($_SESSION['seller_user_name'])){
+	if (isset($_SESSION['seller_user_name'])) {
 		$login_seller_user_name = $_SESSION['seller_user_name'];
-		$select_login_seller = $db->select("sellers",array("seller_user_name" => $login_seller_user_name));
+		$select_login_seller = $db->select("sellers", array("seller_user_name" => $login_seller_user_name));
 		$count_seller_login = $select_login_seller->rowCount();
-		if($count_seller_login == 0){
+		if ($count_seller_login == 0) {
 			echo "<script>window.open('$site_url/logout','_self');</script>";
-		}else{
+		} else {
 			$row_login_seller = $select_login_seller->fetch();
 			$login_seller_id = $row_login_seller->seller_id;
 		}
 	}
 
-	if(!isset($_SESSION['admin_email'])){
-		if($enable_maintenance_mode == "yes"){
+	if (!isset($_SESSION['admin_email'])) {
+		if ($enable_maintenance_mode == "yes") {
 			echo "<script>window.open('$site_url/maintenance','_self');</script>";
 		}
 	}
 
-	if($lang_dir == "right"){
+	if ($lang_dir == "right") {
 		$floatRight = "float-right";
 		$textRight = "text-right";
-	}else{
+	} else {
 		$floatRight = "float-left";
 		$textRight = "text-left";
 	}
-
 }

@@ -21,6 +21,9 @@ if ($enable_unlimited_revisions == 1) {
 // testing
 $checkVideo = false;
 $enable_delivery = false;
+
+$membershipData = get_memebership_data($login_seller_id);
+$pendingProposal = $membershipData['pending_gig'];
 ?>
 
 <!DOCTYPE html>

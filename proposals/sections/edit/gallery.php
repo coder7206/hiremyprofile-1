@@ -497,11 +497,12 @@
           var minWidth = 370
           var maxHeight = 1650
           var maxWidth = 1110
-          if (height < minHeight || width < minWidth) {
+          // alert(height + " " + minHeight + " " + maxHeight + " " + width + " " + minWidth + " " + maxWidth)
+          if (height < minHeight && width < minWidth) {
             alert("Height and Width must be atleast" + minHeight + "x" + minWidth + "px");
             return false;
           }
-          if (height > maxHeight || width > maxWidth) {
+          if (height > maxHeight && width > maxWidth) {
             alert("Height and Width must not exceed " + maxHeight + "x" + maxWidth + "px");
             return false;
           }
