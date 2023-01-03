@@ -417,6 +417,17 @@ $(document).ready(function () {
 			});
 		}
 		notificationsPopup();
+
+		// update membership data
+		setInterval(function () {
+			$.ajax({
+				method: "POST",
+				url: base_url + "/ajax/membership-update",
+				data: { user_id: seller_id }
+			}).done(function (data) {
+
+			});
+		}, 10000); // check every 10 seconfs
 		// Ajax Requests Code Ends ////
 
 	}

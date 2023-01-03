@@ -19,7 +19,7 @@ function insertPackages($proposal_id)
 include("sanitize_url.php");
 
 if (isset($_POST['submit'])) {
-    if ($row_sellers->no_of_gigs > 0) {
+    if ($pendingProposal > 0) {
         $rules = array(
             "proposal_title" => "required",
             "proposal_cat_id" => "required",
@@ -150,23 +150,23 @@ if (isset($_POST['submit'])) {
     <div class="form-group row">
         <!--- form-group row Starts --->
         <div class="alert alert-info col-xs-12">
-            You have <b><?php echo $row_sellers->no_of_gigs; ?></b> proposals remaining.
+            You have <b><?php echo $pendingProposal; ?></b> proposals remaining.
         </div>
-        <?php if ($row_sellers->no_of_gigs < 1) { ?>
+        <?php if ($pendingProposal == 0) { ?>
             <style>
                 .out-of-credit {
                     position: absolute;
                     top: 0;
                     width: 100%;
-                    height: 63vh;
-                    background: white;
+                    height: 100%;
+                    background-color: #ffffff;
                     z-index: 9001;
                     opacity: 0.7;
                     font-size: 31px;
                     font-weight: bold;
                     text-align: center;
                     vertical-align: middle;
-                    line-height: 63vh;
+                    line-height: 90vh;
                 }
             </style>
             <div class="out-of-credit">

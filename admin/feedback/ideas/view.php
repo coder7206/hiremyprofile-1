@@ -57,41 +57,35 @@ if (!isset($_SESSION['admin_email'])) {
 
 										<th>No</th>
 										<th>User</th>
-										<th>Title</th>
-										<th>Content</th>
-										<th></th>
+										<th width="200">Title</th>
+										<th width="560">Content</th>
+										<!-- <th>Replies</th> -->
+										<th width="250"></th>
 
 									</tr>
 								</thead>
 
 								<tbody>
 									<?php
-
 									$i = 0;
 									$ideas = $db->select("ideas", "", "DESC");
 									while ($idea = $ideas->fetch()) {
-
 										@$user = $db->select("sellers", ["seller_id" => $idea->seller_id])->fetch()->seller_user_name;
-
 										$i++;
-
+										$countComment = $db->count("comments", array("idea_id" => $idea->id));
+										$trClass = $countComment > 0 ? '' : "class='table-info'"
 									?>
-
-										<tr>
-
+										<tr <?=$trClass?>>
 											<td><?= $i; ?></td>
-
 											<td>
 												<?= $user; ?>
 											</td>
-
-											<td width="200"><?= $idea->title; ?></td>
-
-											<td width="560"><?= $idea->content; ?></td>
-
+											<td><?= $idea->title; ?></td>
+											<td><?= $idea->content; ?></td>
+											<!-- <td><?=$countComment?></td> -->
 											<td>
 												<a class="btn text-white btn-primary" href="index?idea-comments&id=<?= $idea->id; ?>">
-													<i class="fa fa-comment"></i> Reply
+													<i class="fa fa-comment"></i> Reply (<?=$countComment?>)
 												</a>
 												<a class="btn text-white btn-danger" href="index?delete_idea=<?= $idea->id; ?>" onclick="if(!confirm('Are you sure you want to delete selected item.')){ return false; }">
 													<i class="fa fa-trash"></i> Delete

@@ -264,7 +264,7 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 											<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
 											<div class="dropdown-menu">
 												<a href="<?= $site_url; ?>/proposals/<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
-												<a href="activate_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" <?= $onclick; ?>>
+												<a href="<?= $site_url; ?>/proposals/activate_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item" <?= $onclick; ?>>
 													Activate
 												</a>
 												<a href="<?= $site_url; ?>/proposals/view_referrals?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Referrals</a>
