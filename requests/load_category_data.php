@@ -150,7 +150,7 @@ if (!empty($requests_query) or $relevant_requests == "no") {
 			$data .= "<br />";
 
 			if ($login_seller_offers == "0") {
-				$data .= "<button class='btn btn-success btn-sm mt-4 send_button' data-toggle='modal' data-target='#quota-finish'>
+				$data .= "<button class='btn btn-success btn-sm mt-4 send_button' data-send-id='0'>
 						{$lang['button']['send_offer']}
 					</button>";
 			} else {

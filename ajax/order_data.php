@@ -89,7 +89,7 @@ if ($rowCount > 0) {
     }
 
     /* We call the pagination function here to generate Pagination link for us.
-As you can see I have passed several parameters to the function. */
+        As you can see I have passed several parameters to the function. */
     $paginationData = paginate($limit, $pageNumber, $rowCount, $totalPages);
 } else {
     $data = "
