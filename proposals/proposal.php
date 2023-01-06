@@ -72,6 +72,11 @@ if ($paymentGateway == 1) {
     }
 }
 
+if ($proposal_yt_url != "") {
+    $ytId = get_youtube_id($proposal_yt_url);
+    $ytImg = get_youtube_thumnail($ytId);
+}
+
 $proposal_desc = $row_proposal->proposal_desc;
 $proposal_short_desc = strip_tags(substr($row_proposal->proposal_desc, 0, 160));
 $proposal_tags = $row_proposal->proposal_tags;

@@ -115,15 +115,15 @@
 
   <?php } else { ?>
 
-    <p class="text-right mb-0">
+    <!-- <p class="text-right mb-0">
       <span class="float-left"><?= $lang['proposals']['add_video']; ?></span>
       <small class="text-muted" style="font-size: 78%;"><?= $lang['proposals']['add_video_description']; ?></small>
-    </p>
+    </p> -->
     <div class="row gallery">
       <!--- row gallery Starts --->
-      <div class="col-md-12">
+      <!-- <div class="col-md-12"> -->
         <!--- col-md-3 Starts --->
-        <div class="pic <?php if (empty($d_proposal_video)) {
+        <!-- <div class="pic <?php if (empty($d_proposal_video)) {
                           echo "add-video";
                         } else {
                           echo "video-added";
@@ -141,18 +141,33 @@
         </div>
 
         <input type='hidden' name='proposal_video' value='<?= $d_proposal_video; ?>' id='v_file'>
-        <input type='hidden' name='proposal_video_s3' value='<?= $d_proposal_video_s3; ?>' id='v_file_s3'>
+        <input type='hidden' name='proposal_video_s3' value='<?= $d_proposal_video_s3; ?>' id='v_file_s3'> -->
 
-      </div>
+      <!-- </div> -->
       <!--- col-md-3 Ends --->
       <div class="col-md-12 mt-3">
       <p class="text-right mb-0">
-        <span class="float-left">YouTube Embed Video URL</span>
+        <span class="float-left">YouTube Video URL</span>
       </p>
       <div class="form-group">
-        <textarea rows="3" name="proposal_yt_url" id="proposal_yt_url" placeholder="Enter Youtube Embed Video URL" class="form-control proposal_yt_url"><?= $proposal_yt_url; ?></textarea>
+        <input type="text" name="proposal_yt_url" class="form-control proposal_yt_url" id="proposal_yt_url" aria-describedby="proposal_yt_urlHelp" placeholder="Enter Youtube Video URL" value="<?= $proposal_yt_url; ?>">
+        <!-- <textarea rows="1" id="proposal_yt_url" placeholder="Enter Youtube Embed Video URL" class="form-control proposal_yt_url"></textarea> -->
+        <small id="proposal_yt_urlHelp" class="form-text text-muted">
+          // http://youtu.be/C0DPdy98e4c<br>
+          // http://www.youtube.com/embed/C0DPdy98e4c<br>
+          // http://www.youtube.com/watch?v=C0DPdy98e4c<br>
+          // http://www.youtube.com/?v=C0DPdy98e4c<br>
+        </small>
+
         <div class="mt-2">
-          <?= $proposal_yt_url; ?>
+          <?php
+          if ($proposal_yt_url) {
+            $ytId = get_youtube_id($proposal_yt_url);
+          ?>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/<?=$ytId?>"
+              title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            </iframe>
+          <?php } ?>
         </div>
       </div>
       </div>
