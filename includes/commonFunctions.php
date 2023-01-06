@@ -298,18 +298,35 @@ function get_memebership_data($userId)
    $oMember = $qMember->fetch();
 
    if ($oMember) {
-      $getTotalProposals = $db->query("SELECT count(*) as total FROM `proposals` where proposal_seller_id = {$userId} AND proposal_status = 'active' AND created_at >= '{$oMember->memb_start_date}' AND created_at <= '{$oMember->memb_end_date}'");
+      $startDate = $oMember->memb_start_date;
+      $endDate = $oMember->memb_start_date;
+      $bidsPerMonth = $oMember->bids_per_month;
+      $getTotalProposals = $db->query("SELECT count(*) as total FROM `proposals` where proposal_seller_id = {$userId} AND proposal_status = 'active' AND (created_at BETWEEN '{$startDate}' AND '{$endDate}')");
+      // $getTotalProposals = $db->query("SELECT count(*) as total FROM `proposals` where proposal_seller_id = {$userId} AND proposal_status = 'active' AND created_at >= '{$startDate}' AND created_at <= '{$endDate}'");
       $objTotalProposals = $getTotalProposals->fetch();
       $totalProposal = $objTotalProposals->total;
    } else {
+      // Basic
+      $qMember = $db->select("`membership_table`", ['id' => 1]);
+      $oMember = $qMember->fetch();
+      $bidsPerMonth = $oMember ? $oMember->bids_per_month : 20;
+
       // update seller information
       $getTotalProposals = $db->query("SELECT count(*) as total FROM `proposals` where proposal_seller_id = {$userId} AND proposal_status = 'active'");
       $objTotalProposals = $getTotalProposals->fetch();
       $totalProposal = $objTotalProposals->total;
+      $startDate = date("Y-m-d", strtotime("first day of this month")) . " 23:59:59";
+      $endDate = date("Y-m-d", strtotime("last day of this month")) . " 23:59:59";
    }
 
+   // COUNTS BIDS MONTHLY
+   $getTotalOffersSent = $db->query("SELECT count(*) as total FROM `send_offers` where sender_id = {$userId} AND (created_at BETWEEN '{$startDate}' AND '{$endDate}')");
+   $objTotalOfferSent = $getTotalOffersSent->fetch();
+   $totalOfferSent = $objTotalOfferSent->total;
+// echo $bidsPerMonth . PHP_EOL . $totalOfferSent . PHP_EOL. $totalOfferSent >= $bidsPerMonth;
    $data = [];
    $data['pending_gig'] = $totalProposal >= $numGigs ? 0 : $numGigs - $totalProposal;
+   $data['pending_offer'] = $totalOfferSent >= $bidsPerMonth ? 0 : $bidsPerMonth - $totalOfferSent;
 
    return $data;
 }
@@ -317,8 +334,15 @@ function get_memebership_data($userId)
 // die and dump
 function dd($data)
 {
-   print("<pre>" . print_r(($data)) . "</pre>");
+   print("<pre>" . print_r($data) . "</pre>");
    exit;
+}
+
+// var dump
+function dump($data)
+{
+   echo "<pre>";
+   print_r($data);
 }
 
 // get seller info
@@ -328,4 +352,25 @@ function get_seller_info($userId)
 
    $select_login_seller = $db->select("sellers", ["seller_id" => $userId]);
    return $select_login_seller->fetch();
+}
+
+function get_buyer_request_query($userId)
+{
+   global $db;
+
+   $query = "";
+
+   $request_child_ids = [];
+
+   $select_proposals = $db->query("SELECT DISTINCT proposal_child_id FROM `proposals` WHERE proposal_seller_id = {$userId} AND proposal_status = 'active' ORDER BY proposal_child_id;");
+   if ($select_proposals->rowCount() > 0) {
+      while ($row_proposals = $select_proposals->fetch()) {
+         $proposal_child_id = $row_proposals->proposal_child_id;
+         array_push($request_child_ids, $proposal_child_id);
+      }
+      $ids = implode(', ', $request_child_ids);
+      $query = "child_id IN ({$ids})";
+   }
+
+   return $query;
 }

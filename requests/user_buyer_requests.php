@@ -1,23 +1,8 @@
 <?php
 $activetab = (isset($_GET['offers'])) ? 'offers' : "active";
 $limit = 5; //isset($homePerPage) ? $homePerPage : 5;
-$request_child_ids = array();
 
-$select_proposals = $db->query("select DISTINCT proposal_child_id from proposals where proposal_seller_id='$login_seller_id' and proposal_status='active'");
-while ($row_proposals = $select_proposals->fetch()) {
-    $proposal_child_id = $row_proposals->proposal_child_id;
-    array_push($request_child_ids, $proposal_child_id);
-}
-
-$where_child_id = array();
-foreach ($request_child_ids as $child_id) {
-    $where_child_id[] = "child_id=" . $child_id;
-}
-
-if (count($where_child_id) > 0) {
-    $requests_query = " and (" . implode(" or ", $where_child_id) . ")";
-    $child_cats_query = "(" . implode(" or ", $where_child_id) . ")";
-}
+$requests_query = $where_child_id = get_buyer_request_query($login_seller_id);
 $relevant_requests = $row_general_settings->relevant_requests;
 ?>
 <ul class="nav nav-tabs mt-3">
@@ -26,36 +11,36 @@ $relevant_requests = $row_general_settings->relevant_requests;
         <a href="#active-requests" data-toggle="tab" class="nav-link make-black <?= $activetab == "active" ? "active" : "" ?>">
             <?= $lang['tabs']['active2']; ?> <span class="badge badge-success" id="activeReqSpan">
                 <?php
-                $i_requests = 0;
-                $i_send_offers = 0;
-                if ($relevant_requests == "no") {
-                    $requests_query = "";
-                }
-                if (isset($_SESSION['seller_user_name'])) {
-                    if (!empty($requests_query) or $relevant_requests == "no") {
-                        $get_requests = $db->query("select * from buyer_requests where request_status='active'" . $requests_query . " AND NOT seller_id='$login_seller_id' order by request_id DESC");
-                        $totalRequest = $get_requests->rowCount();
-                        while ($row_requets = $get_requests->fetch()) {
-                            $request_id = $row_requets->request_id;
-                            $count_offers = $db->count("send_offers", array("request_id" => $request_id, "sender_id" => $login_seller_id));
-                            if ($count_offers == 1) {
-                                $i_send_offers++;
-                            }
-                            $i_requests++;
-                        }
-                    }
-                } else {
-                    $get_requests = $db->query("select * from buyer_requests where request_status='active'" . $requests_query . " order by request_id DESC");
-                    $totalRequest = $get_requests->rowCount();
-                    while ($row_requets = $get_requests->fetch()) {
-                        $request_id = $row_requets->request_id;
-                        $count_offers = $db->count("send_offers", array("request_id" => $request_id, "sender_id" => $login_seller_id));
-                        if ($count_offers == 1) {
-                            $i_send_offers++;
-                        }
-                        $i_requests++;
-                    }
-                }
+                // $i_requests = 0;
+                // $i_send_offers = 0;
+                // if ($relevant_requests == "no") {
+                //     $requests_query = "";
+                // }
+                // if (isset($_SESSION['seller_user_name'])) {
+                //     if (!empty($requests_query) or $relevant_requests == "no") {
+                //         $get_requests = $db->query("select * from buyer_requests where request_status='active'" . $requests_query . " AND NOT seller_id='$login_seller_id' order by request_id DESC");
+                //         $totalRequest = $get_requests->rowCount();
+                //         while ($row_requets = $get_requests->fetch()) {
+                //             $request_id = $row_requets->request_id;
+                //             $count_offers = $db->count("send_offers", array("request_id" => $request_id, "sender_id" => $login_seller_id));
+                //             if ($count_offers == 1) {
+                //                 $i_send_offers++;
+                //             }
+                //             $i_requests++;
+                //         }
+                //     }
+                // } else {
+                //     $get_requests = $db->query("select * from buyer_requests where request_status='active'" . $requests_query . " order by request_id DESC");
+                //     $totalRequest = $get_requests->rowCount();
+                //     while ($row_requets = $get_requests->fetch()) {
+                //         $request_id = $row_requets->request_id;
+                //         $count_offers = $db->count("send_offers", array("request_id" => $request_id, "sender_id" => $login_seller_id));
+                //         if ($count_offers == 1) {
+                //             $i_send_offers++;
+                //         }
+                //         $i_requests++;
+                //     }
+                // }
                 // echo $i_requests - $i_send_offers;
                 echo  "0";
                 ?>
@@ -82,9 +67,9 @@ $relevant_requests = $row_general_settings->relevant_requests;
             <select id="sub-category" class="form-control float-right sort-by mt-3 mb-3 mr-3">
                 <option value="all"> All Subcategories</option>
                 <?php
-                if (count($where_child_id) > 0) {
-                    $get_c_cats = $db->query("select * from categories_children where " . $child_cats_query);
-                    while ($row_c_cats = @$get_c_cats->fetch()) {
+                if (!empty($where_child_id)) {
+                    $get_c_cats = $db->query("SELECT * FROM categories_children WHERE {$where_child_id}");
+                    while ($row_c_cats = $get_c_cats->fetch()) {
                         $child_id = $row_c_cats->child_id;
                         $get_meta = $db->select("child_cats_meta", array("child_id" => $child_id, "language_id" => $siteLanguage));
                         $row_meta = $get_meta->fetch();
