@@ -60,7 +60,7 @@ $login_seller_offers = $row_login_seller->seller_offers;
         if (isset($_SESSION['seller_user_name'])) {
         ?>
           <h5 class="text-right mr-3">
-            <i class="fa fa-list-alt"></i> <?= $login_seller_offers; ?> Offers Left Today
+            <i class="fa fa-list-alt"></i> <?= $login_seller_offers; ?> Bids Left This Month
           </h5>
         <?php } ?>
         <div class="clearfix"></div>

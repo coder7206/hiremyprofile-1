@@ -5,9 +5,9 @@
 <form action="#" method="post" class="proposal-form" id="form1">
 	<!--- form Starts -->
 	<div class="form-group">
-		<textarea rows="7" name="proposal_desc" id="proposal_desc" placeholder="Enter Your Proposal's Description" class="form-control proposal-desc" maxlength="2000"><?= $d_proposal_desc; ?></textarea>
+		<textarea rows="7" name="proposal_desc" id="proposal_desc" placeholder="Enter Your Proposal's Description" class="form-control proposal-desc" required minlength="100" maxlength="2000"><?= $d_proposal_desc; ?></textarea>
 		<small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_description']); ?></small>
-		<span class="text-danger">Your proposal must be at least <span id="typed-characters"><?=strlen($d_proposal_desc);?>/2000</span> characters.</span>
+		<span class="text-dark d-block">min: 100 max: 2000 characters  <span class="pull-right"><i class="text-danger" id="typed-characters"><?=strlen($d_proposal_desc) > 0 ? strlen($d_proposal_desc) : 0; ?></i> characters</span></span>
 	</div>
 </form>
 <!--- form Ends -->

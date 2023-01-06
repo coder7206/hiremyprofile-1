@@ -20,10 +20,10 @@ if(isset($_POST["proposal_id"])){
 
 $rules = array(
 "proposal_id" => "required",
-"attribute_name" => "required");
+"attribute_name" => "required|min:5|max:20");
 
 $val = new Validator($_POST,$rules);
-
+exit;
 if($val->run() == false){
 
 echo "error";
@@ -41,7 +41,7 @@ $i = 0;
 
 $get_p = $db->select("proposal_packages",array("proposal_id"=>$proposal_id));
 
-while($row = $get_p->fetch()){ 
+while($row = $get_p->fetch()){
 
 $i++;
 

@@ -31,37 +31,25 @@ $login_seller_id = $row_login_seller->seller_id;
 $login_seller_offers = $row_login_seller->seller_offers;
 $relevant_requests = $row_general_settings->relevant_requests;
 
-$request_child_ids = [];
-$select_proposals = $db->query("select DISTINCT proposal_child_id from proposals where proposal_seller_id='$sellerId'");
-
-while ($row_proposals = $select_proposals->fetch()) {
-	$proposal_child_id = $row_proposals->proposal_child_id;
-	array_push($request_child_ids, $proposal_child_id);
-}
-
-$where_child_id = [];
-
-foreach ($request_child_ids as $child_id) {
-	$where_child_id[] = $child_id;
-}
-
-if (count($where_child_id) > 0) {
-	$in = implode(', ', $where_child_id);
-	$requests_query = " AND child_id IN ({$in})";
-}
-
-if ($relevant_requests == "no") {
-	$requests_query = "";
-}
+$requests_query = get_buyer_request_query($login_seller_id);
+if ($requests_query != "")
+	$requests_query = " AND {$requests_query}";
+// if ($relevant_requests == "no") {
+// 	$requests_query = "";
+// }
+;
 
 $data = "
-	<tr class='table-danger'>
-		<td colspan='5'><center><h3 class='pb-4 pt-4'><i class='fa fa-meh-o'></i> There is no any buyer requests.</h3></center></td>
-	</tr>
+		<tr class='table-danger'>
+			<td colspan='5'><center><h3 class='pb-4 pt-4'>
+			Please create a proposal in order to find relevant job. <a href='{$site_url}/proposals/create_proposal' class='text-info'>Click here</a> to create proposal
+		</h3></center></td>
+		</tr>
 	";
 $paginationData = null;
 $total = 0;
-if (!empty($requests_query) or $relevant_requests == "no") {
+// if (!empty($requests_query) or $relevant_requests == "no") {
+if (!empty($requests_query)) {
 	$child_id = $input->post('child_id');
 	$search = $input->post('search');
 	$searchWhere = "";
@@ -168,6 +156,15 @@ if (!empty($requests_query) or $relevant_requests == "no") {
 		$totalPages = ceil($total / $limit);
 
 		$paginationData = paginate($limit, $pageNumber, $total, $totalPages);
+	} else {
+		$qProposals = $db->query("SELECT proposal_id FROM `proposals` where proposal_seller_id ='$sellerId' and proposal_status='active'");
+		$cProposals = $qProposals->rowCount();
+		if ($cProposals > 0 )
+			$data = "
+				<tr class='table-danger'>
+					<td colspan='5'><center><h3 class='pb-4 pt-4'><i class='fa fa-frown-o'></i> No requests that matches any of your proposals/services yet!.</h3></center></td>
+				</tr>
+			";
 	}
 }
 echo json_encode(["data" => $data, "pagination" => $paginationData, "total" => $total]);

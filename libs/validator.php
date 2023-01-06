@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 Class Validator{
 	private $data;
@@ -25,15 +25,15 @@ Class Validator{
 	public function required($field_name){
 		if(preg_match("/(file|image)/", $field_name)){
 			$check = @$_FILES[$field_name]['name'];
-		}else { 
-			$check = @$this->data[$field_name]; 
+		}else {
+			$check = @$this->data[$field_name];
 		}
 		if(empty($check)){
 			if(empty($this->messages[$field_name])){
 				$f_name = str_replace("_"," ",$field_name);
 				$this->errors[$field_name] = $f_name . " is required.";
-			}else{ 
-				$this->errors[$field_name] = $this->messages[$field_name]; 
+			}else{
+				$this->errors[$field_name] = $this->messages[$field_name];
 			}
 		}
 	}

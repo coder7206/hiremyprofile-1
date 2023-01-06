@@ -152,19 +152,18 @@ Please confirm your email to use this feature.
 											<div class="col-xl-9 col-lg-12">
 												<div class="form-group">
 													<input type="text" name="request_title" id="request_title" placeholder="<?= $lang['placeholder']['request_title']; ?>" class="form-control input-lg" required="" value="<?php isset($form_data['request_title']) ? $form_data['request_title'] : "";  ?>" minlength="30" maxlength="150">
-													<span class="text-dark">min: 30 max: 150 <span class="text-danger" id="title-typed-characters">0</span> characters.</span>
+													<span class="text-dark d-block">min: 30 max: 150 characters <span class="pull-right"><i class="text-danger" id="title-typed-characters">0</i> characters</span></span>
 												</div>
 												<div class="form-group">
-													<textarea name="request_description" id="textarea" rows="5" cols="73" maxlength="380" class="form-control" placeholder="<?= $lang['placeholder']['request_desc']; ?>" required=""><?php if (isset($form_data['request_description'])) {
-																																																											echo $form_data['request_description'];
-																																																										} ?></textarea>
+													<textarea name="request_description" id="request_description" rows="5" cols="73" maxlength="380" class="form-control" placeholder="<?= $lang['placeholder']['request_desc']; ?>" required="" minlength="50" maxlength="2000">
+														<?php if (isset($form_data['request_description'])) {
+																echo $form_data['request_description'];
+														} ?>
+													</textarea>
+													<span class="text-dark d-block">min: 50 max: 2000 characters <span class="pull-right"><i class="text-danger" id="request_description-typed-characters">0</i> characters</span></span>
 												</div>
 												<div class="form-group">
 													<input type="file" name="request_file" id="file">
-													<div class="font-weight-bold pull-right">
-														<span class="descCount"> 0
-														</span> / 50 min. words
-													</div>
 												</div>
 											</div>
 										</div>
@@ -282,6 +281,18 @@ Please confirm your email to use this feature.
 			typedCharactersElement.textContent = typedCharacters;
 		});
 
+		const descTextAreaElement = document.querySelector("#request_description");
+		const descTypedCharactersElement = document.querySelector("#request_description-typed-characters");
+		const descMaximumCharacters = 2000;
+
+		descTextAreaElement.addEventListener("keydown", (event) => {
+			const descTypedCharacters = descTextAreaElement.value.length;
+			if (descTypedCharacters > descMaximumCharacters) {
+				return false;
+			}
+			descTypedCharactersElement.textContent = descTypedCharacters;
+		});
+
 		function wordCount(field, minWord = 50) {
 			var number = 0;
 
@@ -299,13 +310,7 @@ Please confirm your email to use this feature.
 		}
 
 		function validateForm() {
-			var count = $(".descCount").text();
-
-			if (count < 50) {
-				alert("Please enter at least 50 words.");
-				$("textarea").focus();
-				return false;
-			}
+			return true
 		}
 
 		$(document).ready(function() {
@@ -355,16 +360,16 @@ Please confirm your email to use this feature.
 				$('.h-4').css("visibility", "hidden");
 			});
 
-			$("textarea")
-				.each(function() {
-					var input = "#" + this.id;
+			// $("textarea")
+			// 	.each(function() {
+			// 		var input = "#" + this.id;
 
-					// Count words when keyboard
-					// key is released
-					$(this).keyup(function() {
-						wordCount(input);
-					});
-				});
+			// 		// Count words when keyboard
+			// 		// key is released
+			// 		$(this).keyup(function() {
+			// 			wordCount(input);
+			// 		});
+			// 	});
 			// $("#textarea").keydown(function() {
 			// 	var textarea = $("#textarea").val();
 			// 	$(".descCount").text(textarea.length);
