@@ -44,16 +44,24 @@ if(isset($_POST["proposal_id"])){
 
 	if(isset($_POST['proposal_desc'])){
 		$proposal_desc = $_POST['proposal_desc'];
-		$query = "select proposal_desc from proposals where proposal_id = ?";
-		$stmt = $db->con->prepare($query);
-		$stmt->execute(array($proposal_id));
-		$result = $stmt->fetch(PDO::FETCH_OBJ);
-		if(trim($result->proposal_desc) !== trim($proposal_desc)){
+		if (empty($proposal_desc)) {
 			echo json_encode(true);
 			die();
-		}else{
-			echo json_encode(false);
+		} else if (strlen($proposal_desc) < 100 || strlen($proposal_desc) > 2000) {
+			echo json_encode(true);
 			die();
+		} else {
+			$query = "select proposal_desc from proposals where proposal_id = ?";
+			$stmt = $db->con->prepare($query);
+			$stmt->execute(array($proposal_id));
+			$result = $stmt->fetch(PDO::FETCH_OBJ);
+			if(trim($result->proposal_desc) !== trim($proposal_desc)){
+				echo json_encode(true);
+				die();
+			}else{
+				echo json_encode(false);
+				die();
+			}
 		}
 	}
 

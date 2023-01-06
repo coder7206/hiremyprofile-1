@@ -496,7 +496,7 @@ $img_4_extension = pathinfo($d_proposal_img4, PATHINFO_EXTENSION);
           onKeydown: function(e) {
             let characters = $('textarea[name="proposal_desc"]').summernote('code').replace(/(<([^>]+)>)/ig, "");
             let totalCharacters = characters.length;
-            $("body #typed-characters").html(totalCharacters + " / " + charLimit);
+            $("body #typed-characters").html(totalCharacters);
             var t = e.currentTarget.innerText;
             if (t.trim().length >= charLimit) {
               if (e.keyCode != 8 && !(e.keyCode >= 37 && e.keyCode <= 40) && e.keyCode != 46 && !(e.keyCode == 88 && e.ctrlKey) && !(e.keyCode == 67 && e.ctrlKey)) e.preventDefault();
@@ -510,7 +510,7 @@ $img_4_extension = pathinfo($d_proposal_img4, PATHINFO_EXTENSION);
             let characters = $('textarea[name="proposal_desc"]').summernote('code').replace(/(<([^>]+)>)/ig, "");
             let totalCharacters = characters.length;
 
-            $("body #typed-characters").html(totalCharacters + " / " + charLimit);
+            $("body #typed-characters").html(totalCharacters);
             var t = e.currentTarget.innerText;
             var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
             e.preventDefault();

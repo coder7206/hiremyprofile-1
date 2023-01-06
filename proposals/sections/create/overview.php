@@ -175,9 +175,9 @@ if (isset($_POST['submit'])) {
         <?php } ?>
         <div class="col-md-3"><?= $lang['label']['proposal_title']; ?></div>
         <div class="col-md-9">
-            <textarea name="proposal_title" id="proposal_title" rows="3" required="" placeholder="I Will" class="form-control" minlength="50"></textarea>
+            <textarea name="proposal_title" id="proposal_title" rows="3" required="" placeholder="I Will" class="form-control" minlength="50" maxlength="100"></textarea>
             <small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_description']); ?></small>
-            <span class="text-dark d-block">min. characters 50.  <span class="pull-right"><i class="text-danger" id="typed-characters">0</i> characters</span></span>
+            <span class="text-dark d-block">min: 50 max: 100 characters <span class="pull-right"><i class="text-danger" id="typed-characters">0</i> characters</span></span>
         </div>
     </div>
     <!--- form-group row Ends --->
@@ -323,13 +323,13 @@ while ($row_delivery_times = $get_delivery_times->fetch()) {
 <script>
     const textAreaElement = document.querySelector("#proposal_title");
     const typedCharactersElement = document.querySelector("#typed-characters");
-    const minimumCharacters = 50;
+    const minimumCharacters = 100;
 
     textAreaElement.addEventListener("keydown", (event) => {
         const typedCharacters = textAreaElement.value.length + 1;
-        // if (typedCharacters > minimumCharacters) {
-        //     return false;
-        // }
+        if (typedCharacters > minimumCharacters) {
+            return false;
+        }
         typedCharactersElement.textContent = typedCharacters;
     });
 </script>

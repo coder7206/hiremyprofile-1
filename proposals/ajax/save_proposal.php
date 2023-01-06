@@ -90,8 +90,10 @@ if (isset($_POST["proposal_id"])) {
 	}
 
 	if (isset($_POST['proposal_desc']) and @empty($_POST['proposal_desc'])) {
-
-		$error = "error";
+		if (strlen($_POST['proposal_desc']) < 100 || strlen($_POST['proposal_desc']) > 2000)
+			$error = "error_desc";
+		else
+			$error = "error";
 	}
 
 	if (isset($_POST['proposal_img1']) and @empty($_POST['proposal_img1'])) {
