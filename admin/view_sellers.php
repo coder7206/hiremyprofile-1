@@ -1,6 +1,4 @@
 <?php
-
-
 @session_start();
 
 if(!isset($_SESSION['admin_email'])){
@@ -32,7 +30,7 @@ echo "<script>window.open('login','_self');</script>";
 </div>
 
 
-<div class="container">
+<div class="container-fluid">
 
 <div class="row"><!--- 2 row Starts --->
 
@@ -127,7 +125,7 @@ echo "<script>window.open('login','_self');</script>";
 
 <div class="card-body"><!--- card-body Starts --->
 
-                   
+
     <div class="row"><!--- row Starts --->
 
     <div class="offset-lg-4 col-md-4">
@@ -186,15 +184,15 @@ echo "<script>window.open('login','_self');</script>";
                 $per_page = 8;
 
                 if(isset($_GET['view_sellers'])){
-                    
+
                     $page = $input->get('view_sellers');
 
                     if($page == 0){ $page = 1; }
-                    
+
                 }else{
-                    
+
                     $page = 1;
-                    
+
                 }
 
                 $i = ($page*$per_page)-8;
@@ -276,14 +274,14 @@ echo "<script>window.open('login','_self');</script>";
                                         <i class="fa fa-info-circle"></i> User's Details
 
                                     </a>
-                                        
+
                                     <?php if($seller_verification != "ok"){ ?>
                                     <a class="dropdown-item" href="index?verify_email=<?= $seller_id; ?>">
 
                                         <i class="fa fa-envelope"></i> Verify Seller Email
 
                                     </a>
-                                    <?php } ?>    
+                                    <?php } ?>
 
                                     <a target="_blank" class="dropdown-item" href="index?seller_login=<?= $seller_user_name; ?>">
 
@@ -291,7 +289,7 @@ echo "<script>window.open('login','_self');</script>";
 
                                     </a>
 
-                                        
+
                                     <a class="dropdown-item" href="index?update_balance=<?= $seller_id; ?>">
 
                                     <i class="fa fa-money"></i> Change Seller Balance
@@ -344,7 +342,7 @@ echo "<script>window.open('login','_self');</script>";
 
             $query = $db->query("select * from sellers where seller_user_name like :search ",array("search"=>"%$search%"));
 
-            /// Count The Total Records 
+            /// Count The Total Records
 
             $total_records = $query->rowCount();
 
@@ -355,15 +353,15 @@ echo "<script>window.open('login','_self');</script>";
             echo "<li class='page-item'><a href='index?view_sellers=1&search=$search' class='page-link'> First Page </a></li>";
 
             echo "<li class='page-item ".(1 == $page ? "active" : "")."'><a class='page-link' href='index?view_sellers=1&search=$search'>1</a></li>";
-            
+
             $i = max(2, $page - 5);
-            
+
             if ($i > 2)
-            
+
                 echo "<li class='page-item' href='#'><a class='page-link'>...</a></li>";
-            
+
             for (; $i < min($page + 6, $total_pages); $i++) {
-                        
+
                 echo "<li class='page-item"; if($i == $page){ echo " active "; } echo "'><a href='index?view_sellers=".$i."&search=$search' class='page-link'>".$i."</a></li>";
 
             }

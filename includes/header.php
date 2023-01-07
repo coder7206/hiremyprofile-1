@@ -248,6 +248,6 @@ if (isset($_SESSION['seller_user_name'])) {
     <?php }
 } ?>
 
-<?php require_once("register_login_forgot_modals.php"); ?>
 <?php require_once("register_login_forgot.php"); ?>
+<?php require_once("register_login_forgot_modals.php"); ?>
 <?php require_once("external_stylesheet.php"); ?>

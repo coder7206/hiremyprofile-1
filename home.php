@@ -112,60 +112,60 @@ $slide_image = $row_slides->slide_image;
       </a>
     </div>
     <div class="row">
-    <?php
+      <?php
       $get_proposals = $db->query("select * from proposals where proposal_featured='yes' AND proposal_status='active' LIMIT 0,10");
-      while($row_proposals = $get_proposals->fetch()){
-      $proposal_id = $row_proposals->proposal_id;
-      $proposal_title = $row_proposals->proposal_title;
-      $proposal_title = strlen($proposal_title) > 40 ? substr($proposal_title,0,40)."..." : $proposal_title;
-      $proposal_price = $row_proposals->proposal_price;
-      if($proposal_price == 0){
-      $get_p_1 = $db->select("proposal_packages",array("proposal_id" => $proposal_id,"package_name" => "Basic"));
-      $proposal_price = $get_p_1->fetch()->price;
-      }
-      $proposal_img1 = getImageUrl2("proposals","proposal_img1",$row_proposals->proposal_img1);
-      $proposal_video = $row_proposals->proposal_video;
-      $proposal_seller_id = $row_proposals->proposal_seller_id;
-      $proposal_rating = $row_proposals->proposal_rating;
-      $proposal_url = $row_proposals->proposal_url;
-      $proposal_featured = $row_proposals->proposal_featured;
-      $proposal_enable_referrals = $row_proposals->proposal_enable_referrals;
-      $proposal_referral_money = $row_proposals->proposal_referral_money;
-      if(empty($proposal_video)){
-      $video_class = "";
-      }else{
-      $video_class = "video-img";
-      }
-      $get_seller = $db->select("sellers",array("seller_id" => $proposal_seller_id));
-      $row_seller = $get_seller->fetch();
-      $seller_user_name = $row_seller->seller_user_name;
-      $seller_image = getImageUrl2("sellers","seller_image",$row_seller->seller_image);
-      $seller_level = $row_seller->seller_level;
-      $seller_status = $row_seller->seller_status;
-      if(empty($seller_image)){
-      $seller_image = "empty-image.png";
-      }
-      // Select Proposal Seller Level
-      @$seller_level = $db->select("seller_levels_meta",array("level_id"=>$seller_level,"language_id"=>$siteLanguage))->fetch()->title;
-      $proposal_reviews = array();
-      $select_buyer_reviews = $db->select("buyer_reviews",array("proposal_id" => $proposal_id));
-      $count_reviews = $select_buyer_reviews->rowCount();
-      while($row_buyer_reviews = $select_buyer_reviews->fetch()){
-        $proposal_buyer_rating = $row_buyer_reviews->buyer_rating;
-        array_push($proposal_reviews,$proposal_buyer_rating);
-      }
-      $total = array_sum($proposal_reviews);
-      @$average_rating = $total/count($proposal_reviews);
-    ?>  
-      <?php require('includes/proposals_new.php');?>
-    <?php } ?>
+      while ($row_proposals = $get_proposals->fetch()) {
+        $proposal_id = $row_proposals->proposal_id;
+        $proposal_title = $row_proposals->proposal_title;
+        $proposal_title = strlen($proposal_title) > 40 ? substr($proposal_title, 0, 40) . "..." : $proposal_title;
+        $proposal_price = $row_proposals->proposal_price;
+        if ($proposal_price == 0) {
+          $get_p_1 = $db->select("proposal_packages", array("proposal_id" => $proposal_id, "package_name" => "Basic"));
+          $proposal_price = $get_p_1->fetch()->price;
+        }
+        $proposal_img1 = getImageUrl2("proposals", "proposal_img1", $row_proposals->proposal_img1);
+        $proposal_video = $row_proposals->proposal_video;
+        $proposal_seller_id = $row_proposals->proposal_seller_id;
+        $proposal_rating = $row_proposals->proposal_rating;
+        $proposal_url = $row_proposals->proposal_url;
+        $proposal_featured = $row_proposals->proposal_featured;
+        $proposal_enable_referrals = $row_proposals->proposal_enable_referrals;
+        $proposal_referral_money = $row_proposals->proposal_referral_money;
+        if (empty($proposal_video)) {
+          $video_class = "";
+        } else {
+          $video_class = "video-img";
+        }
+        $get_seller = $db->select("sellers", array("seller_id" => $proposal_seller_id));
+        $row_seller = $get_seller->fetch();
+        $seller_user_name = $row_seller->seller_user_name;
+        $seller_image = getImageUrl2("sellers", "seller_image", $row_seller->seller_image);
+        $seller_level = $row_seller->seller_level;
+        $seller_status = $row_seller->seller_status;
+        if (empty($seller_image)) {
+          $seller_image = "empty-image.png";
+        }
+        // Select Proposal Seller Level
+        @$seller_level = $db->select("seller_levels_meta", array("level_id" => $seller_level, "language_id" => $siteLanguage))->fetch()->title;
+        $proposal_reviews = array();
+        $select_buyer_reviews = $db->select("buyer_reviews", array("proposal_id" => $proposal_id));
+        $count_reviews = $select_buyer_reviews->rowCount();
+        while ($row_buyer_reviews = $select_buyer_reviews->fetch()) {
+          $proposal_buyer_rating = $row_buyer_reviews->buyer_rating;
+          array_push($proposal_reviews, $proposal_buyer_rating);
+        }
+        $total = array_sum($proposal_reviews);
+        @$average_rating = $total / count($proposal_reviews);
+      ?>
+        <?php require('includes/proposals_new.php'); ?>
+      <?php } ?>
     </div>
   </div>
 </div>
 <div class="body-max-width px-3 py-5 home-section4">
   <div id="carouselExampleControls" class="carousel slide py-5" data-ride="carousel">
     <div class="carousel-inner">
-      <?php include('home_videos.php');?>
+      <?php include('home_videos.php'); ?>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
       <span class="fa fa-chevron-left" aria-hidden="true">
@@ -181,13 +181,13 @@ $slide_image = $row_slides->slide_image;
   <div class="body-max-width px-3">
     <div class="row align-items-center justify-content-between">
       <div class="col-md-6">
-        <h2><?= $section_heading_5;?></h2>
-        <?php 
-        echo html_entity_decode($section_short_heading_5);?>
+        <h2><?= $section_heading_5; ?></h2>
+        <?php
+        echo html_entity_decode($section_short_heading_5); ?>
 
       </div>
       <div class="col-md-6">
-        <iframe width="100%" height="100%" src="<?= $section_video_url_5;?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe width="100%" height="100%" src="<?= $section_video_url_5; ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     </div>
   </div>

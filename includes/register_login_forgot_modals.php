@@ -33,6 +33,13 @@
             });
           </script>
         <?php } ?>
+        <?php
+          if (in_array("An accound have been already created from this device. Please try with another one.", $error_array)) {
+        ?>
+        <div class="alert alert-danger">
+          An accound have been already created from this device. Please try with another one.
+        </div>
+        <?php } ?>
         <?php if ($enable_social_login == "yes") { ?>
           <div class="text-center">
             <div class="social-login">

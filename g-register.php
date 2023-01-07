@@ -169,10 +169,18 @@ if ($check_seller_email > 0) {
 			fclose($fp);
 
 			$check_seller_username = $db->count("sellers", array("seller_user_name" => $u_name));
-
 			$check_seller_email = $db->count("sellers", array("seller_email" => $email));
+			$check_seller_ip = $db->count("sellers", array("seller_ip" => $ip));
 
-			if ($check_seller_username > 0) {
+			if ($check_seller_ip > 0) {
+				echo "
+				<script>
+				swal({
+					type: 'warning',
+					text: 'An accound have been already created from this device. Please try with another one.',
+				});
+				</script>";
+			} else if ($check_seller_username > 0) {
 
 				echo "
 
@@ -200,7 +208,7 @@ if ($check_seller_email > 0) {
 
         </script>";
 				} else {
-
+					$device_type = getDevice();
 					$referral_code = mt_rand();
 					$verification_code = "ok";
 
@@ -210,7 +218,7 @@ if ($check_seller_email > 0) {
 						$country = "";
 					}
 
-					$insert_seller = $db->insert("sellers", array("seller_name" => $name, "seller_user_name" => $u_name, "seller_email" => $email, "seller_image" => $filename, "seller_country" => $country, "seller_level" => 1, "seller_recent_delivery" => 'none', "seller_rating" => 0, "seller_offers" => 10, "seller_referral" => $referral_code, "seller_ip" => $ip, "seller_verification" => $verification_code, "seller_vacation" => 'off', "seller_register_date" => $regsiter_date, "seller_status" => 'online'));
+					$insert_seller = $db->insert("sellers", array("seller_name" => $name, "seller_user_name" => $u_name, "seller_email" => $email, "seller_image" => $filename, "seller_country" => $country, "seller_level" => 1, "seller_recent_delivery" => 'none', "seller_rating" => 0, "seller_offers" => 10, "seller_referral" => $referral_code, "seller_ip" => $ip, "seller_verification" => $verification_code, "seller_vacation" => 'off', "seller_register_date" => $regsiter_date, "seller_status" => 'online', "device_type" => $device_type));
 
 					$regsiter_seller_id = $db->lastInsertId();
 
