@@ -40,6 +40,146 @@ if ($check_seller_email > 0) {
 		exit();
 	}
 }
+
+if (isset($_POST['continue'])) {
+
+
+	$rules = array(
+		"name" => "required",
+		"u_name" => "required"
+	);
+
+	$messages = array("name" => "Full Name Is Required.", "u_name" => "User Name Is Required.");
+
+	$val = new Validator($_POST, $rules, $messages);
+
+	if ($val->run() == false) {
+
+		Flash::add("fb_errors", $val->get_all_errors());
+
+		Flash::add("form_data", $_POST);
+
+		echo "<script>window.open('fb-register','_self')</script>";
+	} else {
+
+
+		$name = $input->post('name');
+
+		$u_name = $input->post('u_name');
+
+		$email = $_SESSION['userData']['email'];
+
+		$url = $_SESSION['userData']['picture']['url'];
+
+		$data = file_get_contents($url);
+
+		$new = "user_images/" . $_SESSION['userData']['id'] . ".jpg";
+
+		file_put_contents($new, $data);
+
+		$image = $_SESSION['userData']['id'] . ".jpg";
+
+		$regsiter_date = date("F d, Y");
+
+		$date = date("F d, Y");
+
+
+		$check_seller_username = $db->count("sellers", array("seller_user_name" => $u_name));
+		$check_seller_email = $db->count("sellers", array("seller_email" => $email));
+		$check_seller_ip = $db->count("sellers", array("seller_ip" => $ip));
+
+		if ($check_seller_ip > 0) {
+			echo "
+				<script>
+				swal({
+					type: 'warning',
+					text: 'An accound have been already created from this device. Please try with another one.',
+				});
+				</script>";
+		} else if ($check_seller_username > 0) {
+
+			echo "
+
+	   <script>
+
+         swal({
+            type: 'warning',
+            text: 'This username has already been used. Please try another one.',
+         });
+
+        </script>
+
+		";
+		} else {
+
+			if ($check_seller_email > 0) {
+
+				echo "
+
+		<script>
+
+         swal({
+            type: 'warning',
+            text: 'This email has already been used. Please try another one.',
+         });
+
+        </script>";
+			} else {
+				$device_type = getDevice();
+				$referral_code = mt_rand();
+				$verification_code = "ok";
+
+				$geoplugin = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $ip));
+				$country = $geoplugin['geoplugin_countryName'];
+				if (empty($country)) {
+					$country = "";
+				}
+
+				$insert_seller = $db->insert("sellers", array("seller_name" => $name, "seller_user_name" => $u_name, "seller_email" => $email, "seller_image" => $image, "seller_country" => $country, "seller_level" => 1, "seller_recent_delivery" => 'none', "seller_rating" => 100, "seller_offers" => 10, "seller_referral" => $referral_code, "seller_ip" => $ip, "seller_verification" => $verification_code, "seller_vacation" => 'off', "seller_register_date" => $regsiter_date, "seller_status" => 'online', "device_type" => $device_type));
+
+				$regsiter_seller_id = $db->lastInsertId();
+
+				if ($insert_seller) {
+
+					$_SESSION['seller_user_name'] = $u_name;
+					$insert_seller_account = $db->insert("seller_accounts", array("seller_id" => $regsiter_seller_id));
+
+					if ($paymentGateway == 1) {
+						$insert_seller_settings = $db->insert("seller_settings", array("seller_id" => $regsiter_seller_id));
+					}
+
+					if ($insert_seller_account) {
+
+						unset($_SESSION['userData']);
+						unset($_SESSION['access_token']);
+
+						echo "
+
+            <script>
+
+                   swal({
+
+                  type: 'success',
+                  text: 'Hey $u_name, welcome onboard. ',
+                  timer: 2000,
+                  onOpen: function(){
+                  swal.showLoading()
+                  }
+                  }).then(function(){
+
+                    // Read more about handling dismissals
+                    window.open('$site_url','_self')
+
+                })
+
+            </script>";
+					}
+				}
+			}
+		}
+	}
+}
+
 ?>
 <!DOCTYPE html>
 
@@ -163,140 +303,6 @@ if ($check_seller_email > 0) {
 
 	</div>
 	<!--- container mt-5 Ends -->
-
-	<?php
-
-	if (isset($_POST['continue'])) {
-
-
-		$rules = array(
-			"name" => "required",
-			"u_name" => "required"
-		);
-
-		$messages = array("name" => "Full Name Is Required.", "u_name" => "User Name Is Required.");
-
-		$val = new Validator($_POST, $rules, $messages);
-
-		if ($val->run() == false) {
-
-			Flash::add("fb_errors", $val->get_all_errors());
-
-			Flash::add("form_data", $_POST);
-
-			echo "<script>window.open('fb-register','_self')</script>";
-		} else {
-
-
-			$name = $input->post('name');
-
-			$u_name = $input->post('u_name');
-
-			$email = $_SESSION['userData']['email'];
-
-			$url = $_SESSION['userData']['picture']['url'];
-
-			$data = file_get_contents($url);
-
-			$new = "user_images/" . $_SESSION['userData']['id'] . ".jpg";
-
-			file_put_contents($new, $data);
-
-			$image = $_SESSION['userData']['id'] . ".jpg";
-
-			$regsiter_date = date("F d, Y");
-
-			$date = date("F d, Y");
-
-
-			$check_seller_username = $db->count("sellers", array("seller_user_name" => $u_name));
-			$check_seller_email = $db->count("sellers", array("seller_email" => $email));
-
-			if ($check_seller_username > 0) {
-
-				echo "
-
-	   <script>
-
-         swal({
-            type: 'warning',
-            text: 'This username has already been used. Please try another one.',
-         });
-
-        </script>
-
-		";
-			} else {
-
-				if ($check_seller_email > 0) {
-
-					echo "
-
-		<script>
-
-         swal({
-            type: 'warning',
-            text: 'This email has already been used. Please try another one.',
-         });
-
-        </script>";
-				} else {
-
-					$referral_code = mt_rand();
-					$verification_code = "ok";
-
-					$geoplugin = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $ip));
-					$country = $geoplugin['geoplugin_countryName'];
-					if (empty($country)) {
-						$country = "";
-					}
-
-					$insert_seller = $db->insert("sellers", array("seller_name" => $name, "seller_user_name" => $u_name, "seller_email" => $email, "seller_image" => $image, "seller_country" => $country, "seller_level" => 1, "seller_recent_delivery" => 'none', "seller_rating" => 100, "seller_offers" => 10, "seller_referral" => $referral_code, "seller_ip" => $ip, "seller_verification" => $verification_code, "seller_vacation" => 'off', "seller_register_date" => $regsiter_date, "seller_status" => 'online'));
-
-					$regsiter_seller_id = $db->lastInsertId();
-
-					if ($insert_seller) {
-
-						$_SESSION['seller_user_name'] = $u_name;
-						$insert_seller_account = $db->insert("seller_accounts", array("seller_id" => $regsiter_seller_id));
-
-						if ($paymentGateway == 1) {
-							$insert_seller_settings = $db->insert("seller_settings", array("seller_id" => $regsiter_seller_id));
-						}
-
-						if ($insert_seller_account) {
-
-							unset($_SESSION['userData']);
-							unset($_SESSION['access_token']);
-
-							echo "
-
-            <script>
-
-                   swal({
-
-                  type: 'success',
-                  text: 'Hey $u_name, welcome onboard. ',
-                  timer: 2000,
-                  onOpen: function(){
-                  swal.showLoading()
-                  }
-                  }).then(function(){
-
-                    // Read more about handling dismissals
-                    window.open('$site_url','_self')
-
-                })
-
-            </script>";
-						}
-					}
-				}
-			}
-		}
-	}
-
-	?>
 
 	<?php require_once("includes/footer.php"); ?>
 

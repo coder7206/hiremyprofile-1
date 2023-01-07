@@ -368,11 +368,16 @@ echo "<script>window.open('login','_self');</script>";
   <?php } ?>
 
   <?php if($a_sellers == 1){ ?>
-
-  <li>
+  <!-- <li>
       <a href="index?view_sellers"> <i class="menu-icon fa fa-users"></i> All Users </a>
+  </li> -->
+  <li class="menu-item-has-children dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Sellers"> <i class="menu-icon fa fa-table"></i> All Users</a>
+      <ul class="sub-menu children dropdown-menu">
+          <li><i class="menu-icon fa fa-arrow-circle-right"></i><a href="index?view_sellers"> All Users</a></li>
+          <li><i class="menu-icon fa fa-arrow-circle-right"></i><a href="index?view_sellers_log"> Users Log </a></li>
+      </ul>
   </li>
-
   <?php } ?>
 
   <?php if($a_orders == 1){ ?>
