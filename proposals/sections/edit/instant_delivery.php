@@ -29,7 +29,7 @@
 
   <div class="form-group">
     <p class="mb-2">Message</p>
-    <textarea name="message" id="instant_delivery_message" placeholder="Message" rows="4" class="form-control" required minlength="50" maxlength="500"><?= $delivery_message; ?></textarea>
+    <textarea name="message" id="instant_delivery_message" placeholder="Message" rows="4" class="form-control" minlength="50" maxlength="500" <?php if ($enable_delivery == 1) echo "required" ?>><?= $delivery_message; ?></textarea>
     <span class="text-dark d-block">min: 50 max: 500 characters  <span class="pull-right"><i class="text-danger" id="msg-typed-characters"><?=strlen($delivery_message) > 0 ? strlen($delivery_message) : 0; ?></i> characters</span></span>
   </div>
 
@@ -87,8 +87,10 @@
       var value = $('#enable_button').val();
       if (value == 1 || value == 1) {
         $('#enable_button').val(0);
+        $("#instant_delivery_message").attr("required", false);
       } else {
         $('#enable_button').val(1);
+        $("#instant_delivery_message").attr("required", true);
       }
     });
 
