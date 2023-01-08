@@ -300,17 +300,19 @@ function get_memebership_data($userId)
    if ($oMember) {
       $startDate = $oMember->memb_start_date;
       $endDate = $oMember->memb_start_date;
+      $gigsPerLife = $oMember->create_active_service;
       $bidsPerMonth = $oMember->bids_per_month;
-      $getTotalProposals = $db->query("SELECT count(*) as total FROM `proposals` where proposal_seller_id = {$userId} AND proposal_status = 'active' AND (created_at BETWEEN '{$startDate}' AND '{$endDate}')");
+      // $getTotalProposals = $db->query("SELECT count(*) as total FROM `proposals` where proposal_seller_id = {$userId} AND proposal_status = 'active' AND (created_at BETWEEN '{$startDate}' AND '{$endDate}')");
       // $getTotalProposals = $db->query("SELECT count(*) as total FROM `proposals` where proposal_seller_id = {$userId} AND proposal_status = 'active' AND created_at >= '{$startDate}' AND created_at <= '{$endDate}'");
+      $getTotalProposals = $db->query("SELECT count(*) as total FROM `proposals` where proposal_seller_id = {$userId} AND proposal_status = 'active'");
       $objTotalProposals = $getTotalProposals->fetch();
       $totalProposal = $objTotalProposals->total;
    } else {
       // Basic
       $qMember = $db->select("`membership_table`", ['id' => 1]);
       $oMember = $qMember->fetch();
+      $gigsPerLife = $oMember ? $oMember->create_active_service : 1;
       $bidsPerMonth = $oMember ? $oMember->bids_per_month : 20;
-
       // update seller information
       $getTotalProposals = $db->query("SELECT count(*) as total FROM `proposals` where proposal_seller_id = {$userId} AND proposal_status = 'active'");
       $objTotalProposals = $getTotalProposals->fetch();
@@ -325,7 +327,7 @@ function get_memebership_data($userId)
    $totalOfferSent = $objTotalOfferSent->total;
    // echo $bidsPerMonth . PHP_EOL . $totalOfferSent . PHP_EOL. $totalOfferSent >= $bidsPerMonth;
    $data = [];
-   $data['pending_gig'] = $totalProposal >= $numGigs ? 0 : $numGigs - $totalProposal;
+   $data['pending_gig'] = $totalProposal >= $gigsPerLife ? 0 : $gigsPerLife - $totalProposal;
    $data['pending_offer'] = $totalOfferSent >= $bidsPerMonth ? 0 : $bidsPerMonth - $totalOfferSent;
 
    return $data;

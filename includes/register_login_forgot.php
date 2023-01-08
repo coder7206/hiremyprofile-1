@@ -70,7 +70,8 @@ if (isset($_POST['register'])) {
 		$check_seller_ip = $db->count("sellers", array("seller_ip" => $ip));
 
 		if ($check_seller_ip > 0) {
-			array_push($error_array, "An accound have been already created from this device. Please try with another one.");
+			$err = "An account have been already created from this device. Please try with another device";
+			array_push($error_array, "An account have been already created from this device. Please try with another device.");
 		}
 		if (preg_match('/[اأإء-ي]/ui', $input->post('u_name'))) {
 			array_push($error_array, "Foreign characters are not allowed in username, Please try another one.");
@@ -188,11 +189,12 @@ if (isset($_POST['register'])) {
 
 		if (!empty($error_array)) {
 			$_SESSION['error_array'] = $error_array;
+			$message = isset($err) ? $err : $lang['alert']['errors'];
 			echo "
 			<script>
 				swal({
 					type: 'warning',
-					html: $('<div>').text('{$lang['alert']['errors']}'),
+					html: $('<div>').text('{$message}'),
 					animation: false,
 					customClass: 'animated tada'
 				}).then(function(){

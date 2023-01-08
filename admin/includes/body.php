@@ -346,6 +346,9 @@ if ($a_buyer_requests == 1) {
 	if (isset($_GET['buyer_requests'])) {
 		include("buyer_requests.php");
 	}
+	if (isset($_GET['modification_request'])) {
+		include("modification_request.php");
+	}
 	if (isset($_GET['delete_request'])) {
 		include("delete_request.php");
 	}

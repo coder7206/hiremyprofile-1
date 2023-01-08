@@ -178,9 +178,9 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
                                 <li>
                                     <p> Get Recommendation </p>
                                 </li>
-                                <li>
+                                <!-- <li>
                                     <p> Create Portfolio </p>
-                                </li>
+                                </li> -->
                                 <li>
                                     <p> Custom Description </p>
                                 </li>
@@ -392,7 +392,7 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
 
                                         </p>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <p>
 
 
@@ -404,7 +404,7 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
                                                             echo "";
                                                         } ?>"> <?= $create_portfolio; ?> </i>
                                         </p>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <p>
                                             <i class="<?php if ($custome_desc == "Yes") {

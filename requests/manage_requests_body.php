@@ -2,6 +2,7 @@
 $countRequestsActive = $db->count("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => 'active'));
 $countRequestsPause = $db->count("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => 'pause'));
 $countRequestsPending = $db->count("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => 'pending'));
+$countRequestsModification = $db->count("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => 'modification'));
 $countRequestsUnapproved = $db->count("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => 'unapproved'))
 ?>
 <ul class="nav nav-tabs flex-column flex-sm-row  mt-4">
@@ -21,6 +22,11 @@ $countRequestsUnapproved = $db->count("buyer_requests", array("seller_id" => $lo
         </a>
     </li>
     <li class="nav-item">
+        <a href="#modificationBuyerReq" data-toggle="tab" class="nav-link make-black">
+            <?= $lang['tabs']['requires_modification']; ?> <span class="badge badge-success"><?= $countRequestsModification; ?></span>
+        </a>
+    </li>
+    <li class="nav-item">
         <a href="#unapprovedBuyerReq" data-toggle="tab" class="nav-link make-black">
             <?= $lang['tabs']['unapproved']; ?> <span class="badge badge-success"><?= $countRequestsUnapproved; ?></span>
         </a>
@@ -35,6 +41,9 @@ $countRequestsUnapproved = $db->count("buyer_requests", array("seller_id" => $lo
     </div>
     <div id="pendingBuyerReq" class="tab-pane fade">
         <?php require_once("manage-requests/pending.php") ?>
+    </div>
+    <div id="modificationBuyerReq" class="tab-pane fade">
+        <?php require_once("manage-requests/modification.php") ?>
     </div>
     <div id="unapprovedBuyerReq" class="tab-pane fade">
         <?php require_once("manage-requests/unapproved.php") ?>

@@ -912,6 +912,7 @@ $lang['inbox']['delete'] = "Delete";
 $lang['manage_requests']['no_active'] = "You've have no active requests at the moment.";
 $lang['manage_requests']['no_pause'] = "You currently have no requests paused.";
 $lang['manage_requests']['no_pending'] = "You currently have no requests pending.";
+$lang['manage_requests']['no_modification'] = "You currently have no requests for modification.";
 $lang['manage_requests']['no_unapproved'] = "You currently have no unapproved requests.";
 
 
@@ -989,6 +990,9 @@ $lang['notifier_plugin']['proposal_approved'] = "$site_name - Your proposal/serv
 $lang['notifier_plugin']['proposal_declined'] = "$site_name - Your proposal/service has been declined.";
 
 $lang['notifier_plugin']['proposal_modification'] = "$site_name - Admin Has Sent Modification To Your Proposal.";
+
+// Job Request
+$lang['notifier_plugin']['request_modification'] = "$site_name - Admin Has Sent Modification To Your Job Request.";
 
 
 /// Order
