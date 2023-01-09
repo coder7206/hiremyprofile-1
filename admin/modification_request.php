@@ -45,7 +45,7 @@ if (!isset($_SESSION['admin_email'])) {
                 sendSmsTwilio("", $smsText, $seller_phone);
             }
 
-            $insert_notification = $db->insert("notifications", array("receiver_id" => $seller_id, "sender_id" => "admin_$admin_id", "order_id" => $request_id, "reason" => "modification", "date" => $last_update_date, "status" => "unread"));
+            $insert_notification = $db->insert("notifications", array("receiver_id" => $seller_id, "sender_id" => "admin_$admin_id", "order_id" => $request_id, "reason" => "modification_request", "date" => $last_update_date, "status" => "unread"));
 
             echo "<script>
 

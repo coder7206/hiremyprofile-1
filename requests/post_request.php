@@ -155,11 +155,9 @@ Please confirm your email to use this feature.
 													<span class="text-dark d-block">min: 30 max: 150 characters <span class="pull-right"><i class="text-danger" id="title-typed-characters">0</i> characters</span></span>
 												</div>
 												<div class="form-group">
-													<textarea name="request_description" id="request_description" rows="5" cols="73" maxlength="380" class="form-control" placeholder="<?= $lang['placeholder']['request_desc']; ?>" required="" minlength="50" maxlength="2000">
-														<?php if (isset($form_data['request_description'])) {
+													<textarea name="request_description" id="request_description" rows="5" cols="73" maxlength="380" class="form-control" placeholder="<?= $lang['placeholder']['request_desc']; ?>" required="" minlength="50" maxlength="2000"><?php if (isset($form_data['request_description'])) {
 																echo $form_data['request_description'];
-														} ?>
-													</textarea>
+														} ?></textarea>
 													<span class="text-dark d-block">min: 50 max: 2000 characters <span class="pull-right"><i class="text-danger" id="request_description-typed-characters">0</i> characters</span></span>
 												</div>
 												<div class="form-group">
