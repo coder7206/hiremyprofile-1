@@ -27,7 +27,7 @@ if (isset($_GET['n_id'])) {
 		if ($update_notification) {
 			if ($reason == "modification" or $reason == "approved" or $reason == "declined") {
 				echo "<script>window.open('proposals/view_proposals?{$reason}','_self')</script>";
-			} elseif ($reason == "approved_request" or $reason == "unapproved_request") {
+			} elseif ($reason == "approved_request" or $reason == "unapproved_request" or $reason == "modification_request") {
 				echo "<script>window.open('requests/manage_requests','_self')</script>";
 			} elseif ($reason == "withdrawal_approved" or $reason == "withdrawal_declined") {
 				echo "<script>window.open('withdrawal_requests?id=$order_id','_self');</script>";

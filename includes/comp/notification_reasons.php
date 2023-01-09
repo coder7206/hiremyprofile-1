@@ -27,6 +27,10 @@ if($reason == "approved_request"){
 	return "Has approved your request. Thanks for posting.";
 }
 
+if($reason == "modification_request"){
+	return "Has sent modification to your job request.";
+}
+
 if($reason == "offer"){
 	return "Has just sent you an offer on your request click here to view.";
 }
