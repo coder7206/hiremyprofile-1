@@ -63,8 +63,11 @@ if ($rowCount > 0) {
                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
                 <div class="dropdown-menu">';
             $data .= '<a href="' . $site_url . '/requests/active_request?request_id=' .$request_id .'" class="dropdown-item">
-            Activate
+            Submit for Approval
                 </a>';
+            $data .= '<a href="' . $site_url . '/requests/edit_request?request_id=' .$request_id .'" class="dropdown-item">
+                Edit
+                    </a>';
             $confirm = 'Are you sure to delete this request?';
             $data .= '<a href="' . $site_url . '/requests/delete_request?request_id=' . $request_id .'" class="dropdown-item" onclick="return confirm(\'Are you sure you want to delete?\');">
                         Delete
@@ -101,9 +104,12 @@ if ($rowCount > 0) {
             }
             if ($status == 'pause') {
                 $data .= '<a href="' . $site_url . '/requests/active_request?request_id=' .$request_id .'" class="dropdown-item">
-                Activate
+                Submit for Approval
                     </a>';
             }
+            $data .= '<a href="' . $site_url . '/requests/edit_request?request_id=' .$request_id .'" class="dropdown-item">
+                Edit
+                    </a>';
             $confirm = 'Are you sure to delete this request?';
             $data .= '<a href="' . $site_url . '/requests/delete_request?request_id=' . $request_id .'" class="dropdown-item" onclick="return confirm(\'Are you sure you want to delete?\');">
                         Delete
