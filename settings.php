@@ -106,6 +106,15 @@ if ($lang_dir == "right") {
 						?>
 						">
 									<?= $lang["titles"]["settings"]["profile_settings"]; ?>
+									<!-- <span class="badge badge-warning pull-right">35%</span> -->
+								</a>
+							</li>
+							<li class="nav-item">
+								<a data-toggle="pill" href="#professional_settings" class="nav-link <?php if (isset($_GET['professional_settings'])) {
+																									echo "active";
+																								} ?> ">
+									<?= $lang["titles"]["settings"]["professional_settings"]; ?>
+									<!-- <span class="badge badge-warning pull-right">30%</span> -->
 								</a>
 							</li>
 							<li class="nav-item">
@@ -113,6 +122,7 @@ if ($lang_dir == "right") {
 																									echo "active";
 																								} ?> ">
 									<?= $lang["titles"]["settings"]["account_settings"]; ?>
+									<!-- <span class="badge badge-warning pull-right">30%</span> -->
 								</a>
 							</li>
 						</ul>
@@ -131,6 +141,12 @@ if ($lang_dir == "right") {
 																			} ?>">
 								<h2 class="mb-4"><?= $lang["titles"]["settings"]["profile_settings"]; ?></h2>
 								<?php require_once("profile_settings.php") ?>
+							</div>
+							<div id="professional_settings" class="tab-pane fade <?php if (isset($_GET['professional_settings'])) {
+																				echo "show active";
+																			} ?>">
+								<h2 class="mb-4"><?= $lang["titles"]["settings"]["professional_settings"]; ?></h2>
+								<?php //require_once("account_settings.php") ?>
 							</div>
 							<div id="account_settings" class="tab-pane fade <?php if (isset($_GET['account_settings'])) {
 																				echo "show active";

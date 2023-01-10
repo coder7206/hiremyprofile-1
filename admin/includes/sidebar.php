@@ -22,6 +22,7 @@ echo "<script>window.open('login','_self');</script>";
       <li><i class="fa  fa-arrow-circle-right"></i><a href="index?mail_settings">Mail Server Settings</a></li>
       <li><i class="fa  fa-arrow-circle-right"></i><a href="index?email_templates">Email Templates</a></li>
       <li><i class="fa  fa-arrow-circle-right"></i><a href="index?api_settings">Api Settings</a></li>
+      <li><i class="fa  fa-arrow-circle-right"></i><a href="index?professional_info">Professional Info</a></li>
       <li><i class="fa  fa-arrow-circle-right"></i><a href="index?app_license">Application License</a></li>
       <li><i class="fa  fa-arrow-circle-right"></i><a href="index?app_update">Application Update</a></li>
     </ul>

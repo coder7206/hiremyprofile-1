@@ -28,7 +28,7 @@ if (isset($_GET['n_id'])) {
 			if ($reason == "modification" or $reason == "approved" or $reason == "declined") {
 				echo "<script>window.open('proposals/view_proposals?{$reason}','_self')</script>";
 			} elseif ($reason == "approved_request" or $reason == "unapproved_request" or $reason == "modification_request") {
-				echo "<script>window.open('requests/manage_requests','_self')</script>";
+				echo "<script>window.open('requests/manage_requests?tab={$reason}','_self');</script>";
 			} elseif ($reason == "withdrawal_approved" or $reason == "withdrawal_declined") {
 				echo "<script>window.open('withdrawal_requests?id=$order_id','_self');</script>";
 			} else {
@@ -75,7 +75,7 @@ if (isset($_GET['delete'])) {
 
 <body class="is-responsive">
 	<?php require_once("includes/user_header.php"); ?>
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12 mt-5">
 				<h2> <?= $lang["titles"]["notifications"]; ?> </h2>
