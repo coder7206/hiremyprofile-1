@@ -387,6 +387,7 @@ $lang["titles"]["create_coupon"] = "Create A New Coupon";
 $lang["titles"]["view_coupons"] = "View Coupons";
 $lang["titles"]["notifications"] = "Notifications";
 $lang["titles"]["settings"]["profile_settings"] = "Profile Settings";
+$lang["titles"]["settings"]["professional_settings"] = "Professional Info";
 $lang["titles"]["settings"]["account_settings"] = "Account Settings";
 $lang["titles"]["knowledge_bank"] = "Knowledge Bank";
 $lang["titles"]["customer_support"] = "Customer Support";

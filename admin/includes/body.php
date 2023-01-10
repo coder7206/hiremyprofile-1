@@ -62,6 +62,12 @@ if ($a_settings == 1) {
 	if (isset($_GET['api_settings'])) {
 		include("api_settings.php");
 	}
+	if (isset($_GET['professional_info'])) {
+		include("professional_info.php");
+	}
+	if (isset($_GET['professional_info_form'])) {
+		include("professional_info_form.php");
+	}
 	if (isset($_GET['app_update'])) {
 		include("app_update.php");
 	}

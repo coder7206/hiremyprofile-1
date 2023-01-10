@@ -41,8 +41,8 @@ if (isset($_GET['n_id'])) {
         echo "<script>window.open('proposals/view_proposals?{$reason}','_self')</script>";
       } else if ($reason == "offer") {
         echo "<script>window.open('$site_url/requests/view_offers?request_id=$order_id','_self')</script>";
-      } elseif ($reason == "approved_request" or $reason == "unapproved_request") {
-        echo "<script>window.open('requests/manage_requests','_self');</script>";
+      } elseif ($reason == "approved_request" or $reason == "unapproved_request" or $reason == "modification_request") {
+        echo "<script>window.open('requests/manage_requests?tab={$reason}','_self');</script>";
       } elseif ($reason == "withdrawal_approved" or $reason == "withdrawal_declined") {
         echo "<script>window.open('withdrawal_requests?id=$order_id','_self');</script>";
       } elseif ($reason == "referral_approved") {
