@@ -19,7 +19,7 @@ $lang["menu"]["messages"] = "Messages";
 $lang["menu"]["favorites"] = "Favorites";
 $lang["menu"]["cart"] = "Cart";
 $lang["menu"]["selling"] = "Selling";
-$lang["menu"]["orders"] = "Orders";   
+$lang["menu"]["orders"] = "Orders";
 $lang["menu"]["my_proposals"] = "My Proposals";
 $lang["menu"]["create_coupon"] = "Create A Coupon";
 $lang["menu"]["buyer_requests"] = "Buyer Requests";
@@ -44,6 +44,7 @@ $lang["menu"]["inbox_messages"] = "Inbox Messages";
 $lang["menu"]["my_profile"] = "My Profile";
 $lang["menu"]["settings"] = "Settings";
 $lang["menu"]["profile_settings"] = "Profile Settings";
+$lang["menu"]["professional_settings"] = "Professional Settings";
 $lang["menu"]["account_settings"] = "Account Settings";
 
 $lang["menu"]["customer_support"] = "Customer Support";
@@ -119,7 +120,7 @@ $lang["home"]["categories"]["desc"] = "Get inspired to build your business";
 $lang["home"]["proposals"]["title"] = "Top Featured Proposals/Services";
 $lang["home"]["proposals"]["desc"] = "Practical advice for every stage of doing";
 
-/// User Logged In Home Headings 
+/// User Logged In Home Headings
 $lang["user_home"]['add_proposal'] = "Add A Proposal";
 $lang["user_home"]['view_sales'] = "View Sales";
 $lang["user_home"]['view_purchases'] = "View Purchases";
@@ -164,7 +165,7 @@ $lang["sidebar"]["seller_lang"] = "Seller Lang";
 $lang["sidebar"]["clear_filter"] = "<i class='fa fa-times-circle'></i> Clear Filter";
 
 
-/// Freelancers Page 
+/// Freelancers Page
 
 $lang['freelancers']['title'] = "Freelancers";
 $lang['freelancers']['desc'] = "Home / Search Freelancers";
@@ -485,6 +486,9 @@ $lang['label']['enable_referrals'] = "Enable Referrals";
 $lang['label']['promotion_commission'] = "Proposal Commission";
 $lang['label']['tags'] = "Tags";
 
+$lang['label']['occupation'] = "Your Occupation";
+$lang['label']['skills'] = "Skills";
+
 
 /// Input Placeholders
 
@@ -675,7 +679,7 @@ $lang['favorites']['collected_by'] = "Collected By";
 $lang['favorites']['button'] = "Add Favorites To Cart";
 $lang['favorites']['no_favorites'] = "Your favorites page is empty.";
 
-/// User Profile Page Styles 
+/// User Profile Page Styles
 
 $lang['user_profile']['member_since'] = "Member Since:";
 $lang['user_profile']['recent_delivery'] = "Recent Delivery:";
@@ -744,7 +748,7 @@ $lang['coupon_code']['expired']= "Your Coupon Code Is Expired. ";
 $lang['coupon_code']['not_apply']= " Your coupon code does not apply to proposal/service in your cart.";
 $lang['coupon_code']['already_used']= "Your Coupon Code Is Already Used.";
 
-/// Purchases 
+/// Purchases
 $lang['purchases']['no_purchases'] = "You have no purchases to display.";
 
 

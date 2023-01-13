@@ -302,6 +302,7 @@ function get_memebership_data($userId)
       $endDate = $oMember->memb_start_date;
       $gigsPerLife = $oMember->create_active_service;
       $bidsPerMonth = $oMember->bids_per_month;
+      $skillsPerLife = $oMember->skills;
       // $getTotalProposals = $db->query("SELECT count(*) as total FROM `proposals` where proposal_seller_id = {$userId} AND proposal_status = 'active' AND (created_at BETWEEN '{$startDate}' AND '{$endDate}')");
       // $getTotalProposals = $db->query("SELECT count(*) as total FROM `proposals` where proposal_seller_id = {$userId} AND proposal_status = 'active' AND created_at >= '{$startDate}' AND created_at <= '{$endDate}'");
       $getTotalProposals = $db->query("SELECT count(*) as total FROM `proposals` where proposal_seller_id = {$userId} AND proposal_status = 'active'");
@@ -313,6 +314,7 @@ function get_memebership_data($userId)
       $oMember = $qMember->fetch();
       $gigsPerLife = $oMember ? $oMember->create_active_service : 1;
       $bidsPerMonth = $oMember ? $oMember->bids_per_month : 20;
+      $skillsPerLife = $oMember ? $oMember->skills : 20;
       // update seller information
       $getTotalProposals = $db->query("SELECT count(*) as total FROM `proposals` where proposal_seller_id = {$userId} AND proposal_status = 'active'");
       $objTotalProposals = $getTotalProposals->fetch();
@@ -326,9 +328,14 @@ function get_memebership_data($userId)
    $objTotalOfferSent = $getTotalOffersSent->fetch();
    $totalOfferSent = $objTotalOfferSent->total;
    // echo $bidsPerMonth . PHP_EOL . $totalOfferSent . PHP_EOL. $totalOfferSent >= $bidsPerMonth;
+
+   // SKILLS
+   $totalSkillsAdded = $db->count("skills_relation", ["seller_id" => $userId]);
+
    $data = [];
    $data['pending_gig'] = $totalProposal >= $gigsPerLife ? 0 : $gigsPerLife - $totalProposal;
    $data['pending_offer'] = $totalOfferSent >= $bidsPerMonth ? 0 : $bidsPerMonth - $totalOfferSent;
+   $data['pending_skills'] = $totalSkillsAdded >= $skillsPerLife ? 0 : $skillsPerLife - $totalSkillsAdded;
 
    return $data;
 }
