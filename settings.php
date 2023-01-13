@@ -49,6 +49,20 @@ if ($lang_dir == "right") {
 	$floatRight = "float-right";
 }
 
+// Memmbership
+$no_of_gigs = $row_login_seller->no_of_gigs;
+$bids_per_month = $row_login_seller->bids_per_month;
+$skills = $row_login_seller->skills;
+
+// Profile Weightness
+$profileWeight = $professionalWeight = $accountWeight = 0;
+$qSellerWeight = $db->select("seller_profile_weights", array("seller_id" => $login_seller_id));
+$oSellerWeight = $qSellerWeight->fetch();
+if ($oSellerWeight) {
+	$profileWeight = $oSellerWeight->profile_weight;
+	$professionalWeight = $oSellerWeight->professional_weight;
+	$accountWeight = $oSellerWeight->account_weight;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
@@ -97,7 +111,7 @@ if ($lang_dir == "right") {
 							<li class="nav-item">
 								<a data-toggle="pill" href="#profile_settings" class="nav-link
 						<?php
-						if (!isset($_GET['profile_settings']) and !isset($_GET['account_settings'])) {
+						if (!isset($_GET['profile_settings']) and !isset($_GET['account_settings']) and !isset($_GET['professional_settings'])) {
 							echo "active";
 						}
 						if (isset($_GET['profile_settings'])) {
@@ -133,7 +147,7 @@ if ($lang_dir == "right") {
 				<div class="card">
 					<div class="card-body">
 						<div class="tab-content">
-							<div id="profile_settings" class="tab-pane fade <?php if (!isset($_GET['profile_settings']) and !isset($_GET['account_settings'])) {
+							<div id="profile_settings" class="tab-pane fade <?php if (!isset($_GET['profile_settings']) and !isset($_GET['account_settings'])  and !isset($_GET['professional_settings'])) {
 																				echo "show active";
 																			}
 																			if (isset($_GET['profile_settings'])) {
@@ -146,7 +160,7 @@ if ($lang_dir == "right") {
 																				echo "show active";
 																			} ?>">
 								<h2 class="mb-4"><?= $lang["titles"]["settings"]["professional_settings"]; ?></h2>
-								<?php //require_once("account_settings.php") ?>
+								<?php require_once("professional_settings.php") ?>
 							</div>
 							<div id="account_settings" class="tab-pane fade <?php if (isset($_GET['account_settings'])) {
 																				echo "show active";

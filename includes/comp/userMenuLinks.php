@@ -107,6 +107,9 @@
       <a class="dropdown-item" href="<?= $site_url; ?>/settings?profile_settings">
       <?= $lang["menu"]['profile_settings']; ?>
       </a>
+      <a class="dropdown-item" href="<?= $site_url; ?>/settings?professional_settings">
+      <?= $lang["menu"]['professional_settings']; ?>
+      </a>
       <a class="dropdown-item" href="<?= $site_url; ?>/settings?account_settings">
       <?= $lang["menu"]['account_settings']; ?>
       </a>
@@ -121,7 +124,7 @@
       </a>
       <a class="dropdown-item" href="<?= $site_url; ?>/customer_support">
       <?= $lang["menu"]['support_new']; ?>
-      </a>      
+      </a>
    </div>
 
    <div class="dropdown-divider"></div>

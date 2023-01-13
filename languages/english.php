@@ -47,6 +47,7 @@ $lang["menu"]["inbox_messages"] = "Inbox Messages";
 $lang["menu"]["my_profile"] = "My Profile";
 $lang["menu"]["settings"] = "Settings";
 $lang["menu"]["profile_settings"] = "Profile Settings";
+$lang["menu"]["professional_settings"] = "Professional Settings";
 $lang["menu"]["account_settings"] = "Account Settings";
 
 $lang["menu"]["customer_support"] = "Customer Support";
@@ -497,6 +498,9 @@ $lang['label']['promotion_commission'] = "Proposal Commission";
 $lang['label']['tags'] = "Tags";
 
 $lang['label']['upload_file'] = "Upload File";
+
+$lang['label']['occupation'] = "Your Occupation";
+$lang['label']['skills'] = "Skills";
 
 
 /// Input Placeholders

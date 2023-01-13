@@ -13,6 +13,7 @@ $now = date("Y-m-d H:i:s");
 
 $update['no_of_gigs'] = $membershipData['pending_gig'];
 $update['seller_offers'] = $membershipData['pending_offer'];
+$update['skills'] = $membershipData['pending_skills'];
 $update['seller_activity'] = $now;
 
 $db->update("sellers", $update, ["seller_id" => $userId]);
