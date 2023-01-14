@@ -578,6 +578,9 @@ if ($a_sellers == 1) {
 	if (isset($_GET['view_sellers'])) {
 		include("view_sellers.php");
 	}
+	if (isset($_GET['view_sellers_update'])) {
+		include("view_sellers_update.php");
+	}
 	if (isset($_GET['view_sellers_log'])) {
 		include("view_sellers_log.php");
 	}

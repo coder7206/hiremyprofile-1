@@ -31,6 +31,14 @@ if (isset($_GET['n_id'])) {
 				echo "<script>window.open('requests/manage_requests?tab={$reason}','_self');</script>";
 			} elseif ($reason == "withdrawal_approved" or $reason == "withdrawal_declined") {
 				echo "<script>window.open('withdrawal_requests?id=$order_id','_self');</script>";
+			} elseif ($reason == "profile_modification" or $reason == "professional_modification" or $reason == "account_modification") {
+				$lk = $reason == "profile_modification" ? "settings?profile_settings" :
+					($reason == "professional_modification" ? "settings?professional_settings" : "settings?account_settings");
+				echo "<script>window.open('{$lk}','_self');</script>";
+			} elseif ($reason == "profile_approved" or $reason == "professional_approved" or $reason == "account_approved") {
+				$lk = $reason == "profile_approved" ? "settings?profile_settings" :
+					($reason == "professional_approved" ? "settings?professional_settings" : "settings?account_settings");
+				echo "<script>window.open('{$lk}','_self');</script>";
 			} else {
 				echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";
 			}
