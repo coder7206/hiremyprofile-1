@@ -120,7 +120,7 @@ if ($oSellerWeight) {
 						?>
 						">
 									<?= $lang["titles"]["settings"]["profile_settings"]; ?>
-									<!-- <span class="badge badge-warning pull-right">35%</span> -->
+									<span class="badge badge-primary pull-right"><?=$profileWeight??0?>%</span>
 								</a>
 							</li>
 							<li class="nav-item">
@@ -128,7 +128,7 @@ if ($oSellerWeight) {
 																									echo "active";
 																								} ?> ">
 									<?= $lang["titles"]["settings"]["professional_settings"]; ?>
-									<!-- <span class="badge badge-warning pull-right">30%</span> -->
+									<span class="badge badge-primary pull-right"><?=$professionalWeight??0?>%</span>
 								</a>
 							</li>
 							<li class="nav-item">
@@ -136,7 +136,7 @@ if ($oSellerWeight) {
 																									echo "active";
 																								} ?> ">
 									<?= $lang["titles"]["settings"]["account_settings"]; ?>
-									<!-- <span class="badge badge-warning pull-right">30%</span> -->
+									<span class="badge badge-primary pull-right"><?=$accountWeight??0?>%</span>
 								</a>
 							</li>
 						</ul>

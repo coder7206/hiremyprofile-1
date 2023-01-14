@@ -127,3 +127,13 @@ $reports = ['offer_report_action_taken', 'users_report_action_taken', 'order_rep
 if (in_array($reason, $reports)) {
 	return "has taken action against your report";
 }
+
+$pReports = ['profile_modification', 'professional_modification', 'account_modification'];
+if (in_array($reason, $pReports)) {
+	return "has given modification requests on profile update.";
+}
+
+$pAReports = ['profile_approved', 'professional_approved', 'account_approved'];
+if (in_array($reason, $pReports)) {
+	return "has approved profile update.";
+}

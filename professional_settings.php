@@ -134,11 +134,13 @@ $cProInfo = $qProInfo->rowCount();
 
 $formStatus = true;
 $showPendingMsg = false;
+$modificationMsg = '';
 if ($cProInfo > 0) {
     $proInfoData = [];
     while ($oProInfo = $qProInfo->fetch()) {
         $proInfoData[] = $oProInfo;
         $proStatus = $oProInfo->status; // 1=active, 0=pending,2=modification
+        $modificationMsg = $oProInfo->feedback;
         $formStatus = $proStatus == 2 ? true : false;
         if ($proStatus == 0)
             $showPendingMsg = true;
@@ -152,6 +154,9 @@ $form_data = Flash::render("form_data");
 
 if ($formStatus) : //Show Form if needs to
 ?>
+<div class="alert alert-warning" role="alert">
+    Modification Message From Admin:<br /><?=$modificationMsg?>
+</div>
 <form method="post" runat="server" autocomplete="off">
     <div class="form-group row">
         <label class="col-md-3 col-form-label"> <?= $lang['label']['occupation']; ?></label>
