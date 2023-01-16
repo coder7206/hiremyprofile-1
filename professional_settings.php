@@ -153,10 +153,12 @@ $form_errors = Flash::render("form_errors");
 $form_data = Flash::render("form_data");
 
 if ($formStatus) : //Show Form if needs to
+    if ($modificationMsg != '') {
 ?>
 <div class="alert alert-warning" role="alert">
     Modification Message From Admin:<br /><?=$modificationMsg?>
 </div>
+<?php } ?>
 <form method="post" runat="server" autocomplete="off">
     <div class="form-group row">
         <label class="col-md-3 col-form-label"> <?= $lang['label']['occupation']; ?></label>

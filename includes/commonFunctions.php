@@ -343,7 +343,8 @@ function get_memebership_data($userId)
 // die and dump
 function dd($data)
 {
-   print("<pre>" . print_r($data) . "</pre>");
+   echo "<pre>";
+   print_r($data);
    exit;
 }
 

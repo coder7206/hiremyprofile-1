@@ -101,10 +101,13 @@ $proposal_del_requests = $db->count("proposals", array("proposal_status" => "del
 $total_reports = $order_reports + $message_reports + $proposal_reports + $job_reports + $view_offers_reports + $user_reports;
 
 // Seller Profile Update
+$qSellerProfileCount = $db->query("SELECT * FROM sellers_profile_tmp WHERE status = 0 GROUP BY seller_id");
+$countSellerProfileReq = $qSellerProfileCount->rowCount();
+
 $qSellerProCount = $db->query("SELECT * FROM seller_pro_info WHERE status = 0 GROUP BY seller_id");
 $countSellerProReq = $qSellerProCount->rowCount();
 
-$totalSellerProfilesUpdateReq = $countSellerProReq;
+$totalSellerProfilesUpdateReq = $countSellerProReq + $countSellerProfileReq;
 
 // feedbacks
 $qFeedbacks = $db->query("SELECT ideas.id, COUNT(DISTINCT comments.id) totalComments FROM ideas LEFT JOIN comments ON ideas.id = comments.idea_id GROUP BY ideas.id;");

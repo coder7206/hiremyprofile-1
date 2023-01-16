@@ -25,9 +25,9 @@
 if(isset($_POST['submit_paypal_email'])){
 
   $seller_paypal_email = strip_tags($input->post('seller_paypal_email'));
-  
+
   $update_seller = $db->update("sellers",["seller_paypal_email" => $seller_paypal_email],["seller_id" => $login_seller_id]);
-  
+
   if($update_seller){
     echo "
     <script>
@@ -47,9 +47,9 @@ if(isset($_POST['submit_paypal_email'])){
 
 }
 
-if($paymentGateway == 1){ 
+if($paymentGateway == 1){
   include("plugins/paymentGateway/account_settings.php");
-} 
+}
 
 ?>
 
@@ -68,7 +68,7 @@ if($paymentGateway == 1){
     <?= $lang['button']['change_payoneer_email']; ?>
   </button>
 </form>
-<?php 
+<?php
 if(isset($_POST['submit_payoneer_email'])){
   $seller_payoneer_email = strip_tags($input->post('seller_payoneer_email'));
   $update_seller = $db->update("sellers",array("seller_payoneer_email" => $seller_payoneer_email),array("seller_id" => $login_seller_id));
@@ -112,7 +112,7 @@ if(isset($_POST['submit_payoneer_email'])){
     <?= $lang['button']['update_mobile_money']; ?>
   </button>
 </form>
-<?php 
+<?php
   if(isset($_POST['update_mobile_money'])){
     $m_account_number = strip_tags($input->post('m_account_number'));
     $m_account_name = strip_tags($input->post('m_account_name'));
@@ -205,7 +205,7 @@ if(isset($_POST['submit_payoneer_email'])){
     <?= $lang['button']['update_changes']; ?>
   </button>
 </form>
-<?php 
+<?php
   if(isset($_POST['update_sound'])){
     $enable_sound = strip_tags($input->post('enable_sound'));
     $enable_notifications = strip_tags($input->post('enable_notifications'));
@@ -228,7 +228,7 @@ if(isset($_POST['submit_payoneer_email'])){
   ?>
 <hr>
 <h5 class="mb-4"> <?= $lang['settings']['change_pass']; ?> </h5>
-<?php 
+<?php
   $form_errors = Flash::render("change_pass_errors");
   $form_data = Flash::render("form_data");
   if(is_array($form_errors)){
@@ -264,7 +264,7 @@ if(isset($_POST['submit_payoneer_email'])){
     <?= $lang['button']['change_password']; ?>
   </button>
 </form>
-<?php 
+<?php
   if(isset($_POST['change_password'])){
   $rules = array(
   "old_pass" => "required",
@@ -355,7 +355,7 @@ if(isset($_POST['submit_payoneer_email'])){
   <button type="submit" name="deactivate_account" class="btn btn-danger <?= $floatRight ?>">
   <i class="fa fa-frown-o"></i> <?= $lang['button']['deactivate_account']; ?>
   </button>
-  <?php } ?>   
+  <?php } ?>
 </form>
 <?php
 if(isset($_POST['deactivate_account'])){

@@ -440,7 +440,7 @@ $lang['label']['phone_optional'] = "<span class='text-success'>(Optional)</span>
 $lang['label']['phone_required'] = "<span class='text-success'>(Required)</span>";
 
 $lang['label']['password'] = "Password";
-$lang['label']['password_confirm'] = "Confirm Password:";
+$lang['label']['password_confirm'] = "Confirm Password";
 
 $lang['label']['enter_new_pass'] = "Enter New Password";
 $lang['label']['confirm_new_pass'] = "Confirm New Password";
