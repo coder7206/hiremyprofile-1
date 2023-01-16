@@ -223,7 +223,7 @@ require 'admin/timezones.php';
 
 $phone_no = explode(" ", $login_seller_phone);
 ?>
-<h5 class="mb-4"> Account Information <?= $login_seller_id ?></h5>
+<h5 class="mb-4"> Account Information</h5>
 <form method="post" class="clearfix mb-3">
   <div class="form-group row">
     <label class="col-md-3 col-form-label"> <?= $lang['label']['username']; ?> </label>
