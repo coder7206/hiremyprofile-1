@@ -26,17 +26,13 @@ if (isset($_POST['profile-approve'])) {
 
     if ($seller_language > 0) {
         $update_proposals = $db->update("proposals", array("language_id" => $seller_language), array("proposal_seller_id" => $seller_id));
-
         $sel_languages_relation = $db->query("SELECT * FROM languages_relation WHERE seller_id='$seller_id' AND language_id='$seller_language'");
         $count_languages_relation = $sel_languages_relation->rowCount();
 
         if ($count_languages_relation == 0)
             $insert_language = $db->insert("languages_relation", array("seller_id" => $seller_id, "language_id" => $seller_language, "language_level" => 'conversational'));
     }
-
     $qSPUpdate = $db->query("SELECT * FROM sellers_profile_tmp WHERE seller_id = :seller_id ORDER BY 1 DESC LIMIT 1", ['seller_id' => $seller_id]);
-
-    $db->update("sellers_profile_tmp", ['status' => 1], ["seller_id" => $seller_id]);
     $oSPUpdate = $qSPUpdate->fetch();
 
     $upForm['seller_name'] = $oSPUpdate->seller_name;
@@ -55,6 +51,9 @@ if (isset($_POST['profile-approve'])) {
     $update = $db->update("sellers", $upForm, ["seller_id"=>$seller_id]);
 
     if ($update) {
+
+        $db->update("sellers_profile_tmp", ['status' => 1], ["seller_id" => $seller_id]);
+
         $weightnForm = ['profile_weight' => 35, 'seller_id' => $seller_id];
         if ($oWeigtiness) { // Update
             $db->update("seller_profile_weights", $weightnForm, ["seller_id" => $seller_id]);
@@ -63,11 +62,10 @@ if (isset($_POST['profile-approve'])) {
         }
         $last_update_date = date("F d, Y");
         $db->insert("notifications", array("receiver_id" => $seller_id, "sender_id" => "admin_$admin_id", "order_id" => $seller_id, "reason" => "profile_approved", "date" => $last_update_date, "status" => "unread"));
-
         $db->insert_log($admin_id, "profile_approved", $seller_id, "inserted");
-        // echo "<script>alert_success('Profile modification request approved.', 'index?single_seller=" . $seller_id . "');</script>";
+        echo "<script>alert_success('Profile modification request approved.', 'index?single_seller=" . $seller_id . "');</script>";
     } else {
-        // echo "<script>alert_error('Profile modification request could not approved.', 'index?single_seller=" . $seller_id . "');</script>";
+        echo "<script>alert_error('Profile modification request could not approved.', 'index?single_seller=" . $seller_id . "');</script>";
     }
     exit();
 }

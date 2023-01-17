@@ -68,8 +68,10 @@ $pendingProposal = $membershipData['pending_gig'];
   if ($seller_verification != "ok") {
 
     echo "
+    <div class='container mt-5 mb-5'>
     <div class='alert alert-danger rounded-0 mt-0 text-center'>
       Please confirm your email to use this feature.
+    </div>
     </div>
   ";
   } else {

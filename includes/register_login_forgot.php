@@ -69,10 +69,11 @@ if (isset($_POST['register'])) {
 		$check_seller_email = $db->count("sellers", array("seller_email" => $email));
 		$check_seller_ip = $db->count("sellers", array("seller_ip" => $ip));
 
-		if ($check_seller_ip > 0) {
-			$err = "An account have been already created from this device. Please try with another device";
-			array_push($error_array, "An account have been already created from this device. Please try with another device.");
-		}
+		// temp disabled
+		// if ($check_seller_ip > 0) {
+		// 	$err = "An account have been already created from this device. Please try with another device";
+		// 	array_push($error_array, "An account have been already created from this device. Please try with another device.");
+		// }
 		if (preg_match('/[اأإء-ي]/ui', $input->post('u_name'))) {
 			array_push($error_array, "Foreign characters are not allowed in username, Please try another one.");
 		}

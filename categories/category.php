@@ -80,6 +80,77 @@ if (isset($_GET['cat_child_url'])) {
 
 <body class="bg-white is-responsive">
     <?php require_once("../includes/header.php"); ?>
+    <?php if ($seller_verification != "ok") { ?>
+    <div class="container-fluid mt-5" style="margin-top: 200px !important;">
+    <!-- Container start -->
+        <div class="row">
+            <div class="col-md-12">
+                <center>
+                    <?php
+                    if (isset($_SESSION['cat_id'])) {
+                        $cat_id = $_SESSION['cat_id'];
+                        $get_meta = $db->select("cats_meta", array("cat_id" => $cat_id, "language_id" => $siteLanguage));
+                        $row_meta = $get_meta->fetch();
+                        $cat_title = $row_meta->cat_title;
+                        $cat_desc = $row_meta->cat_desc;
+                    ?>
+                        <h1> <?= $cat_title; ?> </h1>
+                        <p class="lead"><?= $cat_desc; ?></p>
+                    <?php } ?>
+                    <?php
+                    if (isset($_SESSION['cat_child_id'])) {
+                        $cat_child_id = $_SESSION['cat_child_id'];
+                        $get_meta = $db->select("child_cats_meta", array("child_id" => $cat_child_id, "language_id" => $siteLanguage));
+                        $row_meta = $get_meta->fetch();
+                        $child_title = $row_meta->child_title;
+                        $child_desc = $row_meta->child_desc;
+                    ?>
+                        <h1> <?= $child_title; ?> </h1>
+                        <p class="lead"><?= $child_desc; ?></p>
+                    <?php } ?>
+                </center>
+                <hr class="mt-5 pt-2">
+            </div>
+        </div>
+        <div class='alert alert-danger rounded-0 mt-0 text-center'>
+            Please confirm your email to use this feature.
+        </div>
+        <div class="alert alert-warning clearfix activate-email-class mb-5">
+            <div class="float-left mt-2">
+                <i style="font-size: 125%;" class="fa fa-exclamation-circle"></i>
+                <?php
+                $message = $lang['popup']['email_confirm']['text'];
+                $message = str_replace('{seller_email}', $seller_email, $message);
+                $message = str_replace('{link}', "$site_url/customer_support", $message);
+                echo $message;
+                ?>
+            </div>
+            <div class="float-right">
+                <button id="send-email"
+                        class="btn btn-success btn-sm float-right text-white"><?= $lang["popup"]["email_confirm"]['button']; ?></button>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $("#send-email").click(function () {
+                    $("#wait").addClass('loader');
+                    $.ajax({
+                        method: "POST",
+                        url: "<?= $site_url; ?>/includes/send_email",
+                        success: function () {
+                            $("#wait").removeClass('loader');
+                            $("#send-email").html("Resend Email");
+                            swal({
+                                type: 'success',
+                                text: '<?= $lang['alert']['confirmation_email']; ?>',
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+    <?php } else { ?>
     <div class="container-fluid mt-5">
         <!-- Container start -->
         <div class="row">
@@ -134,9 +205,11 @@ if (isset($_GET['cat_child_url'])) {
             </div>
         </div>
     </div>
+    <?php } ?>
     <!-- Container ends -->
     <div class="append-modal"></div>
     <?php require_once("../includes/footer.php"); ?>
+    <?php if ($seller_verification == "ok") { ?>
     <script>
         function get_category_proposals() {
 
@@ -519,6 +592,7 @@ if (isset($_GET['cat_child_url'])) {
             get_category_proposals();
         }
     </script>
+    <?php } ?>
 </body>
 
 </html>

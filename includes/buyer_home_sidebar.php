@@ -114,17 +114,34 @@
 <div class="card card1  text-dark border-0 px-0 py-3 mb-4">
   <div class="d-flex align-items-center justify-content-space-between">
     <h6>Set up your account</h6>
-    <h6>56%</h6>
+    <h6><?=$totalWeight?>%</h6>
   </div>
   <div class="progress" style="height: 10px; border-radius: 1rem;">
-    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="progress-bar" role="progressbar" style="width: <?=$totalWeight?>%;" aria-valuenow="<?=$totalWeight?>" aria-valuemin="0" aria-valuemax="100"></div>
   </div>
 </div>
-<br>
+<?php if ($profileWeight == 0) { ?>
 <div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row mb-4">
-  <h6 class="mb-0 text-white"> <i class="fa fa-address-card mr-3"></i> <span>Add your address</span></h6>
-  <label class="mb-0 text-white font-weight-bold">+5 %</label>
+  <a href="<?=$site_url?>/settings?profile_settings"><h6 class="mb-0 text-white"> <i class="fa fa-user mr-3"></i> <span>Complete your profile</span></h6></a>
+  <label class="mb-0 text-white font-weight-bold">+35%</label>
 </div>
+<?php
+}
+if ($professionalWeight == 0) {
+?>
+<div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row mb-4">
+  <a href="<?=$site_url?>/settings?professional_settings"><h6 class="mb-0 text-white"> <i class="fa fa-briefcase mr-3"></i> <span>Complete your professional</span></h6></a>
+  <label class="mb-0 text-white font-weight-bold">+35%</label>
+</div>
+<?php
+}
+if ($accountWeight == 0) {
+?>
+<div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row mb-4">
+  <a href="<?=$site_url?>/settings?account_settings"><h6 class="mb-0 text-white"> <i class="fa fa-money mr-3"></i> <span>Complete your account</span></h6></a>
+  <label class="mb-0 text-white font-weight-bold">+30%</label>
+</div>
+<?php } ?>
 <!-- <div class="card card1 bg-white theme-text  px-0 py-3 bl-xs-0 br-xs-0 rounded-0 mb-4">
   <h3>Try Corporate Membership for FREE</h3>
 </div> -->
