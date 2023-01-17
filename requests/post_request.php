@@ -104,10 +104,12 @@ if (isset($_POST['submit'])) {
 	require_once("../includes/user_header.php");
 	if ($seller_verification != "ok") {
 		echo "
-<div class='alert alert-danger rounded-0 mt-0 text-center'>
-Please confirm your email to use this feature.
-</div>
-";
+		<div class='container-fluid py-5'>
+			<div class='alert alert-danger rounded-0 mt-0 text-center'>
+			Please confirm your email to use this feature.
+			</div>
+		</div>
+		";
 	} else {
 	?>
 		<div class="container-fluid pt-5">

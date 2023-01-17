@@ -134,6 +134,6 @@ if (in_array($reason, $pReports)) {
 }
 
 $pAReports = ['profile_approved', 'professional_approved', 'account_approved'];
-if (in_array($reason, $pReports)) {
+if (in_array($reason, $pAReports)) {
 	return "has approved profile update.";
 }

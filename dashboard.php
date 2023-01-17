@@ -53,6 +53,12 @@ if (isset($_GET['n_id'])) {
         echo "<script>window.open('support?view_conversation&ticket_id=$order_id','_self');</script>";
       } elseif ($reason == "feedback_respond") {
         echo "<script>window.open('feedback/idea?id=$order_id','_self');</script>";
+      } elseif ($reason == "profile_modification" or $reason == "professional_modification" or $reason == "account_modification") {
+        $lk = $reason == "profile_modification" ? "settings?profile_settings" : ($reason == "professional_modification" ? "settings?professional_settings" : "settings?account_settings");
+        echo "<script>window.open('{$lk}','_self');</script>";
+      } elseif ($reason == "profile_approved" or $reason == "professional_approved" or $reason == "account_approved") {
+        $lk = $reason == "profile_approved" ? "settings?profile_settings" : ($reason == "professional_approved" ? "settings?professional_settings" : "settings?account_settings");
+        echo "<script>window.open('{$lk}','_self');</script>";
       } else {
         echo "<script>window.open('order_details?order_id=$order_id','_self');</script>";
       }

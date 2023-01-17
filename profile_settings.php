@@ -283,10 +283,15 @@ if (is_array($form_errors)) {
   <div class="alert alert-primary">
     Your profile needs modification, here is the message from ADMIN: <br /> <?= $modificationMsg ?>
   </div>
+  <?php } ?>
+  <?php if ($reviewRemark == 'active') { ?>
+  <div class="alert alert-success">
+    Your profile is active.
+  </div>
 <?php
 }
 // SHOW FORMS IF the modification request is needed or review is null
-if (is_null($reviewRemark) || $reviewRemark == 'modification') {
+if (is_null($reviewRemark) || $reviewRemark == 'modification' || $reviewRemark == 'active') {
 ?>
   <form method="post" enctype="multipart/form-data" runat="server" autocomplete="off">
     <div class="form-group row">

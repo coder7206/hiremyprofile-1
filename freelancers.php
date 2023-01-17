@@ -31,6 +31,59 @@ require_once("functions/functions.php");
 
 <body class="is-responsive">
   <?php require_once("includes/header.php"); ?>
+  <?php if ($seller_verification != "ok") { ?>
+    <div class="container-fluid">
+    <!-- Container start -->
+    <div class="row">
+      <div class="col-md-12">
+        <center>
+          <h1> <?= $lang['freelancers']['title']; ?> </h1>
+          <p class="lead"><?= $lang['freelancers']['desc']; ?></p>
+        </center>
+        <hr class="mt-5 pt-2">
+      </div>
+      <div class="col-md-12">
+      <div class='alert alert-danger rounded-0 mt-0 text-center'>
+            Please confirm your email to use this feature.
+        </div>
+        <div class="alert alert-warning clearfix activate-email-class mb-5">
+            <div class="float-left mt-2">
+                <i style="font-size: 125%;" class="fa fa-exclamation-circle"></i>
+                <?php
+                $message = $lang['popup']['email_confirm']['text'];
+                $message = str_replace('{seller_email}', $seller_email, $message);
+                $message = str_replace('{link}', "$site_url/customer_support", $message);
+                echo $message;
+                ?>
+            </div>
+            <div class="float-right">
+                <button id="send-email"
+                        class="btn btn-success btn-sm float-right text-white"><?= $lang["popup"]["email_confirm"]['button']; ?></button>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $("#send-email").click(function () {
+                    $("#wait").addClass('loader');
+                    $.ajax({
+                        method: "POST",
+                        url: "<?= $site_url; ?>/includes/send_email",
+                        success: function () {
+                            $("#wait").removeClass('loader');
+                            $("#send-email").html("Resend Email");
+                            swal({
+                                type: 'success',
+                                text: '<?= $lang['alert']['confirmation_email']; ?>',
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+      </div>
+    </div>
+  </div>
+  <?php } else { ?>
   <div class="container-fluid">
     <!-- Container start -->
     <div class="row">
@@ -71,6 +124,7 @@ require_once("functions/functions.php");
       </div>
     </div>
   </div><!-- Container ends -->
+  <?php } ?>
   <?php require_once("includes/footer.php"); ?>
   <script>
     function get_freelancers() {
@@ -272,7 +326,5 @@ require_once("functions/functions.php");
       get_freelancers();
     }
   </script>
-
 </body>
-
 </html>
