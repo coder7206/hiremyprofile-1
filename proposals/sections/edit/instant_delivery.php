@@ -64,6 +64,12 @@
     <a href="#" class="btn btn-secondary float-left back-to-req"><?= $lang['button']['back']; ?></a>
     <input class="btn btn-success float-right" type="submit" value="<?= $lang['button']['save_continue']; ?>">
   </div>
+  <?php if ($d_proposal_status == 'active') { ?>
+    <div class="clearfix"></div>
+	<div class="form-group mb-0 float-right">
+		<small class="text-muted">Your proposal is "Active", if you edits the form it will go to reviews.</small>
+	</div>
+	<?php } ?>
   <!--- form-group Starts --->
 
 </form>

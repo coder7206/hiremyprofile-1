@@ -384,13 +384,11 @@ $img_4_extension = pathinfo($d_proposal_img4, PATHINFO_EXTENSION);
                   $('#publish').addClass('show active');
                   $('#tabs a[href="#publish"]').addClass('active');
                 <?php } ?>
-
-                <?php if ($d_proposal_status == "pending") { ?>
+                <?php if ($d_proposal_status == "active" || $d_proposal_status == "pending") { ?>
 
                   window.open('view_proposals?pending', '_self');
 
                 <?php } ?>
-
               }
 
             });

@@ -102,7 +102,17 @@ if (isset($_POST['submit'])) {
 		</script>";
 	}
 	require_once("../includes/user_header.php");
-	if ($seller_verification != "ok") {
+
+	if ($seller_verification != "ok" || $totalWeight < 70) {
+		if ( $totalWeight < 70) {
+			echo "
+		<div class='container-fluid py-5'>
+			<div class='alert alert-danger rounded-0 mt-0 text-center'>
+			In other to add, Please complete your profile and professional info first.
+			</div>
+		</div>
+		";
+		} else {
 		echo "
 		<div class='container-fluid py-5'>
 			<div class='alert alert-danger rounded-0 mt-0 text-center'>
@@ -110,6 +120,7 @@ if (isset($_POST['submit'])) {
 			</div>
 		</div>
 		";
+		}
 	} else {
 	?>
 		<div class="container-fluid pt-5">

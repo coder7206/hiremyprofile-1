@@ -104,6 +104,12 @@ if (isset($_POST["proposal_id"])) {
 
 	if (empty($error)) {
 
+		$qIsActive = $db->select("proposals", ["proposal_id" => $proposal_id]);
+		$oIsActive = $qIsActive->fetch();
+		if ($oIsActive->proposal_status == 'active') {
+			$data['proposal_status'] = 'pending';
+		}
+
 		$update_proposal = $db->update("proposals", $data, array("proposal_id" => $proposal_id));
 		if (!isset($_POST['direct_order'])) {
 			$update_proposal = $db->update("proposals", ['direct_order' => 1], array("proposal_id" => $proposal_id));

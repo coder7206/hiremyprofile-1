@@ -541,11 +541,11 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                                         <button class="btn btn-success" type="submit" name="professional-approve" formaction=""><i class="fa fa-thumbs-o-up"></i> Approve</button>
                                                     </form>
 
-                                                    <!-- <form action="" method="POST">
-                                            <textarea class="form-control mb-1" name="professional_feedback" id="exampleFormControlTextarea1" rows="3" required minlength="5" placeholder="Enter Modification Message"></textarea>
-                                            <input type="text" name="professional_id" value="<?= $proInfoIds ?>" />
-                                            <button class="btn btn-warning" type="submit" name="professional-modification"><i class="fa fa-pencil-square-o"></i> Modification Request</button>
-                                        </form> -->
+                                                    <form action="" method="POST">
+                                                        <textarea class="form-control mb-1" name="professional_feedback" id="exampleFormControlTextarea1" rows="3" required minlength="5" placeholder="Enter Modification Message"></textarea>
+                                                        <input type="hidden" name="professional_id" value="<?= $proInfoIds ?>" />
+                                                        <button class="btn btn-warning" type="submit" name="professional-modification"><i class="fa fa-pencil-square-o"></i> Modification Request</button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         <?php

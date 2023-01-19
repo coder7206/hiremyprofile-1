@@ -112,7 +112,7 @@ $site_border_color = $row_general_settings->site_border_color;
         color: #00cedc;
     }
 </style>
-<div class="fixed-top">
+<div class="sticky">
     <div id="gnav-header" class="gnav-header global-nav clear gnav-3">
         <header id="gnav-header-inner"
                 class="gnav-header-inner clear apply-nav-height col-group has-svg-icons body-max-width">

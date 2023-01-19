@@ -27,7 +27,12 @@
 	<input class="btn btn-success float-right" type="submit" form="form1" value="<?= $lang['button']['save_continue']; ?>">
 </div>
 <!--- form-group Starts --->
-
+<?php if ($d_proposal_status == 'active') { ?>
+	<div class="clearfix"></div>
+	<div class="form-group mb-0 float-right">
+		<small class="text-muted">Your proposal is "Active", if you edits the form it will go to reviews.</small>
+	</div>
+	<?php } ?>
 <script>
 	$(document).ready(function() {
 		$('.backButton').click(function() {
