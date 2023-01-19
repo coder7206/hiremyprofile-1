@@ -174,6 +174,12 @@ $child_title = $row_meta->child_title;
 		<a href="view_proposals" class="float-left btn btn-secondary"><?= $lang['button']['cancel']; ?></a>
 		<input class="btn btn-success float-right" type="submit" value="<?= $lang['button']['save_continue']; ?>">
 	</div>
+	<div class="clearfix"></div>
+	<?php if ($d_proposal_status == 'active') { ?>
+	<div class="form-group mb-0 float-right">
+		<small class="text-muted">Your proposal is "Active", if you edits the form it will go to reviews.</small>
+	</div>
+	<?php } ?>
 	<!--- form-group Starts --->
 
 </form>

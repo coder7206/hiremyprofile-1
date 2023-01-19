@@ -65,8 +65,16 @@ $pendingProposal = $membershipData['pending_gig'];
   <?php
   require_once("../includes/user_header.php");
 
-  if ($seller_verification != "ok") {
-
+  if ($seller_verification != "ok" || $totalWeight < 70) {
+    if ( $totalWeight < 70) {
+			echo "
+		<div class='container-fluid py-5'>
+			<div class='alert alert-danger rounded-0 mt-0 text-center'>
+			In other to add, Please complete your profile and professional info first.
+			</div>
+		</div>
+		";
+		} else {
     echo "
     <div class='container mt-5 mb-5'>
     <div class='alert alert-danger rounded-0 mt-0 text-center'>
@@ -74,6 +82,7 @@ $pendingProposal = $membershipData['pending_gig'];
     </div>
     </div>
   ";
+  }
   } else {
 
   ?>

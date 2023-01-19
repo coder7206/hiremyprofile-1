@@ -217,7 +217,12 @@
 
 </div>
 <!--- form-group Starts --->
-
+<?php if ($d_proposal_status == 'active') { ?>
+  <div class="clearfix"></div>
+	<div class="form-group mb-0 float-right">
+		<small class="text-muted">Your proposal is "Active", if you edits the form it will go to reviews.</small>
+	</div>
+	<?php } ?>
 <script>
   $(document).ready(function() {
     var browsers = ["Opera", "Edge", "Chrome", "Safari", "Firefox", "MSIE", "Trident"];

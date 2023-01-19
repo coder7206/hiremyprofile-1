@@ -29,6 +29,17 @@ if (isset($_SESSION['seller_user_name'])) {
   $row_general_settings = $get_general_settings->fetch();
   $enable_referrals = $row_general_settings->enable_referrals;
   $count_active_proposals = $db->count("proposals", array("proposal_seller_id" => $seller_id, "proposal_status" => 'active'));
+
+  // Profile Weightness
+  $profileWeight = $professionalWeight = $accountWeight = 0;
+  $qSellerWeight = $db->select("seller_profile_weights", array("seller_id" => $seller_id));
+  $oSellerWeight = $qSellerWeight->fetch();
+  if ($oSellerWeight) {
+      $profileWeight = $oSellerWeight->profile_weight;
+      $professionalWeight = $oSellerWeight->professional_weight;
+      $accountWeight = $oSellerWeight->account_weight;
+  }
+  $totalWeight = $profileWeight + $professionalWeight + $accountWeight;
 }
 
 function get_real_user_ip()

@@ -6,11 +6,15 @@ if (!isset($_SESSION['seller_user_name'])) {
 }
 
 if (isset($_POST['submit_professional'])) {
-
     $occupations = $input->post("occupation");
+    $form_status = $input->post("form_status");
     $inserted = 0;
     // OCCUPATIONS
     if (count($occupations) > 0) {
+        // delete
+        if (!is_null($form_status)) {
+            $db->query("DELETE spi, spio FROM seller_pro_info spi LEFT JOIN seller_pro_info_options spio ON spi.id = spio.seller_pro_info_id WHERE spi.seller_id = :seller_id;", ['seller_id' => $login_seller_id]);
+        }
         foreach ($occupations as $key => $occupation) {
             $form = [];
             $form['category_id'] = $occupation['category_id'];
@@ -35,6 +39,9 @@ if (isset($_POST['submit_professional'])) {
                 $inserted++;
             }
         }
+        if ($form_status == 1) {
+            $db->update('seller_profile_weights', ['professional_weight' => null], ['seller_id' => $login_seller_id]);
+        }
     }
 
     // SKILLS
@@ -50,7 +57,7 @@ if (isset($_POST['submit_professional'])) {
             echo "<script>
               swal({
                 type: 'warning',
-                text: 'You no of skills quota exceeds.',
+                text: 'Available No of skills quota exceeds.',
                 timer: 3000,
                 onOpen: function(){
                   swal.showLoading()
@@ -135,17 +142,22 @@ $cProInfo = $qProInfo->rowCount();
 $formStatus = true;
 $showPendingMsg = false;
 $modificationMsg = '';
+$proStatus = null;
 if ($cProInfo > 0) {
     $proInfoData = [];
     while ($oProInfo = $qProInfo->fetch()) {
         $proInfoData[] = $oProInfo;
         $proStatus = $oProInfo->status; // 1=active, 0=pending,2=modification
         $modificationMsg = $oProInfo->feedback;
-        $formStatus = $proStatus == 2 ? true : false;
-        if ($proStatus == 0)
+        // $formStatus = $proStatus == 2 ? true : false;
+        if ($proStatus == 0) {
             $showPendingMsg = true;
+            $formStatus = false;
+        }
     }
 }
+
+$totalProInfForm = $cProInfo > 0 ? $cProInfo : 1;
 
 $earliest_year = 1950;
 $form_errors = Flash::render("form_errors");
@@ -158,61 +170,111 @@ if ($formStatus) : //Show Form if needs to
             Modification Message From Admin:<br /><?= $modificationMsg ?>
         </div>
     <?php } ?>
+    <?php if ($proStatus == 1) { ?>
+        <div class="col-md-12">
+            <div class="alert alert-success" role="alert">
+                Your Professional Info is active.
+            </div>
+        </div>
+    <?php } ?>
     <form method="post" runat="server" autocomplete="off">
         <div class="form-group row">
             <label class="col-md-3 col-form-label"> <?= $lang['label']['occupation']; ?></label>
-            <div class="col-md-9 p-0 m-0" id="clone-area">
-                <div class="cloneArea">
-                    <div class="form-row">
-                        <div class="col-md-4 p-0 mb-3">
-                            <label for="category_0">Category</label>
-                            <select id="category_0" class="custom-select form-control category_change" name="occupation[0][category_id]" required>
-                                <option value="">Choose category</option>
-                                <?php
-                                $qCategories = $db->select("categories", "", "DESC");
-                                while ($oCategories = $qCategories->fetch()) {
-                                    $category_meta = $db->select("cats_meta", array("cat_id" => $oCategories->cat_id))->fetch();
-                                ?>
-                                    <option value="<?= $oCategories->cat_id; ?>"><?= $category_meta->cat_title; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="control-label" for="startdate_0">Start Date</label>
-                            <select id="startdate_0" class="custom-select form-control" name="occupation[0][start_date]" required>
-                                <option value="">Choose Start Date</option>
-                                <?php
-                                foreach (range(date('Y'), $earliest_year) as $x) {
-                                ?>
-                                    <option value="<?= $x; ?>"><?= $x; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="control-label" for="enddate_0">End Date</label>
-                            <select id="enddate_0" class="custom-select form-control w-100" name="occupation[0][end_date]" required>
-                                <option value="">Choose End Date</option>
-                                <option value="present">Present</option>
-                                <?php
-                                foreach (range(date('Y'), $earliest_year) as $x) {
-                                ?>
-                                    <option value="<?= $x; ?>"><?= $x; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
+            <div class="col-md-9 p-0 m-0">
+                <div id="clone-area">
+                <?php
+                for ($i = 0; $totalProInfForm > $i; $i++) :
+                    $catId = $startDate = $endDate = '';
+                    $cOptions = 0;
+                    if (isset($proInfoData)) {
+                        $spiId = $proInfoData[$i]->id;
+                        $catId = $proInfoData[$i]->category_id;
+                        $startDate = $proInfoData[$i]->start_date;
+                        $endDate = $proInfoData[$i]->end_date;
 
-                        <div class="col-md-12 mb-3 d-none" id="responseArea_0">
-                            Choose <b>at least one</b> of your best skills in <span id="categoryName">{Category Name}</span>
-                            <div class="clearfix"></div>
-                            <div class="row">
+                        $qOptions = $db->select("professional_info", array("category_id" => $catId, "status" => 1));
+                        $cOptions = $qOptions->rowCount();
+                    }
+                ?>
+                    <div class="cloneArea">
+                        <div class="form-row">
+                            <div class="col-md-4 p-0 mb-3">
+                                <label for="category_0">Category</label>
+                                <select id="category_0" class="custom-select form-control category_change" name="occupation[<?=$i?>][category_id]" required>
+                                    <option value="">Choose category</option>
+                                    <?php
+                                    $qCategories = $db->select("categories", "", "DESC");
+                                    while ($oCategories = $qCategories->fetch()) {
+                                        $category_meta = $db->select("cats_meta", array("cat_id" => $oCategories->cat_id))->fetch();
+                                    ?>
+                                        <option value="<?= $oCategories->cat_id; ?>" <?=$catId==$oCategories->cat_id ? 'selected' : ''?>><?= $category_meta->cat_title; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="control-label" for="startdate_0">Start Date</label>
+                                <select id="startdate_0" class="custom-select form-control" name="occupation[<?=$i?>][start_date]" required>
+                                    <option value="">Choose Start Date</option>
+                                    <?php
+                                    foreach (range(date('Y'), $earliest_year) as $x) {
+                                    ?>
+                                        <option value="<?= $x; ?>" <?=$startDate==$x ? 'selected' : ''?>><?= $x; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="control-label" for="enddate_0">End Date</label>
+                                <select id="enddate_0" class="custom-select form-control w-100" name="occupation[<?=$i?>][end_date]" required>
+                                    <option value="">Choose End Date</option>
+                                    <option value="present" <?=$endDate=='present' ? 'selected' : ''?>>Present</option>
+                                    <?php
+                                    foreach (range(date('Y'), $earliest_year) as $x) {
+                                    ?>
+                                        <option value="<?= $x; ?>" <?=$endDate==$x ? 'selected' : ''?>><?= $x; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+
+                            <div class="col-md-12 mb-3 <?=$cOptions > 0 ? '' : 'd-none'?> emptIt" id="responseArea_0">
+                                Choose <b>at least one</b> of your best skills in <span id="categoryName">{Category Name}</span>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                <?php
+                                if ($cOptions > 0) {
+                                    $options = $qOptions->fetchAll();
+
+                                    $qUserSelected = $db->query("SELECT p.id, p.title FROM professional_info p JOIN seller_pro_info_options spio ON p.id = spio.professional_info_id AND spio.seller_pro_info_id  = :seller_pro_info_id;", array("seller_pro_info_id" => $spiId));
+                                    $cUserSelected = $qUserSelected->rowCount();
+                                    $optionSelectedArr = [];
+                                    if ($cUserSelected > 0) {
+                                        $oUserSelected = $qUserSelected->fetchAll();
+                                        foreach ($oUserSelected as $selOp) {
+                                            $optionSelectedArr[] = $selOp->id;
+                                        }
+                                    }
+
+                                    foreach ($options as $key=>$option) {
+                                ?>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="occupation[<?=$catId?>][option_id][]" type="checkbox" value="<?=$option->id?>" <?=in_array($option->id, $optionSelectedArr) ? 'checked' : ''?> id="optionCheck-0" onclick="deRequire(<?=$catId?>)">
+                                        <label class="form-check-label" for="optionCheck-<?=$key?>"><?=$option->title?></label>
+                                    </div>
+                                </div>
+                                <?php
+                                    }
+                                }
+                                ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a href="javascript:void(0)" class="remove-item btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12 text-right">
-                            <a href="javascript:void(0)" class="remove-item btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a>
-                        </div>
-                    </div>
+                <?php endfor; ?>
                 </div>
             </div>
             <div class="col-md-9 offset-md-3">
@@ -291,7 +353,7 @@ if ($formStatus) : //Show Form if needs to
                         ?>
                                 <tr>
                                     <th scope="row"><?= $skill_title; ?><input type="hidden" name="skills[<?= $i ?>][id]" value="<?= $skill_id; ?>"></th>
-                                    <td><?= $skill_level; ?><input type="hidden" name="skills[<?= $i ?>][level]" value="<?= $skill_level; ?>"> <a href="javascript:;" onclick="deleteThis(this)" class="text-danger"><i class="fa fa-trash-o"></i></a></td>
+                                    <td><?= $skill_level; ?><input type="hidden" name="skills[<?= $i ?>][level]" value="<?= $skill_level; ?>"> <a href="javascript:;" onclick="deleteThis(this, <?= $skill_id; ?>)" class="text-danger"><i class="fa fa-trash-o"></i></a></td>
                                 </tr>
                             <?php
                                 $i++;
@@ -312,6 +374,7 @@ if ($formStatus) : //Show Form if needs to
         <button type="submit" name="submit_professional" class="btn btn-success <?= $floatRight ?>" style="<?= ($lang_dir == "right" ? 'margin-left: 110px;' : '') ?>">
             <i class="fa fa-floppy-o"></i> <?= $lang['button']['save_changes']; ?>
         </button>
+        <input type="hidden" name="form_status" value="<?=$proStatus?>">
     </form>
 <?php else : ?>
     <div class="row">
@@ -422,6 +485,7 @@ if ($formStatus) : //Show Form if needs to
         minLimit: 1, // Default 1 set minimum clone HTML required
         maxLimit: 5, // Default unlimited or set maximum limit of clone HTML
         defaultRender: 1,
+        excludeHTML: ".emptIt",
         init: function() {
             // console.info(':: Initialize Plugin ::');
         },
@@ -430,7 +494,7 @@ if ($formStatus) : //Show Form if needs to
         },
         afterRender: function() {
             // console.info(':: After rendered callback called');
-            //$(".selectpicker").selectpicker('refresh');
+            $(".emptIt:last").addClass('d-none');
         },
         afterRemove: function() {
             // console.warn(':: After remove callback called');
@@ -522,7 +586,7 @@ if ($formStatus) : //Show Form if needs to
         // index = trCount - 1;
         var buffer = '<tr class="new">';
         buffer += '<th scope="row">' + skillSelectedValue + '<input type="hidden" name="skills[' + index + '][id]" value="' + skillSelectedId + '"></th>';
-        buffer += '<td>' + levelSelectedValue + '<input type="hidden" name="skills[' + index + '][level]" value="' + levelSelectedValue + '"> <a href="javascript:;" onclick="deleteThis(this)" class="text-danger"><i class="fa fa-trash-o"></i></a></td>'
+        buffer += '<td>' + levelSelectedValue + '<input type="hidden" name="skills[' + index + '][level]" value="' + levelSelectedValue + '"> <a href="javascript:;" onclick="deleteThis(this, null)" class="text-danger"><i class="fa fa-trash-o"></i></a></td>'
         buffer += '</tr>';
         $('#tblSkills tbody').append(buffer);
 
@@ -532,8 +596,24 @@ if ($formStatus) : //Show Form if needs to
         return false;
     }
 
-    function deleteThis(btn) {
+    function deleteThis(btn, id) {
         if (confirm("Are you sure want to delete this?")) {
+            if (id != null) {
+                $('body #wait').addClass("loader");
+
+                $.ajax({
+                    url: "<?= $site_url ?>/ajax/remove-data",
+                    dataType: "json",
+                    method: "POST",
+                    data: {
+                        id,
+                        action: 'skills',
+                    }
+                    }).done(function(data) {
+                        $('body #wait').removeClass("loader");
+                        location.reload();
+                    });
+            }
             var row = btn.parentNode.parentNode;
             row.parentNode.removeChild(row);
         }
