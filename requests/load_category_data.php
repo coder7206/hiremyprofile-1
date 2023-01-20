@@ -58,11 +58,11 @@ if (!empty($requests_query)) {
 	}
 	if ($child_id == "all") {
 		$spQuery = "SELECT * FROM buyer_requests WHERE request_status=:request_status {$requests_query} {$searchWhere} AND seller_id !=:seller_id";
-		$sQuery = "SELECT * FROM buyer_requests WHERE request_status=:request_status {$requests_query} {$searchWhere} AND seller_id !=:seller_id LIMIT " . $pagePosition . ", " . $limit;
+		$sQuery = "SELECT * FROM buyer_requests WHERE request_status=:request_status {$requests_query} {$searchWhere} AND seller_id !=:seller_id ORDER BY 1 DESC LIMIT " . $pagePosition . ", " . $limit;
 		$sBind = ["seller_id" => $sellerId, "request_status" => 'active'];
 	} else {
 		$spQuery = "SELECT * FROM buyer_requests WHERE request_status=:request_status AND child_id=:child_id {$searchWhere} AND seller_id !=:seller_id";
-		$sQuery = "SELECT * FROM buyer_requests WHERE request_status=:request_status AND child_id=:child_id {$searchWhere} AND seller_id !=:seller_id LIMIT " . $pagePosition . ", " . $limit;
+		$sQuery = "SELECT * FROM buyer_requests WHERE request_status=:request_status AND child_id=:child_id {$searchWhere} AND seller_id !=:seller_id ORDER BY 1 DESC LIMIT " . $pagePosition . ", " . $limit;
 		$sBind = ["seller_id" => $sellerId, "child_id" => $child_id, "request_status" => 'active'];
 	}
 
@@ -157,7 +157,7 @@ if (!empty($requests_query)) {
 
 		$paginationData = paginate($limit, $pageNumber, $total, $totalPages);
 	} else {
-		$qProposals = $db->query("SELECT proposal_id FROM `proposals` where proposal_seller_id ='$sellerId' and proposal_status='active'");
+		$qProposals = $db->query("SELECT proposal_id FROM `proposals` where proposal_seller_id ='$sellerId' and proposal_status='active' ORDER BY 1 DESC");
 		$cProposals = $qProposals->rowCount();
 		if ($cProposals > 0 )
 			$data = "

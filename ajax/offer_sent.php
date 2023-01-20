@@ -66,7 +66,7 @@ if ($rowCount > 0) {
         $request_seller_user_name = $row_request_seller->seller_user_name;
         $request_seller_image = getImageUrl2("sellers", "seller_image", $row_request_seller->seller_image);
 
-        $data .= "<tr>";
+        $data .= "<tr class='offer_tr_{$oOffers->offer_id}'>";
         $data .= "<td>";
         if (!empty($request_seller_image))
             $data .= "<img src='{$request_seller_image}' class='request-img rounded-circle mt-0 contact-image'>";
@@ -91,9 +91,10 @@ if ($rowCount > 0) {
         <td>' . $s_currency . $amount . '</td>
         <td>
             <strong>' . $proposal_title . '</strong>
-            <p><br>
+            <p>
                ' . $description . '
             </p>
+            <p><a href="' . $site_url . '/offer-edit?id='. $oOffers->offer_id .'" class="text-primary">Edit</a> | <a href="javascript:;" class="text-danger withdrawOffer" data-id="' . $oOffers->offer_id . '">Withdraw</a> <p>
         </td>';
         $data .= "</tr>";
     }

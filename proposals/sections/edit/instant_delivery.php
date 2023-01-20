@@ -226,6 +226,9 @@
               $('.nav a[href="#pricing"]').tab('show');
             <?php } ?>
             $("input[type='hidden'][name='section']").val("pricing");
+            <?php if ($d_proposal_status == "active") { ?>
+              window.open('view_proposals?pending', '_self');
+            <?php } ?>
           });
         }
       });
@@ -259,6 +262,7 @@
       var instant_delivery_file = $('#deliveryFile').val();
       var enable_button = $('#enable_button').val();
       var loaded_file = parseInt($('.instant_file_loaded').length);
+
       if (enable_button == 1 || enable_button == "1") {
         if (instant_delivery_message == "" || instant_delivery_file == null) {
           alert("Please Enter Delivery Message.");

@@ -13,7 +13,7 @@ $ticket_id = $input->get('ticket_id');
 
 $stmt = $db->select("support_tickets", ["ticket_id" => $ticket_id]);
 $support_ticket = $stmt->fetch();
-if(!$support_ticket){
+if (!$support_ticket) {
   echo "<script>alert('Ticket not found.');window.open('index','_self')</script>";
 }
 $stmt = $db->select("support_conversations", ["ticket_id" => $ticket_id]);
@@ -23,6 +23,25 @@ if ($lang_dir == "right") {
   $floatRight = "float-right";
 } else {
   $floatRight = "float-left";
+}
+
+$enquiryId = $support_ticket->enquiry_id;
+$orderNumber = $support_ticket->order_number;
+$senderId = $support_ticket->sender_id;
+
+// ORDER DISPUTE SUPPORT
+if ($enquiryId == 1) {
+  $qOrder = $db->select('orders', ['order_number' => $orderNumber]);
+  $oOrder = $qOrder->fetch();
+  $orderSellerId = $oOrder->seller_id;
+  $orderBuyerId = $oOrder->buyer_id;
+  $defendedId = $login_seller_id == $orderSellerId ? $orderBuyerId : $orderSellerId;
+  // dd($defendedId);
+  $qDefended = $db->select("sellers", array("seller_id" => $defendedId));
+  $oDefended = $qDefended->fetch();
+  $defended_user_name = $oDefended->seller_user_name;
+  $defende_email = $oDefended->seller_email;
+  $defended_phone = $oDefended->seller_phone;
 }
 
 if (isset($_POST['new_message']) && !empty($_POST['new_message'])) {
@@ -53,7 +72,10 @@ if (isset($_POST['new_message']) && !empty($_POST['new_message'])) {
     $date = date("h:i M d, Y");
     $insert_support_ticket = $db->insert("support_conversations", array("ticket_id" => $ticket_id, "admin_id" => 0, "sender_id" => $login_seller_id, "message" => $new_message, "attachment" => $file, "date" => $date));
     if ($insert_support_ticket) {
-
+      // ORDER DISPUTE SUPPORT
+      if ($enquiryId == 1) {
+        $db->insert("notifications", array("receiver_id" => $defendedId, "sender_id" => "$login_seller_id", "order_id" => $ticket_id, "reason" => "ticket_reply", "date" => $date, "status" => "unread"));
+      }
       echo "<script>
               alert('Message submitted successfully.');
               window.open('support?view_conversation&ticket_id=$ticket_id','_self')
@@ -63,7 +85,6 @@ if (isset($_POST['new_message']) && !empty($_POST['new_message'])) {
 }
 
 $allowed = array('jpeg', 'jpg', 'gif', 'png');
-
 ?>
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
@@ -116,6 +137,7 @@ $allowed = array('jpeg', 'jpg', 'gif', 'png');
               <p class="lead">
                 <span class="font-weight-bold"> <?= $lang['single_ticket']['ticket_number']; ?> </span>
                 <small>#<?= $support_ticket->number; ?></small>
+                <?= $defendedId ?>
               </p>
 
               <p class="lead">
@@ -168,8 +190,8 @@ $allowed = array('jpeg', 'jpg', 'gif', 'png');
             foreach ($support_conversations as $conversation) {
 
               if (!empty($conversation->admin_id)) {
-                $admin = $db->query("select admin_image,admin_user_name from admins where admin_id = " . $conversation->admin_id)->fetch();
-                $sender_user_name = $admin->admin_user_name;
+                $admin = $db->query("select admin_image,admin_name from admins where admin_id = " . $conversation->admin_id)->fetch();
+                $sender_user_name = $admin->admin_name;
                 $sender_image = getImageUrl("admins", $admin->admin_image);
               } else {
                 $select_sender = $db->select("sellers", array("seller_id" => $conversation->sender_id));

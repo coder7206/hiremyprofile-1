@@ -312,39 +312,35 @@
                         </form><!-- form Ends -->
 
                         <?php
-
                         if (isset($_POST['insert_skill'])) {
-
                             $skill_id = $input->post('skill_id');
                             $skill_level = $input->post('skill_level');
                             $skills_total = $db->count("skills_relation", ["seller_id" => $seller_id]);
 
-                            if ($skill_id == "custom") {
-
-                                $skill_name = $input->post('skill_name');
-                                $count = $db->count("seller_skills", ["skill_title" => $skill_name]);
-                                $skills_total = $db->count("skills_relation", ["seller_id" => $seller_id]);
-
-
-                                if ($count == 1) {
-                                    echo "<script>alert('{$lang['alert']['skill_already_added']}');</script>";
-                                    echo "<script>window.open('$seller_user_name','_self');</script>";
-                                    exit();
-                                } else {
-                                    $insert_skill = $db->insert("seller_skills", array("skill_title" => $skill_name));
-                                    $skill_id = $db->lastInsertId();
-                                }
-                            }
-                            if ($skills_total >= $num_of_skills) {
-
+                            if ($num_of_skills == 0) {
                                 // echo "<script>alert('no more skill will be added')</script>";
-                                echo "<script>alert('No More skills will be added you have only allowed $num_of_skills Skills and $skills_total')</script>";
+                                echo "<script>alert('No of skills quota exceeds, Total allowed $skills_total skills')</script>";
                                 echo "<script>window.open('$seller_user_name','_self');</script>";
                             } else {
-                                /*echo "<script>alert('<?= $skills_total =?>')</script>";*/
-                                $insert_skill = $db->insert("skills_relation", array("seller_id" => $seller_id, "skill_id" => $skill_id, "skill_level" => $skill_level));
 
-                                echo "<script>window.open('$seller_user_name','_self');</script>";
+                                if ($skill_id == "custom") {
+                                    $skill_name = $input->post('skill_name');
+                                    $count = $db->count("seller_skills", ["skill_title" => $skill_name]);
+                                    $skills_total = $db->count("skills_relation", ["seller_id" => $seller_id]);
+
+                                    if ($count == 1) {
+                                        echo "<script>alert('{$lang['alert']['skill_already_added']}');</script>";
+                                        echo "<script>window.open('$seller_user_name','_self');</script>";
+                                        exit();
+                                    } else {
+                                        $db->insert("seller_skills", array("skill_title" => $skill_name));
+                                        $skill_id = $db->lastInsertId();
+                                    }
+                                } else {
+                                    /*echo "<script>alert('<?= $skills_total =?>')</script>";*/
+                                    $db->insert("skills_relation", array("seller_id" => $seller_id, "skill_id" => $skill_id, "skill_level" => $skill_level));
+                                }
+                                echo "<script>window.open('$seller_user_name', '_self');</script>";
                             }
                         }
 
@@ -507,44 +503,7 @@
 
                         </form><!-- form Ends -->
 
-
-
                         <?php
-
-                        if (isset($_POST['insert_skill'])) {
-
-                            $skill_id = $input->post('skill_id');
-                            $skill_level = $input->post('skill_level');
-                            $skills_total = $db->count("skills_relation", ["seller_id" => $seller_id]);
-
-                            if ($skill_id == "custom") {
-
-                                $skill_name = $input->post('skill_name');
-                                $count = $db->count("seller_skills", ["skill_title" => $skill_name]);
-                                $skills_total = $db->count("skills_relation", ["seller_id" => $seller_id]);
-
-
-                                if ($count == 1) {
-                                    echo "<script>alert('{$lang['alert']['skill_already_added']}');</script>";
-                                    echo "<script>window.open('$seller_user_name','_self');</script>";
-                                    exit();
-                                } else {
-                                    $insert_skill = $db->insert("seller_skills", array("skill_title" => $skill_name));
-                                    $skill_id = $db->lastInsertId();
-                                }
-                            }
-                            if ($skills_total >= $num_of_skills) {
-
-                                // echo "<script>alert('no more skill will be added')</script>";
-                                echo "<script>alert('No More skills will be added you have only allowed $num_of_skills Skills and $skills_total')</script>";
-                                echo "<script>window.open('$seller_user_name','_self');</script>";
-                            } else {
-                                /*echo "<script>alert('<?= $skills_total =?>')</script>";*/
-                                $insert_skill = $db->insert("skills_relation", array("seller_id" => $seller_id, "skill_id" => $skill_id, "skill_level" => $skill_level));
-
-                                echo "<script>window.open('$seller_user_name','_self');</script>";
-                            }
-                        }
                         if (isset($_POST['insert_education'])) {
                             $country = $input->post('country');
                             $country = $input->post('country');
@@ -560,7 +519,7 @@
                                 "uninversity" => $university,
                                 "year" => $year_of_graduation,
                                 "user_id" => $seller_id,
-                                "created_at" => date()
+                                "created_at" => date(),
                             ));
                             if ($insert_skill) {
                                 echo '<script>alert("Education Added Successfully")</script>';

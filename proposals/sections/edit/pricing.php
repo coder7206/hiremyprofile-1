@@ -412,9 +412,22 @@ $d_delivery_id = $row_proposal->delivery_id;
     }
 
     $(".insert-attribute").on('click', function(event) {
-      $('#wait').addClass("loader");
       event.preventDefault();
       var attribute_name = $('.attribute-name').val();
+      var minLen = 5;
+      var maxLen = 20;
+      if (attribute_name == '') {
+        alert("Please enter some text");
+        $('.attribute-name').focus();
+        return;
+      }
+      if (attribute_name.length < minLen || attribute_name.length > maxLen) {
+        alert("Please enter text length between 5 and 20, your text length is " + attribute_name.length);
+        $('.attribute-name').focus();
+        return;
+      }
+
+      $('#wait').addClass("loader");
 
       $.ajax({
         method: "POST",
@@ -469,6 +482,9 @@ $d_delivery_id = $row_proposal->delivery_id;
               $('#description').addClass('show active');
               $('#tabs a[href="#description"]').addClass('active');
             <?php } else { ?> $('.nav a[href="#description"]').tab('show');
+            <?php } ?>
+            <?php if ($d_proposal_status == "active") { ?>
+              window.open('view_proposals?pending', '_self');
             <?php } ?>
           });
         }

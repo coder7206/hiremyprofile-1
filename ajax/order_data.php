@@ -28,18 +28,18 @@ $pagePosition = (($pageNumber - 1) * $limit);
 if (in_array($status, $statusArray)) {
     if ($status == 'yes') {
         $spQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id  AND order_active=:order_active";
-        $sQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id  AND order_active=:order_active LIMIT " . $pagePosition . ", " . $limit;
+        $sQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id  AND order_active=:order_active ORDER BY 1 DESC LIMIT " . $pagePosition . ", " . $limit;
         $sBind = ["buyer_id" => $buyerId, "order_active" => $status];
         $noResult = $lang['buying_orders']['no_active'];
     } else {
         $spQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id  AND order_status=:order_status";
-        $sQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id  AND order_status=:order_status LIMIT " . $pagePosition . ", " . $limit;
+        $sQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id  AND order_status=:order_status ORDER BY 1 DESC LIMIT " . $pagePosition . ", " . $limit;
         $sBind = ["buyer_id" => $buyerId, "order_status" => $status];
         $noResult = $status == 'delivered' ? $lang['buying_orders']['no_delivered'] : ($status == 'completed' ? $lang['buying_orders']['no_completed'] : ($status == 'cancelled' ? $lang['buying_orders']['no_cancelled'] : ''));
     }
 } else {
     $spQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id";
-    $sQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id LIMIT " . $pagePosition . ", " . $limit;
+    $sQuery = "SELECT * FROM orders WHERE buyer_id=:buyer_id ORDER BY 1 DESC LIMIT " . $pagePosition . ", " . $limit;
     $sBind = ["buyer_id" => $buyerId];
     $noResult = $lang['buying_orders']['no_all'];
 }
