@@ -228,5 +228,30 @@ $relevant_requests = $row_general_settings->relevant_requests;
             var cat_id = $("#sub-category option:selected").val();
             buyerReqs(<?= $login_seller_id ?>, cat_id, 5, 1, search);
         });
+
+        $(document).on("click", '.withdrawOffer', function(event) {
+            event.preventDefault();
+            if (confirm('Are are you sure want to withdraw this?')) {
+                var id = $(this).data('id');
+                var tableRow = $(this).closest('tr');
+                $('body #wait').addClass("loader");
+                $.ajax({
+                    url: "<?= $site_url ?>/ajax/remove-data",
+                    dataType: "json",
+                    method: "POST",
+                    data: {
+                        id,
+                        action: 'offer-sent',
+                    }
+                    }).done(function(data) {
+                        $('body #wait').removeClass("loader");
+                        tableRow.find('td').fadeOut('fast',
+                            function(){
+                                tableRow.fadeOut().remove();
+                            }
+                        );
+                    });
+            }
+        });
     })
 </script>

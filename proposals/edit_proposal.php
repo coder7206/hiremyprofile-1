@@ -236,7 +236,6 @@ $img_4_extension = pathinfo($d_proposal_img4, PATHINFO_EXTENSION);
 
   <script>
     $(document).ready(function() {
-
       $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
         var e = "" + e.target + "";
         var e = e.replace('<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>#', '');
@@ -244,8 +243,6 @@ $img_4_extension = pathinfo($d_proposal_img4, PATHINFO_EXTENSION);
         var e = e.replace('<?= $site_url; ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>&instant_delivery#', '');
         $("input[type='hidden'][name='section']").val(e);
       });
-
-
 
       function check_proposal(form_data) {
         form_data.append('proposal_id', <?= $proposal_id; ?>);
@@ -270,6 +267,17 @@ $img_4_extension = pathinfo($d_proposal_img4, PATHINFO_EXTENSION);
 
       function processOverViewRequest(form_data, status) {
         form_data.append('change_status', status);
+        var current_section = $("input[type='hidden'][name='section']").val();
+        if (current_section == 'description') {
+          var descProposal = form_data.get('proposal_desc');
+          var textDesc = $('i.desc-character').text();
+          if (textDesc < 100 || textDesc > 2000) {
+            alert("Please enter text length between 100 and 2000, your text length is " + textDesc);
+            $('textarea[name="proposal_desc"]').focus();
+            $('#wait').removeClass("loader");
+            return
+          }
+        }
         $.ajax({
           method: "POST",
           url: "ajax/save_proposal",
@@ -323,6 +331,9 @@ $img_4_extension = pathinfo($d_proposal_img4, PATHINFO_EXTENSION);
                 $('#tabs a[href="#video"]').addClass('d-none');
               }
 
+              <?php if ($d_proposal_status == "active") { ?>
+                window.open('view_proposals?pending', '_self');
+              <?php } ?>
               if (current_section == "overview") {
                 $('#overview').removeClass('show active');
                 if (data == "video") {
@@ -385,12 +396,9 @@ $img_4_extension = pathinfo($d_proposal_img4, PATHINFO_EXTENSION);
                   $('#tabs a[href="#publish"]').addClass('active');
                 <?php } ?>
                 <?php if ($d_proposal_status == "active" || $d_proposal_status == "pending") { ?>
-
                   window.open('view_proposals?pending', '_self');
-
                 <?php } ?>
               }
-
             });
           }
         });
@@ -419,14 +427,12 @@ $img_4_extension = pathinfo($d_proposal_img4, PATHINFO_EXTENSION);
         }
       }
 
-
       $(".proposal-form").on('submit', function(event) {
         event.preventDefault();
         var form_data = new FormData(this);
         form_data.append('proposal_id', <?= $proposal_id; ?>);
         $('#wait').addClass("loader");
         check_proposal(form_data);
-
       });
 
       <?php if ($d_proposal_enable_referrals == "no") { ?>

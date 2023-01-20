@@ -13,7 +13,13 @@ $result = false;
 switch ($action):
     case "skills":
         $relationId = $_POST['id'];
-        $db->delete("skills_relation", "", array("relation_id" => $relationId));
+        $db->delete("skills_relation", array("relation_id" => $relationId));
+        $result = true;
+        $data = 'Deleted';
+        break;
+    case "offer-sent":
+        $offerId = $_POST['id'];
+        $db->delete("send_offers", array("offer_id" => $offerId));
         $result = true;
         $data = 'Deleted';
         break;

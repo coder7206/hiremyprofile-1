@@ -24,7 +24,7 @@ $status = $_REQUEST['status'];
 $pagePosition = (($pageNumber - 1) * $limit);
 
 $spQuery = "SELECT * FROM buyer_requests WHERE seller_id=:seller_id  AND request_status=:request_status";
-$sQuery = "SELECT * FROM buyer_requests WHERE seller_id=:seller_id  AND request_status=:request_status LIMIT " . $pagePosition . ", " . $limit;
+$sQuery = "SELECT * FROM buyer_requests WHERE seller_id=:seller_id  AND request_status=:request_status ORDER BY 1 DESC LIMIT " . $pagePosition . ", " . $limit;
 $sBind = ["seller_id" => $sellerId, "request_status" => $status];
 $noResult = $status == 'active' ? $lang['manage_requests']['no_active'] :
     ($status == 'pause' ? $lang['manage_requests']['no_pause'] :
@@ -139,51 +139,3 @@ if ($rowCount > 0) {
 header("Content-type: application/json");
 echo json_encode(["data" => $data, "pagination" => $paginationData]);
 exit;
-
-
-// function paginate($itemPerPage, $currentPage, $totalRecords, $totalPages)
-// {
-//     $pagination = '';
-//     if ($totalPages > 0 && $totalPages != 1 && $currentPage <= $totalPages) { //verify total pages and current page number
-//         $pagination .= '<ul class="pagination justify-content-center">';
-
-//         $right_links = $currentPage + 3;
-//         $previous = $currentPage - 3; //previous link
-//         $nex = $currentPage + 1; //next link
-//         $first_link = true; //boolean var to decide our first link
-
-//         if ($currentPage > 1) {
-//             $previous_link = ($previous == 0) ? 1 : $previous;
-//             $pagination .= '<li class="page-item first"><a class="page-link" href="#" data-page="1" title="First">&laquo;</a></li>'; //first link
-//             $pagination .= '<li class="page-item"><a class="page-link" href="#" data-page="' . abs($previous_link) . '" title="Previous">&lt;</a></li>'; //previous link
-//             for ($i = ($currentPage - 2); $i < $currentPage; $i++) { //Create left-hand side links
-//                 if ($i > 0) {
-//                     $pagination .= '<li class="page-item"><a class="page-link" href="#" data-page="' . $i . '" title="Page' . $i . '">' . $i . '</a></li>';
-//                 }
-//             }
-//             $first_link = false; //set first link to false
-//         }
-
-//         if ($first_link) { //if current active page is first link
-//             $pagination .= '<li class="page-item first active disabled"><a class="page-link" href="#">' . $currentPage . '<span class="sr-only">(current)</span></li>';
-//         } elseif ($currentPage == $totalPages) { //if it's the last active link
-//             $pagination .= '<li class="page-item last active disabled"><a class="page-link" href="#">' . $currentPage . '<span class="sr-only">(current)</span></li>';
-//         } else { //regular current link
-//             $pagination .= '<li class="page-item active disabled"><a class="page-link" href="#">' . $currentPage . '</a></li>';
-//         }
-
-//         for ($i = $currentPage + 1; $i < $right_links; $i++) { //create right-hand side links
-//             if ($i <= $totalPages) {
-//                 $pagination .= '<li class="page-item"><a class="page-link" href="#" data-page="' . $i . '" title="Page ' . $i . '">' . $i . '</a></li>';
-//             }
-//         }
-//         if ($currentPage < $totalPages) {
-//             $next_link = ($i > $totalPages) ? $totalPages : $i;
-//             $pagination .= '<li class="page-item"><a class="page-link" href="#" data-page="' . $next_link . '" title="Next">&gt;</a></li>'; //next link
-//             $pagination .= '<li class="page-item last"><a class="page-link" href="#" data-page="' . $totalPages . '" title="Last">&raquo;</a></li>'; //last link
-//         }
-
-//         $pagination .= '</ul>';
-//     }
-//     return $pagination; //return pagination links
-// }
