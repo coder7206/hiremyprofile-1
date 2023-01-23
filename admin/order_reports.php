@@ -10,7 +10,6 @@ if (!isset($_SESSION['admin_email'])) {
 
 ?>
 
-
     <div class="breadcrumbs">
 
         <div class="col-sm-4">
@@ -21,9 +20,7 @@ if (!isset($_SESSION['admin_email'])) {
             </div>
         </div>
 
-
     </div>
-
 
     <div class="container-fluid">
         <div class="row">

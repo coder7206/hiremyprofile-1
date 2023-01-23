@@ -160,8 +160,7 @@ function watermarkImage($image, $data)
         <div class="row">
           <div class="col-md-10 offset-md-1">
             <h1 class="mb-4"> Order Management </h1>
-
-            <a href="<?=$site_url?>/customer_support?enquiry_id=1&order_number=<?=$order_number?>" class="btn btn-success"><i class="fa fa-envelope-o" aria-hidden="true"></i> Contact Support</a>
+            <a href="<?=$site_url?>/customer_support?enquiry_id=1&order_number=<?=$order_number?>" class="btn btn-danger"><i class="fa fa-envelope-o" aria-hidden="true"></i> Raise a dispute</a>
 
             <ul class="nav nav-tabs mb-3 mt-3">
               <li class="nav-item">

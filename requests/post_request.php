@@ -14,6 +14,8 @@ $get_payment_settings = $db->select("payment_settings");
 $row_payment_settings = $get_payment_settings->fetch();
 $min_proposal_price = $row_payment_settings->min_proposal_price;
 
+$countProposals = $db->count("proposals", ['proposal_seller_id' => $login_seller_id]);
+
 if (isset($_POST['submit'])) {
 	$rules = array(
 		"request_title" => "required",
@@ -103,7 +105,7 @@ if (isset($_POST['submit'])) {
 	}
 	require_once("../includes/user_header.php");
 
-	if ($seller_verification != "ok" || $totalWeight < 70) {
+	if ($seller_verification != "ok") {
 		if ( $totalWeight < 70) {
 			echo "
 		<div class='container-fluid py-5'>
