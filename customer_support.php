@@ -27,6 +27,7 @@ if ($lang_dir == "right") {
 // $recaptcha_secret_key = "";
 
 $orderNumber = isset($_GET['order_number']) ? $_GET['order_number'] : "";
+$enquiryId = isset($_GET['enquiry_id']) ? $_GET['enquiry_id'] : "";
 $userType = "";
 if ($orderNumber && isset($_SESSION['seller_user_name'])) {
   $qOrder = $db->select("orders", array("order_number" => $orderNumber));
@@ -105,13 +106,16 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
       <div class="col-md-12">
         <div class="card">
           <div class="card-header text-center make-white">
-            <h2><?= $contact_heading; ?></h2>
+            <h2><?= $enquiryId == 1 ? 'Raise a dispute' : $contact_heading; ?></h2>
             <p class="text-muted pt-1"><?= $contact_desc; ?></p>
           </div>
           <div class="card-body">
             <center>
               <form class="col-md-8 contact-form" action="" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
+                  <?php if($enquiryId == 1) { ?>
+                  <input type="hidden" name="enquiry_type" value="<?=$enquiryId?>" />
+                  <?php } else { ?>
                   <label class="<?= $floatRight ?>"><?= $lang['label']['select_enquiry']; ?></label>
                   <select name="enquiry_type" class="form-control select_tag" required>
                     <option value="" url="customer_support"><?= $lang['label']['select_enquiry2']; ?></option>
@@ -126,6 +130,7 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
                     }
                     ?>
                   </select>
+                  <?php } ?>
                 </div>
                 <?php if (isset($_GET['enquiry_id'])) { ?>
                   <div class="form-group">
@@ -241,7 +246,18 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
           $insert_support_ticket = $db->insert("support_tickets", array("enquiry_id" => $enquiry_type, "number" => $number, "sender_id" => $login_seller_id, "subject" => $subject, "message" => $message, "order_number" => $order_number, "order_rule" => $order_rule, "attachment" => $file, "date" => $date, "isS3" => $isS3, "status" => 'open'));
           if ($insert_support_ticket) {
 
-            $get_enquiry_types = $db->select("enquiry_types", array("enquiry_id" => $enquiry_id));
+            // ORDER DISPUTE SUPPORT
+            if ($enquiry_type == 1) {
+              $qOrder = $db->select('orders', ['order_number' => $order_number]);
+              $oOrder = $qOrder->fetch();
+              $orderSellerId = $oOrder->seller_id;
+              $orderBuyerId = $oOrder->buyer_id;
+              $defendedId = $login_seller_id == $orderSellerId ? $orderBuyerId : $orderSellerId;
+
+              $db->insert("notifications", array("receiver_id" => $defendedId, "sender_id" => $login_seller_id, "order_id" => $order_number, "reason" => "dispute_raised", "date" => $date, "status" => "unread"));
+            }
+
+            $get_enquiry_types = $db->select("enquiry_types", array("enquiry_id" => $enquiry_type));
             $row_enquiry_types = $get_enquiry_types->fetch();
             $enquiry_title = $row_enquiry_types->enquiry_title;
 

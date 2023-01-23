@@ -24,13 +24,14 @@ while($row_notifications = $select_notofications->fetch()){
 	$reason = $row_notifications->reason;
 	$data['notifications'][$i]['date'] = $row_notifications->date;
 	$status = $row_notifications->status;
+	$order_id = $row_notifications->order_id;
 
 	// Select Sender Details
 	$select_sender = $db->select("sellers",array("seller_id" => $sender_id));
 	$row_sender = $select_sender->fetch();
 	$data['notifications'][$i]['sender_user_name'] = ucfirst(@$row_sender->seller_user_name);
-	if(empty($row_sender->seller_image)){ 
-		$data['notifications'][$i]['sender_image'] = "$site_url/user_images/empty-image.png"; 
+	if(empty($row_sender->seller_image)){
+		$data['notifications'][$i]['sender_image'] = "$site_url/user_images/empty-image.png";
 	}else{
 		$data['notifications'][$i]['sender_image'] = getImageUrl2("sellers","seller_image",$row_sender->seller_image);
 	}
@@ -48,10 +49,10 @@ while($row_notifications = $select_notofications->fetch()){
 	}
 
 	$data['notifications'][$i]['message'] = include("notification_reasons.php");
-	if($status == 'unread'){ 
-		$data['notifications'][$i]['class'] = 'header-message-div-unread'; 
-	}else{ 
-		$data['notifications'][$i]['class'] = 'header-message-div'; 
+	if($status == 'unread'){
+		$data['notifications'][$i]['class'] = 'header-message-div-unread';
+	}else{
+		$data['notifications'][$i]['class'] = 'header-message-div';
 	}
 }
 echo json_encode($data);
