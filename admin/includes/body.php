@@ -499,6 +499,9 @@ if ($a_customer_support == 1) {
 	if (isset($_GET['customer_support_settings'])) {
 		include("customer_support_settings.php");
 	}
+	if (isset($_GET['view_osupport_requests'])) {
+		include("view_osupport_requests.php");
+	}
 	if (isset($_GET['view_support_requests'])) {
 		include("view_support_requests.php");
 	}

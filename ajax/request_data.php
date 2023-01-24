@@ -51,7 +51,7 @@ if ($rowCount > 0) {
             $request_id = $oResult->request_id;
             $request_title = $oResult->request_title;
 
-            $select_modification = $db->select("request_modifications", array("request_id" => $request_id));
+            $select_modification = $db->select("request_modifications", array("request_id" => $request_id), "DESC");
             $row_modification = $select_modification->fetch();
             $modification_message = $row_modification->modification_message;
 

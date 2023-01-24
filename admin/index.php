@@ -83,7 +83,11 @@ $count_notifications = $db->count("admin_notifications", array("status" => "unre
 $count_orders = $db->count("orders", array("order_active" => "yes"));
 $count_orders_cancel = $db->count("orders", array("order_status" => "cancellation requested"));
 $count_proposals = $db->count("proposals", array("proposal_status" => "pending"));
-$count_support_tickets = $db->count("support_tickets", array("status" => "open"));
+// $count_support_tickets = $db->count("support_tickets", array("status" => "open"));
+$q_support_tickets = $db->query("SELECT * FROM support_tickets WHERE enquiry_id != 1 AND status = :status", array("status" => "open"));
+$count_support_tickets = $q_support_tickets->rowCount();
+$q_osupport_tickets = $db->query("SELECT * FROM support_tickets WHERE enquiry_id = 1 AND status = :status", array("status" => "open"));
+$count_osupport_tickets = $q_osupport_tickets->rowCount();
 $count_requests = $db->count("buyer_requests", array("request_status" => "pending"));
 $count_referrals = $db->count("referrals", array("status" => "pending"));
 $count_proposals_referrals = $db->count("proposal_referrals", array("status" => "pending"));

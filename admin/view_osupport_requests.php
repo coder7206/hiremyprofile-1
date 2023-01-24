@@ -8,9 +8,9 @@ if (!isset($_SESSION['admin_email'])) {
 
     $count_tickets_closed = $db->count("support_tickets", ["status" => "close"]);
 
-    if (isset($_GET['view_support_requests'])) {
+    if (isset($_GET['view_osupport_requests'])) {
 
-        $page = $input->get('view_support_requests');
+        $page = $input->get('view_osupport_requests');
         if ($page == 0) {
             $page = 1;
         }
@@ -39,7 +39,7 @@ if (!isset($_SESSION['admin_email'])) {
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <li class="active">View All Request</li>
+                        <li class="active">Order Disputes</li>
                     </ol>
                 </div>
             </div>
@@ -58,16 +58,16 @@ if (!isset($_SESSION['admin_email'])) {
                     <div class="card-header"><!--- card-header Starts --->
                         <div class="row">
                             <div class="col-lg-9 col-md-8">
-                                <h4 class="h4">View Support Requests</h4>
+                                <h4 class="h4">View Order Disputes</h4>
                             </div>
 
                             <div class="col-lg-3 col-md-4">
                                 <div class="form-group row mb-0 pb-0"><!--- form-group row Starts --->
 
-                                    <select name="ticket_status" class="form-control form-control-sm float-right">
+                                    <!-- <select name="ticket_status" class="form-control form-control-sm float-right">
                                         <option value="open">Open</option>
                                         <option value="closed">Closed</option>
-                                    </select>
+                                    </select> -->
 
                                 </div><!--- form-group row Ends --->
                             </div>
@@ -85,7 +85,7 @@ if (!isset($_SESSION['admin_email'])) {
 
                                 <form action="" method="get">
 
-                                    <input type="hidden" name="view_support_requests" value="">
+                                    <input type="hidden" name="view_osupport_requests" value="">
 
                                     <div class="input-group mb-3 mt-3 mt-lg-0">
                                         <input type="text" name="search" class="form-control" placeholder="Search Ticket By Number" value="<?php if (isset($_GET['search'])) {
@@ -102,47 +102,6 @@ if (!isset($_SESSION['admin_email'])) {
 
                         </div><!--- row Ends ---->
 
-                        <div>
-                            <span class="text-muted mr-2">
-
-                                <?php
-
-                                // $count_support_tickets = $db->count("support_tickets", array("status" => "open"));
-                                $q_support_tickets = $db->query("SELECT * FROM support_tickets WHERE enquiry_id != 1 AND status = :status", array("status" => "open"));
-                                $count_support_tickets = $q_support_tickets->rowCount();
-
-                                ?>
-                                <a href="index?view_support_requests">
-                                    All (<?= $count_support_tickets; ?>)
-                                </a>
-                            </span>
-
-                            <?php
-
-                            $get_enquiry_types = $db->select("enquiry_types");
-
-                            while ($row_enquiry_types = $get_enquiry_types->fetch()) {
-
-                                $enquiry_id = $row_enquiry_types->enquiry_id;
-                                $enquiry_title = $row_enquiry_types->enquiry_title;
-
-                                $count_enquiry_support_tickets = $db->count("support_tickets", ["enquiry_id" => $enquiry_id, "status" => "open"]);
-                                if ($enquiry_id != 1) {
-                            ?>
-
-                                <span class="mr-2">|</span>
-
-                                <span class="mr-2">
-                                    <a href="index?view_support_requests&enquiry_id=<?= $enquiry_id; ?>" class="text-black">
-                                        <?= $enquiry_title; ?> (<?= $count_enquiry_support_tickets; ?>)
-                                    </a>
-                                </span>
-
-                            <?php } } ?>
-
-                        </div>
-
-                        <div class="clearfix"></div>
                         <div class="clearfix"></div>
 
                         <div class="table-responsive mt-4"><!--- table-responsive mt-4 Starts --->
@@ -187,7 +146,7 @@ if (!isset($_SESSION['admin_email'])) {
                                         $search = "";
                                     }
 
-                                    $get_support_tickets = $db->query("select * from support_tickets where enquiry_id != 1 AND  status='open' AND enquiry_id LIKE :enquiry AND number like :search order by 1 DESC LIMIT :limit OFFSET :offset", [':enquiry' => $enquiry, "search" => "%$search%"], array("limit" => $per_page, "offset" => $start_from));
+                                    $get_support_tickets = $db->query("select * from support_tickets where enquiry_id = 1 AND  status='open' AND enquiry_id LIKE :enquiry AND number like :search order by 1 DESC LIMIT :limit OFFSET :offset", [':enquiry' => $enquiry, "search" => "%$search%"], array("limit" => $per_page, "offset" => $start_from));
 
                                     while ($row_support_tickets = $get_support_tickets->fetch()) {
 
@@ -264,9 +223,9 @@ if (!isset($_SESSION['admin_email'])) {
 
                                 // $query = $db->select("support_tickets",array("status"=>'open'));
 
-                                $query = $db->query("select * from support_tickets where enquiry_id != 1 AND  status='open' AND enquiry_id LIKE :enquiry", [':enquiry' => $enquiry]);
+                                $query = $db->query("select * from support_tickets where enquiry_id = 1 AND  status='open' AND enquiry_id LIKE :enquiry", [':enquiry' => $enquiry]);
 
-                                $query = $db->query("select * from support_tickets where enquiry_id != 1 AND  status='open' AND enquiry_id LIKE :enquiry AND number like :search", [':enquiry' => $enquiry, "search" => "%$search%"]);
+                                $query = $db->query("select * from support_tickets where enquiry_id = 1 AND  status='open' AND enquiry_id LIKE :enquiry AND number like :search", [':enquiry' => $enquiry, "search" => "%$search%"]);
 
 
                                 /// Count The Total Records
