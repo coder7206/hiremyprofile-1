@@ -64,6 +64,7 @@ if ($rowCount > 0) {
         $proposal_id = $oResult->proposal_id;
         $order_price = $oResult->order_price;
         $order_status = $oResult->order_status;
+        $buyerId = $oResult->buyer_id;
         $order_number = $oResult->order_number;
         $order_duration = intval($oResult->order_duration);
         $order_date = $oResult->order_date;
@@ -74,11 +75,29 @@ if ($rowCount > 0) {
         $proposal_title = $row_proposals->proposal_title;
         $proposal_img1 = getImageUrl2("proposals", "proposal_img1", $row_proposals->proposal_img1);
 
+        $qOffers = $db->select("send_offers", array("sender_id" => $buyerId, "proposal_id" => $proposal_id));
+        $cOffers = $qOffers->rowCount();
+        $cRequests = 0;
+        if ($cOffers > 0) {
+            $oOffers = $qOffers->fetch();
+            $requestId = $oOffers->request_id;
+
+            $qRequests = $db->select("buyer_requests", array("request_id" => $requestId, "seller_id" => $buyerId));
+            $cRequests = $qRequests->rowCount();
+            $oRequests = $qRequests->fetch();
+            $requestTitle = $oRequests->request_title;
+        }
+
         $data .= "<tr>";
         $data .= "<td>";
         $data .= "<a href='" . $site_url . "/order_details?order_id=" . $order_id . "' class='make-black'>
         <img class='order-proposal-image' src='" . $proposal_img1 . "'>
-        <p class='order-proposal-title'>" . $proposal_title . "</p>
+        <p class='order-proposal-title'>
+        ";
+        if ($cRequests > 0) {
+            $data .= "<span class='d-block text-danger pb-1'>" . $requestTitle . "</span>";
+        }
+        $data .= $proposal_title . "</p>
         </a>";
         $data .= "</td>";
         $data .= "<td>" . $order_date . "</td>";
