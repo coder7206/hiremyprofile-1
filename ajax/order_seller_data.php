@@ -75,14 +75,14 @@ if ($rowCount > 0) {
         $proposal_title = $row_proposals->proposal_title;
         $proposal_img1 = getImageUrl2("proposals", "proposal_img1", $row_proposals->proposal_img1);
 
-        $qOffers = $db->select("send_offers", array("sender_id" => $buyerId, "proposal_id" => $proposal_id));
+        $qOffers = $db->select("send_offers", array("sender_id" => $sellerId, "proposal_id" => $proposal_id));
         $cOffers = $qOffers->rowCount();
         $cRequests = 0;
         if ($cOffers > 0) {
             $oOffers = $qOffers->fetch();
             $requestId = $oOffers->request_id;
 
-            $qRequests = $db->select("buyer_requests", array("request_id" => $requestId, "seller_id" => $buyerId));
+            $qRequests = $db->select("buyer_requests", array("request_id" => $requestId));
             $cRequests = $qRequests->rowCount();
             $oRequests = $qRequests->fetch();
             $requestTitle = $oRequests->request_title;
@@ -97,7 +97,7 @@ if ($rowCount > 0) {
         if ($cRequests > 0) {
             $data .= "<span class='d-block text-danger pb-1'>" . $requestTitle . "</span>";
         }
-        $data .= $proposal_title . "</p>
+        $data .= $proposal_title . $buyerId . ' ' . $cOffers . "</p>
         </a>";
         $data .= "</td>";
         $data .= "<td>" . $order_date . "</td>";
