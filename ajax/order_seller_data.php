@@ -97,7 +97,7 @@ if ($rowCount > 0) {
         if ($cRequests > 0) {
             $data .= "<span class='d-block text-danger pb-1'>" . $requestTitle . "</span>";
         }
-        $data .= $proposal_title . $buyerId . ' ' . $cOffers . "</p>
+        $data .= $proposal_title . "</p>
         </a>";
         $data .= "</td>";
         $data .= "<td>" . $order_date . "</td>";
