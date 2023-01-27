@@ -91,6 +91,18 @@ function watermarkImage($image, $data)
   }
 }
 
+$qOffers = $db->select("send_offers", array("sender_id" => $login_seller_id, "proposal_id" => $proposal_id));
+$cOffers = $qOffers->rowCount();
+$cRequests = 0;
+if ($cOffers > 0) {
+  $oOffers = $qOffers->fetch();
+  $requestId = $oOffers->request_id;
+
+  $qRequests = $db->select("buyer_requests", array("request_id" => $requestId));
+  $cRequests = $qRequests->rowCount();
+  $oRequests = $qRequests->fetch();
+  $requestTitle = $oRequests->request_title;
+}
 ?>
 
 <!DOCTYPE html>
