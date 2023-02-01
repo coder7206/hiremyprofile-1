@@ -40,3 +40,4 @@ Thumbs.db
 includes/config.php
 DeviceDetector/
 api/application/config/database.php
+api/application/config/email.php
