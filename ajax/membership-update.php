@@ -1,7 +1,8 @@
 <?php
 
-$isAjax = 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '');
-if (!$isAjax)
+// $isAjax = 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '');
+// if (!$isAjax)
+if (!isset($_POST))
     die("No direct access.");
 
 require_once("../includes/db.php");
