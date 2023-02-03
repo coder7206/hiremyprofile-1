@@ -426,17 +426,19 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                     <div class="about-section-2 pt-5">
                         <div class="">
                             <div class="row">
+                            <div class="col-xs-12">
                                 <div class="alert alert-info col-xs-12">
                                     You have active membership <?php echo $planName; ?>
                                     <?php if (!$row_purchsed) {
                                         echo 'please <a href="membership_subs">upgrade</a> ';
                                     } ?></php>
                                 </div>
+                                </div>
                                 <div class="col-xs-12">
                                     <div class="card rounded-0">
                                         <div class="card-body p-0">
                                             <div class="row pl-3 pr-3 pb-2 pt-2 mt-4">
-                                                <div class="col-xs-4 text-center border-box">
+                                                <div class="col-md-4 col-sm-6 text-center border-box">
                                                     <?php
                                                     $count_orders = $db->count("orders", array("seller_id" => $login_seller_id, "order_status" => 'completed'));
                                                     ?>
@@ -446,7 +448,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                         <h3 class="text-success"><?= $count_orders; ?></h3>
                                                     </a>
                                                 </div>
-                                                <div class="col-xs-4 text-center border-box">
+                                                <div class="col-md-4 col-sm-6 text-center border-box">
                                                     <?php
                                                     $count_orders = $db->count("orders", array("seller_id" => $login_seller_id, "order_active" => 'yes'));
                                                     ?>
@@ -456,7 +458,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                         <h3 class="text-success"><?= $count_orders; ?></h3>
                                                     </a>
                                                 </div>
-                                                <div class="col-xs-4 text-center border-box">
+                                                <div class="col-md-4 col-sm-6 text-center border-box">
                                                     <a href="revenue">
                                                         <img width="" src="images/comp/financial.png" alt="financial">
                                                         <h5 class="text-muted pt-2"> <?= $lang["dashboard"]['earnings']; ?> </h5>
