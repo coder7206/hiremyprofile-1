@@ -3997,7 +3997,7 @@ input:checked+.slider:before {
     }
 
     .card-box .subcategory img {
-        height: 290px;
+        /* height: 290px; */
     }
 }
 
@@ -4007,7 +4007,7 @@ input:checked+.slider:before {
     }
 
     .card-box .subcategory img {
-        height: 275px;
+        /* height: 275px; */
     }
 }
 

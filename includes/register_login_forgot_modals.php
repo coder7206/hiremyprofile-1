@@ -44,11 +44,11 @@
           <div class="text-center">
             <div class="social-login">
               <?php if (!empty($fb_app_id) & !empty($fb_app_secret)) { ?>
-                <button class="btn facebook-btn social-btn" type="button" onclick="window.location = '<?= $fLoginURL ?>';"><span><i class="fa fa-facebook" aria-hidden="true"></i>
+                <button class="btn facebook-btn social-btn mt-2" type="button" onclick="window.location = '<?= $fLoginURL ?>';"><span><i class="fa fa-facebook" aria-hidden="true"></i>
                     Register with Facebook</span> </button>
               <?php } ?>
               <?php if (!empty($g_client_id) & !empty($g_client_secret)) { ?>
-                <button class="btn google-btn social-btn" type="button" onclick="window.location = '<?= $gLoginURL ?>';"><span><i class="fa fa-google" aria-hidden="true"></i>
+                <button class="btn google-btn social-btn mt-2" type="button" onclick="window.location = '<?= $gLoginURL ?>';"><span><i class="fa fa-google" aria-hidden="true"></i>
                     Register with Google+</span> </button>
               <?php } ?>
             </div>
@@ -223,11 +223,11 @@
           <div class="text-center">
             <div class="social-login">
               <?php if (!empty($fb_app_id) & !empty($fb_app_secret)) { ?>
-                <button class="btn facebook-btn social-btn" type="button" onclick="window.location = '<?= $fLoginURL ?>';"><span><i class="fa fa-facebook" aria-hidden="true"></i>
+                <button class="btn facebook-btn social-btn mt-2" type="button" onclick="window.location = '<?= $fLoginURL ?>';"><span><i class="fa fa-facebook" aria-hidden="true"></i>
                     Sign in with Facebook</span> </button>
               <?php } ?>
               <?php if (!empty($g_client_id) & !empty($g_client_secret)) { ?>
-                <button class="btn google-btn social-btn" type="button" onclick="window.location = '<?= $gLoginURL ?>';"><span><i class="fa fa-google" aria-hidden="true"></i>
+                <button class="btn google-btn social-btn mt-2" type="button" onclick="window.location = '<?= $gLoginURL ?>';"><span><i class="fa fa-google" aria-hidden="true"></i>
                     Sign in with Google+</span> </button>
               <?php } ?>
             </div>

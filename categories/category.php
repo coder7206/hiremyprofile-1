@@ -3,6 +3,11 @@ session_start();
 require_once("../includes/db.php");
 require_once("../functions/functions.php");
 
+if(!isset($_SESSION['seller_user_name'])){
+	echo "<script>window.open('{$site_url}/login','_self')</script>";
+    exit;
+}
+
 if (isset($_GET['cat_url'])) {
     if (isset($_GET['cat_child_url'])) {
         $array = explode("/", $input->get('cat_url'));

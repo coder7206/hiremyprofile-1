@@ -12182,10 +12182,10 @@ a.active>.badge {
 }
 
 @media (max-width:1024px) {
-    .about-section-2 .tab-content>.tab-pane {
+    /* .about-section-2 .tab-content>.tab-pane {
         display: block;
         opacity: 1;
-    }
+    } */
 }
 
 
