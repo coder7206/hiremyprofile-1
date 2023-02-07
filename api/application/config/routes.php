@@ -66,7 +66,15 @@ $route['v1/logout'] = 'api/Auth/logout';
 // $route['reGenToken'] = 'api/Token/reGenToken';
 
 // AUTH USER
+// Order
 $route['v1/orders/(:num)/buyers/(:any)'] = 'api/Order/orderBuyer/$1/$2';
+$route['v1/orders/(:num)/sellers/(:any)'] = 'api/Order/orderSeller/$1/$2';
+
+// Requests
+$route['v1/requests/(:num)/sellers/categories'] = 'api/Request/categories/$1';
+$route['v1/requests/(:num)/sellers/offers-sent'] = 'api/Request/offersSent/$1';
+$route['v1/requests/(:num)/sellers/(:any)'] = 'api/Request/sellerBuyerRequest/$1/$2';
+
 // $route['v1/orders/(\d+)/buyers/([a-zA-Z]+)'] = function ($product_type, $id)
 // {
 //         return 'order/orderBuyer/' . strtolower($product_type) . '/' . $id;

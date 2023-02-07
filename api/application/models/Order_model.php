@@ -15,7 +15,7 @@ class Order_model extends CI_Model
     }
 
     /**
-     * SHOW | GET method.
+     * Buyers Orders | GET method.
      *
      * @return Response
      */
@@ -36,6 +36,39 @@ class Order_model extends CI_Model
         } else {
             $spQuery = "SELECT * FROM orders WHERE buyer_id = ?";
             $sQuery = "SELECT * FROM orders WHERE buyer_id = ? ORDER BY 1 DESC LIMIT " . $page . ", " . $limit;
+            $sBind = [$userId];
+        }
+        //get total number of records from database for pagination
+        $query = $this->db->query($spQuery, $sBind);
+        $rowCount = $query->num_rows();
+
+        $query = $this->db->query($sQuery, $sBind)->result_object();
+
+        return ['data' => $query, 'total' => $rowCount];
+    }
+
+    /**
+     * Sellers Orders | GET method.
+     *
+     * @return Response
+     */
+    public function getSellerOrders($userId, $status, $limit, $page)
+    {
+        $statusArray = ['yes', 'delivered', 'completed', 'cancelled'];
+
+        if (in_array($status, $statusArray)) {
+            if ($status == 'yes') {
+                $spQuery = "SELECT * FROM orders WHERE seller_id = ?  AND order_active = ?";
+                $sQuery = "SELECT * FROM orders WHERE seller_id = ?  AND order_active = ? ORDER BY 1 DESC LIMIT " . $page . ", " . $limit;
+                $sBind = [$userId, $status];
+            } else {
+                $spQuery = "SELECT * FROM orders WHERE seller_id = ?  AND order_status = ?";
+                $sQuery = "SELECT * FROM orders WHERE seller_id = ?  AND order_status = ? ORDER BY 1 DESC LIMIT " . $page . ", " . $limit;
+                $sBind = [$userId, $status];
+            }
+        } else {
+            $spQuery = "SELECT * FROM orders WHERE seller_id = ?";
+            $sQuery = "SELECT * FROM orders WHERE seller_id = ? ORDER BY 1 DESC LIMIT " . $page . ", " . $limit;
             $sBind = [$userId];
         }
         //get total number of records from database for pagination
