@@ -74,6 +74,11 @@ $route['v1/orders/(:num)/sellers/(:any)'] = 'api/Order/orderSeller/$1/$2';
 $route['v1/requests/(:num)/sellers/categories'] = 'api/Request/categories/$1';
 $route['v1/requests/(:num)/sellers/offers-sent'] = 'api/Request/offersSent/$1';
 $route['v1/requests/(:num)/sellers/(:any)'] = 'api/Request/sellerBuyerRequest/$1/$2';
+$route['v1/requests/(:num)/buyers/(:num)/(:any)']['PUT'] = 'api/Request/updateRequestStatus/$1/$2/$3';
+$route['v1/requests/(:num)/buyers/(:any)']['GET'] = 'api/Request/sellerManageRequest/$1/$2';
+$route['v1/requests/(:num)/buyers/(:num)']['DELETE'] = 'api/Request/$1/$2';
+$route['v1/requests/(:num)/buyers/(:num)/offers']['GET'] = 'api/Request/requestOffers/$1/$2';
+
 $route['v1/memberships/(:num)'] = 'api/Membership/membershipData/$1';
 
 // $route['v1/orders/(\d+)/buyers/([a-zA-Z]+)'] = function ($product_type, $id)
