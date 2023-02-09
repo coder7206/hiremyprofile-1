@@ -38,7 +38,7 @@ class Request_model extends CI_Model
     }
 
     /**
-     * Sellers Orders | GET method.
+     * Buyer request | GET method.
      *
      * @return Response
      */
@@ -106,5 +106,53 @@ class Request_model extends CI_Model
         }
 
         return ['data' => $query, 'total' => $total];
+    }
+
+    /**
+     * Manage request | GET method.
+     *
+     * @return Response
+     */
+    public function getManagerRequests($userId, $status, $limit, $page)
+    {
+        $spQuery = "SELECT * FROM buyer_requests WHERE request_status = ? AND seller_id = ?";
+        $sQuery = "SELECT * FROM buyer_requests WHERE request_status = ? AND seller_id = ? ORDER BY 1 DESC LIMIT " . $page . ", " . $limit;
+        $sBind = [$status, $userId];
+
+        //get total number of records from database for pagination
+        $query = $this->db->query($spQuery, $sBind);
+        $rowCount = $query->num_rows();
+
+        $query = $this->db->query($sQuery, $sBind)->result_object();
+
+        return ['data' => $query, 'total' => $rowCount];
+    }
+
+    /**
+     * UPDATE | PUT method.
+     *
+     * @return Response
+    */
+    public function update($data, $updateCondition)
+    {
+        $data = $this->db->update('buyer_requests', $data, $updateCondition);
+        //echo $this->db->last_query();
+		return $this->db->affected_rows();
+    }
+
+    /**
+     * DELETE method.
+     *
+     * @return Response
+    */
+    public function delete($deleteCondition)
+    {
+        $this->db->delete('buyer_requests', $deleteCondition);
+        $affectedRows = $this->db->affected_rows();
+
+        if ($affectedRows > 0) {
+            $this->db->delete("send_offers",array('request_id' => $deleteCondition['request_id']));
+        }
+        return $affectedRows;
     }
 }
