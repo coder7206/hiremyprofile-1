@@ -255,7 +255,7 @@ class Request extends APIAuth
 
         $data['message'] = "Invalid Status or something with wrong.";
         $data['status'] = FALSE;
-        $status = 200;
+        $statusCode = 200;
         if (in_array($status, $acceptedStatuses)) {
             // pending should be status for approve as this needs to approve from admin
             $updateData['request_status'] = $status == 'approve' ? 'pending' : 'pause';
@@ -266,11 +266,11 @@ class Request extends APIAuth
             if ($response > 0) {
                 $data['message'] = "Data updated successfully";
                 $data['status'] = TRUE;
-                $status = 204;
+                $statusCode = 204;
             }
         }
 
-        $this->response($data, $status);
+        $this->response($data, $statusCode);
     }
 
     /**
