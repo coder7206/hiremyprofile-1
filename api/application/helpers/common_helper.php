@@ -200,3 +200,27 @@ function getMainFolderName($folder, $table)
 
   return $main_folder;
 }
+
+function get_seller_info($userId)
+{
+  $ci = &get_instance();
+
+  $select_login_seller = $ci->db->get_where("sellers", ["seller_id" => $userId]);
+  return $select_login_seller->row();
+}
+
+function insert_log($admin_id, $work, $work_id, $status)
+{
+  $ci = &get_instance();
+  $date = date("F d, Y H:i:s");
+
+  $data = array(
+    'admin_id' => $admin_id,
+    'work' => $work,
+    'work_id' => $work_id,
+    'date' => $date,
+    'status' => $status
+  );
+
+  return $ci->db->insert('admin_logs', $data);
+}

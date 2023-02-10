@@ -67,19 +67,24 @@ $route['v1/logout'] = 'api/Auth/logout';
 
 // AUTH USER
 // Order
-$route['v1/orders/(:num)/buyers/(:any)'] = 'api/Order/orderBuyer/$1/$2';
-$route['v1/orders/(:num)/sellers/(:any)'] = 'api/Order/orderSeller/$1/$2';
+$route['v1/orders/(:num)/buyers/([a-z]+)'] = 'api/Order/orderBuyer/$1/$2';
+$route['v1/orders/(:num)/sellers/([a-z]+)'] = 'api/Order/orderSeller/$1/$2';
 
 // Requests
 $route['v1/requests/(:num)/sellers/categories'] = 'api/Request/categories/$1';
 $route['v1/requests/(:num)/sellers/offers-sent'] = 'api/Request/offersSent/$1';
-$route['v1/requests/(:num)/sellers/(:any)'] = 'api/Request/sellerBuyerRequest/$1/$2';
-$route['v1/requests/(:num)/buyers/(:num)/(:any)']['PUT'] = 'api/Request/updateRequestStatus/$1/$2/$3';
-$route['v1/requests/(:num)/buyers/(:any)']['GET'] = 'api/Request/sellerManageRequest/$1/$2';
+$route['v1/requests/(:num)/sellers/([a-z]+)'] = 'api/Request/sellerBuyerRequest/$1/$2';
+$route['v1/requests/(:num)/buyers/(:num)/([a-z]+)']['PUT'] = 'api/Request/updateRequestStatus/$1/$2/$3';
+$route['v1/requests/(:num)/buyers/([a-z]+)']['GET'] = 'api/Request/sellerManageRequest/$1/$2';
 $route['v1/requests/(:num)/buyers/(:num)']['DELETE'] = 'api/Request/$1/$2';
 $route['v1/requests/(:num)/buyers/(:num)/offers']['GET'] = 'api/Request/requestOffers/$1/$2';
 
+// Membership
 $route['v1/memberships/(:num)'] = 'api/Membership/membershipData/$1';
+
+// Proposals
+$route['v1/proposals/(:num)/([a-z]+)'] = 'api/Proposal/$1/$2';
+$route['v1/proposals/(:num)/(:num)/([a-z]+)']['PUT'] = 'api/Proposal/updateStatus/$1/$2/$3';
 
 // $route['v1/orders/(\d+)/buyers/([a-zA-Z]+)'] = function ($product_type, $id)
 // {
