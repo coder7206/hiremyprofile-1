@@ -85,6 +85,13 @@ $route['v1/memberships/(:num)'] = 'api/Membership/membershipData/$1';
 // Proposals
 $route['v1/proposals/(:num)/([a-z]+)'] = 'api/Proposal/$1/$2';
 $route['v1/proposals/(:num)/(:num)/([a-z]+)']['PUT'] = 'api/Proposal/updateStatus/$1/$2/$3';
+// Coupons
+$route['v1/proposals/(:num)/(:num)/coupons'] = 'api/Coupon/$1/$2';
+$route['v1/proposals/(:num)/(:num)/coupons'] = 'api/Coupon/$1/$2';
+$route['v1/proposals/(:num)/(:num)/coupons/(:num)']['PUT'] = 'api/Coupon/$1/$2/$3';
+$route['v1/proposals/(:num)/(:num)/coupons/(:num)']['DELETE'] = 'api/Coupon/$1/$2/$3';
+// Referrals
+$route['v1/proposals/(:num)/(:num)/referrals'] = 'api/Referral/$1/$2';
 
 // $route['v1/orders/(\d+)/buyers/([a-zA-Z]+)'] = function ($product_type, $id)
 // {
