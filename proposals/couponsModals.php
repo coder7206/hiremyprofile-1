@@ -2,7 +2,7 @@
   <div class="modal-dialog"><!-- modal-dialog Starts -->
   <div class="modal-content"><!-- modal-content Starts -->
   <div class="modal-header"><!-- modal-header Starts -->
-  <h5 class="modal-title"> Add Coupon </h5> 
+  <h5 class="modal-title"> Add Coupon </h5>
   <button class="close" data-dismiss="modal"> <span> &times; </span> </button>
   </div><!-- modal-header Ends -->
   <div class="modal-body"><!-- modal-body Starts -->
@@ -26,7 +26,7 @@
      <div class="input-group">
         <span class="input-group-addon"> <b><?= $s_currency; ?></b> </span>
         <input type="number" name="coupon_price" class="form-control" value="1" min="1" required>
-     </div>  
+     </div>
     </div><!--- col-md-4 Ends --->
   </div><!--- form-group row Ends --->
 
@@ -64,7 +64,7 @@ $coupon_id = $row_coupons->coupon_id;
 <div class="modal-dialog"><!-- modal-dialog Starts -->
 <div class="modal-content"><!-- modal-content Starts -->
 <div class="modal-header"><!-- modal-header Starts -->
-<h5 class="modal-title"> Edit Coupon </h5> 
+<h5 class="modal-title"> Edit Coupon </h5>
 <button class="close" data-dismiss="modal"> <span> &times; </span> </button>
 </div><!-- modal-header Ends -->
 <div class="modal-body"><!-- modal-body Starts -->
@@ -94,7 +94,7 @@ $coupon_id = $row_coupons->coupon_id;
           <?php if($row_coupons->coupon_type == "fixed_price"){ ?>
           <span class="input-group-addon"><b><?= $s_currency; ?></b></span>
           <input type="number" name="coupon_price" class="form-control" value="<?= $row_coupons->coupon_price; ?>" min="1" required>
-          <?php }else{ ?> 
+          <?php }else{ ?>
           <span class="input-group-addon"><b>%</b></span>
           <input type="number" name="coupon_price" class="form-control" value="<?= $row_coupons->coupon_price; ?>" min="1" required>
           <?php } ?>
