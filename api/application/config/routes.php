@@ -93,6 +93,14 @@ $route['v1/proposals/(:num)/(:num)/coupons/(:num)']['DELETE'] = 'api/Coupon/$1/$
 // Referrals
 $route['v1/proposals/(:num)/(:num)/referrals'] = 'api/Referral/$1/$2';
 
+// Purchases
+$route['v1/purchases/(:num)'] = 'api/Purchase/$1';
+
+// Manage Contacts
+$route['v1/contacts/(:num)/([a-z]+)'] = 'api/Contact/$1/$2';
+$route['v1/contacts/(:num)/([a-z]+)/(:num)/buying-histories'] = 'api/Contact/getHistories/$1/$2/$3';
+$route['v1/contacts/(:num)/([a-z]+)/(:num)/selling-histories'] = 'api/Contact/getHistories/$1/$2/$3';
+
 // $route['v1/orders/(\d+)/buyers/([a-zA-Z]+)'] = function ($product_type, $id)
 // {
 //         return 'order/orderBuyer/' . strtolower($product_type) . '/' . $id;
