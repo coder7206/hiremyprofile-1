@@ -4,15 +4,14 @@ session_start();
 
 require_once("includes/db.php");
 
-if(!isset($_SESSION['seller_user_name'])){
+if (!isset($_SESSION['seller_user_name'])) {
 
-echo "<script>window.open('login','_self')</script>";
-
+   echo "<script>window.open('login','_self')</script>";
 }
 
 $login_seller_user_name = $_SESSION['seller_user_name'];
 
-$select_login_seller = $db->select("sellers",array("seller_user_name" => $login_seller_user_name));
+$select_login_seller = $db->select("sellers", array("seller_user_name" => $login_seller_user_name));
 
 $row_login_seller = $select_login_seller->fetch();
 
@@ -30,171 +29,171 @@ $referral_money = $row_general_settings->referral_money;
 
 <head>
 
-<title><?= $site_name; ?> - <?= $lang["titles"]["my_proposal_referrals"]; ?></title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="<?= $site_desc; ?>">
-<meta name="keywords" content="<?= $site_keywords; ?>">
-<meta name="author" content="<?= $site_author; ?>">
+   <title><?= $site_name; ?> - <?= $lang["titles"]["my_proposal_referrals"]; ?></title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="description" content="<?= $site_desc; ?>">
+   <meta name="keywords" content="<?= $site_keywords; ?>">
+   <meta name="author" content="<?= $site_author; ?>">
 
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
 
-<link href="styles/bootstrap.css" rel="stylesheet">
-<link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
-<link href="styles/styles.css" rel="stylesheet">
-<link href="styles/user_nav_styles.css" rel="stylesheet">
-<link href="font_awesome/css/font-awesome.css" rel="stylesheet">
-<script type="text/javascript" src="js/jquery.min.js"></script>
-    
-<?php if(!empty($site_favicon)){ ?>
-	<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
-<?php } ?>
+   <link href="styles/bootstrap.css" rel="stylesheet">
+   <link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
+   <link href="styles/styles.css" rel="stylesheet">
+   <link href="styles/user_nav_styles.css" rel="stylesheet">
+   <link href="font_awesome/css/font-awesome.css" rel="stylesheet">
+   <script type="text/javascript" src="js/jquery.min.js"></script>
+
+   <?php if (!empty($site_favicon)) { ?>
+      <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
+   <?php } ?>
 
 </head>
 
 <body class="is-responsive">
 
-<?php require_once("includes/user_header.php"); ?>
+   <?php require_once("includes/user_header.php"); ?>
 
-<div class="container-fluid">
+   <div class="container-fluid">
 
-<div class="row justify-content-center">
+      <div class="row justify-content-center">
 
-<div class="col-lg-9 col-md-10 mt-5 mb-5">
+         <div class="col-lg-9 col-md-10 mt-5 mb-5">
 
-<div class="card rounded-0">
+            <div class="card rounded-0">
 
-<div class="card-body">
+               <div class="card-body">
 
-<h1> <?= $lang["titles"]["my_proposal_referrals"]; ?> </h1>
-    
-<p><?= $lang['proposal_referrals']['desc']; ?> </p>
+                  <h1> <?= $lang["titles"]["my_proposal_referrals"]; ?> </h1>
 
-<p class="lead text-danger"><?= $lang['proposal_referrals']['note']; ?> </p>
+                  <p><?= $lang['proposal_referrals']['desc']; ?> </p>
 
-<div class="row">
+                  <p class="lead text-danger"><?= $lang['proposal_referrals']['note']; ?> </p>
 
-<div class="col-md-4 mb-3">
+                  <div class="row">
 
-<div class="card text-white border-success">
+                     <div class="col-md-4 mb-3">
 
-<div class="card-header text-center bg-success">
+                        <div class="card text-white border-success">
 
-<div class="display-4"><?php
+                           <div class="card-header text-center bg-success">
 
-$select = $db->query("SELECT SUM(comission) AS total FROM proposal_referrals where referrer_id='$login_seller_id' AND status='approved'");
+                              <div class="display-4"><?php
 
-$total = $select->fetch()->total;
+                                                      $select = $db->query("SELECT SUM(comission) AS total FROM proposal_referrals where referrer_id='$login_seller_id' AND status='approved'");
 
-$total = $total > 0 || $total!==null ? $total : "0";
+                                                      $total = $select->fetch()->total;
 
-echo showPrice($total);
+                                                      $total = $total > 0 || $total !== null ? $total : "0";
 
-?>
-</div>
+                                                      echo showPrice($total);
 
-<div class="font-weight-bold"><?= $lang['referrals']['approved']; ?></div>
+                                                      ?>
+                              </div>
 
-</div>
+                              <div class="font-weight-bold"><?= $lang['referrals']['approved']; ?></div>
 
-</div>
+                           </div>
 
-</div>
+                        </div>
 
-<div class="col-md-4 mb-3">
+                     </div>
 
-<div class="card text-white border-secondary">
+                     <div class="col-md-4 mb-3">
 
-<div class="card-header text-center bg-secondary">
+                        <div class="card text-white border-secondary">
 
-<div class="display-4"> <?php
+                           <div class="card-header text-center bg-secondary">
 
-$select = $db->query("SELECT SUM(comission) AS total FROM proposal_referrals where referrer_id='$login_seller_id' AND status='pending'");
+                              <div class="display-4"> <?php
 
-$total = $select->fetch()->total;
+                                                      $select = $db->query("SELECT SUM(comission) AS total FROM proposal_referrals where referrer_id='$login_seller_id' AND status='pending'");
 
-$total = $total > 0 || $total!==null ? $total : "0";
+                                                      $total = $select->fetch()->total;
 
-echo showPrice($total);
+                                                      $total = $total > 0 || $total !== null ? $total : "0";
 
-?>
+                                                      echo showPrice($total);
 
-</div>
+                                                      ?>
 
-   <div class="font-weight-bold"><?= $lang['referrals']['pending']; ?></div>
+                              </div>
 
-</div>
+                              <div class="font-weight-bold"><?= $lang['referrals']['pending']; ?></div>
 
-</div>
+                           </div>
 
-</div>
+                        </div>
 
-<div class="col-md-4 mb-3">
+                     </div>
 
-<div class="card text-white border-danger">
+                     <div class="col-md-4 mb-3">
 
-<div class="card-header text-center bg-danger">
+                        <div class="card text-white border-danger">
 
-<div class="display-4"> <?php
+                           <div class="card-header text-center bg-danger">
 
-$select = $db->query("SELECT SUM(comission) AS total FROM proposal_referrals where referrer_id='$login_seller_id' AND status='declined'");
+                              <div class="display-4"> <?php
 
-$total = $select->fetch()->total;
+                                                      $select = $db->query("SELECT SUM(comission) AS total FROM proposal_referrals where referrer_id='$login_seller_id' AND status='declined'");
 
-$total = $total > 0 || $total!==null ? $total : "0";
+                                                      $total = $select->fetch()->total;
 
-echo showPrice($total);
+                                                      $total = $total > 0 || $total !== null ? $total : "0";
 
-?>
+                                                      echo showPrice($total);
 
-</div>
+                                                      ?>
 
-   <div class="font-weight-bold"><?= $lang['referrals']['declined']; ?></div>
+                              </div>
 
-</div>
+                              <div class="font-weight-bold"><?= $lang['referrals']['declined']; ?></div>
 
-</div>
+                           </div>
 
-</div>
+                        </div>
 
-</div>
+                     </div>
 
+                  </div>
 
-<div class="table-responsive border border-secondary rounded" style="overflow-x:hidden; overflow-y:hidden;">
 
-<table class="table table-bordered">
+                  <div class="table-responsive border border-secondary rounded" style="overflow-x:hidden; overflow-y:hidden;">
 
-<thead>
+                     <table class="table table-bordered">
 
-<tr class="card-header">
+                        <thead>
 
-<th><?= $lang['th']['owner']; ?></th>
+                           <tr class="card-header">
 
-<th><?= $lang['th']['buyer']; ?></th>
+                              <th><?= $lang['th']['owner']; ?></th>
 
-<th><?= $lang['th']['proposal']; ?></th>
+                              <th><?= $lang['th']['buyer']; ?></th>
 
-<th><?= $lang['th']['purchase_date']; ?></th>
+                              <th><?= $lang['th']['proposal']; ?></th>
 
-<th><?= $lang['th']['your_commission']; ?></th>
+                              <th><?= $lang['th']['purchase_date']; ?></th>
 
-<th><?= $lang['th']['status']; ?></th>
+                              <th><?= $lang['th']['your_commission']; ?></th>
 
-</tr>
+                              <th><?= $lang['th']['status']; ?></th>
 
-</thead>
+                           </tr>
 
-<tbody>
+                        </thead>
 
-<?php
+                        <tbody>
 
-$sel_referrals = $db->select("proposal_referrals",array("referrer_id" => $login_seller_id),"DESC");
+                           <?php
 
-$count_referrals = $sel_referrals->rowCount();
+                           $sel_referrals = $db->select("proposal_referrals", array("referrer_id" => $login_seller_id), "DESC");
 
-if($count_referrals == 0){
+                           $count_referrals = $sel_referrals->rowCount();
 
-echo "
+                           if ($count_referrals == 0) {
+
+                              echo "
 
 <tr>
 
@@ -208,105 +207,102 @@ echo "
 
 </tr>
 
-";	
+";
+                           } else {
 
-}else{
+                              while ($row_referrals = $sel_referrals->fetch()) {
 
-while($row_referrals = $sel_referrals->fetch()){
+                                 $proposal_id = $row_referrals->proposal_id;
 
-$proposal_id = $row_referrals->proposal_id;
+                                 $seller_id = $row_referrals->seller_id;
 
-$seller_id = $row_referrals->seller_id;
+                                 $buyer_id = $row_referrals->buyer_id;
 
-$buyer_id = $row_referrals->buyer_id;
+                                 $comission = $row_referrals->comission;
 
-$comission = $row_referrals->comission;
+                                 $date = $row_referrals->date;
 
-$date = $row_referrals->date;
-
-$status = $row_referrals->status;
-
-
-$select_seller = $db->select("sellers",array("seller_id" => $seller_id));
-
-$row_seller = $select_seller->fetch();
-
-$seller_user_name = $row_seller->seller_user_name;	
+                                 $status = $row_referrals->status;
 
 
+                                 $select_seller = $db->select("sellers", array("seller_id" => $seller_id));
 
-$select_buyer = $db->select("sellers",array("seller_id" => $buyer_id));
+                                 $row_seller = $select_seller->fetch();
 
-$row_buyer = $select_buyer->fetch();
-
-$buyer_user_name = $row_buyer->seller_user_name;
+                                 $seller_user_name = $row_seller->seller_user_name;
 
 
 
-$select_proposals = $db->select("proposals",array("proposal_id" => $proposal_id));
+                                 $select_buyer = $db->select("sellers", array("seller_id" => $buyer_id));
 
-$row_proposals = $select_proposals->fetch();
+                                 $row_buyer = $select_buyer->fetch();
 
-$proposal_title = $row_proposals->proposal_title;
+                                 $buyer_user_name = $row_buyer->seller_user_name;
 
-?>
 
-<tr>
 
-<td><?= $seller_user_name; ?></td>
+                                 $select_proposals = $db->select("proposals", array("proposal_id" => $proposal_id));
 
-<td><?= $buyer_user_name; ?></td>
+                                 $row_proposals = $select_proposals->fetch();
 
-<td><?= $proposal_title; ?></td>
+                                 $proposal_title = $row_proposals->proposal_title;
 
-<td><?= $date; ?></td>
+                           ?>
 
-<td><?= $s_currency; ?><?= $comission; ?></td>
+                                 <tr>
 
-<td class="font-weight-bold
+                                    <td><?= $seller_user_name; ?></td>
+
+                                    <td><?= $buyer_user_name; ?></td>
+
+                                    <td><?= $proposal_title; ?></td>
+
+                                    <td><?= $date; ?></td>
+
+                                    <td><?= $s_currency; ?><?= $comission; ?></td>
+
+                                    <td class="font-weight-bold
 
 <?php
 
-if($status == "approved"){
+                                 if ($status == "approved") {
 
-echo "text-success";
+                                    echo "text-success";
+                                 } elseif ($status == "pending") {
 
-}elseif($status == "pending"){
+                                    echo "text-secondary";
+                                 } elseif ($status == "declined") {
 
-echo "text-secondary";
-
-}elseif($status == "declined"){
-
-echo "text-danger";
-
-}
+                                    echo "text-danger";
+                                 }
 
 ?>
-"> <?= $status; ?> 
+"> <?= $status; ?>
 
-</td>
+                                    </td>
 
-</tr>
+                                 </tr>
 
-<?php } } ?>
+                           <?php }
+                           } ?>
 
-</tbody>
+                        </tbody>
 
-</table>
+                     </table>
 
-</div>
+                  </div>
 
-</div>
+               </div>
 
-</div>
+            </div>
 
-</div>
+         </div>
 
-</div>
+      </div>
 
-</div>
+   </div>
 
-<?php require_once("includes/footer.php"); ?>
+   <?php require_once("includes/footer.php"); ?>
 
 </body>
 
