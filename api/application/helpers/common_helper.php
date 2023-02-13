@@ -224,3 +224,11 @@ function insert_log($admin_id, $work, $work_id, $status)
 
   return $ci->db->insert('admin_logs', $data);
 }
+
+function get_general_settings()
+{
+  $ci = &get_instance();
+
+  $query = $ci->db->get("general_settings");
+  return $query->row();
+}
