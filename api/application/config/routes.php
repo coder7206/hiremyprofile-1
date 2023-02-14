@@ -104,6 +104,9 @@ $route['v1/contacts/(:num)/([a-z]+)/(:num)/selling-histories'] = 'api/Contact/ge
 $route['v1/referrals/(:num)/my-referrals'] = 'api/Referral/getMyRefferals/$1';
 $route['v1/referrals/(:num)/my-proposals'] = 'api/Referral/getMyProposalRefferals/$1';
 
+$route['v1/categories/get-categories'] = 'api/Category/getPluckCategories';
+$route['v1/categories/get-search-properties'] = 'api/Category/getSearchProperties';
+
 // $route['v1/orders/(\d+)/buyers/([a-zA-Z]+)'] = function ($product_type, $id)
 // {
 //         return 'order/orderBuyer/' . strtolower($product_type) . '/' . $id;
