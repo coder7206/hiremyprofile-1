@@ -232,3 +232,43 @@ function get_general_settings()
   $query = $ci->db->get("general_settings");
   return $query->row();
 }
+
+function searchQueryWhere($type, $filterType, $params)
+{
+  $online_sellers = [];
+  $where_online = [];
+  $where_country = [];
+  $where_level = [];
+  $where_language = [];
+  $values = [];
+  $where_path = "";
+  $where_online = [];
+  $where_city = [];
+  $where_cat = [];
+  $where_delivery_times = [];
+  $instant_delivery = 0;
+
+  $ci = &get_instance();
+
+  //   if ($params['online_sellers'] != "") {
+  //     $qSellers = $ci->db->get_where("sellers", ['seller_status' => "online"]);
+  //     if ($qSellers->num_rows() > 0) {
+  //       $oSellers = $qSellers->result_object();
+
+  //     }
+  //     while ($seller = $sellers->fetch()) {
+  //        if (check_status($seller->seller_id) == "Online") {
+  //           array_push($online_sellers, $seller->seller_id);
+  //        }
+  //     }
+  //  }
+
+  $queryWhere = "WHERE proposals.proposal_status='active' ";
+
+  if ($type == "query_where")
+    return $queryWhere;
+  elseif ($type == "where_path")
+    return $where_path;
+  elseif ($type == "values")
+    return $values;
+}
