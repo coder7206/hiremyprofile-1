@@ -19,8 +19,6 @@ class Category extends APIAuth
     public function __construct()
     {
         parent::__construct();
-
-        $this->load->model('Referral_model');
     }
 
     /**
@@ -80,6 +78,25 @@ class Category extends APIAuth
         $data['message'] = "Data fetched successfully";
         $data['status'] = TRUE;
         $siteLanguage = 1;
+
+        $getCategory = $this->db->get_where('categories', ['cat_id' => $categoryId]);
+        $oCategory = $getCategory->row();
+
+        if (!$oCategory) {
+            $data['status'] = FALSE;
+            $data['message'] = "Invalid category ID";
+            $statusCode = 404;
+            // validation not ok, send validation errors to the view
+            $this->response($data, $statusCode);
+        }
+
+        $catId = $oCategory->cat_id;
+        $getMeta = $this->db->get_where("cats_meta", array("cat_id" => $catId, "language_id" => $siteLanguage));
+        $rowMeta = $getMeta->row();
+        $catArr = [];
+        $catArr['title'] = $rowMeta->cat_title;
+        $catArr['description'] = $rowMeta->cat_desc;
+        $data['data']['category'] = $catArr;
 
         $getCountries = $this->db->query("SELECT DISTINCT proposal_seller_id FROM proposals WHERE proposal_cat_id={$categoryId} AND proposal_status='active'");
         $rowCount = $getCountries->num_rows();
@@ -152,5 +169,142 @@ class Category extends APIAuth
         }
         $this->response($data, 200);
         dd($rowCount);
+    }
+
+    public function getSearch_get()
+    {
+        $categoryId = $this->input->get("category_id");
+        $setData = [
+            'category_id' => $categoryId,
+        ];
+        $this->form_validation->set_data($setData);
+        $this->form_validation->set_rules('category_id', 'Category Id', 'trim|required|numeric');
+
+        if ($this->form_validation->run() === false) {
+            $data['message'] = "Unprocessable Entity";
+            $data['errors'] = $this->form_validation->error_array();
+            $statusCode = 422;
+            // validation not ok, send validation errors to the view
+            $this->response($data, $statusCode);
+        }
+
+        $getCategory = $this->db->get_where('categories', ['cat_id' => $categoryId]);
+        $oCategory = $getCategory->row();
+
+        if (!$oCategory) {
+            $data['status'] = FALSE;
+            $data['message'] = "Invalid category ID";
+            $statusCode = 404;
+            // validation not ok, send validation errors to the view
+            $this->response($data, $statusCode);
+        }
+
+        // Get Search Params if present in requests
+        $params = [];
+        $params['online_sellers'] = $this->input->get("online_sellers") ?? null;
+        $params['instant_delivery'] = $this->input->get("instant_delivery") ?? null;
+        $params['city'] = $this->input->get("city") ?? null;
+        $params['delivery_time'] = $this->input->get("delivery_time") ?? null;
+        $params['seller_level'] = $this->input->get("seller_level") ?? null;
+        $params['seller_language'] = $this->input->get("seller_language") ?? null;
+
+        $filterType = "category";
+
+        $queryWhere = searchQueryWhere("query_where", $filterType, $params);
+        $wherePath = searchQueryWhere("where_path", $filterType, $params);
+        $whereValues = searchQueryWhere("values", $filterType, $params);
+
+        $this->load->helper('url');
+        $this->load->library("pagination");
+
+        $page = ($this->input->get("page")) ? $this->input->get("page") : 1;
+        $limit = ($this->input->get("per_page")) ? $this->input->get("per_page") : 16;
+        $pagePosition = (($page - 1) * $limit);
+        $orderBy = $this->input->get("seller_language") ?? "DESC";
+
+        $whereLimit = " ORDER BY created_at {$orderBy} LIMIT {$limit} OFFSET {$pagePosition}";
+
+        $spQuery = "SELECT DISTINCT proposals.* FROM proposals INNER JOIN sellers ON proposals.proposal_seller_id = sellers.seller_id INNER JOIN instant_deliveries ON proposals.proposal_id = instant_deliveries.proposal_id {$queryWhere}";
+        $sQuery = "SELECT DISTINCT proposals.* FROM proposals INNER JOIN sellers ON proposals.proposal_seller_id = sellers.seller_id INNER JOIN instant_deliveries ON proposals.proposal_id = instant_deliveries.proposal_id {$queryWhere} {$whereLimit}";
+
+        //get total number of records from database for pagination
+        $query = $this->db->query($spQuery, $whereValues);
+        $rowCount = $query->num_rows();
+        $qProposals = $this->db->query($sQuery, $whereValues);
+
+        if ($rowCount == 0) {
+            $data['status'] = FALSE;
+            $data['message'] = "Sorry, we don't found with these search criterias. Please try with other search information.";
+            $statusCode = 200;
+
+            $this->response($data, $statusCode);
+        }
+
+        $oProposals = $qProposals->result_object();
+        $res = [];
+        $siteLanguage = 1;
+        foreach ($oProposals as $key => $oProposal) {
+            $res[$key] = $oProposal;
+
+            $proposalId = $oProposal->proposal_id;
+            $proposalPrice = $oProposal->proposal_price;
+            if ($proposalPrice == 0) {
+                $get_p_1 = $this->db->get_where("proposal_packages", array("proposal_id" => $proposalId, "package_name" => "Basic"));
+                $proposalPrice = $get_p_1->row()->price;
+            }
+            $res[$key]->proposal_price = $proposalPrice;
+            $res[$key]->proposal_img1 = getImageUrl2("proposals", "proposal_img1", $oProposal->proposal_img1);
+
+            // Seller
+            $proposalSellerId = $oProposal->proposal_seller_id;
+            $sellArr = [];
+            $getSeller = $this->db->get_where("sellers", array("seller_id" => $proposalSellerId));
+            $rowSeller = $getSeller->row();
+
+            $sellArr['seller_user_name'] = $rowSeller->seller_user_name;
+            $sellArr['seller_image'] = getImageUrl2("sellers", "seller_image", $rowSeller->seller_image);
+            $sellArr['seller_level'] = $rowSeller->seller_level;
+            $sellArr['seller_status'] = $rowSeller->seller_status;
+            if ($sellArr['seller_image'] == "")
+                $sellArr['seller_image'] = "empty-image.png";
+
+            @$sellArr['seller_level'] = $this->db->get_where("seller_levels_meta", array("level_id" => $sellArr['seller_level'], "language_id" => $siteLanguage))->row()->title;
+
+            // Seller Reviews
+            $proposalReviews = [];
+            $selectBuyerReviews = $this->db->get_where("buyer_reviews", array("proposal_id" => $proposalId));
+            $countReviews = $selectBuyerReviews->num_rows();
+            $total = 0;
+            $averageRating = 0;
+            if ($countReviews > 0) {
+                $oBuyerReviews = $selectBuyerReviews->result_object();
+                foreach($oBuyerReviews as $oBuyerReview) {
+                    $proposalBuyerRating = $oBuyerReview->buyer_rating;
+                    array_push($proposalReviews, $proposalBuyerRating);
+                }
+                $total = array_sum($proposalReviews);
+                $averageRating = $total / count($proposalReviews);
+            }
+            $reviews['total'] = $total;
+            $reviews['average_rating'] = $averageRating;
+            $sellArr['reviews'] = $reviews;
+
+            $res[$key]->seller = $sellArr;
+        }
+        $data['status'] = TRUE;
+        $data['message'] = "Data fetched successfully";
+        $data['data'] = $res;
+
+        $data['data'] = $res;
+        $baseUrl = "api/v1/categories/search?per_page={$page}&page=";
+
+        $totalPages = ceil( $rowCount / $limit);
+        $data['meta_data']['total'] = $rowCount;
+        $data['meta_data']['per_page'] = $limit;
+        $data['meta_data']['total_pages'] = $totalPages;
+        $data['meta_data']['page'] = $page;
+        $data['meta_data']['pagination'] = paginate($totalPages, $baseUrl);
+
+        $this->response( $data, 200 );
     }
 }
