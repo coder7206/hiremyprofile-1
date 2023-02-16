@@ -237,33 +237,82 @@ function searchQueryWhere($type, $filterType, $params)
 {
   $online_sellers = [];
   $where_online = [];
-  $where_country = [];
-  $where_level = [];
-  $where_language = [];
+  $where_country = "";
+  $where_city = "";
+  $where_level = "";
+  $where_language = "";
   $values = [];
   $where_path = "";
-  $where_online = [];
-  $where_city = [];
-  $where_cat = [];
-  $where_delivery_times = [];
-  $instant_delivery = 0;
+  $where_cat = "";
+  $where_delivery_times = "";
+  $instant_delivery = $params['instant_delivery'] != "" ? 1 : 0;
 
   $ci = &get_instance();
 
-  //   if ($params['online_sellers'] != "") {
-  //     $qSellers = $ci->db->get_where("sellers", ['seller_status' => "online"]);
-  //     if ($qSellers->num_rows() > 0) {
-  //       $oSellers = $qSellers->result_object();
+  // If need to check online sellers
+  if ($params['online_sellers'] != "") {
+    $qSellers = $ci->db->get_where("sellers", ['seller_status' => "online"]);
+    if ($qSellers->num_rows() > 0) {
+      $oSellers = $qSellers->result_object();
+      foreach ($oSellers as $oSeller) {
+        array_push($online_sellers, $oSeller->seller_id);
+      }
 
-  //     }
-  //     while ($seller = $sellers->fetch()) {
-  //        if (check_status($seller->seller_id) == "Online") {
-  //           array_push($online_sellers, $seller->seller_id);
-  //        }
-  //     }
-  //  }
+      if (count($online_sellers) > 0) {
+        $where_online[] = "sellers.seller_id";
+        $values['seller_id'] = implode(', ', $online_sellers);
+      }
+    }
+  }
 
-  $queryWhere = "WHERE proposals.proposal_status='active' ";
+  if (is_array($params['country'])) {
+    $where_country = "sellers.seller_country";
+    $values['seller_country'] = "'" . implode("', '", $params['country']) . "'";
+  }
+
+  if (is_array($params['city'])) {
+    $where_city = "sellers.seller_city";
+    $values['seller_city'] = "'" . implode("', '", $params['city']) . "'";
+  }
+
+  if ($params['category_id'] != "") {
+    $where_cat = "proposals.proposal_cat_id";
+    $values['proposal_cat_id'] = $params['category_id'];
+  }
+
+  if (is_array($params['delivery_time_id'])) {
+    $where_delivery_times = "delivery_id";
+    $values['delivery_id'] = implode(', ', $params['delivery_time_id']);;
+  }
+
+  if (is_array($params['seller_level_id'])) {
+    $where_level = "level_id";
+    $values['level_id'] = implode(', ', $params['seller_level_id']);;
+  }
+
+  if (is_array($params['seller_language_id'])) {
+    $where_language = "language_id";
+    $values['language_id'] = implode(', ', $params['seller_language_id']);;
+  }
+
+  $queryWhere = "WHERE proposals.proposal_status='active'";
+
+  if (count($where_online) > 0)
+    $queryWhere .= addConcat($queryWhere) . " sellers.seller_id IN ({$values['seller_id']})";
+  if ($instant_delivery == 1)
+    $queryWhere .= " AND instant_deliveries.enable=1";
+  if ($where_country != "")
+    $queryWhere .= " AND {$where_country} IN ({$values['seller_country']})";
+  if ($where_city != "")
+    $queryWhere .= " AND {$where_city} IN ({$values['seller_city']})";
+  if ($where_cat != "")
+    $queryWhere .= " AND {$where_cat} IN ({$values['proposal_cat_id']})";
+  if ($where_delivery_times != "")
+    $queryWhere .= " AND {$where_delivery_times} IN ({$values['delivery_id']})";
+  if ($where_level != "")
+    $queryWhere .= " AND {$where_level} IN ({$values['level_id']})";
+  if ($where_language != "")
+    $queryWhere .= " AND {$where_language} IN ({$values['language_id']})";
 
   if ($type == "query_where")
     return $queryWhere;
@@ -271,4 +320,13 @@ function searchQueryWhere($type, $filterType, $params)
     return $where_path;
   elseif ($type == "values")
     return $values;
+}
+
+function addConcat($query)
+{
+  if (strlen($query) == 5) {
+    return "";
+  } else {
+    return " AND";
+  }
 }
