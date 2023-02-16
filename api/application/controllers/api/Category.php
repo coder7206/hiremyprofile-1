@@ -168,9 +168,13 @@ class Category extends APIAuth
             $data['data']['langauges'] = array_unique(array_filter($languages));
         }
         $this->response($data, 200);
-        dd($rowCount);
     }
 
+    /**
+     * Hire by Category
+     *
+     * @return void
+     */
     public function getSearch_get()
     {
         $categoryId = $this->input->get("category_id");
@@ -201,17 +205,18 @@ class Category extends APIAuth
 
         // Get Search Params if present in requests
         $params = [];
+        $params['category_id'] = $this->input->get("category_id") ?? null;
         $params['online_sellers'] = $this->input->get("online_sellers") ?? null;
         $params['instant_delivery'] = $this->input->get("instant_delivery") ?? null;
+        $params['country'] = $this->input->get("country") ?? null;
         $params['city'] = $this->input->get("city") ?? null;
-        $params['delivery_time'] = $this->input->get("delivery_time") ?? null;
-        $params['seller_level'] = $this->input->get("seller_level") ?? null;
-        $params['seller_language'] = $this->input->get("seller_language") ?? null;
+        $params['delivery_time_id'] = $this->input->get("delivery_time_id") ?? null;
+        $params['seller_level_id'] = $this->input->get("seller_level_id") ?? null;
+        $params['seller_language_id'] = $this->input->get("seller_language_id") ?? null;
 
         $filterType = "category";
 
         $queryWhere = searchQueryWhere("query_where", $filterType, $params);
-        $wherePath = searchQueryWhere("where_path", $filterType, $params);
         $whereValues = searchQueryWhere("values", $filterType, $params);
 
         $this->load->helper('url');
@@ -220,7 +225,7 @@ class Category extends APIAuth
         $page = ($this->input->get("page")) ? $this->input->get("page") : 1;
         $limit = ($this->input->get("per_page")) ? $this->input->get("per_page") : 16;
         $pagePosition = (($page - 1) * $limit);
-        $orderBy = $this->input->get("seller_language") ?? "DESC";
+        $orderBy = $this->input->get("order") ?? "DESC";
 
         $whereLimit = " ORDER BY created_at {$orderBy} LIMIT {$limit} OFFSET {$pagePosition}";
 
