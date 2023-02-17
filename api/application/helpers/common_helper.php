@@ -277,25 +277,30 @@ function searchQueryWhere($type, $filterType, $params)
 
   if ($params['category_id'] != "") {
     $where_cat = "proposals.proposal_cat_id";
-    $values['proposal_cat_id'] = $params['category_id'];
+    $values['proposal_cat_id'] = is_array($params['category_id']) ? implode(', ', $params['category_id']) : $params['category_id'];
   }
 
   if (is_array($params['delivery_time_id'])) {
     $where_delivery_times = "delivery_id";
-    $values['delivery_id'] = implode(', ', $params['delivery_time_id']);;
+    $values['delivery_id'] = implode(', ', $params['delivery_time_id']);
   }
 
   if (is_array($params['seller_level_id'])) {
     $where_level = "level_id";
-    $values['level_id'] = implode(', ', $params['seller_level_id']);;
+    $values['level_id'] = implode(', ', $params['seller_level_id']);
   }
 
   if (is_array($params['seller_language_id'])) {
     $where_language = "language_id";
-    $values['language_id'] = implode(', ', $params['seller_language_id']);;
+    $values['language_id'] = implode(', ', $params['seller_language_id']);
   }
 
   $queryWhere = "WHERE proposals.proposal_status='active'";
+
+  if ($filterType == "search") {
+    $s = $params['s'];
+    $queryWhere .= " AND proposals.proposal_title LIKE '%$s%' ";
+  }
 
   if (count($where_online) > 0)
     $queryWhere .= addConcat($queryWhere) . " sellers.seller_id IN ({$values['seller_id']})";
@@ -328,5 +333,67 @@ function addConcat($query)
     return "";
   } else {
     return " AND";
+  }
+}
+
+function freelancersQueryWhere($type, $params)
+{
+  $ci = &get_instance();
+
+  $where_online = "";
+  $where_level = "";
+  $where_language = "";
+  $where_skill = "";
+  $values = array();
+  $where_path = "";
+  $online_sellers = [];
+
+  if ($params['online_sellers'] != "") {
+    $qSellers = $ci->db->get_where("sellers", ['seller_status' => "online"]);
+    if ($qSellers->num_rows() > 0) {
+      $oSellers = $qSellers->result_object();
+      foreach ($oSellers as $oSeller) {
+        array_push($online_sellers, $oSeller->seller_id);
+      }
+
+      if (count($online_sellers) > 0) {
+        $where_online = "sellers.seller_id";
+        $values['seller_id'] = implode(', ', $online_sellers);
+      }
+    }
+  }
+
+  if (is_array($params['skill_id'])) {
+    $where_skill = "sellers.seller_skills";
+    $values['seller_skills'] = "'" . implode("', '", $params['skill_id']) . "'";
+  }
+
+  if (is_array($params['seller_level_id'])) {
+    $where_level = "sellers.seller_level";
+    $values['seller_level'] = "'" . implode("', '", $params['seller_level_id']) . "'";
+  }
+
+  if (is_array($params['seller_language_id'])) {
+    $where_language = "sellers.seller_language";
+    $values['seller_language'] = "'" . implode("', '", $params['seller_language_id']) . "'";
+  }
+
+
+  $queryWhere = "where";
+  if ($where_online != "")
+    $queryWhere .= addConcat($queryWhere) . " {$where_online} IN ({$values['seller_id']})";
+  if ($where_skill != "")
+    $queryWhere .= addConcat($queryWhere) . " {$where_skill} IN ({$values['seller_skills']})";
+  if ($where_level != "")
+    $queryWhere .= addConcat($queryWhere) . " {$where_level} IN ({$values['seller_level']})";
+  if ($where_language != "")
+    $queryWhere .= addConcat($queryWhere) . " {$where_language} IN ({$values['seller_language']})";
+
+  if ($type == "query_where") {
+    return [$queryWhere != "where" ? $queryWhere : "", $where_skill];
+  } elseif ($type == "where_path") {
+    return $where_path;
+  } elseif ($type == "values") {
+    return $values;
   }
 }
