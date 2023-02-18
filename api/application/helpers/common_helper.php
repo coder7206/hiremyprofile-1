@@ -340,13 +340,13 @@ function freelancersQueryWhere($type, $params)
 {
   $ci = &get_instance();
 
+  $online_sellers = [];
   $where_online = "";
   $where_level = "";
   $where_language = "";
   $where_skill = "";
-  $values = array();
+  $values = [];
   $where_path = "";
-  $online_sellers = [];
 
   if ($params['online_sellers'] != "") {
     $qSellers = $ci->db->get_where("sellers", ['seller_status' => "online"]);
@@ -357,40 +357,47 @@ function freelancersQueryWhere($type, $params)
       }
 
       if (count($online_sellers) > 0) {
-        $where_online = "sellers.seller_id";
-        $values['seller_id'] = implode(', ', $online_sellers);
+        if (count($online_sellers) > 0) {
+          $where_online = "s.seller_id";
+          $values['seller_id'] = implode(', ', $online_sellers);
+        }
       }
     }
   }
 
-  if (is_array($params['skill_id'])) {
-    $where_skill = "sellers.seller_skills";
-    $values['seller_skills'] = "'" . implode("', '", $params['skill_id']) . "'";
-  }
-
   if (is_array($params['seller_level_id'])) {
-    $where_level = "sellers.seller_level";
+    $where_level = "s.seller_level";
     $values['seller_level'] = "'" . implode("', '", $params['seller_level_id']) . "'";
   }
 
   if (is_array($params['seller_language_id'])) {
-    $where_language = "sellers.seller_language";
+    $where_language = "s.seller_language";
     $values['seller_language'] = "'" . implode("', '", $params['seller_language_id']) . "'";
   }
 
+  if (is_array($params['skill_id'])) {
+    // Use implode() function to join
+    $aSkills = $params['skill_id'];
+    $skills = array_filter($aSkills);
+    // comma in the array
+    $where_skill = implode(', ', $skills);
+    foreach ($skills as $value)
+      $where_path .= "seller_skills[]=" . $value . "&";
+  }
 
-  $queryWhere = "where";
+  $query_where = "WHERE";
+
   if ($where_online != "")
-    $queryWhere .= addConcat($queryWhere) . " {$where_online} IN ({$values['seller_id']})";
-  if ($where_skill != "")
-    $queryWhere .= addConcat($queryWhere) . " {$where_skill} IN ({$values['seller_skills']})";
+    $query_where .= addConcat($query_where) . " {$where_online} IN ({$values['seller_id']})";
+
   if ($where_level != "")
-    $queryWhere .= addConcat($queryWhere) . " {$where_level} IN ({$values['seller_level']})";
+    $query_where .= addConcat($query_where) . " {$where_level} IN ({$values['seller_level']})";
+
   if ($where_language != "")
-    $queryWhere .= addConcat($queryWhere) . " {$where_language} IN ({$values['seller_language']})";
+    $query_where .= addConcat($query_where) . " {$where_language} IN ({$values['seller_language']})";
 
   if ($type == "query_where") {
-    return [$queryWhere != "where" ? $queryWhere : "", $where_skill];
+    return [$query_where != "WHERE" ? $query_where : "", $where_skill];
   } elseif ($type == "where_path") {
     return $where_path;
   } elseif ($type == "values") {
