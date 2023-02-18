@@ -108,15 +108,25 @@ class Freelancer extends APIAuth
 
         $whereLimit = " ORDER BY seller_level {$orderBy} LIMIT {$limit} OFFSET {$pagePosition}";
 
-        dd("FREELANCER UNDER CONSTRUCTION");
+        if ($query_where_skills != "") {
+            $q = "SELECT s.* FROM sellers s INNER JOIN proposals p ON s.seller_id = p.proposal_seller_id AND p.proposal_status='active' INNER JOIN skills_relation sr ON s.seller_id = sr.seller_id AND s.seller_id INNER JOIN seller_skills ss ON sr.skill_id = ss.skill_id AND ss.skill_id IN (" . $query_where_skills . ") $queryWhere GROUP by s.seller_id";
+			$spQuery = "{$q};";
+            $sQuery = "{$q} $whereLimit;";
+		} else {
+			$spQuery = "SELECT DISTINCT s.* FROM sellers s JOIN proposals ON s.seller_id=proposals.proposal_seller_id AND proposals.proposal_status='active' {$queryWhere}";
+            $sQuery = "SELECT DISTINCT s.* FROM sellers s JOIN proposals ON s.seller_id=proposals.proposal_seller_id AND proposals.proposal_status='active' {$queryWhere}{$whereLimit}";
+		}
 
-        $spQuery = "SELECT DISTINCT proposals.* FROM proposals INNER JOIN sellers ON proposals.proposal_seller_id = sellers.seller_id INNER JOIN instant_deliveries ON proposals.proposal_id = instant_deliveries.proposal_id {$queryWhere}";
-        $sQuery = "SELECT DISTINCT proposals.* FROM proposals INNER JOIN sellers ON proposals.proposal_seller_id = sellers.seller_id INNER JOIN instant_deliveries ON proposals.proposal_id = instant_deliveries.proposal_id {$queryWhere} {$whereLimit}";
+        // echo $spQuery;
+        // echo "<br />";
+        // echo $sQuery;
+        // dd($whereValues);
+        // exit;
 
         //get total number of records from database for pagination
         $query = $this->db->query($spQuery, $whereValues);
         $rowCount = $query->num_rows();
-        $qProposals = $this->db->query($sQuery, $whereValues);
+        $qSellers = $this->db->query($sQuery, $whereValues);
 
         if ($rowCount == 0) {
             $data['status'] = FALSE;
@@ -126,39 +136,20 @@ class Freelancer extends APIAuth
             $this->response($data, $statusCode);
         }
 
-        $oProposals = $qProposals->result_object();
+        $oSellers = $qSellers->result_object();
         $res = [];
         $siteLanguage = 1;
-        foreach ($oProposals as $key => $oProposal) {
-            $res[$key] = $oProposal;
+        foreach ($oSellers as $key => $oSeller) {
+            $res[$key] = $oSeller;
+            unset($res[$key]->seller_pass);
+            unset($res[$key]->seller_ip);
 
-            $proposalId = $oProposal->proposal_id;
-            $proposalPrice = $oProposal->proposal_price;
-            if ($proposalPrice == 0) {
-                $get_p_1 = $this->db->get_where("proposal_packages", array("proposal_id" => $proposalId, "package_name" => "Basic"));
-                $proposalPrice = $get_p_1->row()->price;
-            }
-            $res[$key]->proposal_price = $proposalPrice;
-            $res[$key]->proposal_img1 = getImageUrl2("proposals", "proposal_img1", $oProposal->proposal_img1);
-
-            // Seller
-            $proposalSellerId = $oProposal->proposal_seller_id;
-            $sellArr = [];
-            $getSeller = $this->db->get_where("sellers", array("seller_id" => $proposalSellerId));
-            $rowSeller = $getSeller->row();
-
-            $sellArr['seller_user_name'] = $rowSeller->seller_user_name;
-            $sellArr['seller_image'] = getImageUrl2("sellers", "seller_image", $rowSeller->seller_image);
-            $sellArr['seller_level'] = $rowSeller->seller_level;
-            $sellArr['seller_status'] = $rowSeller->seller_status;
-            if ($sellArr['seller_image'] == "")
-                $sellArr['seller_image'] = "empty-image.png";
-
-            @$sellArr['seller_level'] = $this->db->get_where("seller_levels_meta", array("level_id" => $sellArr['seller_level'], "language_id" => $siteLanguage))->row()->title;
+            $res[$key]->seller_image = getImageUrl2("sellers", "seller_image", $oSeller->seller_image);
+            $sellerId = $oSeller->seller_id;
 
             // Seller Reviews
-            $proposalReviews = [];
-            $selectBuyerReviews = $this->db->get_where("buyer_reviews", array("proposal_id" => $proposalId));
+            $sellerReviews = [];
+            $selectBuyerReviews = $this->db->get_where("buyer_reviews", array("review_seller_id" => $sellerId));
             $countReviews = $selectBuyerReviews->num_rows();
             $total = 0;
             $averageRating = 0;
@@ -166,23 +157,22 @@ class Freelancer extends APIAuth
                 $oBuyerReviews = $selectBuyerReviews->result_object();
                 foreach($oBuyerReviews as $oBuyerReview) {
                     $proposalBuyerRating = $oBuyerReview->buyer_rating;
-                    array_push($proposalReviews, $proposalBuyerRating);
+                    array_push($sellerReviews, $proposalBuyerRating);
                 }
-                $total = array_sum($proposalReviews);
-                $averageRating = $total / count($proposalReviews);
+                $total = array_sum($sellerReviews);
+                $averageRating = $total / count($sellerReviews);
             }
             $reviews['total'] = $total;
             $reviews['average_rating'] = $averageRating;
-            $sellArr['reviews'] = $reviews;
 
-            $res[$key]->seller = $sellArr;
+            $res[$key]->reviews = $reviews;
         }
         $data['status'] = TRUE;
         $data['message'] = "Data fetched successfully";
         $data['data'] = $res;
 
         $data['data'] = $res;
-        $baseUrl = "api/v1/search?per_page={$page}&page=";
+        $baseUrl = "api/v1/freelancers?per_page={$page}&page=";
 
         $totalPages = ceil( $rowCount / $limit);
         $data['meta_data']['total'] = $rowCount;
@@ -192,6 +182,5 @@ class Freelancer extends APIAuth
         $data['meta_data']['pagination'] = paginate($totalPages, $baseUrl);
 
         $this->response( $data, 200 );
-
     }
 }
