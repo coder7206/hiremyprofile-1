@@ -67,6 +67,7 @@ $route['v1/logout'] = 'api/Auth/logout';
 
 // AUTH USER
 // Order
+$route['v1/orders/(:num)/(:num)'] = 'api/Order/orderDetails/$1/$2';
 $route['v1/orders/(:num)/buyers/([a-z]+)'] = 'api/Order/orderBuyer/$1/$2';
 $route['v1/orders/(:num)/sellers/([a-z]+)'] = 'api/Order/orderSeller/$1/$2';
 
@@ -112,6 +113,8 @@ $route['v1/search'] = 'api/Search';
 
 $route['v1/freelancers/search-properties'] = 'api/Freelancer/getSearchProperties';
 $route['v1/freelancers'] = 'api/Freelancer';
+
+$route['v1/revenue/(:num)'] = 'api/Revenue/$1';
 
 // $route['v1/orders/(\d+)/buyers/([a-zA-Z]+)'] = function ($product_type, $id)
 // {

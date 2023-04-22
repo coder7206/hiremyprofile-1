@@ -68,6 +68,7 @@ class Search extends APIAuth
         $this->form_validation->set_rules('category_id', 'Category Id', 'trim|required|numeric');
 
         if ($this->form_validation->run() === false) {
+            $data['status'] = FALSE;
             $data['message'] = "Unprocessable Entity";
             $data['errors'] = $this->form_validation->error_array();
             $statusCode = 422;

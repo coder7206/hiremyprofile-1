@@ -85,14 +85,20 @@ class Order_model extends CI_Model
      *
      * @return Response
      */
-    public function show($id = 0)
+    public function show($userId, $orderId)
     {
-        if (!empty($id)) {
-            $query = $this->db->get_where("products", ['id' => $id])->row_array();
-        } else {
-            $query = $this->db->get("products")->result();
-        }
-        return $query;
+        $sql = "SELECT * FROM orders WHERE order_id = ? AND (seller_id = ? OR buyer_id = ?)";
+        $query = $this->db->query($sql, [$orderId, $userId, $userId]);
+
+        return $query->row();
+        // $this->db->query('YOUR QUERY HERE');
+        // $this->db->select('*');
+        // $this->db->from('orders');
+        // $this->db->where("order_id", $orderId);
+        // $this->db->where("seller_id", $userId);
+        // $this->db->or_where("buyer_id", $userId);
+        // $this->db->get()->result();
+        // echo $this->db->last_query(); die();
     }
 
     /**

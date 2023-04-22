@@ -80,9 +80,13 @@ class Freelancer extends APIAuth
         $this->response($data, 200);
     }
 
+    /**
+     * Get freelancers
+     *
+     * @return void
+     */
     public function index_get()
     {
-        // Get Search Params if present in requests
         $params = [];
         $params['skill_id'] = $this->input->get("skill_id") ?? null;
         $params['online_sellers'] = $this->input->get("online_sellers") ?? null;
@@ -116,12 +120,6 @@ class Freelancer extends APIAuth
 			$spQuery = "SELECT DISTINCT s.* FROM sellers s JOIN proposals ON s.seller_id=proposals.proposal_seller_id AND proposals.proposal_status='active' {$queryWhere}";
             $sQuery = "SELECT DISTINCT s.* FROM sellers s JOIN proposals ON s.seller_id=proposals.proposal_seller_id AND proposals.proposal_status='active' {$queryWhere}{$whereLimit}";
 		}
-
-        // echo $spQuery;
-        // echo "<br />";
-        // echo $sQuery;
-        // dd($whereValues);
-        // exit;
 
         //get total number of records from database for pagination
         $query = $this->db->query($spQuery, $whereValues);

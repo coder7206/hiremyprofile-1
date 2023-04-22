@@ -29,7 +29,8 @@ class Order extends APIAuth
 	 * @access public
 	 * @return void
 	 */
-	public function orderBuyer_get($userId, $status) {
+	public function orderBuyer_get($userId, $status)
+    {
         $this->load->helper('url');
         $this->load->library("pagination");
 
@@ -82,7 +83,8 @@ class Order extends APIAuth
 	 * @access public
 	 * @return void
 	 */
-	public function orderSeller_get($userId, $status) {
+	public function orderSeller_get($userId, $status)
+    {
         $this->load->helper('url');
         $this->load->library("pagination");
 
@@ -138,6 +140,28 @@ class Order extends APIAuth
             $data['meta_data']['page'] = $page;
             $data['meta_data']['pagination'] = paginate($totalPages, $baseUrl);
         }
+        $this->response( $data, 200 );
+    }
+
+    /**
+	 * Order Detail
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function orderDetails_get($userId, $orderId)
+    {
+        $data['message'] = "No records";
+        $data['status'] = FALSE;
+
+        $response = $this->order_model->show($userId, $orderId);
+
+        if ($response) {
+            $data['message'] = "Data fetched successfully";
+            $data['status'] = TRUE;
+            $data['data'] = $response;
+        }
+
         $this->response( $data, 200 );
     }
 }
