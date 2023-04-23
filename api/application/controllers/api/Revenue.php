@@ -100,23 +100,5 @@ class Revenue extends APIAuth
         }
 
         $this->response( $data, 200 );
-
-        dd('index');
-
-        $data['status'] = TRUE;
-        $data['message'] = "Data fetched successfully";
-        $data['data'] = $res;
-
-        $data['data'] = $res;
-        $baseUrl = "api/v1/freelancers?per_page={$page}&page=";
-
-        $totalPages = ceil( $rowCount / $limit);
-        $data['meta_data']['total'] = $rowCount;
-        $data['meta_data']['per_page'] = $limit;
-        $data['meta_data']['total_pages'] = $totalPages;
-        $data['meta_data']['page'] = $page;
-        $data['meta_data']['pagination'] = paginate($totalPages, $baseUrl);
-
-        $this->response( $data, 200 );
     }
 }

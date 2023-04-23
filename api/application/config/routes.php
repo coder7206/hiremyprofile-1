@@ -119,6 +119,10 @@ $route['v1/revenue/(:num)'] = 'api/Revenue/$1';
 // Customer Support
 $route['v1/customer-supports/(:num)'] = 'api/CustomerSupport/index/$1';
 
+// User
+$route['v1/users/(:num)/profile'] = 'api/User/index/$1';
+$route['v1/users/(:num)/change-password'] = 'api/User/changePassword/$1';
+
 // $route['v1/orders/(\d+)/buyers/([a-zA-Z]+)'] = function ($product_type, $id)
 // {
 //         return 'order/orderBuyer/' . strtolower($product_type) . '/' . $id;
