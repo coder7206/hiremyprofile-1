@@ -136,6 +136,10 @@ $route['v1/users/professionals/([a-zA-Z]+)'] = 'api/User/changeProfessional/$1';
 $route['v1/users/favorites'] = 'api/User/favorite';
 $route['v1/users/favorites/(:num)']['DELETE'] = 'api/User/favorite/$1';
 
+// Notifications
+$route['v1/users/notifications'] = 'api/User/notification';
+$route['v1/users/notifications/(:num)']['DELETE'] = 'api/User/notification/$1';
+
 // $route['v1/orders/(\d+)/buyers/([a-zA-Z]+)'] = function ($product_type, $id)
 // {
 //         return 'order/orderBuyer/' . strtolower($product_type) . '/' . $id;

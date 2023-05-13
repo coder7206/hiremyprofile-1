@@ -553,4 +553,72 @@ class User extends APIAuth
 
         $this->response( $data, 200 );
     }
+
+    /**
+     * Get notifications
+     *
+     * @return void
+     */
+    public function notification_get()
+    {
+        $userId = $this->getUserId();
+
+        $this->load->helper('url');
+        $this->load->library("pagination");
+
+        $page = ($this->input->get("page")) ? $this->input->get("page") : 1;
+        $limit = ($this->input->get("per_page")) ? $this->input->get("per_page") : 10;
+        $pagePosition = (($page - 1) * $limit);
+
+        $spQuery = "SELECT * FROM notifications WHERE receiver_id = ?";
+        $sQuery = "SELECT * FROM notifications WHERE receiver_id = ? ORDER BY 1 DESC LIMIT " . $page . ", " . $limit;
+        $sBind = [$userId];
+
+        //get total number of records from database for pagination
+        $query = $this->db->query($spQuery, $sBind);
+        $rowCount = $query->num_rows();
+
+        $query = $this->db->query($sQuery, $sBind)->result_object();
+
+        $data['message'] = "No records";
+        $data['status'] = FALSE;
+
+        if ($rowCount > 0) {
+            $data['message'] = "Data fetched successfully";
+            $data['status'] = TRUE;
+
+            $res = [];
+            foreach ($query as $key => $row) {
+                $res[$key] = $row;
+            }
+            $data['data'] = $res;
+            $baseUrl = "api/v1/users/notifications?per_page={$page}&page=";
+
+            $totalPages = ceil( $rowCount / $limit);
+            $data['meta_data']['total'] = $rowCount;
+            $data['meta_data']['per_page'] = $limit;
+            $data['meta_data']['total_pages'] = $totalPages;
+            $data['meta_data']['page'] = $page;
+            $data['meta_data']['pagination'] = paginate($totalPages, $baseUrl);
+        }
+
+        $this->response( $data, 200 );
+    }
+
+    /**
+     * Delete notification
+     *
+     * @param int $notificationId
+     * @return void
+     */
+    public function notification_delete($notificationId)
+    {
+        $userId = $this->getUserId();
+        $this->db->delete("notifications", array('notification_id' => $notificationId, "receiver_id" => $userId));
+
+        $data['message'] = "Notification deleted successfully";
+        $data['status'] = TRUE;
+
+        $this->response( $data, 200 );
+    }
 }
