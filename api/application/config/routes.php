@@ -120,8 +120,17 @@ $route['v1/revenue/(:num)'] = 'api/Revenue/$1';
 $route['v1/customer-supports/(:num)'] = 'api/CustomerSupport/index/$1';
 
 // User
-$route['v1/users/(:num)/profile'] = 'api/User/index/$1';
-$route['v1/users/(:num)/change-password'] = 'api/User/changePassword/$1';
+$route['v1/users/profile'] = 'api/User/index';
+$route['v1/users/change-password'] = 'api/User/changePassword';
+$route['v1/users/profile'] = 'api/User/changeProfile';
+
+// Professionl occupation category & skills
+$route['v1/occupations/categories'] = 'api/Helper/occupationsCategory';
+$route['v1/occupations/categories/(:num)'] = 'api/Helper/occupationsCategoryOption/$1';
+$route['v1/occupations/skills'] = 'api/Helper/occupationsSkill';
+
+// User professional
+$route['v1/users/professionals/([a-zA-Z]+)'] = 'api/User/changeProfessional/$1';
 
 // $route['v1/orders/(\d+)/buyers/([a-zA-Z]+)'] = function ($product_type, $id)
 // {

@@ -24,12 +24,13 @@ class User extends APIAuth
     }
 
     /**
-     * SHOW | GET method.
+     * SHOW Profile of user | GET method.
      *
      * @return Response
      */
-    public function index_get($userId)
+    public function index_get()
     {
+        $userId = $this->getUserId();
         $qSeller = $this->db->get_where("sellers", ["seller_id" => $userId]);
         $oSeller = $qSeller->row();
 
@@ -159,6 +160,7 @@ class User extends APIAuth
                 $qOptions = $this->db->get_where("seller_pro_info_options", ["seller_pro_info_id" => $proInfoId]);
                 $cOptions = $qOptions->num_rows();
 
+                $occupations[$key]['category_id'] = $categoryId;
                 $occupations[$key]['category_title'] = $catTitle;
                 $occupations[$key]['start_datte'] = $proRow->start_date;
                 $occupations[$key]['end_date'] = $proRow->end_date;
@@ -179,6 +181,7 @@ class User extends APIAuth
                 $row_skill = $get_skill->row();
                 $skill_title = $row_skill->skill_title;
 
+                $skills[$key]['skill_id'] = $skill_id;
                 $skills[$key]['title'] = $skill_title;
                 $skills[$key]['level'] = $skill_level;
             }
@@ -190,8 +193,14 @@ class User extends APIAuth
         $this->response($data, 200);
     }
 
-    public function changePassword_post($userId)
+    /**
+     * Change password
+     *
+     * @return void
+     */
+    public function changePassword_post()
     {
+        $userId = $this->getUserId();
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[7]');
         $this->form_validation->set_rules('password_confirm', 'Confirm Password', 'trim|required|matches[password]');
 
@@ -225,5 +234,170 @@ class User extends APIAuth
         $statusCode = 200;
 
         return $this->response($data, $statusCode);
+    }
+
+    /**
+     * Update profile
+     *
+     * @return void
+     */
+    public function changeProfile_post()
+    {
+        $this->form_validation->set_rules('seller_name', 'Full Name', 'trim|required');
+        $this->form_validation->set_rules('seller_country', 'Country', 'trim|required');
+        $this->form_validation->set_rules('seller_language', 'seller_language', 'trim|required|numeric');
+
+        if ($this->form_validation->run() === false) {
+            // validation not ok, send validation errors to the view
+            $this->response([$this->form_validation->error_array()], 422);
+        }
+
+        $userId = $this->getUserId();
+        $qSeller = $this->db->get_where("sellers", ["seller_id" => $userId]);
+        $oSeller = $qSeller->row();
+
+        // get form data
+        $input = $this->input->post();
+        if (isset($input["seller_phone"])) {
+            $input['seller_phone'] = $input['country_code'].' '.$input["seller_phone"];
+        }
+
+        unset($input['country_code']);
+        unset($input['seller_phone']);
+        unset($input['user_status']);
+        $input['status'] = 0;
+        $input['seller_id'] = $userId;
+
+        $qSellerTmp = $this->db->get_where("sellers_profile_tmp", ["seller_id" => $userId]);
+        $oSellerTmp = $qSellerTmp->row();
+
+        if ($oSellerTmp) {
+            $this->db->where('seller_id', $userId);
+            $this->db->update('sellers_profile_tmp', $input);
+        }
+        else {
+            $this->db->insert('sellers_profile_tmp', $input);
+        }
+        $data['message'] = "Profile updated successfully!";
+        $data['status'] = TRUE;
+        $statusCode = 200;
+
+        return $this->response($data, $statusCode);
+    }
+
+    public function changeProfessional_post($type)
+    {
+        $userId = $this->getUserId();
+        $inserted = 0;
+        $formStatus = $this->input->post("form_status");
+
+        $data['message'] = "No records";
+        $data['status'] = FALSE;
+
+        // occupations
+        if ($type == 'occupations') {
+            $occupations = $this->input->post("occupation");
+
+            if (count($occupations) > 0) {
+                 // delete
+                if (!is_null($formStatus)) {
+                    $sql = "DELETE spi, spio FROM seller_pro_info spi LEFT JOIN seller_pro_info_options spio ON spi.id = spio.seller_pro_info_id WHERE spi.seller_id = ?;";
+                    $this->db->query($sql, [$userId]);
+                }
+
+                foreach ($occupations as $key => $occupation) {
+                    $form = [];
+                    $form['category_id'] = $occupation['category_id'];
+                    $form['start_date'] = $occupation['start_date'];
+                    $form['end_date'] = $occupation['end_date'];
+                    $form['status'] = 0;
+                    $form['seller_id'] = $userId;
+
+                    $insertForm = $this->db->insert("seller_pro_info", $form);
+
+                    if ($insertForm) {
+                        $newId = $this->db->insert_id();
+                        $options = isset($occupation['option_id']) ? $occupation['option_id'] : false;
+
+                        if ($options) {
+                            foreach ($options as $j => $option) {
+                                $optionForm = ["seller_pro_info_id" => $newId];
+                                $optionForm['professional_info_id'] = $option;
+
+                                $this->db->insert("seller_pro_info_options", $optionForm);
+                                $inserted++;
+                            }
+                        }
+                        $inserted++;
+                    }
+                }
+
+                if ($formStatus == 1) {
+                    $this->db->where('seller_id', $userId);
+                    $this->db->update('seller_profile_weights', ['professional_weight' => null]);
+                }
+            }
+
+        } else if ($type == 'skills') {
+            $formSkills = $this->input->post("skills");
+            $skillsTotalForm = count($formSkills);
+
+            $qSeller = $this->db->get_where("sellers", ["seller_id" => $userId]);
+            $oSeller = $qSeller->row();
+            $skills = $oSeller->skills;
+
+            if (count($formSkills) > 0) {
+                $query = $this->db->where('seller_id', $userId)->get('skills_relation');
+                $skillsTotalAdded = $query->num_rows();
+
+                $skillsTotalCanAdd = $skillsTotalAdded > 0 ? $skillsTotalForm - $skillsTotalAdded : $skillsTotalForm;
+
+                // If skills exceeds avaiable quota
+                if ($skillsTotalCanAdd > $skills) {
+                    $data['message'] = "Available No of skills quota exceeds.";
+                } else {
+                    $skillError = [];
+                    foreach ($formSkills as $key => $skill) {
+                        $skillId = $skill['id'];
+                        $skillLevel = $skill['level'];
+
+                        if ($skillId == "custom") {
+                            $skillName = $this->input->post('skill_name');
+                            $query = $this->db->where('skill_title', $skillName)->get('seller_skills');
+                            $count = $query->num_rows();
+
+                            if ($count == 1) {
+                                $skillError ='skill_already_added';
+                            } else {
+                                $insertSkill = $this->db->insert("seller_skills", ["skill_title" => $skillName]);
+                                $skillId = $this->db->insert_id();
+                                $inserted++;
+                            }
+                        } else {
+                            $query = $this->db->where('seller_id', $userId)->where('skill_id', $skillId)->get('skills_relation');
+                            $skillCountAlready = $query->num_rows();
+
+                            // Add only if new found
+                            if ($skillCountAlready == 0) {
+                                $sForm = [
+                                    "skill_id" => $skillId,
+                                    "skill_level" => $skillLevel,
+                                    "seller_id" => $userId,
+                                ];
+                                $this->db->insert("skills_relation", $sForm);
+                                $inserted++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($inserted > 0) {
+            $data['message'] = "Data updated successfully";
+            $data['status'] = TRUE;
+        }
+
+        $this->response( $data, 200 );
     }
 }
