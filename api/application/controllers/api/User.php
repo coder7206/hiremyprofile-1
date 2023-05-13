@@ -400,4 +400,157 @@ class User extends APIAuth
 
         $this->response( $data, 200 );
     }
+
+    /**
+     * Get user favorites proposals
+     *
+     * @return void
+     */
+    public function favorite_get()
+    {
+        $userId = $this->getUserId();
+        $this->db->where('seller_id', $userId);
+        $query = $this->db->get('favorites');
+
+        $rowCount = $query->num_rows();
+        $data['message'] = "No records";
+        $data['status'] = FALSE;
+
+        if ($rowCount > 0) {
+            $rows = $query->result();
+            $data['message'] = "Data fetched successfully";
+            $data['status'] = TRUE;
+
+            $res = [];
+            foreach ($rows as $key => $row) {
+                $favoriteProposalId = $row->proposal_id;
+                $this->db->where('proposal_id', $favoriteProposalId);
+                $rowProposal = $this->db->get('proposals')->row();
+
+                $proposalId = $rowProposal->proposal_id;
+                $proposalTitle = $rowProposal->proposal_title;
+                $proposalPrice = $rowProposal->proposal_price;
+
+                if ($proposalPrice == 0) {
+                    $this->db->where('proposal_id', $proposalId);
+                    $this->db->where('package_name', 'Basic');
+                    $getP1 = $this->db->get('proposal_packages')->row();
+                    $proposalPrice = $getP1->price;
+                }
+
+                $proposalImg1 = getImageUrl2("proposals", "proposal_img1", $rowProposal->proposal_img1);
+                $proposalVideo = $rowProposal->proposal_video;
+                $proposalSellerId = $rowProposal->proposal_seller_id;
+                $proposalRating = $rowProposal->proposal_rating;
+                $proposalUrl = $rowProposal->proposal_url;
+                $proposalFeatured = $rowProposal->proposal_featured;
+                $proposalEnableReferrals = $rowProposal->proposal_enable_referrals;
+                $proposalReferralMoney = $rowProposal->proposal_referral_money;
+
+                $this->db->where('seller_id', $proposalSellerId);
+                $rowSeller = $this->db->get('sellers')->row();
+
+                $sellerUserName = $rowSeller->seller_user_name;
+                $sellerImage = getImageUrl2("sellers", "seller_image", $rowSeller->seller_image);
+                $sellerLevel = $rowSeller->seller_level;
+                $sellerStatus = $rowSeller->seller_status;
+                if (empty($sellerImage)) {
+                    $sellerImage = "empty-image.png";
+                }
+
+                $proposalReviews = [];
+                $this->db->where('proposal_id', $proposalId);
+                $rowReviews = $this->db->get('buyer_reviews');
+
+                $countReviews = $rowReviews->num_rows();
+                foreach ($rowReviews->result() as $rowReview) {
+                    $proposalBuyerRating = $rowReview->buyer_rating;
+                    array_push($proposalReviews, $proposalBuyerRating);
+                }
+
+                $total = array_sum($proposalReviews);
+                $averageRating = $total == 0 ? 0 : $total / count($proposalReviews);
+
+                $this->db->where('proposal_id', $proposalId);
+                $this->db->where('seller_id', $userId);
+                $countFavorites = $this->db->get('favorites')->num_rows();
+
+                $res[$key] = new stdClass;
+                $res[$key]->proposal_id = $proposalId;
+                $res[$key]->proposal_title = $proposalTitle;
+                $res[$key]->proposal_price = $proposalPrice;
+                $res[$key]->proposal_img1 = $proposalImg1;
+                $res[$key]->proposal_featured = $proposalFeatured;
+                $res[$key]->proposal_enable_referrals = $proposalEnableReferrals;
+                $res[$key]->proposal_referral_money = $proposalReferralMoney;
+                $res[$key]->seller = [
+                    'seller_id' => $proposalSellerId,
+                    'seller_user_name' => $sellerUserName,
+                    'seller_image' => $sellerImage,
+                    'seller_level' => $sellerLevel,
+                ];
+                $res[$key]->reviews = [
+                    'fovorite_by_me' => $countFavorites,
+                    'total_reviews' => $total,
+                    'average_rating' => $averageRating,
+                ];
+            }
+
+            $data['data'] = $res;
+        }
+
+        $this->response( $data, 200 );
+
+    }
+
+    /**
+     * Add favorites
+     *
+     * @return void
+     */
+    public function favorite_post()
+    {
+        $this->form_validation->set_rules('proposal_id', 'Proposal Id', 'trim|required|numeric');
+
+        if ($this->form_validation->run() === false) {
+            // validation not ok, send validation errors to the view
+            $this->response([$this->form_validation->error_array()], 422);
+        }
+        $userId = $this->getUserId();
+        $proposalId = $this->input->post('proposal_id');
+
+        $this->db->where('proposal_id', $proposalId);
+        $this->db->where('seller_id', $userId);
+        $query = $this->db->get('favorites');
+
+        if ($query->num_rows() == 0 ) {
+            $this->db->insert("favorites", ["seller_id" => $userId,"proposal_id" => $proposalId]);
+        }
+        $data['message'] = "Data added successfully";
+        $data['status'] = TRUE;
+
+        $this->response( $data, 201 );
+    }
+
+    /**
+     * Remove favorites
+     *
+     * @param int $proposalId
+     * @return void
+     */
+    public function favorite_delete($proposalId)
+    {
+        $userId = $this->getUserId();
+        $this->db->where('proposal_id', $proposalId);
+        $this->db->where('seller_id', $userId);
+        $query = $this->db->get('favorites');
+
+        if ($query->num_rows() > 0 ) {
+            $this->db->delete("favorites", ["seller_id" => $userId,"proposal_id" => $proposalId]);
+        }
+        $data['message'] = "Data deleted successfully";
+        $data['status'] = TRUE;
+
+        $this->response( $data, 200 );
+    }
 }

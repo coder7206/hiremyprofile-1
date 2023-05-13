@@ -132,6 +132,10 @@ $route['v1/occupations/skills'] = 'api/Helper/occupationsSkill';
 // User professional
 $route['v1/users/professionals/([a-zA-Z]+)'] = 'api/User/changeProfessional/$1';
 
+// Favorites
+$route['v1/users/favorites'] = 'api/User/favorite';
+$route['v1/users/favorites/(:num)']['DELETE'] = 'api/User/favorite/$1';
+
 // $route['v1/orders/(\d+)/buyers/([a-zA-Z]+)'] = function ($product_type, $id)
 // {
 //         return 'order/orderBuyer/' . strtolower($product_type) . '/' . $id;
