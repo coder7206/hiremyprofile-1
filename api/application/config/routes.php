@@ -83,7 +83,11 @@ $route['v1/requests/(:num)/buyers/(:num)/offers']['GET'] = 'api/Request/requestO
 // Membership
 $route['v1/memberships/(:num)'] = 'api/Membership/membershipData/$1';
 
+// Reviews
+$route['v1/proposals/(:num)/reviews'] = 'api/Review/$1';
+
 // Proposals
+$route['v1/proposals/(:num)'] = 'api/Proposal/getDetail/$1';
 $route['v1/proposals/(:num)/([a-z]+)'] = 'api/Proposal/$1/$2';
 $route['v1/proposals/(:num)/(:num)/([a-z]+)']['PUT'] = 'api/Proposal/updateStatus/$1/$2/$3';
 // Coupons
@@ -93,6 +97,7 @@ $route['v1/proposals/(:num)/(:num)/coupons/(:num)']['PUT'] = 'api/Coupon/$1/$2/$
 $route['v1/proposals/(:num)/(:num)/coupons/(:num)']['DELETE'] = 'api/Coupon/$1/$2/$3';
 // Referrals
 $route['v1/proposals/(:num)/(:num)/referrals'] = 'api/Referral/$1/$2';
+
 
 // Purchases
 $route['v1/purchases/(:num)'] = 'api/Purchase/$1';

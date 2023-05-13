@@ -153,4 +153,28 @@ class Proposal extends APIAuth
 
         return $this->response($data, $statusCode);
     }
+
+    /**
+     * Get proposal detail
+     *
+     * @param [type] $proposalId
+     * @return void
+     */
+    public function getDetail_get($proposalId)
+    {
+        $this->db->where('proposal_id', $proposalId);
+        $this->db->where('proposal_status', 'active');
+        $proposal = $this->db->get('proposals')->row();
+
+        $data['message'] = "No records";
+        $data['status'] = FALSE;
+
+        if ($proposal) {
+            $data['message'] = "Data fetched successfully";
+            $data['status'] = TRUE;
+            $data['data'] = $proposal;
+        }
+
+        $this->response( $data, 200 );
+    }
 }
