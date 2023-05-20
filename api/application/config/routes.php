@@ -79,6 +79,10 @@ $route['v1/requests/(:num)/buyers/(:num)/([a-z]+)']['PUT'] = 'api/Request/update
 $route['v1/requests/(:num)/buyers/([a-z]+)']['GET'] = 'api/Request/sellerManageRequest/$1/$2';
 $route['v1/requests/(:num)/buyers/(:num)']['DELETE'] = 'api/Request/$1/$2';
 $route['v1/requests/(:num)/buyers/(:num)/offers']['GET'] = 'api/Request/requestOffers/$1/$2';
+$route['v1/requests/(:num)/my-offers']['GET'] = 'api/Request/myOffersInRequest/$1';
+$route['v1/requests/(:num)/my-offers']['POST'] = 'api/Request/addMyOffersInRequest/$1';
+$route['v1/requests/(:num)/my-offers']['PUT'] = 'api/Request/updateMyOffersInRequest/$1';
+$route['v1/requests/(:num)/my-offers']['DELETE'] = 'api/Request/deleteMyOffersInRequest/$1';
 
 // Membership
 $route['v1/memberships/(:num)'] = 'api/Membership/membershipData/$1';

@@ -381,4 +381,162 @@ class Request extends APIAuth
 
         $this->response($data, $status);
     }
+
+     /**
+     * Get my available offers | GET method.
+     *
+     * @return Response
+     */
+    public function myOffersInRequest_get($requestId)
+    {
+        $userId = $this->getUserId();
+
+        $this->db->where('proposal_seller_id', $userId);
+        $this->db->where('proposal_status', "active");
+        $query = $this->db->get('proposals');
+
+        $rowCount = $query->num_rows();
+        $data['message'] = "No records";
+        $data['status'] = FALSE;
+
+        if ($rowCount > 0) {
+            $rows = $query->result();
+            $data['message'] = "Data fetched successfully";
+            $data['status'] = TRUE;
+
+            $res = [];
+            foreach ($rows as $key => $row) {
+                $res[$key] = new stdClass;
+                $res[$key]->proposal_id = $row->proposal_id;
+                $res[$key]->proposal_title = $row->proposal_title;
+                $res[$key]->proposal_img1 = getImageUrl2("proposals", "proposal_img1", $row->proposal_img1);
+            }
+            $data['data'] = $res;
+        }
+
+        $this->response( $data, 200 );
+    }
+
+    /**
+     * Post send offer | POST method.
+     *
+     * @return Response
+     */
+    public function addMyOffersInRequest_post($requestId)
+    {
+        $this->form_validation->set_rules('request_id', 'Request Id', 'trim|required|numeric');
+        $this->form_validation->set_rules('proposal_id', 'Proposal Id', 'trim|required|numeric');
+        $this->form_validation->set_rules('description', 'Description', 'trim|required');
+        $this->form_validation->set_rules('delivery_time', 'Delivery Time', 'trim|required');
+        $this->form_validation->set_rules('amount', 'Amount', 'trim|required');
+
+        if ($this->form_validation->run() === false) {
+            // validation not ok, send validation errors to the view
+            $this->response([$this->form_validation->error_array()], 422);
+        }
+
+        $userId = $this->getUserId();
+
+        $proposalId = $this->input->post('proposal_id');
+        $requestId = $this->input->post('request_id');
+        $description = $this->input->post('description');
+        $deliveryTime = $this->input->post('delivery_time');
+        $amount = $this->input->post('amount');
+
+        $getRequest = $this->db->get_where("buyer_requests", ["request_id" => $requestId]);
+        $rowRequest = $getRequest->row();
+        $sellerId = $rowRequest->seller_id;
+
+        $selectBuyer = $this->db->get_where("sellers", ["seller_id" => $sellerId]);
+        $rowBuyer = $selectBuyer->row();
+        $buyerUserName = $rowBuyer->seller_user_name;
+        $buyerEmail = $rowBuyer->seller_email;
+
+        $nDate = date("F d, Y");
+
+        $this->db->insert("notifications", [
+            "receiver_id" => $sellerId,
+            "sender_id" => $userId,
+            "order_id" => $requestId,
+            "reason" => "offer",
+            "date" => $nDate,
+            "status" => "unread"
+        ]);
+
+        $this->db->insert("send_offers", [
+            "request_id" => $requestId,
+            "sender_id" => $userId,
+            "proposal_id" => $proposalId,
+            "description" => $description,
+            "delivery_time" => $deliveryTime,
+            "amount" => $amount,
+            "status" => 'active'
+        ]);
+
+        $this->db->set('seller_offers', 'seller_offers-1');
+        $this->db->where('seller_id', $userId);
+        $this->db->update('sellers');
+
+        $data['message'] = "Your offer has been submitted successfully.";
+        $data['status'] = TRUE;
+        $statusCode = 201;
+
+        return $this->response($data, $statusCode);
+    }
+
+    /**
+     * Edit send offer | PUT method.
+     *
+     * @return Response
+     */
+    public function updateMyOffersInRequest_put($offerId)
+    {
+        $this->form_validation->set_rules('request_id', 'Request Id', 'trim|required|numeric');
+        $this->form_validation->set_rules('proposal_id', 'Proposal Id', 'trim|required|numeric');
+        $this->form_validation->set_rules('description', 'Description', 'trim|required');
+        $this->form_validation->set_rules('delivery_time', 'Delivery Time', 'trim|required');
+        $this->form_validation->set_rules('amount', 'Amount', 'trim|required');
+
+        if ($this->form_validation->run() === false) {
+            // validation not ok, send validation errors to the view
+            $this->response([$this->form_validation->error_array()], 422);
+        }
+
+        $proposalId = $this->input->post('proposal_id');
+        $requestId = $this->input->post('request_id');
+        $description = $this->input->post('description');
+        $deliveryTime = $this->input->post('delivery_time');
+        $amount = $this->input->post('amount');
+
+        $updateData = [
+            "description" => $description,
+            "delivery_time" => $deliveryTime,
+            "amount" => $amount,
+        ];
+
+        $this->db->where('offer_id', $offerId);
+        $this->db->update('send_offers', $updateData);
+
+        $data['message'] = "Proposal offer updated successfully!";
+        $data['status'] = TRUE;
+        $statusCode = 200;
+
+        return $this->response($data, $statusCode);
+    }
+
+    /**
+     * Delete send offer | PUT method.
+     *
+     * @return Response
+     */
+    public function deleteMyOffersInRequest($offerId)
+    {
+        $data['message'] = "Proposal offer deleted successfully!";
+        $data['status'] = TRUE;
+        $statusCode = 200;
+
+        $this->db->delete('send_offers', array('offer_id' => $offerId));
+
+        return $this->response($data, $statusCode);
+    }
 }
