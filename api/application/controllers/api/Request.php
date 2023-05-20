@@ -539,4 +539,54 @@ class Request extends APIAuth
 
         return $this->response($data, $statusCode);
     }
+
+    /**
+     * Add job post | POST method.
+     *
+     * @return Response
+     */
+    public function addRequest_post()
+    {
+        $this->form_validation->set_rules('request_title', 'Title', 'trim|required');
+        $this->form_validation->set_rules('request_description', 'Description', 'trim|required');
+        $this->form_validation->set_rules('cat_id', 'Category Id', 'trim|required|numeric');
+        $this->form_validation->set_rules('child_id', 'Sub category Id', 'trim|required|numeric');
+        $this->form_validation->set_rules('delivery_time', 'Delivery Time', 'trim|required');
+        $this->form_validation->set_rules('amount', 'Amount', 'trim|required');
+
+        if ($this->form_validation->run() === false) {
+            // validation not ok, send validation errors to the view
+            $this->response([$this->form_validation->error_array()], 422);
+        }
+        $userId = $this->getUserId();
+
+        $requestTitle = $this->input->post('request_title');
+        $requestDescription = $this->input->post('request_description');
+        $catId = $this->input->post('cat_id');
+        $childId = $this->input->post('child_id');
+        $deliveryTime = $this->input->post('delivery_time');
+        $amount = $this->input->post('amount');
+        $requestDate = date("F d, Y");
+        $requestFile = "";
+
+        $this->db->insert("buyer_requests", [
+            "seller_id" => $userId,
+            "cat_id" => $catId,
+            "child_id" => $childId,
+            "request_title" => $requestTitle,
+            "request_description" => $requestDescription,
+            "request_file" => $requestFile,
+            "delivery_time" => $deliveryTime,
+            "request_budget" => $amount,
+            "request_date" => $requestDate,
+            "request_status" => 'pending'
+        ]);
+
+        $data['message'] = "Your request has been submitted successfully!";
+        $data['status'] = TRUE;
+
+        $statusCode = 201;
+
+        return $this->response($data, $statusCode);
+    }
 }

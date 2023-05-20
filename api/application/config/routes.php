@@ -83,6 +83,7 @@ $route['v1/requests/(:num)/my-offers']['GET'] = 'api/Request/myOffersInRequest/$
 $route['v1/requests/(:num)/my-offers']['POST'] = 'api/Request/addMyOffersInRequest/$1';
 $route['v1/requests/(:num)/my-offers']['PUT'] = 'api/Request/updateMyOffersInRequest/$1';
 $route['v1/requests/(:num)/my-offers']['DELETE'] = 'api/Request/deleteMyOffersInRequest/$1';
+$route['v1/requests']['POST'] = 'api/Request/addRequest';
 
 // Membership
 $route['v1/memberships/(:num)'] = 'api/Membership/membershipData/$1';
