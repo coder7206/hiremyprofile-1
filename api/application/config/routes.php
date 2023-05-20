@@ -54,10 +54,6 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 /* API */
-// $route['product'] = 'api/Product';
-// $route['product/(:any)'] = 'api/Product/$1';
-// $route['product/(:num)']['PUT'] = 'api/Product/$1';
-// $route['product/(:num)']['DELETE'] = 'api/Product/$1';
 $route['v1/register'] = 'api/Auth/register';
 $route['v1/password/reset-request'] = 'api/Auth/passwordResetRequest';
 // $route['v1/password'] = 'api/Auth/register';
@@ -95,6 +91,9 @@ $route['v1/proposals/(:num)/reviews'] = 'api/Review/$1';
 $route['v1/proposals/(:num)'] = 'api/Proposal/getDetail/$1';
 $route['v1/proposals/(:num)/([a-z]+)'] = 'api/Proposal/$1/$2';
 $route['v1/proposals/(:num)/(:num)/([a-z]+)']['PUT'] = 'api/Proposal/updateStatus/$1/$2/$3';
+$route['v1/proposals']['POST'] = 'api/Proposal';
+$route['v1/proposals/edit/(:num)']['GET'] = 'api/Proposal/getEditProposalDetail/$1';
+$route['v1/proposals/edit/(:num)']['POST'] = 'api/Proposal/editProposal/$1';
 // Coupons
 $route['v1/proposals/(:num)/(:num)/coupons'] = 'api/Coupon/$1/$2';
 $route['v1/proposals/(:num)/(:num)/coupons'] = 'api/Coupon/$1/$2';
@@ -149,12 +148,3 @@ $route['v1/users/favorites/(:num)']['DELETE'] = 'api/User/favorite/$1';
 // Notifications
 $route['v1/users/notifications'] = 'api/User/notification';
 $route['v1/users/notifications/(:num)']['DELETE'] = 'api/User/notification/$1';
-
-// $route['v1/orders/(\d+)/buyers/([a-zA-Z]+)'] = function ($product_type, $id)
-// {
-//         return 'order/orderBuyer/' . strtolower($product_type) . '/' . $id;
-// };
-// $route['v1/orders/(\d+)/buyers/([a-zA-Z]+)'] = function ($sellerId, $status) {
-//     // echo "heoo";
-//     return 'order/orderBuyer_get';
-// };
