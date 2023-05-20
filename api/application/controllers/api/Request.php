@@ -535,7 +535,7 @@ class Request extends APIAuth
         $data['status'] = TRUE;
         $statusCode = 200;
 
-        $this->db->delete('send_offers', array('offer_id' => $offerId));
+        $this->db->delete('send_offers', ['offer_id' => $offerId]);
 
         return $this->response($data, $statusCode);
     }

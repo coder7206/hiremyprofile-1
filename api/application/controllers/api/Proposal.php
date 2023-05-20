@@ -176,6 +176,44 @@ class Proposal extends APIAuth
     }
 
     /**
+     * Delete proposal | DELTE method.
+     *
+     * @return Response
+     */
+    public function index_delete($proposalId)
+    {
+        $data['message'] = "No records";
+        $data['status'] = FALSE;
+        $userId = $this->getUserId();
+
+        $this->db->where('proposal_id', $proposalId);
+        $this->db->where('proposal_seller_id', $userId);
+        $proposal = $this->db->get('proposals')->row();
+
+        if ($proposal) {
+            $countOrders = $this->db->get_where("orders", ["proposal_id" => $proposalId]);
+            $qOrders = $this->db->query("SELECT * FROM orders WHERE proposal_id={$proposalId} AND order_active='yes' AND order_status IN ('progress', 'pending')");
+
+            if ($qOrders->num_rows() > 0) {
+                $data['message'] = "This proposal has pending or progressing order so can not delete.";
+            } else {
+                $updateData = [
+                    "proposal_status" => 'deleted',
+                ];
+
+                $this->db->where('proposal_id', $proposalId);
+                $this->db->update('proposals', $updateData);
+
+                $this->db->delete('top_proposals', ['proposal_id' => $proposalId]);
+
+                $data['message'] = "One proposal has been deleted.";
+                $data['status'] = TRUE;
+            }
+        }
+        $this->response($data, 200);
+    }
+
+    /**
      * UPDATE Status [PAUSE/approve] | PUT method.
      * approval: Submit for approval
      *

@@ -94,6 +94,8 @@ $route['v1/proposals/(:num)/(:num)/([a-z]+)']['PUT'] = 'api/Proposal/updateStatu
 $route['v1/proposals']['POST'] = 'api/Proposal';
 $route['v1/proposals/edit/(:num)']['GET'] = 'api/Proposal/getEditProposalDetail/$1';
 $route['v1/proposals/edit/(:num)']['POST'] = 'api/Proposal/editProposal/$1';
+$route['v1/proposals/(:num)'] = 'api/Proposal/$1';
+
 // Coupons
 $route['v1/proposals/(:num)/(:num)/coupons'] = 'api/Coupon/$1/$2';
 $route['v1/proposals/(:num)/(:num)/coupons'] = 'api/Coupon/$1/$2';
