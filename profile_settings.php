@@ -221,7 +221,7 @@ if ($oSellerUpdate) {
 
 require 'admin/timezones.php';
 
-$phone_no = explode(" ", $login_seller_phone);
+$phone_no = explode(" ", $login_seller_phone ?? "");
 ?>
 <h5 class="mb-4"> Account Information</h5>
 <form method="post" class="clearfix mb-3">

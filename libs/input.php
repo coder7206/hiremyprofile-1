@@ -12,7 +12,7 @@ class Input
 		if (!empty($key)) {
 			if (is_array($_GET[$key])) {
 				$array = $this->secure($_GET[$key]);
-				return filter_var_array($array, FILTER_SANITIZE_STRING);
+				return filter_var_array($array, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 			} else {
 				return htmlspecialchars(filter_input(INPUT_GET, $key), ENT_COMPAT, 'UTF-8');
 			}
@@ -34,10 +34,10 @@ class Input
 				$array = $_POST[$data];
 			}
 			// $array = call_user_func_array('mb_convert_encoding',array($array,'HTML-ENTITIES','UTF-8'));
-			$array = filter_var_array($array, FILTER_SANITIZE_STRING);
+			$array = filter_var_array($array, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 			return $array;
 		} else {
-			$val = htmlspecialchars(filter_input(INPUT_POST, $data), ENT_COMPAT, 'UTF-8');
+			$val = htmlspecialchars(filter_input(INPUT_POST, $data) ?? "", ENT_COMPAT, 'UTF-8');
 			return $val;
 		}
 	}

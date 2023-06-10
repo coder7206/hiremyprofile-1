@@ -3,7 +3,7 @@
 session_start();
 require_once("includes/db.php");
 require_once("functions/mailer.php");
-require_once("social-config.php");
+// require_once("social-config.php");
 
 if (isset($_SESSION['seller_user_name'])) {
   $login_seller_user_name = $_SESSION['seller_user_name'];

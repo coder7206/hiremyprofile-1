@@ -1,4 +1,4 @@
-<?php 
+<?php
   @session_start();
 
   if(isset($_POST['proposal_id'])){
@@ -49,7 +49,7 @@
   <!-- tab rounded Ends -->
   <?php } ?>
   <div class="tab">
-    <?php 
+    <?php
 
     $form_errors = Flash::render("insert_extra_errors");
 
@@ -59,7 +59,7 @@
       <form action="#" method="post" class="add-extra">
         <div class="form-group">
           <input type="text" name="name" placeholder="Extra Name" class="form-control form-control-sm" required="">
-          <small class="form-text text-danger"><?= ucfirst(@$form_errors['name']); ?></small>
+          <small class="form-text text-danger"><?= ucfirst($form_errors['name'] ?? ""); ?></small>
         </div>
         <div class="form-group">
           <div class="input-group input-group-sm">
@@ -67,7 +67,7 @@
               <span class="input-group-addon"><?= $s_currency; ?></span>
             <input type="number" name="price" placeholder="Extra Price" class="form-control form-control-sm" required="">
           </div>
-          <small class="form-text text-danger"><?= ucfirst(@$form_errors['price']); ?></small>
+          <small class="form-text text-danger"><?= ucfirst($form_errors['price'] ?? ""); ?></small>
           <!--- input-group Ends --->
         </div>
         <div class="form-group mb-0">
@@ -85,12 +85,12 @@ $(document).ready(function(){
 
   function processInsertExtra(form_data, status){
     form_data.append('change_status', status);
-    $.ajax({      
+    $.ajax({
     method: "POST",
     url: "ajax/insert_extra",
     data: form_data,
     async: false,cache: false,contentType: false,processData: false
-          
+
     }).done(function(data){
 
       $('#wait').removeClass("loader");
@@ -118,7 +118,7 @@ $(document).ready(function(){
           confirmButtonText: "Yes, I understand continue.",
           closeOnConfirm: false
         }).then(function (isConfirm) {
-            if(isConfirm.dismiss == 'cancel'){            
+            if(isConfirm.dismiss == 'cancel'){
               return;
             }else if (isConfirm.value == true){
               processInsertExtra(form_data, status);
@@ -138,11 +138,11 @@ $(document).ready(function(){
       url: "ajax/check/insert_extra",
       dataType:'json',
       data: form_data,
-      async: false,cache: false,contentType: false,processData: false            
+      async: false,cache: false,contentType: false,processData: false
       }).done(function(data){
         if(data === true){
-          $('#wait').removeClass("loader");        
-          insertExtra(form_data, data);        
+          $('#wait').removeClass("loader");
+          insertExtra(form_data, data);
         }else{
           processInsertExtra(form_data, data);
         }
@@ -162,12 +162,12 @@ $(document).ready(function(){
       $('#wait').addClass("loader");
 
       $.ajax({
-        
+
         method: "POST",
         url: "ajax/edit_extra",
         data: form_data,
         async: false,cache: false,contentType: false,processData: false
-              
+
       }).done(function(data){
 
         id = f_data[0].value;
@@ -187,15 +187,15 @@ $(document).ready(function(){
     });
 
     function processDeleteExtra(main, id, status){
-      $.ajax({        
+      $.ajax({
         method: "POST",
         url: "ajax/delete_extra",
         data: {proposal_id : <?= $proposal_id; ?>, id : id, change_status: status},
         success : function(data){
           main.remove();
           $('#wait').removeClass("loader");
-        }      
-      });      
+        }
+      });
     }
 
     function deleteExtra(main, id, status){
@@ -209,13 +209,13 @@ $(document).ready(function(){
             confirmButtonText: "Yes, I understand continue.",
             closeOnConfirm: false
           }).then(function (isConfirm) {
-              if(isConfirm.dismiss == 'cancel'){            
+              if(isConfirm.dismiss == 'cancel'){
                 return;
               }else if (isConfirm.value == true){
                 processDeleteExtra(main, id, status);
               }
           });
-       }      
+       }
     }
 
     $(".delete-extra").on('click',function(){
@@ -223,19 +223,19 @@ $(document).ready(function(){
       var id = $(this).parent().parent().find("input[name='id']").val();
       var main = $(this).parent().parent().parent().parent();
       $('#wait').addClass("loader");
-      $.ajax({        
+      $.ajax({
         method: "POST",
         url: "ajax/check/delete_extra",
         dataType: 'json',
         data: {proposal_id : <?= $proposal_id; ?>},
         success : function(data){
-          if(data === true){            
+          if(data === true){
             $('#wait').removeClass("loader");
-            deleteExtra(main, id, data);        
-          }else{            
+            deleteExtra(main, id, data);
+          }else{
             processDeleteExtra(main, id, data);
           }
-        }      
+        }
       });
     });
 

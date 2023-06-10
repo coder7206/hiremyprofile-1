@@ -519,7 +519,7 @@
                                 "uninversity" => $university,
                                 "year" => $year_of_graduation,
                                 "user_id" => $seller_id,
-                                "created_at" => date(),
+                                "created_at" => date("Y-m-d H:i:s"),
                             ));
                             if ($insert_skill) {
                                 echo '<script>alert("Education Added Successfully")</script>';
@@ -542,7 +542,7 @@
             $select_skills_relation = $db->select("education", array("user_id" => $seller_id));
             while ($row_skills_relation = $select_skills_relation->fetch()) {
 
-                $relation_id = $row_skills_relation->country;
+                $relation_id = $row_skills_relation->Country;
 
                 $get_country = $db->select("countries", array("id" => $relation_id));
                 $gcountry = $get_country->fetch();

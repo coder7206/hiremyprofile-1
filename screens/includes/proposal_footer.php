@@ -58,7 +58,7 @@
 						array_push($proposal_reviews, $proposal_buyer_rating);
 					}
 					$total = array_sum($proposal_reviews);
-					@$average_rating = $total / count($proposal_reviews);
+					@$average_rating = $total ? $total / count($proposal_reviews) : 0;
 
 				?>
 					<?php
@@ -144,7 +144,7 @@
 							array_push($proposal_reviews, $proposal_buyer_rating);
 						}
 						$total = array_sum($proposal_reviews);
-						@$average_rating = $total / count($proposal_reviews);
+						@$average_rating = $total ? $total / count($proposal_reviews) : 0;
 						if ($count_proposals == 1) {
 
 					?>

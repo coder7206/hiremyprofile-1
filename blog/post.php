@@ -1,7 +1,7 @@
 <?php
   session_start();
   require_once("../includes/db.php");
-  require_once("../social-config.php");
+  // require_once("../social-config.php");
 ?>
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
@@ -30,12 +30,12 @@
   <script type="text/javascript" src="../js/ie.js"></script>
   <script type="text/javascript" src="../js/sweat_alert.js"></script>
   <script type="text/javascript" src="../js/jquery.min.js"></script>
-  
+
   <script src="//platform-api.sharethis.com/js/sharethis.js#property=5c812224d11c6a0011c485fd&product=inline-share-buttons"></script>
 
 </head>
 <body class="is-responsive blog">
-  
+
   <?php require_once("../includes/header.php"); ?>
 
   <header id="how_to"><!--- how_to Starts --->
@@ -48,7 +48,7 @@
   <br><br>
   <div class="container mb-5"><!--- container Starts --->
     <div class="row"><!--- row Starts --->
-      
+
       <div class="col-md-8 mb-4 <?=($lang_dir == "right" ? 'order-2 order-sm-1':'')?>"><!--- col-md-8 Starts --->
         <?php include("includes/single.php"); ?>
       </div><!--- col-md-8 Ends --->

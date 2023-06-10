@@ -197,7 +197,7 @@ $(document).ready(function () {
 
 		function update_last_activity() {
 			$.ajax({
-				url: base_url + "/includes/update_activity",
+				url: base_url + "/includes/update_activity?seller_id=" + seller_id,
 				success: function () { }
 			});
 		}

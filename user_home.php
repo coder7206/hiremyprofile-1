@@ -301,7 +301,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                         array_push($proposal_reviews, $proposal_buyer_rating);
                                                     }
                                                     $total = array_sum($proposal_reviews);
-                                                    @$average_rating = $total / count($proposal_reviews);
+                                                    @$average_rating = $total ? $total / count($proposal_reviews) : 0;
 
 
                                                     $get_delivery = $db->select("instant_deliveries", ['proposal_id' => $proposal_id]);

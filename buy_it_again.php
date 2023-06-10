@@ -1,10 +1,10 @@
 <div class="col-md-12 mt-3">
-  <?php 
+  <?php
     $select_orders = $db->query("select DISTINCT proposal_id from orders WHERE buyer_id='$login_seller_id' AND order_status='completed' AND EXISTS (SELECT * FROM proposals WHERE proposals.proposal_id = orders.proposal_id AND proposals.proposal_status='active')");
     $count_orders = $select_orders->rowCount();
     if($count_orders == 0){
       echo "<p class='text-muted'><i class='fa fa-frown-o'></i> {$lang['sidebar']['no_buy_it_again']} </p>";
-    }else{ 
+    }else{
       ?>
       <div class="row"><!-- The slideshow -->
           <?php
@@ -57,7 +57,7 @@
                 array_push($proposal_reviews,$proposal_buyer_rating);
               }
               $total = array_sum($proposal_reviews);
-              @$average_rating = $total/count($proposal_reviews);
+              @$average_rating = $total ? $total/count($proposal_reviews) : 0;
 
               $get_delivery = $db->select("instant_deliveries",['proposal_id'=>$proposal_id]);
               $row_delivery = $get_delivery->fetch();
@@ -127,7 +127,7 @@
               </div>
             <?php } ?>
           <?php } ?>
-        
+
       </div>
     <?php  } ?>
 </div>

@@ -2,7 +2,7 @@
 session_start();
 require_once("includes/db.php");
 require_once("functions/mailer.php");
-require_once("social-config.php");
+// require_once("social-config.php");
 if (isset($_GET['view_tickets'])) {
 	include_once('ticket_support/view_tickets.php');
 } elseif (isset($_GET['new_ticket'])) {

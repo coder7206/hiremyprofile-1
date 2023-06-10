@@ -74,7 +74,7 @@ $d_delivery_id = $row_proposal->delivery_id;
     </select>
     <small><?= $lang['edit_proposal']['pricing']['warning2']; ?></small>
   </div>
-  <small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_revisions']); ?></small>
+  <small class="form-text text-danger"><?= ucfirst($form_errors['proposal_revisions'] ?? ""); ?></small>
 </div><!--- form-group row Ends --->
 
 
@@ -95,7 +95,7 @@ $d_delivery_id = $row_proposal->delivery_id;
     </select>
     <small><?= $lang['edit_proposal']['pricing']['warning3']; ?></small>
   </div>
-  <small class="form-text text-danger"><?= ucfirst(@$form_errors['delivery_id']); ?></small>
+  <small class="form-text text-danger"><?= ucfirst($form_errors['delivery_id'] ?? ""); ?></small>
 </div><!--- form-group row Ends --->
 
 

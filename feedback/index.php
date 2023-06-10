@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once("../includes/db.php");
-require_once("../social-config.php");
+// require_once("../social-config.php");
 
 if (isset($_GET["delete_idea"])) {
   $id = $input->get('delete_idea');

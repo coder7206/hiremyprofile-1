@@ -2,7 +2,7 @@
 
 session_start();
 require_once("../includes/db.php");
-require_once("../social-config.php");
+// require_once("../social-config.php");
 require_once("../functions/functions.php");
 require_once("../functions/email.php");
 
@@ -123,7 +123,7 @@ while ($row_buyer_reviews = $select_buyer_reviews->fetch()) {
     array_push($proposal_reviews, $proposal_buyer_rating);
 }
 $total = array_sum($proposal_reviews);
-@$average_rating = $total / count($proposal_reviews);
+@$average_rating = $total ? $total / count($proposal_reviews) : 0;
 
 // Select Proposal Seller Details
 $select_proposal_seller = $db->select("sellers", array("seller_id" => $proposal_seller_id));

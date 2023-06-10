@@ -8,7 +8,7 @@ require_once("functions/functions.php");
 if (strpos($_SERVER["REQUEST_URI"], 'index') !== false) {
 	header("location: $site_url");
 }
-require_once("social-config.php");
+// require_once("social-config.php");
 $site_title = $row_general_settings->site_title;
 
 // FOR BOOKMARK

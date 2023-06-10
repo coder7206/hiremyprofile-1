@@ -176,7 +176,7 @@ if (isset($_POST['submit'])) {
         <div class="col-md-3"><?= $lang['label']['proposal_title']; ?></div>
         <div class="col-md-9">
             <textarea name="proposal_title" id="proposal_title" rows="3" required="" placeholder="I Will" class="form-control" minlength="50" maxlength="100"></textarea>
-            <small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_description']); ?></small>
+            <small class="form-text text-danger"><?= ucfirst($form_errors['proposal_description'] ?? ""); ?></small>
             <span class="text-dark d-block">min: 50 max: 100 characters <span class="pull-right"><i class="text-danger" id="typed-characters">0</i> characters</span></span>
         </div>
     </div>
@@ -201,7 +201,7 @@ if (isset($_POST['submit'])) {
                             } ?> value="<?= $cat_id; ?>"> <?= $cat_title; ?> </option>
                 <?php } ?>
             </select>
-            <small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_cat_id']); ?></small>
+            <small class="form-text text-danger"><?= ucfirst($form_errors['proposal_cat_id'] ?? ""); ?></small>
             <select name="proposal_child_id" id="sub-category" class="form-control" required="">
                 <option value="" class="hidden"> Select A Sub Category</option>
                 <?php if (@$form_data['proposal_child_id']) { ?>
@@ -239,7 +239,7 @@ while ($row_delivery_times = $get_delivery_times->fetch()) {
 <?php } ?>
 </select>
 </div>
-<small class="form-text text-danger"><?= ucfirst(@$form_errors['delivery_id']); ?></small> -->
+<small class="form-text text-danger"><?= ucfirst($form_errors['delivery_id'] ?? ""); ?></small> -->
     </div>
     <!--- form-group row Ends --->
 
@@ -257,7 +257,7 @@ while ($row_delivery_times = $get_delivery_times->fetch()) {
     </select>
     <small class="muted">Set this to 0 if this proposal is for instant delivery.</small>
   </div>
-  <small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_revisions']); ?></small> -->
+  <small class="form-text text-danger"><?= ucfirst($form_errors['proposal_revisions'] ?? ""); ?></small> -->
     </div>
     <!--- form-group row Ends --->
 
@@ -278,7 +278,7 @@ while ($row_delivery_times = $get_delivery_times->fetch()) {
                     <?php } ?>
                 </select>
                 <small>If enabled, other users can promote your proposal by sharing it on different platforms.</small>
-                <small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_enable_referrals']); ?></small>
+                <small class="form-text text-danger"><?= ucfirst($form_errors['proposal_enable_referrals'] ?? ""); ?></small>
             </div>
         </div>
         <!--- form-group row Ends --->
@@ -305,7 +305,7 @@ while ($row_delivery_times = $get_delivery_times->fetch()) {
             <input type="text" name="proposal_tags" class="form-control" data-role="tagsinput">
             <small>Press enter to add your own tags after adding word.</small>
             <br /><small>Enter at leaset 2 characters to get suggestions.</small>
-            <small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_tags']); ?></small>
+            <small class="form-text text-danger"><?= ucfirst($form_errors['proposal_tags'] ?? ""); ?></small>
         </div>
     </div>
     <!--- form-group row Ends --->

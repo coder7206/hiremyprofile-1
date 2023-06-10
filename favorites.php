@@ -146,7 +146,7 @@ $login_seller_image = getImageUrl2("sellers", "seller_image", $row_login_seller-
           array_push($proposal_reviews, $proposal_buyer_rating);
         }
         $total = array_sum($proposal_reviews);
-        @$average_rating = $total / count($proposal_reviews);
+        @$average_rating = $total ? $total / count($proposal_reviews) : 0;
         $count_favorites = $db->count("favorites", array("proposal_id" => $proposal_id, "seller_id" => $login_seller_id));
         if ($count_favorites == 0) {
           $show_favorite_class = "proposal-favorite";

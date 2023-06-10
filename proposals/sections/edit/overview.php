@@ -47,7 +47,7 @@ $child_title = $row_meta->child_title;
 		<div class="col-md-3"><?= $lang['label']['proposal_title']; ?></div>
 		<div class="col-md-9">
 			<textarea name="proposal_title" id="proposal_title" rows="2" placeholder="I Will" required="" class="form-control" minlength="50" maxlength="100"><?= $d_proposal_title; ?></textarea>
-			<small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_title']); ?></small>
+			<small class="form-text text-danger"><?= ucfirst($form_errors['proposal_title'] ?? ""); ?></small>
 			<span class="text-dark d-block">min: 50 max: 100 characters <span class="pull-right"><i class="text-danger" id="typed-characters"><?=strlen($d_proposal_title) ?></i> characters</span></span>
 		</div>
 	</div>
@@ -70,7 +70,7 @@ $child_title = $row_meta->child_title;
 					<option value="<?= $cat_id; ?>"> <?= $cat_title; ?> </option>
 				<?php } ?>
 			</select>
-			<small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_cat_id']); ?></small>
+			<small class="form-text text-danger"><?= ucfirst($form_errors['proposal_cat_id'] ?? ""); ?></small>
 			<select name="proposal_child_id" id="sub-category" class="form-control" required>
 				<option value="<?= $d_proposal_child_id; ?>" selected> <?= $child_title; ?> </option>
 				<?php
@@ -104,7 +104,7 @@ $child_title = $row_meta->child_title;
 				?>
 			</select>
 		</div>
-		<small class="form-text text-danger"><?= ucfirst(@$form_errors['delivery_id']); ?></small>
+		<small class="form-text text-danger"><?= ucfirst($form_errors['delivery_id'] ?? ""); ?></small>
 	</div>
 	<!--- form-group row Ends --->
 
@@ -121,7 +121,7 @@ $child_title = $row_meta->child_title;
 	    </select>
 	    <small class="muted">Set this to 0 if this proposal is for instant delivery.</small>
 	  </div>
-	  <small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_revisions']); ?></small> -->
+	  <small class="form-text text-danger"><?= ucfirst($form_errors['proposal_revisions'] ?? ""); ?></small> -->
 	</div>
 	<!--- form-group row Ends --->
 
@@ -165,7 +165,7 @@ $child_title = $row_meta->child_title;
             <small>Press enter to add your own tags after adding word.</small>
             <br /><small>Enter at leaset 2 characters to get suggestions.</small>
 		</div>
-		<small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_tags']); ?></small>
+		<small class="form-text text-danger"><?= ucfirst($form_errors['proposal_tags'] ?? ""); ?></small>
 	</div>
 	<!--- form-group row Ends --->
 
