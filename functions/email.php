@@ -234,3 +234,56 @@ function send_report_email($item_type,$author,$item_link,$date){
 	}
 
 }
+
+// extend request
+
+function send_delivery_extend_request($order_id,$order_number,$sender_id,$proposal_id,$seller_id,$buyer_id,$date){
+	global $db;
+	global $dir;
+	global $site_name;
+	global $site_email_address;
+	global $site_logo;
+	global $site_url;
+
+	$select_proposal = $db->select("proposals",array("proposal_id" => $proposal_id));
+	$row_proposal = $select_proposal->fetch();
+	$proposal_title = $row_proposal->proposal_title;
+
+	$select_buyer = $db->select("sellers",array("seller_id"=>$buyer_id));
+	$row_buyer = $select_buyer->fetch();
+	$buyer_user_name = $row_buyer->seller_user_name;
+
+	$select_seller = $db->select("sellers",array("seller_id"=>$seller_id));
+	$row_seller = $select_seller->fetch();
+	$seller_user_name = $row_seller->seller_user_name;
+
+	$select_sender = $db->select("sellers",array("seller_id"=>$sender_id));
+	$row_sender = $select_sender->fetch();
+	$sender_user_name = $row_sender->seller_user_name;
+
+	$get_admins = $db->select("admins");
+	while($row_admins = $get_admins->fetch()){
+		$admin_id = $row_admins->admin_id;
+		$admin_name = $row_admins->admin_name;
+		$admin_email = $row_admins->admin_email;
+
+		$data = [];
+		$data['template'] = "extendTimeRequest";
+		$data['to'] = $admin_email;
+		$data['subject'] = "$site_name - Extend Delivery Request";
+		$data['user_name'] = $admin_name;
+		$data['order_number'] = $order_number;
+		$data['proposal_title'] = $proposal_title;
+		$data['sender_user_name'] = $sender_user_name;
+		$data['seller_user_name'] = $seller_user_name;
+		$data['buyer_user_name'] = $buyer_user_name;
+		$data['date'] = $date;
+
+		if(send_mail($data)){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+}

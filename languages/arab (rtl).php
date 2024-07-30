@@ -7,7 +7,7 @@ $lang["freelancers_menu"] = "Freelancers";
 $lang["become_seller"] = "Become a Seller";
 $lang["sign_in"] = "Sign In";
 $lang["join_now"] = "Join Now";
-$lang["mobile_join_now"] = "Join";
+$lang["mobile_join_now"] = "Join Now";
 $lang['no_results'] = "No Results Found.";
 
 $lang['more'] = "More";
@@ -58,7 +58,7 @@ $lang["menu"]["logout"] = "Logout";
 
 
 /// Buttons
-$lang["search"]["placeholder"] = "Find Services";
+$lang["search"]["placeholder"] = "Find Services . . .";
 $lang["search"]["button"] = "Search";
 $lang["view_all"] = "VIEW ALL";
 $lang["see_all"] = "See All";
@@ -96,7 +96,7 @@ $lang["popup"]["view_dashboard"] = "View Dashboard";
 
 $lang["popup"]['knowledge_bank']['title'] = "Knowledge Bank";
 $lang["popup"]['knowledge_bank']['heading'] = "Our how to guides";
-$lang["popup"]['knowledge_bank']['all_articles'] = "All Articles:";
+$lang["popup"]['knowledge_bank']['all_articles'] = "What is Hiremyprofile :";
 $lang["popup"]['knowledge_bank']['search'] = "Search Results For ";
 $lang["popup"]['knowledge_bank']['no_results'] = "Sorry, we couldn't find any results for your search.";
 
@@ -161,7 +161,7 @@ $lang["sidebar"]["categories"] = "Categories";
 $lang["sidebar"]["delivery_time"] = "Delivery Time";
 $lang["sidebar"]["seller_skill"] = "Seller Skill";
 $lang["sidebar"]["seller_level"] = "Seller Level";
-$lang["sidebar"]["seller_lang"] = "Seller Lang";
+$lang["sidebar"]["seller_lang"] = "Seller Langauge";
 $lang["sidebar"]["clear_filter"] = "<i class='fa fa-times-circle'></i> Clear Filter";
 
 
@@ -395,7 +395,7 @@ $lang["cookie_box"]['button'] = "Got It.";
 
 /// Footer
 $lang["categories"] = "CATEGORIES";
-$lang["about"] = "ABOUT";
+$lang["about"] = "ABOUT US";
 $lang["find_us_on"] = "FIND US ON";
 $lang["mobile_apps"] = "Mobile Apps (Coming soon!)";
 
@@ -415,7 +415,7 @@ $lang['proposals']['add_video_description'] = "(Optional) Supported Video Extens
 $lang['proposals']['add_video'] = "Add Video";
 $lang['proposals']['remove_video'] = "Remove Video";
 
-// Gigtodo 2.0
+// HIREMYPROFILE 2.0
 
 $lang["pages"] = "PAGES";
 
@@ -465,7 +465,7 @@ $lang['label']['enable_notifications'] = "Enable Sliding Notifications";
 $lang['label']['enter_old_pass'] = "Enter Old Password";
 
 $lang['label']['select_enquiry'] = "Select Relevant Inquiry Subject";
-$lang['label']['select_enquiry2'] = "Select Inquiry Subject";
+$lang['label']['select_enquiry2'] = "Select Relevant Inquiry Subject";
 $lang['label']['subject'] = "Subject *";
 $lang['label']['message'] = "Message *";
 $lang['label']['order_number'] = "Order Number *";
@@ -498,7 +498,7 @@ $lang['placeholder']['full_name'] = "Enter Your Full Name";
 $lang['placeholder']['username'] = "Enter Your Username";
 $lang['placeholder']['email'] = "Enter Your Email";
 $lang['placeholder']['password'] = "Enter Your Password";
-$lang['placeholder']['password_confirm'] = "Enter Your Password Again";
+$lang['placeholder']['password_confirm'] = "Confirm Password";
 $lang['placeholder']['username_or_email'] = "Enter Your Username Or Email";
 $lang['placeholder']['search_username'] = "Search for a username";
 $lang['placeholder']['request_title'] = "Request Title";
@@ -616,8 +616,8 @@ $lang['th']['status'] = "Status";
 $lang['th']['order_summary'] = "ORDER SUMMARY";
 $lang['th']['order_date'] = "ORDER DATE";
 $lang['th']['due_on'] = "DUE ON";
-$lang['th']['total'] = "TOTAL";
-$lang['th']['status2'] = "STATUS";
+$lang['th']['total'] = "TOTAL ORDERS";
+$lang['th']['status2'] = "ORDERS STATUS";
 
 $lang['th']['proposal_title'] = "Proposal's Title";
 $lang['th']['proposal_price'] = "Proposal's Price";
@@ -709,7 +709,7 @@ $lang['settings']['account_deactivation'] = "ACCOUNT DEACTIVATION";
 $lang['settings']['please_withdraw'] = "Please withdraw your revenues before deactivating your account.";
 
 $lang['settings']['what_happens']['title'] = "What happens when you deactivate your account?";
-$lang['settings']['what_happens']['1'] = "Your profile and services won't be shown on Gigtodo anymore.";
+$lang['settings']['what_happens']['1'] = "Your profile and services won't be shown on hiremyprofile anymore.";
 $lang['settings']['what_happens']['2'] = "Any open orders will be canceled and refunded.";
 $lang['settings']['what_happens']['3'] = "You won't be able to re-activate your proposals/services.";
 $lang['settings']['what_happens']['4'] = "You won't be able to restore your account.";
@@ -873,7 +873,7 @@ $lang['inbox']['delete'] = "Delete";
 
 //// Manage Requests Page
 
-$lang['manage_requests']['no_active'] = "You've have no active requests at the moment.";
+$lang['manage_requests']['no_active'] = "You've no active requests at the moment.";
 $lang['manage_requests']['no_pause'] = "You currently have no requests paused.";
 $lang['manage_requests']['no_pending'] = "You currently have no requests pending.";
 $lang['manage_requests']['no_unapproved'] = "You currently have no unapproved requests.";
@@ -902,7 +902,7 @@ $lang['post_request']['column_4']['desc'] = "Enter an amount you are willing to 
 
 /// Knowledge Bank Page
 
-$lang['knowledge_bank']['title'] = "KNOWLEDGE BANK FOR GIGTODO";
+$lang['knowledge_bank']['title'] = "KNOWLEDGE BANK FOR HIREMYPROFILE";
 $lang['knowledge_bank']['desc'] = "Everything you need to know";
 
 /// Single Article Page

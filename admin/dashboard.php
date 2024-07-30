@@ -1,4 +1,4 @@
-<div class="breadcrumbs">
+<div class="breadcrumbs pt-4">
     <div class="col-sm-4">
         <div class="page-header float-left">
             <div class="page-title">
@@ -39,7 +39,7 @@
 
                             <div class="col-3">
 
-                                <i class="fa fa-table fa-5x"></i>
+                                <i class="fa fa-table fa-4x"></i>
 
                             </div>
 
@@ -85,7 +85,7 @@
 
                             <div class="col-3">
 
-                                <i class="fa fa-users fa-5x"></i>
+                                <i class="fa fa-users fa-4x"></i>
 
                             </div>
 
@@ -137,7 +137,7 @@
 
                             <div class="col-3">
 
-                                <i class="fa fa-shopping-cart fa-5x"></i>
+                                <i class="fa fa-shopping-cart fa-4x"></i>
 
 
                             </div>
@@ -147,7 +147,7 @@
 
                                 <div class="huge"><?= $count_orders; ?> </div>
 
-                                <div class="text-caption">Active <br>Orders</div>
+                                <div class="text-caption">Active Orders</div>
 
 
                             </div>
@@ -188,7 +188,7 @@
                         <div class="row">
 
                             <div class="col-3">
-                                <i class="fa fa-phone-square fa-5x"></i>
+                                <i class="fa fa-phone-square fa-4x"></i>
                             </div>
 
                             <div class="col-9 text-right">

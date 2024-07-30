@@ -35,22 +35,82 @@ $login_seller_id = $row_login_seller->seller_id;
   <?php if (!empty($site_favicon)) { ?>
     <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
   <?php } ?>
+  <style>
+    
+    .font-size-3 {
+        /* font-size: 11px !important; */
+        padding: 13px !important;
+        text-align: center;
+        /* box-shadow: 0px 0px 5px black, inset 0px 0px 15px #00c8d4; */
+      }
+      .bg-color{
+      background-color: #f5c6cb;
+      /* height:30vh; */
+      /* padding-top:10vh !important; */
+      /* box-shadow: inset 0px 0px 75px red; */
+      /* margin: auto; */
+    }
+    .table{
+      margin-bottom:0px;
+    }
+    .box-shadow-purchase{
+      /* box-shadow: 0px 0px 5px black; */
+      border-radius: 3px;
+    }
+    .padding-alter-2{
+      padding: 2rem 3rem;
+    }
+    @media (max-width:768px) {
+      .text-align-center {
+        text-align: center;
+        /* border: 1px solid green; */
+        margin: auto;
+      }
+      .padding-alter-2{
+      padding: 5px 15px;
+    }
+      .full-width {
+        width: 100%;
+        /* border:1px solid blue; */
+        display: flex;
+        margin-bottom: 18px !important;
+      }
+
+
+      .font-size-3 {
+        font-size: 13px !important;
+        padding: 10px !important;
+        text-align: center;
+      }
+
+      .heading_3 {
+        font-size: 20px;
+        width: 100%;
+      }
+      
+	
+    .bg-color{
+      background-color: #f5c6cb;
+    }
+
+    }
+  </style>
 </head>
 
 <body class="is-responsive">
 
   <?php require_once("includes/user_header.php"); ?>
-  <div class="container mb-3" style="margin-top: 160px;">
+  <div class="container-fluid padding-alter-2">
     <div class="row">
-      <div class="col-md-12 mt-5">
-        <h2 class="mb-5 <?= ($lang_dir == "right" ? 'text-right' : '') ?>"> <?= $lang["titles"]["purchases"]; ?> </h2>
-        <div class="table-responsive box-table">
+      <div class="col-md-12 mt-4">
+        <h3 class="mb-4 <?= ($lang_dir == "right" ? 'text-right' : '') ?> full-width"><span class="text-align-center"><?= $lang["titles"]["purchases"]; ?></span></h3>
+        <div class="table-responsive box-table box-shadow-purchase">
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th><?= $lang['th']['date']; ?></th>
-                <th><?= $lang['th']['for']; ?></th>
-                <th><?= $lang['th']['amount']; ?></th>
+                <th class="font-size-3"><?= $lang['th']['date']; ?></th>
+                <th class="font-size-3"><?= $lang['th']['for']; ?></th>
+                <th class="font-size-3"><?= $lang['th']['amount']; ?></th>
               </tr>
             </thead>
             <tbody>
@@ -117,7 +177,7 @@ $login_seller_id = $row_login_seller->seller_id;
           <?php
           if ($count_purchases == 0) {
             echo "<center>
-          <h3 class='pb-4 pt-4'>
+          <h3 class='pb-4 pt-4 heading_3 bg-color'>
             <i class='fa fa-meh-o'></i> {$lang['purchases']['no_purchases']}
           </h3>
           </center>";

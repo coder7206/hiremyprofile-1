@@ -1,9 +1,76 @@
-<div class="card user-sidebar rounded-0 mb-4">
+<?php error_reporting(0); ?>
+
+<div class="card user-sidebar rounded-0 mb-4 ">
     <!--- card user-sidebar rounded-0 Starts -->
+<div style="padding: 1.2rem 1.25rem 0;">
+    <h3>Occupation</h3>
+    <?php
+    // Fetch professional information
+    $qProfessional = $db->select("seller_pro_info", ["seller_id" => $seller_id]);
+    $cProfessional = $qProfessional->rowCount();
+    ?>
 
-    <div class="card-body">
+    <!--- table-responsive mt-4 Starts --->
+    <table class="table mb-0">
+        <!--- table table-bordered table-hover Starts --->
+       
+        <!--- thead Ends --->
+        <tbody style="border-bottom:1px solid lightgrey;">
+            <!--- tbody Starts --->
+            <?php
+            if ($cProfessional > 0) {
+                while ($oProfessional = $qProfessional->fetch()) {
+                    $proId = $oProfessional->id;
+                    $catId = $oProfessional->category_id;
+                    $subCatId = $oProfessional->sub_category_id;
+                    $startDate = $oProfessional->start_date;
+                    $endDate = $oProfessional->end_date;
+
+                    $category_meta = $db->select("cats_meta", ["cat_id" => $catId])->fetch();
+                    $subcat_meta = $db->select("child_cats_meta", ["child_id" => $subCatId])->fetch();
+            ?>
+                    <tr>
+                        <td>Occupation</td>
+                        <td><?= $category_meta->cat_title; ?> => <?= $subcat_meta->child_title; ?> => <br>
+                    
+                        <?php
+                            $qProOptions = $db->select("seller_pro_info_options", ["seller_pro_info_id" => $proId]);
+                            $cProOption = $qProOptions->rowCount();
+                            if ($cProOption > 0) :
+                                while ($oProOption = $qProOptions->fetch()) :
+                                    $proInfoId = $oProOption->professional_info_id;
+                                    $info = $db->select("professional_info", ["id" => $proInfoId, "sub_category_id" => $subcat_meta->child_id])->fetch();
+                            ?>
+                                    <span class="badge badge-info pt-2 m-1"><?= $info->title ?></span>
+                            <?php
+                                endwhile;
+                            endif;
+                            ?>                  
+                    
+                    </td>
+                    </tr>                   
+                  
+                    <tr>
+                        <td>Duration</td>
+                        <td><?= $startDate ?>-<?= $endDate ?></td>
+                    </tr>
+
+            <?php
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+    <!-- 
+    <hr class="card-hr"> -->
+
+
+
+
+    <div class="card-body box-shadow-6">
         <!-- card-body Starts -->
-
+   
         <h3><?= $lang['user_profile']['description']; ?></h3>
         <p><?= $seller_about; ?></p>
 
@@ -34,7 +101,7 @@
                             <div class="form-group">
                                 <!-- form-group Starts -->
 
-                                <select class="form-control" name="language_id" required="">
+                                <select class="form-control" name="language_id" required>
 
                                     <option value=""><?= $lang['label']['select_language']; ?></option>
 
@@ -84,9 +151,9 @@
                             <div class="form-group">
                                 <!-- form-group Starts -->
 
-                                <select class="form-control" name="language_level" required="">
+                                <select class="form-control" name="language_level" required>
 
-                                    <option class="hidden"><?= $lang['label']['select_level']; ?></option>
+                                    <option value="" class="hidden"><?= $lang['label']['select_level']; ?></option>
                                     <option value="basic"> Basic</option>
                                     <option value="Fluent"> Fluent</option>
                                     <option value="Conversational"> Conversational</option>
@@ -117,6 +184,7 @@
 
                             $language_id = $input->post('language_id');
                             $language_level = $input->post('language_level');
+
 
                             if ($language_id == "custom") {
 
@@ -204,156 +272,156 @@
         <?php if (isset($_SESSION['seller_user_name'])) { ?>
 
             <?php
-                if ($login_seller_user_name == $seller_user_name) {
-                    $totalSkills = $row_plan_detail->skills;
-                    // $select_skills_relation = $db->select("skills_relation", array("seller_id" => $seller_id));
-                    $select_skills_relation = $db->query("select * from skills_relation WHERE seller_id='$seller_id'");
-                    $totalAddedSkills = $select_skills_relation->rowCount();
-                    // print("<pre>" . print_r([$totalAddedSkills, $totalSkills], true) . "</pre>");
-                    // exit;
-                    if ($totalAddedSkills < $totalSkills) {
+            if ($login_seller_user_name == $seller_user_name) {
+                $totalSkills = $row_plan_detail->skills;
+                // $select_skills_relation = $db->select("skills_relation", array("seller_id" => $seller_id));
+                $select_skills_relation = $db->query("select * from skills_relation WHERE seller_id='$seller_id'");
+                $totalAddedSkills = $select_skills_relation->rowCount();
+                // print("<pre>" . print_r([$totalAddedSkills, $totalSkills], true) . "</pre>");
+                // exit;
+                if ($totalAddedSkills < $totalSkills) {
             ?>
 
-                <ul class="list-unstyled">
-                    <!-- list-unstyled Starts -->
+                    <ul class="list-unstyled">
+                        <!-- list-unstyled Starts -->
 
-                    <li class="mb-4 clearfix">
+                        <li class="mb-4 clearfix">
 
-                        <button data-toggle="collapse" data-target="#add_skill" class="btn btn-success float-right">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i> <?= $lang['button']['add_new']; ?>
-                        </button>
+                            <button data-toggle="collapse" data-target="#add_skill" class="btn btn-success float-right">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i> <?= $lang['button']['add_new']; ?>
+                            </button>
 
-                    </li>
+                        </li>
 
-                    <div id="add_skill" class="collapse form-style mb-2">
-                        <!-- add_skill collapse form-style mb-2 Starts -->
+                        <div id="add_skill" class="collapse form-style mb-2">
+                            <!-- add_skill collapse form-style mb-2 Starts -->
 
-                        <form method="post">
-                            <!-- form Starts -->
+                            <form method="post">
+                                <!-- form Starts -->
 
-                            <div class="form-group">
-                                <!-- form-group Starts -->
+                                <div class="form-group">
+                                    <!-- form-group Starts -->
 
-                                <select class="form-control" name="skill_id" required="">
+                                    <select class="form-control" name="skill_id" required="">
 
-                                    <option value=""><?= $lang['label']['select_skill']; ?></option>
+                                        <option value=""><?= $lang['label']['select_skill']; ?></option>
 
-                                    <?php
+                                        <?php
 
-                                    $s_skills = array();
+                                        $s_skills = array();
 
-                                    $get = $db->select("skills_relation", array("seller_id" => $login_seller_id));
+                                        $get = $db->select("skills_relation", array("seller_id" => $login_seller_id));
 
-                                    while ($row = $get->fetch()) {
+                                        while ($row = $get->fetch()) {
 
-                                        array_push($s_skills, $row->skill_id);
-                                    }
+                                            array_push($s_skills, $row->skill_id);
+                                        }
 
-                                    $s_skills = implode(",", $s_skills);
+                                        $s_skills = implode(",", $s_skills);
 
-                                    if (!empty($s_skills)) {
-                                        $query_where = "where not skill_id IN ($s_skills)";
-                                    } else {
-                                        $query_where = "";
-                                    }
+                                        if (!empty($s_skills)) {
+                                            $query_where = "where not skill_id IN ($s_skills)";
+                                        } else {
+                                            $query_where = "";
+                                        }
 
-                                    $get_seller_skills = $db->query("select * from seller_skills $query_where");
-                                    while ($row_seller_skills = $get_seller_skills->fetch()) {
+                                        $get_seller_skills = $db->query("select * from seller_skills $query_where");
+                                        while ($row_seller_skills = $get_seller_skills->fetch()) {
 
-                                        $skill_id = $row_seller_skills->skill_id;
-                                        $skill_title = $row_seller_skills->skill_title;
+                                            $skill_id = $row_seller_skills->skill_id;
+                                            $skill_title = $row_seller_skills->skill_title;
 
-                                    ?>
+                                        ?>
 
-                                        <option value="<?= $skill_id; ?>"> <?= $skill_title; ?> </option>
+                                            <option value="<?= $skill_id; ?>"> <?= $skill_title; ?> </option>
 
-                                    <?php } ?>
+                                        <?php } ?>
 
-                                    <option value="custom">Custom Skill</option>
+                                        <option value="custom">Custom Skill</option>
 
-                                </select>
+                                    </select>
 
-                            </div><!-- form-group Ends -->
+                                </div><!-- form-group Ends -->
 
-                            <div class="form-group skill-name d-none">
-                                <!-- form-group Starts -->
+                                <div class="form-group skill-name d-none">
+                                    <!-- form-group Starts -->
 
-                                <input type="text" placeholder="Skill Name" class="form-control" name="skill_name">
+                                    <input type="text" placeholder="Skill Name" class="form-control" name="skill_name">
 
-                            </div><!-- form-group Ends -->
+                                </div><!-- form-group Ends -->
 
-                            <div class="form-group">
-                                <!-- form-group Starts -->
+                                <div class="form-group">
+                                    <!-- form-group Starts -->
 
-                                <select class="form-control" name="skill_level" required="">
+                                    <select class="form-control" name="skill_level" required="">
 
-                                    <option value="" class="hidden"><?= $lang['label']['select_level']; ?></option>
-                                    <option> Beginner</option>
-                                    <option> Intermediate</option>
-                                    <option> Expert</option>
+                                        <option value="" class="hidden"><?= $lang['label']['select_level']; ?></option>
+                                        <option> Beginner</option>
+                                        <option> Intermediate</option>
+                                        <option> Expert</option>
 
-                                </select>
+                                    </select>
 
-                            </div><!-- form-group Ends -->
+                                </div><!-- form-group Ends -->
 
-                            <div class="text-center">
-                                <!-- text-center Starts -->
+                                <div class="text-center">
+                                    <!-- text-center Starts -->
 
-                                <button type="button" data-toggle="collapse" data-target="#add_skill" class="btn btn-secondary">
-                                    <?= $lang['button']['cancel']; ?>
-                                </button>
+                                    <button type="button" data-toggle="collapse" data-target="#add_skill" class="btn btn-secondary">
+                                        <?= $lang['button']['cancel']; ?>
+                                    </button>
 
-                                <button type="submit" name="insert_skill" class="btn btn-success">
-                                    <?= $lang['button']['add']; ?>
-                                </button>
+                                    <button type="submit" name="insert_skill" class="btn btn-success">
+                                        <?= $lang['button']['add']; ?>
+                                    </button>
 
-                            </div><!-- text-center Ends -->
+                                </div><!-- text-center Ends -->
 
-                        </form><!-- form Ends -->
+                            </form><!-- form Ends -->
 
-                        <?php
-                        if (isset($_POST['insert_skill'])) {
-                            $skill_id = $input->post('skill_id');
-                            $skill_level = $input->post('skill_level');
-                            $skills_total = $db->count("skills_relation", ["seller_id" => $seller_id]);
+                            <?php
+                            if (isset($_POST['insert_skill'])) {
+                                $skill_id = $input->post('skill_id');
+                                $skill_level = $input->post('skill_level');
+                                $skills_total = $db->count("skills_relation", ["seller_id" => $seller_id]);
 
-                            if ($num_of_skills == 0) {
-                                // echo "<script>alert('no more skill will be added')</script>";
-                                echo "<script>alert('No of skills quota exceeds, Total allowed $skills_total skills')</script>";
-                                echo "<script>window.open('$seller_user_name','_self');</script>";
-                            } else {
-
-                                if ($skill_id == "custom") {
-                                    $skill_name = $input->post('skill_name');
-                                    $count = $db->count("seller_skills", ["skill_title" => $skill_name]);
-                                    $skills_total = $db->count("skills_relation", ["seller_id" => $seller_id]);
-
-                                    if ($count == 1) {
-                                        echo "<script>alert('{$lang['alert']['skill_already_added']}');</script>";
-                                        echo "<script>window.open('$seller_user_name','_self');</script>";
-                                        exit();
-                                    } else {
-                                        $db->insert("seller_skills", array("skill_title" => $skill_name));
-                                        $skill_id = $db->lastInsertId();
-                                    }
+                                if ($num_of_skills == 0) {
+                                    // echo "<script>alert('no more skill will be added')</script>";
+                                    echo "<script>alert('No of skills quota exceeds, Total allowed $skills_total skills')</script>";
+                                    echo "<script>window.open('$seller_user_name','_self');</script>";
                                 } else {
-                                    /*echo "<script>alert('<?= $skills_total =?>')</script>";*/
-                                    $db->insert("skills_relation", array("seller_id" => $seller_id, "skill_id" => $skill_id, "skill_level" => $skill_level));
+
+                                    if ($skill_id == "custom") {
+                                        $skill_name = $input->post('skill_name');
+                                        $count = $db->count("seller_skills", ["skill_title" => $skill_name]);
+                                        $skills_total = $db->count("skills_relation", ["seller_id" => $seller_id]);
+
+                                        if ($count == 1) {
+                                            echo "<script>alert('{$lang['alert']['skill_already_added']}');</script>";
+                                            echo "<script>window.open('$seller_user_name','_self');</script>";
+                                            exit();
+                                        } else {
+                                            $db->insert("seller_skills", array("skill_title" => $skill_name));
+                                            $skill_id = $db->lastInsertId();
+                                        }
+                                    } else {
+                                        /*echo "<script>alert('<?= $skills_total =?>')</script>";*/
+                                        $db->insert("skills_relation", array("seller_id" => $seller_id, "skill_id" => $skill_id, "skill_level" => $skill_level));
+                                    }
+                                    echo "<script>window.open('$seller_user_name', '_self');</script>";
                                 }
-                                echo "<script>window.open('$seller_user_name', '_self');</script>";
                             }
-                        }
 
-                        ?>
+                            ?>
 
-                    </div><!-- language collapse form-style mb-2 Ends -->
+                        </div><!-- language collapse form-style mb-2 Ends -->
 
-                </ul><!-- list-unstyled Ends -->
+                    </ul><!-- list-unstyled Ends -->
 
-                <?php
-                    }
+            <?php
                 }
-                ?>
+            }
+            ?>
 
         <?php } ?>
 
@@ -445,8 +513,8 @@
                                 <!-- form-group Starts -->
                                 <div class="col-xs-12 col-sm-4 no-padding" style="padding:0;">
                                     <select style="width:100%" class="form-control" id="degree_title" name="degree_title" required="">
-                                        <option value=""><?= $lang['label']['degree_title']; ?></option>
-                                        <option value="0" class="hidden">Title</option>
+                                        <!-- <option value=""><?= $lang['label']['degree_title']; ?></option> -->
+                                        <option value="0" class="hidden">Course</option>
                                         <option value="associate">Associate</option>
                                         <option value="certificate">Certificate</option>
                                         <option value="ba">B.A.</option>
@@ -467,14 +535,8 @@
                                     </select>
                                 </div>
                                 <div class="col-xs-12 col-sm-8 no-padding" style="padding:0;">
-                                    <select multiple style="width:100%" class="form-control" id="degree" name="degree_name" required="">
-                                        <?php
-                                        $countries = $db->query('SELECT distinct name FROM education order by name');
-                                        while ($country = $countries->fetch()) {
-                                            echo '<option value="' . $country->name . '">' . $country->name . '</option>';
-                                        }
-                                        ?>
-                                    </select>
+                                    <input type="text" style="width:100%" class="form-control" name="degree_name" required="" placeholder="Specialized">
+
                                 </div>
                             </div><!-- form-group Ends -->
                             <br>
@@ -488,7 +550,7 @@
                                 </select>
                                 <br>
 
-                                <div class="text-center">
+                                <div class="text-center mt-3">
                                     <!-- text-center Starts -->
 
                                     <button type="button" data-toggle="collapse" data-target="#add_education" class="btn btn-secondary">
@@ -580,7 +642,9 @@
 
 </div>
 <?php if (isset($_SESSION['seller_user_name']) and $_SESSION['seller_user_name'] != $get_seller_user_name) { ?>
-<p class="mt-2"><a class="text-danger <?=($lang_dir == "right" ? 'text-right':'')?>" href="#" data-toggle="modal" data-target="#report-modal-uni" data-content-id="<?=$seller_id?>" data-content-type="user" data-url="<?=$site_url?>/<?=$get_seller_user_name?>"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true" focusable="false" style="height:12px;width:12px;fill:#000;margin-right:5px;"><path d="m22.39 5.8-.27-.64a207.86 207.86 0 0 0 -2.17-4.87.5.5 0 0 0 -.84-.11 7.23 7.23 0 0 1 -.41.44c-.34.34-.72.67-1.13.99-1.17.87-2.38 1.39-3.57 1.39-1.21 0-2-.13-3.31-.48l-.4-.11c-1.1-.29-1.82-.41-2.79-.41a6.35 6.35 0 0 0 -1.19.12c-.87.17-1.79.49-2.72.93-.48.23-.93.47-1.35.71l-.11.07-.17-.49a.5.5 0 1 0 -.94.33l7 20a .5.5 0 0 0 .94-.33l-2.99-8.53a21.75 21.75 0 0 1 1.77-.84c.73-.31 1.44-.56 2.1-.72.61-.16 1.16-.24 1.64-.24.87 0 1.52.11 2.54.38l.4.11c1.39.37 2.26.52 3.57.52 2.85 0 5.29-1.79 5.97-3.84a.5.5 0 0 0 0-.32c-.32-.97-.87-2.36-1.58-4.04zm-4.39 7.2c-1.21 0-2-.13-3.31-.48l-.4-.11c-1.1-.29-1.82-.41-2.79-.41-.57 0-1.2.09-1.89.27a16.01 16.01 0 0 0 -2.24.77c-.53.22-1.04.46-1.51.7l-.21.11-3.17-9.06c.08-.05.17-.1.28-.17.39-.23.82-.46 1.27-.67.86-.4 1.7-.7 2.48-.85.35-.06.68-.1.99-.1.87 0 1.52.11 2.54.38l.4.11c1.38.36 2.25.51 3.56.51 1.44 0 2.85-.6 4.18-1.6.43-.33.83-.67 1.18-1.02a227.9 227.9 0 0 1 1.85 4.18l.27.63c.67 1.57 1.17 2.86 1.49 3.79-.62 1.6-2.62 3.02-4.97 3.02z" fill-rule="evenodd"></path></svg> Report User</a></p>
+    <p class="mt-2"><a class="text-danger <?= ($lang_dir == "right" ? 'text-right' : '') ?>" href="#" data-toggle="modal" data-target="#report-modal-uni" data-content-id="<?= $seller_id ?>" data-content-type="user" data-url="<?= $site_url ?>/<?= $get_seller_user_name ?>"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true" focusable="false" style="height:12px;width:12px;fill:#000;margin-right:5px;">
+                <path d="m22.39 5.8-.27-.64a207.86 207.86 0 0 0 -2.17-4.87.5.5 0 0 0 -.84-.11 7.23 7.23 0 0 1 -.41.44c-.34.34-.72.67-1.13.99-1.17.87-2.38 1.39-3.57 1.39-1.21 0-2-.13-3.31-.48l-.4-.11c-1.1-.29-1.82-.41-2.79-.41a6.35 6.35 0 0 0 -1.19.12c-.87.17-1.79.49-2.72.93-.48.23-.93.47-1.35.71l-.11.07-.17-.49a.5.5 0 1 0 -.94.33l7 20a .5.5 0 0 0 .94-.33l-2.99-8.53a21.75 21.75 0 0 1 1.77-.84c.73-.31 1.44-.56 2.1-.72.61-.16 1.16-.24 1.64-.24.87 0 1.52.11 2.54.38l.4.11c1.39.37 2.26.52 3.57.52 2.85 0 5.29-1.79 5.97-3.84a.5.5 0 0 0 0-.32c-.32-.97-.87-2.36-1.58-4.04zm-4.39 7.2c-1.21 0-2-.13-3.31-.48l-.4-.11c-1.1-.29-1.82-.41-2.79-.41-.57 0-1.2.09-1.89.27a16.01 16.01 0 0 0 -2.24.77c-.53.22-1.04.46-1.51.7l-.21.11-3.17-9.06c.08-.05.17-.1.28-.17.39-.23.82-.46 1.27-.67.86-.4 1.7-.7 2.48-.85.35-.06.68-.1.99-.1.87 0 1.52.11 2.54.38l.4.11c1.38.36 2.25.51 3.56.51 1.44 0 2.85-.6 4.18-1.6.43-.33.83-.67 1.18-1.02a227.9 227.9 0 0 1 1.85 4.18l.27.63c.67 1.57 1.17 2.86 1.49 3.79-.62 1.6-2.62 3.02-4.97 3.02z" fill-rule="evenodd"></path>
+            </svg> Report User</a></p>
 <?php } ?>
 <!--- card user-sidebar rounded-0 Ends -->
 <?php
@@ -594,3 +658,6 @@ if (isset($_GET['delete_education'])) {
         echo "<script> window.open('$login_seller_user_name','_self') </script>";
     }
 }
+
+
+?>

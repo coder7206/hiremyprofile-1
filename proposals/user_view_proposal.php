@@ -40,61 +40,192 @@ if ($totalProposal >= $num_gigs) {
 // }
 $limit = isset($homePerPage) ? $homePerPage : 5;
 ?>
+<style>
+	@media (max-width:768px) {
+		.badge-float-right {
+			float: right;
+			margin-top: -3px;
+			padding-top: 5px;
+			margin-right: -9px !important;
+		}
 
-<div class="col-md-12">
-	<div class="alert alert-info">
+		.text-align-center {
+			text-align: center;
+		}
+
+		.margin-auto {
+			margin: auto;
+			/* box-shadow: 2px 2px 5px black; */
+			/* border: 2px solid red; */
+		}
+
+		.display_flex {
+			width: 100%;
+			display: flex;
+			/* border: 2px solid red; */
+		}
+
+		.display_flex-1 {
+			width: 100%;
+			display: flex;
+			margin-top: 20px !important;
+			/* border: 2px solid red; */
+		}
+
+		.font-size-3 {
+			font-size: 13px !important;
+			padding: 10px !important;
+			text-align: center;
+		}
+
+		.heading_3 {
+			font-size: 20px;
+			width: 100%;
+		}
+	}
+
+	.box-shadow-cs5 {
+		font-size: 20px;
+		width: 100%;
+		/* box-shadow: 0px 0px 1px gray, inset 0px 0px 75px #fc503d; */
+	}
+
+	.font-size-3 {
+		border: 1px solid lightgray !important;
+		text-align: center;
+		/* box-shadow: 0px 0px 5px black, inset 0px 0px 15px #00c8d4; */
+	}
+
+	.float_right {
+		float: right;
+	}
+
+	.badge-float-right {
+		float: right;
+		margin-top: -3px;
+		padding-top: 5px;
+		margin-right: -9px !important;
+	}
+
+	.width-increased {
+		/* box-shadow: inset 0px 0px 15px whitesmoke; */
+	}
+
+	.width-increaseds {
+		/* box-shadow: inset 0px 0px 15px whitesmoke; */
+	}
+
+	.width-increasese {
+		/* box-shadow:inset 0px 0px 15px whitesmoke; */
+	}
+
+	.width-increases {
+		/* box-shadow: inset 0px 0px 15px whitesmoke; */
+	}
+
+	.pt-pr {
+		padding: 9px 15px 9px 9px;
+	}
+
+	.padding-40 {
+		/* padding: 1px 18px 2px 18px !important; */
+	}
+
+	.box-shadow-act-pro {
+		/* box-shadow: 0px 0px 2px gray; */
+	}
+
+	.box-shadow-can-post {
+		/* box-shadow: 0px 0px 1px black; */
+	}
+
+	.box-shadow-bg-color {
+		/* box-shadow: 0px 0px 5px black, inset 0px 0px 25px gray; */
+	}
+	.box-shadow-draft{
+		/* box-shadow: 0px 0px 5px black, inset 0px 0px 30px gray; */
+	}
+	.box-shadow-new-propo{
+		/* box-shadow: 2px 2px 5px black; */
+	}
+	.notify_you_model{
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		background-color: grey;
+		opacity: 0.5;
+		position: fixed;
+	}
+</style>
+<div class="col-md-12 padding-40">
+	<div class="alert alert-info text-align-center mt-3 pt-3 pb-3 box-shadow-can-post">
 		You can post <?php echo $totalProposal >= $num_gigs ? 0 : $num_gigs - $totalProposal ?> number of proposals.
 	</div>
-	<?php if ($totalProposal >= $num_gigs) { ?>
-		<a class="btn btn-success pull-right" disabled href="#"><i class="fa fa-plus-circle"></i> <?= $lang['button']['add_new_proposal']; ?></a>
-	<?php } else { ?>
-		<a class="btn btn-success pull-right" href="<?= $site_url ?>/proposals/create_proposal"><i class="fa fa-plus-circle"></i> <?= $lang['button']['add_new_proposal']; ?></a>
-	<?php } ?>
+	<div class="col_md_12 display_flex-1 mt-2 mb-2 float_right">
+		<?php if ($totalProposal >= $num_gigs) { ?>
+			<a class="btn btn-success box-shadow-new-propo" href="<?= $site_url ?>/start_selling"><i class="fa fa-plus-circle"></i> <?= $lang['button']['add_new_proposal']; ?></a>
+		<?php } else { ?>
 
+			<a class="btn btn-success box-shadow-new-propo text_center margin-auto" href="<?= $site_url ?>/proposals/create_proposal"><i class="fa fa-plus-circle"></i> <?= $lang['button']['add_new_proposal']; ?></a>
+		<?php } ?>
+	</div>
+<!-- 
+	<div class="notify_you_model">
+<div> </div>
+</div> -->
 	<div class="clearfix"></div>
-	<ul class="nav nav-tabs flex-column flex-sm-row mt-4">
-		<li class="nav-item">
-			<a href="#active-proposals" data-toggle="tab" class="nav-link make-black <?= $active; ?>">
-				<?= $lang['tabs']['active_proposals']; ?> <span class="badge badge-success"><?= $count_active_proposals; ?></span>
+	<ul class="nav nav-tabs flex-column flex-sm-row mt-3">
+		<li class="nav-item width-increased">
+			<a href="#active-proposals" data-toggle="tab" class="nav-link make-black <?= $active; ?> pt-pr">
+				<?= $lang['tabs']['active_proposals']; ?> &nbsp; &nbsp; <span class="badge badge-success badge-float-right"><?= $count_active_proposals; ?></span>
 			</a>
 		</li>
-		<li class="nav-item">
-			<a href="#pause-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['paused'])) ? "active" : ""; ?>">
-				<?= $lang['tabs']['pause_proposals']; ?> <span class="badge badge-success"><?= $count_pause_proposals; ?></span>
+		<li class="nav-item width-increased">
+			<a href="#pause-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['paused'])) ? "active" : ""; ?>  pt-pr">
+				<?= $lang['tabs']['pause_proposals']; ?> &nbsp; &nbsp; <span class="badge badge-success badge-float-right"><?= $count_pause_proposals; ?></span>
 			</a>
 		</li>
-		<li class="nav-item">
-			<a href="#pending-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['pending'])) ? "active" : ""; ?>">
-				<?= $lang['tabs']['pending_proposals']; ?> <span class="badge badge-success"><?= $count_pending_proposals; ?></span>
+		<li class="nav-item width-increased">
+			<a href="#pending-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['pending'])) ? "active" : ""; ?>  pt-pr">
+				<?= $lang['tabs']['pending_proposals']; ?> &nbsp; &nbsp; <span class="badge badge-success badge-float-right"><?= $count_pending_proposals; ?></span>
 			</a>
 		</li>
-		<li class="nav-item">
-			<a href="#modification-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['modification'])) ? "active" : ""; ?>">
-				<?= $lang['tabs']['requires_modification']; ?> <span class="badge badge-success"><?= $count_modification_proposals; ?></span>
+		<li class="nav-item width-increaseds">
+			<a href="#modification-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['modification'])) ? "active" : ""; ?>  pt-pr">
+				<?= $lang['tabs']['requires_modification']; ?> &nbsp; &nbsp; <span class="badge badge-success badge-float-right"><?= $count_modification_proposals; ?></span>
 			</a>
 		</li>
-		<li class="nav-item">
-			<a href="#draft-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['draft'])) ? "active" : ""; ?>">
-				<?= $lang['tabs']['draft']; ?> <span class="badge badge-success"><?= $count_draft_proposals; ?></span>
+		<li class="nav-item width-increasese">
+			<a href="#draft-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['draft'])) ? "active" : ""; ?>  pt-pr">
+				<?= $lang['tabs']['draft']; ?> &nbsp; &nbsp; <span class="badge badge-success badge-float-right"><?= $count_draft_proposals; ?></span>
 			</a>
 		</li>
-		<li class="nav-item">
-			<a href="#declined-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['declined'])) ? "active" : ""; ?>">
-				<?= $lang['tabs']['declined']; ?> <span class="badge badge-success"><?= $count_declined_proposals; ?></span>
+		<li class="nav-item width-increases">
+			<a href="#declined-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['declined'])) ? "active" : ""; ?>  pt-pr">
+				<?= $lang['tabs']['declined']; ?> &nbsp; &nbsp; <span class="badge badge-success badge-float-right"><?= $count_declined_proposals; ?></span>
 			</a>
 		</li>
 	</ul>
+
+
+<script>
+	function notifyYou(){
+		alert('hello');
+	}
+</script>
+
 	<div class="tab-content">
 		<div id="active-proposals" class="tab-pane fade show <?= $active; ?>">
-			<div class="table-responsive box-table mt-4" style="min-height: 250px;">
+			<div class="table-responsive box-table mt-3 box-shadow-act-pro">
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th><?= $lang['th']['proposal_title']; ?></th>
-							<th><?= $lang['th']['proposal_price']; ?></th>
-							<th><?= $lang['th']['views']; ?></th>
-							<th><?= $lang['th']['orders']; ?></th>
-							<th><?= $lang['th']['actions']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['proposal_title']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['proposal_price']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['views']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['orders']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['actions']; ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -124,7 +255,7 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 								$proposal_title = $row_proposals->proposal_title;
 								$proposal_views = $row_proposals->proposal_views;
 								$proposal_price = $row_proposals->proposal_price;
-								if ($proposal_price == 0) {
+						 		if ($proposal_price == 0) {
 									$get_p = $db->select("proposal_packages", array("proposal_id" => $proposal_id, "package_name" => "Basic"));
 									$proposal_price = $get_p->fetch()->price;
 								}
@@ -178,10 +309,10 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 							<?php }
 						} else {
 							?>
-							<tr class="table-danger">
-								<td colspan="5">
+							<tr class="table-danger box-shadow-bg-color">
+								<td colspan="5" class="box-shadow-cs5">
 									<center>
-										<h3 class='pb-4 pt-4'>
+										<h3 class='pb-4 pt-4 heading_3'>
 											<i class='fa fa-meh-o'></i> You currently have no proposals/services to sell.
 										</h3>
 									</center>
@@ -196,15 +327,15 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 			</div>
 		</div>
 		<div id="pause-proposals" class="tab-pane fade show <?= (isset($_GET['paused'])) ? "active" : ""; ?>">
-			<div class="table-responsive box-table mt-4" style="min-height: 250px;">
+			<div class="table-responsive box-table mt-3 box-shadow-act-pro">
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th><?= $lang['th']['proposal_title']; ?></th>
-							<th><?= $lang['th']['proposal_price']; ?></th>
-							<th><?= $lang['th']['views']; ?></th>
-							<th><?= $lang['th']['orders']; ?></th>
-							<th><?= $lang['th']['actions']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['proposal_title']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['proposal_price']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['views']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['orders']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['actions']; ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -277,10 +408,10 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 							<?php }
 						} else {
 							?>
-							<tr class="table-danger">
-								<td colspan="5">
+							<tr class="table-danger box-shadow-bg-color">
+								<td colspan="5" class="box-shadow-cs5">
 									<center>
-										<h3 class='pb-4 pt-4'>
+										<h3 class='pb-4 pt-4 heading_3'>
 											<i class='fa fa-meh-o'></i> You currently have no paused proposals/services
 										</h3>
 									</center>
@@ -295,15 +426,15 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 			</div>
 		</div>
 		<div id="pending-proposals" class="tab-pane fade show <?= (isset($_GET['pending'])) ? "active" : ""; ?>">
-			<div class="table-responsive box-table mt-4" style="min-height: 250px;">
+			<div class="table-responsive box-table mt-3 box-shadow-act-pro">
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th><?= $lang['th']['proposal_title']; ?></th>
-							<th><?= $lang['th']['proposal_price']; ?></th>
-							<th><?= $lang['th']['views']; ?></th>
-							<th><?= $lang['th']['orders']; ?></th>
-							<th><?= $lang['th']['actions']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['proposal_title']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['proposal_price']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['views']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['orders']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['actions']; ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -361,10 +492,10 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 							<?php }
 						} else {
 							?>
-							<tr class="table-danger">
-								<td colspan="5">
+							<tr class="table-danger box-shadow-bg-color">
+								<td colspan="5" class="box-shadow-cs5">
 									<center>
-										<h3 class='pb-4 pt-4'>
+										<h3 class='pb-4 pt-4 heading_3'>
 											<i class='fa fa-meh-o'></i> You currently have no proposals/services pending.
 										</h3>
 									</center>
@@ -379,13 +510,13 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 			</div>
 		</div>
 		<div id="modification-proposals" class="tab-pane fade show <?= (isset($_GET['modification'])) ? "active" : ""; ?>">
-			<div class="table-responsive box-table mt-4" style="min-height: 250px;">
+			<div class="table-responsive box-table mt-3 box-shadow-act-pro">
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th><?= $lang['th']['modification_proposal_title']; ?></th>
-							<th><?= $lang['th']['modification_message']; ?></th>
-							<th><?= $lang['th']['actions']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['modification_proposal_title']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['modification_message']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['actions']; ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -436,10 +567,10 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 							<?php }
 						} else {
 							?>
-							<tr class="table-danger">
-								<td colspan="5">
+							<tr class="table-danger box-shadow-bg-color">
+								<td colspan="5" class="box-shadow-cs5">
 									<center>
-										<h3 class='pb-4 pt-4'>
+										<h3 class='pb-4 pt-4 heading_3'>
 											<i class='fa fa-meh-o'></i> You currently have no modifications requested.
 										</h3>
 									</center>
@@ -454,18 +585,18 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 			</div>
 		</div>
 		<div id="draft-proposals" class="tab-pane fade show <?= (isset($_GET['draft'])) ? "active" : ""; ?>">
-			<div class="table-responsive box-table mt-4" style="min-height: 250px;">
+			<div class="table-responsive box-table mt-3 box-shadow-act-pro">
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th><?= $lang['th']['proposal_title']; ?></th>
-							<th><?= $lang['th']['proposal_price']; ?></th>
-							<th><?= $lang['th']['views']; ?></th>
-							<th><?= $lang['th']['orders']; ?></th>
-							<th><?= $lang['th']['actions']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['proposal_title']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['proposal_price']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['views']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['orders']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['actions']; ?></th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody class="box-shadow-draft">
 						<?php
 						if (isset($_GET["page"]) && isset($_GET['draft'])) {
 							$dPageNumber = filter_var($_GET["page"], FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_STRIP_HIGH); //filter number
@@ -518,10 +649,10 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 							<?php }
 						} else {
 							?>
-							<tr class="table-danger">
-								<td colspan="5">
+							<tr class="table-danger box-shadow-bg-color">
+								<td colspan="5" class="box-shadow-cs5">
 									<center>
-										<h3 class='pb-4 pt-4'>
+										<h3 class='pb-4 pt-4 heading_3'>
 											<i class='fa fa-meh-o'></i> You currently have no proposals/services in draft.
 										</h3>
 									</center>
@@ -536,15 +667,15 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 			</div>
 		</div>
 		<div id="declined-proposals" class="tab-pane fade show <?= (isset($_GET['declined'])) ? "active" : ""; ?>">
-			<div class="table-responsive box-table mt-4" style="min-height: 250px;">
+			<div class="table-responsive box-table mt-3 box-shadow-act-pro">
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th><?= $lang['th']['proposal_title']; ?></th>
-							<th><?= $lang['th']['proposal_price']; ?></th>
-							<th><?= $lang['th']['views']; ?></th>
-							<th><?= $lang['th']['orders']; ?></th>
-							<th><?= $lang['th']['actions']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['proposal_title']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['proposal_price']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['views']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['orders']; ?></th>
+							<th class="font-size-3"><?= $lang['th']['actions']; ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -599,10 +730,10 @@ $limit = isset($homePerPage) ? $homePerPage : 5;
 							<?php }
 						} else {
 							?>
-							<tr class="table-danger">
-								<td colspan="5">
+							<tr class="table-danger box-shadow-bg-color">
+								<td colspan="5" class="box-shadow-cs5">
 									<center>
-										<h3 class='pb-4 pt-4'>
+										<h3 class='pb-4 pt-4 heading_3'>
 											<i class='fa fa-meh-o'></i> You currently have no proposals/services declined.
 										</h3>
 									</center>

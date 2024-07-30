@@ -149,9 +149,9 @@ echo "<script>window.open('login','_self');</script>";
 
 $per_page = 10;
 
-if(isset($_GET['admin_logs'])){
+if($_GET['admin_logs']){
 
-	$page = $input->get('admin_logs');
+	$page = $_GET['admin_logs'];
 	if($page == 0){ $page = 1; }
 
 }else{

@@ -13,7 +13,7 @@ if (isset($_SESSION['seller_user_name'])) {
 	$row_login_seller = $select_login_seller->fetch();
 	$login_seller_id = $row_login_seller->seller_id;
 }
-
+ 
 function check_status($seller_id)
 {
 	global $db;
@@ -34,7 +34,7 @@ function check_status($seller_id)
 			return 'Offline';
 		}
 	}
-}
+}    
 
 function insertSale($data)
 {
@@ -198,7 +198,7 @@ function get_top_proposals()
 /// get_top_pagination Function Starts ///
 
 function get_top_pagination()
-{
+{ 
 
 	get_pagination("top");
 }

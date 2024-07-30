@@ -1,6 +1,35 @@
-<div class="specfic col-md-3 p-md-0 <?= ($lang_dir == "right" ? 'order-2 order-sm-1 border-left' : '') ?>">
-	<div class="card border-0 rounded-0 m-0">
-		<div class="card-header bg-transparent inboxHeader">
+<style>
+	@media (max-width:768px) {}
+
+	.box-shadow-5 {
+		/* border: 1px solid gray; */
+		/* background-color: lightgray !important; */
+		/* box-shadow: inset 0px 0px 20px #00c8d4; */
+		/* border: 2px solid white; */
+	}
+
+	.border5 {
+		/* border: 1px solid gray; */
+	}
+	.convertion-image-circle{
+		width: 50px;
+		height:50px; 
+		overflow:hidden; 
+		border-radius:50px;
+		margin-right: 1rem;
+	}
+	.convertion-image-circle40{
+		width: 40px;
+		height:40px; 
+		overflow:hidden; 
+		border-radius:50px;
+		margin-right: 1rem;
+		/* background-color: #fff; */
+	}
+</style>
+<div class="specfic col-md-3 p-md-0 border5  <?= ($lang_dir == "right" ? 'order-2 order-sm-1 border-left' : '') ?>">
+	<div class="card border-0 rounded-0 m-0 ">
+		<div class="card-header bg-transparent inboxHeader box-shadow-5">
 			<div class="search-bar d-none">
 				<!--- search-bar Starts --->
 				<div class="input-group">
@@ -96,7 +125,9 @@
 						}
 				?>
 						<a href="#" class="message-recipients media border-bottom <?= $selected; ?> <?= $starred; ?> <?= $archived; ?>" data-username="<?= $sender_user_name; ?>" data-id="<?= $message_group_id; ?>">
-							<img src="<?= $sender_image; ?>" class="rounded-circle mr-3" width="50">
+							<div class="convertion-image-circle" >
+								<img src="<?= $sender_image; ?>" class="" width="100%">
+							</div>
 							<div class="media-body nowrap">
 								<h6 class="mt-0 mb-1">
 									<?= $sender_user_name; ?><small class="float-right text-muted"><?= time_ago($dateAgo); ?></small>

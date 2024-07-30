@@ -8,9 +8,9 @@ if (!isset($_SESSION['admin_email'])) {
 
     $count_tickets_closed = $db->count("support_tickets", ["status" => "close"]);
 
-    if (isset($_GET['view_support_requests'])) {
+    if ($_GET['view_support_requests']) {
 
-        $page = $input->get('view_support_requests');
+        $page = $_GET['view_support_requests'];
         if ($page == 0) {
             $page = 1;
         }
@@ -19,7 +19,7 @@ if (!isset($_SESSION['admin_email'])) {
         $page = 1;
     }
 
-    if (isset($_GET['enquiry_id'])) {
+    if ($_GET['enquiry_id']) {
         $enquiry_search = $input->get('enquiry_id');
     } else {
         $enquiry_search = "";
@@ -27,11 +27,11 @@ if (!isset($_SESSION['admin_email'])) {
 
 ?>
 
-    <div class="breadcrumbs">
+    <div class="breadcrumbs pt-4">
         <div class="col-sm-4">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1><i class="menu-icon fa fa-phone-square"></i> Support Settings</h1>
+                    <h1><i class="menu-icon fa fa-phone-square"></i> Support Requests</h1>
                 </div>
             </div>
         </div>
@@ -343,5 +343,7 @@ if (!isset($_SESSION['admin_email'])) {
 
         });
     </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <?php } ?>

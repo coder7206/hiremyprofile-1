@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 session_start();
 require_once("includes/db.php");
 require_once("social-config.php");
@@ -9,8 +10,8 @@ if (!isset($_SESSION['access_token'])) {
 	echo "<script> window.open('index','_self'); </script>";
 	exit();
 }
-function getRealUserIp()
-{
+function getRealUserIp(){
+	
 	//This is to check ip from shared internet network
 	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 		$ip = $_SERVER['HTTP_CLIENT_IP'];
@@ -40,7 +41,7 @@ if ($check_seller_email > 0) {
 		exit();
 	}
 }
-
+ 
 if (isset($_POST['continue'])) {
 
 
@@ -57,7 +58,7 @@ if (isset($_POST['continue'])) {
 
 		Flash::add("fb_errors", $val->get_all_errors());
 
-		Flash::add("form_data", $_POST);
+		Flash::add("form_data", $_POST); 
 
 		echo "<script>window.open('fb-register','_self')</script>";
 	} else {

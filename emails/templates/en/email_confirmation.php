@@ -1,20 +1,20 @@
-<div align="center" style="vertical-align:top" style="background-color: #fafafa;">
-   <table cellpadding="0" cellspacing="0" border="0" width="480" class="table">
+<div align="center" style="vertical-align:top" style="background-color: white;">
+   <table cellpadding="0" cellspacing="0" border="0" width="100%" class="table">
       <tbody>
          <tr>
-            <td width="100%" align="center" style="vertical-align: top; background-color: #FAFAFA">
+            <td width="100%" align="center" style="vertical-align: top; background-color:white; border:2px solid white;">
                <a href="<?= $site_url; ?>" target="_blank">
-                  <img src="<?= $site_logo; ?>" border="0" alt="GigToDo" class="logo">
+                  <img src="<?= $site_logo; ?>" alt="Hire My Profile" width="65%" style="margin:20px auto;">
                </a>
             </td>
          </tr>
-         <tr>
+         <!-- <tr>
             <td width="100%" align="left" style="vertical-align:top">
                <a href="<?= $site_url; ?>" target="_blank">
-                  <img src="<?= img_url("banner.jpg"); ?>" class='banner' alt="<?= $site_name; ?>">
+                  <img src="<?= img_url("1_Ymia_mKjiA-HFOO8UYKwgA.jpg"); ?>" class='banner' alt="<?= $site_name; ?>">
                </a>
             </td>
-         </tr>
+         </tr> -->
          <tr>
             <td height="30" bgcolor="#ffffff" width="100%"></td>
          </tr>

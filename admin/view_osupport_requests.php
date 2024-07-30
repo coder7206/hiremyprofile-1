@@ -8,9 +8,9 @@ if (!isset($_SESSION['admin_email'])) {
 
     $count_tickets_closed = $db->count("support_tickets", ["status" => "close"]);
 
-    if (isset($_GET['view_osupport_requests'])) {
+    if ($_GET['view_osupport_requests']) {
 
-        $page = $input->get('view_osupport_requests');
+        $page = $_GET['view_osupport_requests'];
         if ($page == 0) {
             $page = 1;
         }
@@ -27,11 +27,11 @@ if (!isset($_SESSION['admin_email'])) {
 
 ?>
 
-    <div class="breadcrumbs">
+    <div class="breadcrumbs  pt-4">
         <div class="col-sm-4">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1><i class="menu-icon fa fa-phone-square"></i> Support Settings</h1>
+                    <h1><i class="menu-icon fa fa-phone-square"></i> Support Requests</h1>
                 </div>
             </div>
         </div>
@@ -58,7 +58,7 @@ if (!isset($_SESSION['admin_email'])) {
                     <div class="card-header"><!--- card-header Starts --->
                         <div class="row">
                             <div class="col-lg-9 col-md-8">
-                                <h4 class="h4">View Order Disputes</h4>
+                                <h4 class="h4">View Order Disputes</h4> 
                             </div>
 
                             <div class="col-lg-3 col-md-4">
@@ -286,7 +286,7 @@ if (!isset($_SESSION['admin_email'])) {
         <!--- 2 row Ends --->
 
     </div>
-
+<!-- 
     <script>
         $(document).ready(function() {
 
@@ -301,6 +301,6 @@ if (!isset($_SESSION['admin_email'])) {
             });
 
         });
-    </script>
+    </script> -->
 
 <?php } ?>

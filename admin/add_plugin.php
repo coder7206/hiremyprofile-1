@@ -151,7 +151,7 @@ $current_version = $row_app->version;
               }
 
             }else{
-              echo "<script>alert_success('This Plugin Will Only Work On Gigtodo $c_version And Above $c_version','index?plugins');</script>"; 
+              echo "<script>alert_success('This Plugin Will Only Work On hiremyprofile $c_version And Above $c_version','index?plugins');</script>"; 
             }
 
           }else{

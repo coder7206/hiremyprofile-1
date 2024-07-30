@@ -28,7 +28,7 @@ $count = 0;
 
 $limit = 12;
 
-if(isset($_GET['view_proposals_files'])){
+if($_GET['view_proposals_files']){
     
 $page = $_GET['view_proposals_files'];
     

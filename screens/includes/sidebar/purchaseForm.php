@@ -2,9 +2,12 @@
   <input type="hidden" name="proposal_id" value="<?= $proposal_id; ?>">
   <input type="hidden" name="proposal_qty" value="1">
   <div class="header">
-    <span class="text <?=($lang_dir == "right" ? 'text-right':'')?>">
+   
+  
+  <span class="text <?=($lang_dir == "right" ? 'text-right':'')?>">
       <span class="dropdown" tabindex="0" data-toggle="popover" data-placement="bottom" data-html="true" data-content="<?php include('orderDetailsPopover.php'); ?>">Order Details</span>
       <a href="#" class="secure ml-2"><?php include("$dir/images/svg/secure.svg"); ?></a>
+     
       <?php if(!isset($_SESSION['seller_user_name'])){ ?>
       <a href="#" data-toggle="modal" data-target="#login-modal" class="favorite ml-2"> 
       <i class="fa fa-heart dil1" data-toggle="tooltip" data-placement="top" title="Favorites"></i> 
@@ -14,7 +17,12 @@
       <i class="fa fa-heart <?= $show_favorite_class; ?>" data-toggle="tooltip" data-placement="top" title="Favorites"></i> 
       </a>
       <?php } ?>
+
+      
     </span>
+
+
+
     <div class="price <?=($lang_dir == "right" ? 'text-right':'')?>">
       <b class="currency">        
         <?= showPrice($proposal_price,"total-price"); ?>

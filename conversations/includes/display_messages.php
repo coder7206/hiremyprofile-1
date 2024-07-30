@@ -62,21 +62,29 @@ while ($row_inbox_messages = $get_inbox_messages->fetch()) {
 	$allowed = array('jpeg', 'jpg', 'gif', 'png');
 
 ?>
+	<?php if ($login_seller_id == $message_sender) { ?>
+		<li href="#" class="inboxMsg media inboxMsg border sellerSender">
+		<?php } else { ?>
+		<li href="#" class="inboxMsg media inboxMsg border buyerReceiver">
+		<?php } ?>
 
-	<li href="#" class="inboxMsg media inboxMsg">
-
-		<a href="<?=$site_url?>/<?= $sender_profile_link; ?>">
+		<a href="<?= $site_url ?>/<?= $sender_profile_link; ?>">
 			<?php if (!empty($sender_image)) { ?>
-				<img src="<?= $sender_image; ?>" class="rounded-circle mr-3" width="40">
+				<div class="convertion-image-circle40">
+					<img src="<?= $sender_image; ?>" class="" width="100%" height="100%">
+				</div>
 			<?php } else { ?>
-				<img src="<?=$site_url?>/user_images/empty-image.png" class="rounded-circle mr-3" width="40">
+				<div class="convertion-image-circle40">
+					<img src="<?= $site_url ?>/user_images/empty-image.png" class="" width="100%" height="100%">
+				</div>
 			<?php } ?>
 		</a>
 
 		<div class="media-body">
+
 			<h6 class="mt-0 mb-1">
 
-				<a href="<?=$site_url?>/<?= $sender_profile_link; ?>"><?= $sender_user_name; ?></a>
+				<a href="<?= $site_url ?>/<?= $sender_profile_link; ?>"><?= $sender_user_name; ?></a>
 				<!-- <?= $sender_user_name; ?> -->
 
 				<small class="text-muted"><?= $message_date; ?></small>
@@ -98,7 +106,7 @@ while ($row_inbox_messages = $get_inbox_messages->fetch()) {
 					<img src="<?= getImageUrl("inbox_messages", $message_file); ?>" class="img-thumbnail" width="100" />
 				<?php } ?>
 				<a href="<?= getImageUrl("inbox_messages", $message_file); ?>" download class="d-block mt-2 ml-1">
-					<i class="fa fa-download"></i> <?= $message_file; ?>
+					<i class="fa fa-download"></i>
 				</a>
 			<?php } ?>
 			<?php if (!$message_offer_id == 0) { ?>
@@ -160,5 +168,5 @@ while ($row_inbox_messages = $get_inbox_messages->fetch()) {
 				<!--- message-offer Ends --->
 			<?php } ?>
 		</div>
-	</li>
-<?php } ?>
+		</li>
+	<?php } ?>

@@ -57,8 +57,8 @@ if (isset($_POST['submit_change_password'])) {
   $encrypted_password = password_hash($password, PASSWORD_DEFAULT);
 
   $update_password = $db->update("sellers", array("seller_pass" => $encrypted_password), array("seller_id" => $seller_id));
-  if($update_password){
-		echo "
+  if ($update_password) {
+    echo "
 		<script>
       swal({
         type: 'success',
@@ -73,7 +73,7 @@ if (isset($_POST['submit_change_password'])) {
         });
         </script>";
     exit();
-	}
+  }
 }
 // Profile form
 if (isset($_POST['submit'])) {
@@ -90,7 +90,11 @@ if (isset($_POST['submit'])) {
   ];
 
   $val = new Validator($_POST, $rules, $messages);
+  echo "<pre>";
+  echo json_encode($_POST);
+  echo "</pre>";
 
+  exit();
   if ($val->run() == false) {
     Flash::add("form_errors", $val->get_all_errors());
     Flash::add("form_data", $_POST);
@@ -111,7 +115,7 @@ if (isset($_POST['submit'])) {
 
     $cover_photo = $_FILES['cover_photo']['name'];
     $cover_photo_tmp = $_FILES['cover_photo']['tmp_name'];
-    $allowed = array('jpeg', 'jpg', 'gif', 'png', 'tif');
+    $allowed = array('image/jpeg', 'jpg', 'gif', 'png', 'tif');
     $cover_file_extension = pathinfo($cover_photo, PATHINFO_EXTENSION);
 
     if (!in_array($cover_file_extension, $allowed) & !empty($cover_photo)) {
@@ -223,35 +227,127 @@ require 'admin/timezones.php';
 
 $phone_no = explode(" ", $login_seller_phone ?? "");
 ?>
-<h5 class="mb-4"> Account Information</h5>
+<style>
+  @media (max-width:768px) {
+    .full-width-a {
+      width: 100%;
+      /* border:1px solid green; */
+      font-size: 18px !important;
+      display: flex;
+      margin-top: -10px !important;
+    }
+
+    .full-width-b {
+      width: 100%;
+      /* border:1px solid green; */
+      font-size: 18px !important;
+      display: flex;
+      margin-top: 20px !important;
+    }
+
+    .text-align-center-a {
+      text-align: center;
+      margin: auto;
+      /* color: #186b64; */
+    }
+
+    .full-width {
+      width: 100%;
+      display: flex;
+      /* border:1px solid green; */
+    }
+
+    .text-align-center {
+      text-align: center;
+      margin: auto;
+    }
+  }
+
+  .box-shadow-allpros {
+    /* box-shadow:0px 0px 5px gray ,inset 0px 0px 15px lightgray; */
+    border: 1px solid gray;
+    height: 45px !important;
+    padding-top: 7px;
+    font-size: 15px;
+  }
+
+  .box-shadow-for3 {
+    /* box-shadow:0px 0px 5px gray ,inset 0px 0px 25px lightgray; */
+    border: 1px solid gray;
+    font-size: 15px;
+  }
+
+  .increase-width2 {
+    width: 100%;
+    /* margin: auto; */
+    height: 50px !important;
+    /* box-shadow:2px 2px 5px black, inset 0px 0px 15px black; */
+    border: 1px solid gray;
+    font-size: 16px !important;
+  }
+
+  .di-flex {
+    width: 100%;
+    padding-right: 3px;
+    /* display: flex; */
+  }
+
+  .font-size-16 {
+    font-size: 16px;
+    /* font-weight: 500; */
+  }
+
+  .box-shadow-8b {
+    border: 1px solid gray;
+    /* box-shadow:0px 0px 5px black, inset 0px 0px 25px lightseagreen; */
+    padding: 15px;
+  }
+
+  #profileimgclosed {
+    margin: -33px 10px 0 0;
+    width: 2.5%;
+    float: inline-end
+  }
+
+  #profileimgopen {
+    margin: -33px 10px 0 0;
+    width: 2.5%;
+    float: inline-end
+  }
+</style>
+<h5 class="mb-4 full-width-a"><span class="text-align-center-a">Account Information</span></h5>
 <form method="post" class="clearfix mb-3">
   <div class="form-group row">
-    <label class="col-md-3 col-form-label"> <?= $lang['label']['username']; ?> </label>
+    <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['username']; ?> </label>
     <div class="col-md-9">
-      <input type="text" name="seller_user_name" value="<?= $login_seller_user_name; ?>" class="form-control" required readonly>
+      <input type="text" name="seller_user_name" value="<?= $login_seller_user_name; ?>" class="form-control box-shadow-allpros" required readonly>
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-md-3 col-form-label"> <?= $lang['label']['email']; ?> </label>
+    <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['email']; ?> </label>
     <div class="col-md-9">
-      <input type="text" name="seller_email" value="<?= $login_seller_email; ?>" class="form-control" required readonly>
+      <input type="text" name="seller_email" value="<?= $login_seller_email; ?>" class="form-control box-shadow-allpros" required readonly>
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-md-3 col-form-label"> <?= $lang['label']['password']; ?> </label>
+    <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['password']; ?> </label>
     <div class="col-md-9">
-      <input type="password" name="password" value="" class="form-control" required minlength="8" pattern="[a-zA-Z0-9]+">
+      <input type="password" name="password" id="profilepassopen" value="" class="form-control box-shadow-allpros" required minlength="8" pattern="[a-zA-Z0-9]+">
+      <img src="<?= $site_url ?>/images/closed-eye.png" id="profileimgopen">
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-md-3 col-form-label"> <?= $lang['label']['password_confirm']; ?> </label>
+    <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['password_confirm']; ?> </label>
     <div class="col-md-9">
-      <input type="password" name="password_confirm" value="" class="form-control" required minlength="8" pattern="[a-zA-Z0-9]+">
+      <input type="password" name="password_confirm" value="" id="profileconfirmclosed" class="form-control box-shadow-allpros" required minlength="8" pattern="[a-zA-Z0-9]+">
+      <img src="<?= $site_url ?>/images/closed-eye.png" id="profileimgclosed">
     </div>
   </div>
-  <button type="submit" name="submit_change_password" class="btn btn-success <?= $floatRight ?>">
-    <i class="fa fa-floppy-o"></i> <?= $lang['button']['change_password']; ?>
-  </button>
+  <div class="di-flex">
+    <button type="submit" name="submit_change_password" class="btn btn-success increase-width2 <?= $floatRight ?>">
+      <i class="fa fa-unlock-alt"></i> &nbsp; <?= $lang['button']['change_password']; ?>
+    </button>
+  </div>
 </form>
 
 <hr />
@@ -273,19 +369,19 @@ if (is_array($form_errors)) {
   </div>
   <!--- alert alert-danger Ends --->
 <?php } ?>
-<h5 class="mb-4"> Profile Information </h5>
+<h5 class="mb-4 full-width-b"><span class="text-align-center-a">Profile Information</span></h5>
 <?php if ($reviewRemark == 'review') { ?>
-  <div class="alert alert-warning">
+  <div class="alert alert-warning text-align-center">
     Your profile is under review.
   </div>
 <?php } ?>
 <?php if ($reviewRemark == 'modification') { ?>
-  <div class="alert alert-primary">
+  <div class="alert alert-primary text-align-center">
     Your profile needs modification, here is the message from ADMIN: <br /> <?= $modificationMsg ?>
   </div>
-  <?php } ?>
-  <?php if ($reviewRemark == 'active') { ?>
-  <div class="alert alert-success">
+<?php } ?>
+<?php if ($reviewRemark == 'active') { ?>
+  <div class="alert alert-success text-align-center box-shadow-8b">
     Your profile is active.
   </div>
 <?php
@@ -295,29 +391,29 @@ if (is_null($reviewRemark) || $reviewRemark == 'modification' || $reviewRemark =
 ?>
   <form method="post" enctype="multipart/form-data" runat="server" autocomplete="off">
     <div class="form-group row">
-      <label class="col-md-3 col-form-label"> <?= $lang['label']['full_name']; ?> </label>
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['full_name']; ?> </label>
       <div class="col-md-9">
-        <input type="text" name="seller_name" value="<?= $login_seller_name; ?>" class="form-control" required>
+        <input type="text" name="seller_name" value="<?= $login_seller_name; ?>" class="form-control box-shadow-allpros" required>
       </div>
     </div>
 
     <div class="form-group row">
-      <label class="col-md-3 col-form-label"> <?= $lang['label']['phone']; ?> </label>
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['phone']; ?> </label>
       <div class="col-md-9 phoneNo">
         <div class="input-group">
           <span class="input-group-addon p-0 border-0 rounded-0" style="width: 28%;">
             <?php include("includes/country_codes.php"); ?>
           </span>
-          <input type="text" class="form-control" name="seller_phone" placeholder="<?= $lang['placeholder']['phone']; ?>" value="<?= @$phone_no[1]; ?>" required />
+          <input type="text" class="form-control box-shadow-allpros" name="seller_phone" placeholder="<?= $lang['placeholder']['phone']; ?>" value="<?= @$phone_no[1]; ?>" required />
         </div>
         <small class="text-muted">Please enter 10 digit phone number only like this: <b>2561040358</b> </small>
       </div>
     </div>
 
     <div class="form-group row"><!-- form-group row Starts -->
-      <label class="col-md-3 col-form-label"> <?= $lang['label']['country']; ?> </label>
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['country']; ?> </label>
       <div class="col-md-9">
-        <select name="seller_country" class="form-control" required>
+        <select name="seller_country" class="form-control box-shadow-allpros" required>
           <?php
           $get_countries = $db->select("countries");
           while ($row_countries = $get_countries->fetch()) {
@@ -337,17 +433,17 @@ if (is_null($reviewRemark) || $reviewRemark == 'modification' || $reviewRemark =
 
     <div class="form-group row"><!-- form-group row Starts -->
 
-      <label class="col-md-3 col-form-label"> <?= $lang['label']['city']; ?> </label>
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['city']; ?> </label>
 
       <div class="col-md-9">
-        <input type="text" name="seller_city" placeholder="<?= $lang['placeholder']['city']; ?>" value="<?= $login_seller_city; ?>" class="form-control" required="" />
+        <input type="text" name="seller_city" placeholder="<?= $lang['placeholder']['city']; ?>" value="<?= $login_seller_city; ?>" class="form-control box-shadow-allpros" required="" />
       </div>
     </div><!-- form-group row Ends -->
 
     <div class="form-group row">
-      <label class="col-md-3 col-form-label"> <?= $lang['label']['timezone']; ?> </label>
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['timezone']; ?> </label>
       <div class="col-md-9">
-        <select name="seller_timezone" class="form-control site_logo_type" required="">
+        <select name="seller_timezone" class="form-control box-shadow-allpros site_logo_type" required="">
           <?php foreach ($timezones as $key => $zone) { ?>
             <option <?= ($login_seller_timzeone == $zone) ? "selected=''" : ""; ?> value="<?= $zone; ?>">
               <?= $zone; ?>
@@ -358,9 +454,9 @@ if (is_null($reviewRemark) || $reviewRemark == 'modification' || $reviewRemark =
     </div>
 
     <div class="form-group row">
-      <label class="col-md-3 col-form-label"> <?= $lang['label']['main_language']; ?> </label>
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['main_language']; ?> </label>
       <div class="col-md-9">
-        <select name="seller_language" class="form-control" required="">
+        <select name="seller_language" class="form-control box-shadow-allpros" required="">
           <?php if ($login_seller_language == 0) { ?>
             <option class="hidden" value=""> Select Language </option>
             <?php
@@ -387,57 +483,83 @@ if (is_null($reviewRemark) || $reviewRemark == 'modification' || $reviewRemark =
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 col-form-label"> <?= $lang['label']['profile_photo']; ?> </label>
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['profile_photo']; ?> </label>
       <div class="col-md-9">
-        <input type="file" name="profile_photo" class="form-control">
+        <input type="file" name="profile_photo" class="form-control box-shadow-allpros" accept="image/*" id="profileImg" onchange="loadFile(event)">
+        <p id="profileInfo"></p>
         <input type="hidden" name="profile_photo">
+
         <p class="mt-2">
           <?= str_replace('{site_name}', $site_name, $lang['note']['profile_photo']); ?>
         </p>
         <?php if (!empty($login_seller_image)) { ?>
           <img src="<?= $site_url ?>/user_images/<?= $login_seller_image ?>" width="80" class="img-thumbnail img-circle" />
         <?php } else { ?>
-          <img src="user_images/empty-image.png" width="80" class="img-thumbnail img-circle">
+          <img id="output" width="80" max-filesize>
         <?php } ?>
       </div>
     </div>
+
+
+    <script>
+      var loadFile = function(event) {
+        var output = document.getElementById("output");
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+          URL.revokeObjectURL(output.src)
+        }
+      }
+    </script>
     <div class="form-group row">
-      <label class="col-md-3 col-form-label"> <?= $lang['label']['cover_photo']; ?> </label>
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['cover_photo']; ?> </label>
       <div class="col-md-9">
-        <input type="file" name="cover_photo" id="cover" class="form-control">
+        <input type="file" name="cover_photo" id="cover" class="form-control box-shadow-allpros" accept="image/*" onchange="loadinFile(event)">
+        <p id="pictureInfo"></p>
         <p class="mt-2">
           <?= str_replace('{url}', "$site_url/{$_SESSION['seller_user_name']}", $lang['note']['cover_photo']); ?>
         </p>
         <?php if (!empty($login_seller_cover_image)) { ?>
           <img src="<?= $site_url ?>/cover_images/<?= $login_seller_cover_image ?>" width="80" class="img-thumbnail img-circle" />
         <?php } else { ?>
-          <img src="cover_images/empty-cover.png" width="80" class="img-thumbnail img-circle">
+          <img id="flicker" width="80">
         <?php } ?>
       </div>
     </div>
+
+    <script>
+      var loadinFile = function(event) {
+        var flicker = document.getElementById("flicker");
+        flicker.src = URL.createObjectURL(event.target.files[0]);
+        flicker.onload = function() {
+          URL.revokeObjectURL(flicker.src)
+        }
+      }
+    </script>
     <div class="form-group row">
-      <label class="col-md-3 col-form-label"> <?= $lang['label']['headline']; ?> </label>
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['headline']; ?> </label>
       <div class="col-md-9">
-        <textarea name="seller_headline" id="textarea-headline" rows="3" class="form-control" required maxlength="150"><?= $login_seller_headline; ?></textarea>
+        <textarea name="seller_headline" id="textarea-headline" rows="3" class="form-control box-shadow-for3" required maxlength="200"><?= $login_seller_headline; ?></textarea>
         <span class="float-right mt-1">
-          <span class="count-headline"> 0 </span> / 150 <?= $lang['label']['max']; ?>
+          <span class="count-headline"> 0 </span> / 200 <?= $lang['label']['max']; ?>
         </span>
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 col-form-label"> <?= $lang['label']['description']; ?></label>
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['description']; ?></label>
       <div class="col-md-9">
-        <textarea name="seller_about" id="textarea-about" rows="5" class="form-control" required maxlength="300" placeholder="<?= $lang['placeholder']['description']; ?>"><?= $login_seller_about; ?></textarea>
+        <textarea name="seller_about" id="textarea-about" rows="5" class="form-control box-shadow-for3" required maxlength="350" placeholder="<?= $lang['placeholder']['description']; ?>"><?= $login_seller_about; ?></textarea>
         <span class="float-right mt-1">
-          <span class="count-about"> 0 </span> / 300 <?= $lang['label']['max']; ?>
+          <span class="count-about"> 0 </span> / 350 <?= $lang['label']['max']; ?>
         </span>
       </div>
     </div>
     <hr>
     <input type="hidden" name="form_state" value="<?= $reviewRemark ?>">
-    <button type="submit" name="submit" class="btn btn-success <?= $floatRight ?>" style="<?= ($lang_dir == "right" ? 'margin-left: 110px;' : '') ?>">
-      <i class="fa fa-floppy-o"></i> <?= $lang['button']['save_changes']; ?>
-    </button>
+    <div class="di-flex">
+      <button type="submit" name="submit" class="btn btn-success increase-width2 <?= $floatRight ?>" style="<?= ($lang_dir == "right" ? 'margin-left: 110px;' : '') ?>">
+        <i class="fa fa-floppy-o"></i> &nbsp; <?= $lang['button']['save_changes']; ?>
+      </button>
+    </div>
   </form>
 <?php
 } // $reviewRemark
@@ -546,5 +668,55 @@ else {
       var textarea_about = $("#textarea-about").val();
       $(".count-about").text(textarea_about.length);
     });
+  });
+
+
+  // //////////////////////////////////////////////////////////////////
+
+  var profileimgopen = document.getElementById("profileimgopen");
+  var profilepassopen = document.getElementById("profilepassopen");
+
+  profileimgopen.onclick = function() {
+    if (profilepassopen.type == "password") {
+      profilepassopen.type = "text"
+      profileimgopen.src = "<?= $site_url ?>/images/open-eye.png";
+    } else {
+      profilepassopen.type = "password"
+      profileimgopen.src = "<?= $site_url ?>/images/closed-eye.png";
+    }
+  }
+
+
+
+  var profileimgclosed = document.getElementById("profileimgclosed");
+  var profileconfirmclosed = document.getElementById("profileconfirmclosed");
+
+  profileimgclosed.onclick = function() {
+    if (profileconfirmclosed.type == "password") {
+      profileconfirmclosed.type = "text"
+      profileimgclosed.src = "<?= $site_url ?>/images/open-eye.png";
+    } else {
+      profileconfirmclosed.type = "password"
+      profileimgclosed.src = "<?= $site_url ?>/images/closed-eye.png";
+    }
+  }
+
+
+  // ///////////////
+
+  document.getElementById('profileImg').addEventListener('change', function() {
+    var file = this.files[0];
+    var fileInfo = "File type: " + file.type + "<br>" +
+      "File size: " + file.size + " bytes";
+    document.getElementById('profileInfo').innerHTML = fileInfo;
+  });
+
+  //    /////////////////////
+
+  document.getElementById('cover').addEventListener('change', function() {
+    var file = this.files[0];
+    var fileInfo = "File type: " + file.type + "<br>" +
+      "File size: " + file.size + " bytes";
+    document.getElementById('pictureInfo').innerHTML = fileInfo;
   });
 </script>

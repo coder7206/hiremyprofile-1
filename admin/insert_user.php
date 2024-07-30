@@ -114,9 +114,9 @@ echo "<script>window.open('login','_self');</script>";
 
                             <label class="col-md-3 control-label"> Admin Country : </label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6" >
 
-                                <input type="text" name="admin_country" class="form-control" required>
+                                <input type="text" name="admin_country"  class="form-control" required>
 
                             </div>
 

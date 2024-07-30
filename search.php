@@ -65,25 +65,7 @@ if (!isset($_SESSION['seller_user_name'])) {
           <button id="send-email" class="btn btn-success btn-sm float-right text-white"><?= $lang["popup"]["email_confirm"]['button']; ?></button>
         </div>
       </div>
-      <script>
-        $(document).ready(function() {
-          $("#send-email").click(function() {
-            $("#wait").addClass('loader');
-            $.ajax({
-              method: "POST",
-              url: "<?= $site_url; ?>/includes/send_email",
-              success: function() {
-                $("#wait").removeClass('loader');
-                $("#send-email").html("Resend Email");
-                swal({
-                  type: 'success',
-                  text: '<?= $lang['alert']['confirmation_email']; ?>',
-                });
-              }
-            });
-          });
-        });
-      </script>
+     
     </div>
   <?php } else { ?>
     <div class="wide-header">
@@ -308,22 +290,43 @@ if (!isset($_SESSION['seller_user_name'])) {
     $('.get_seller_language').click(function() {
       get_search_proposals();
     });
-    var stickyOffset = $('.sticky').offset().top;
+    // var stickyOffset = $('.sticky').offset().top;
 
-    $(window).scroll(function() {
-      var sticky = $('.sticky'),
-        scroll = $(window).scrollTop();
+    // $(window).scroll(function() {
+    //   var sticky = $('.sticky'),
+    //     scroll = $(window).scrollTop();
 
-      if (scroll >= stickyOffset) {
-        sticky.addClass('fixed');
+    //   if (scroll >= stickyOffset) {
+    //     sticky.addClass('fixed');
 
-        $('.container-fluid ').css('margin-top', '140px')
-      } else {
-        sticky.removeClass('fixed')
-        $('.container-fluid ').css('margin-top', '0px')
-      }
-    });
+    //     $('.container-fluid ').css('margin-top', '140px')
+    //   } else {
+    //     sticky.removeClass('fixed')
+    //     $('.container-fluid ').css('margin-top', '0px')
+    //   }
+    // });
   </script>
+   <!-- <script>
+     new header script
+    $(document).ready(function() {
+      var sticky = $('.sticky');
+      var stickyOffset = sticky.offset().top;
+
+      $(window).scroll(function() {
+        var scroll = $(window).scrollTop();
+
+        if (scroll >= stickyOffset) {
+          sticky.addClass('fixed');
+          $('.container-fluid').css('margin-top', '140px');
+          sticky.css('transition', 'all 2s linear'); 
+        } else {
+          sticky.removeClass('fixed');
+          $('.container-fluid').css('margin-top', '0px');
+          sticky.css('transition', 'all 2s linear'); 
+        }
+      });
+    });
+  </script> -->
   <script type="text/javascript">
     $(document).ready(function() {
 

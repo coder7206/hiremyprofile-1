@@ -16,9 +16,9 @@ $category_id =  $input->post('category_id');
 
 $get_c_cats = $db->select("categories_children",array("child_parent_id" => $category_id));
 
-while($row_c_cats = $get_c_cats->fetch()){
+while($row_c_cats = $get_c_cats->fetch()){ 
 	
-$child_id = $row_c_cats->child_id;
+$child_id = $row_c_cats->child_id; 
 
 
 $get_meta = $db->select("child_cats_meta",array("child_id" => $child_id,"language_id" => $siteLanguage));

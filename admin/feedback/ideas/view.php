@@ -5,12 +5,12 @@ if (!isset($_SESSION['admin_email'])) {
 } else {
 ?>
 
-	<div class="breadcrumbs">
+	<div class="breadcrumbs pt-4">
 		<!--- breadcrumbs Starts --->
 		<div class="col-sm-4">
 			<div class="page-header float-left">
 				<div class="page-title">
-					<h1><i class="menu-icon fa fa-rss"></i> Feedback</h1>
+					<h1><i class="menu-icon fa fa-comments"></i> Feedback</h1>
 				</div>
 			</div>
 		</div>

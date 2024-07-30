@@ -44,15 +44,15 @@ if ($enable_unlimited_revisions == 1) {
 					<small class="text-dark d-block">min: 5 max: 50 characters</small>
 				</td>
 				<td class="p-0">
-					<textarea name="proposal_packages[1][description]" id="basic-desc" form="pricing-form" class="form-control" placeholder="Description" rows="3" required minlength="5" maxlength="50"><?= trim($row_1->description); ?></textarea>
+					<textarea name="proposal_packages[1][description]" id="basic-desc" required form="pricing-form" class="form-control" placeholder="Description" rows="3" minlength="5" maxlength="50"><?= trim($row_1->description); ?></textarea>
 					<span class="text-dark d-block"><span class="pull-right"><i class="text-danger" id="basic-typed-characters"><?=strlen($row_1->description) > 0 ? strlen($row_1->description) : 0; ?></i> characters</span></span>
 				</td>
 				<td class="p-0">
-					<textarea name="proposal_packages[2][description]" id="standard-desc"  form="pricing-form" class="form-control" placeholder="Description" rows="3" required minlength="5" maxlength="50"><?= trim($row_2->description); ?></textarea>
+					<textarea name="proposal_packages[2][description]" id="standard-desc" required form="pricing-form" class="form-control" placeholder="Description" rows="3" minlength="5" maxlength="50"><?= trim($row_2->description); ?></textarea>
 					<span class="text-dark d-block"><span class="pull-right"><i class="text-danger" id="standard-typed-characters"><?=strlen($row_2->description) > 0 ? strlen($row_2->description) : 0; ?></i> characters</span></span>
 				</td>
 				<td class="p-0">
-					<textarea name="proposal_packages[3][description]" id="advanced-desc"  form="pricing-form" class="form-control" placeholder="Description" rows="3" required minlength="5" maxlength="50"><?= trim($row_3->description); ?></textarea>
+					<textarea name="proposal_packages[3][description]" id="advanced-desc" required form="pricing-form" class="form-control" placeholder="Description" rows="3" minlength="5" maxlength="50"><?= trim($row_3->description); ?></textarea>
 					<span class="text-dark d-block"><span class="pull-right"><i class="text-danger" id="advanced-typed-characters"><?=strlen($row_3->description) > 0 ? strlen($row_3->description) : 0; ?></i> characters</span></span>
 				</td>
 			</tr>

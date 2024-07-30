@@ -67,7 +67,7 @@
           <div class="mobile-topnav bg-white animated">
             <ul data-ui="mobile-top-catnav-container" class="mobile-top-catnav-container list-unstyled mobile-catnav-margin">
             <li class="p-xs-2 bb-xs-1 text-body-larger top-nav-item">
-            <a>How it Works?</a>
+            <a href="how-it-works" class="text-primary">How it Works?</a>
           </li>
               <?php
 

@@ -132,7 +132,7 @@ $_SESSION['adminLanguage'] = 1;
 
                 </div>
 
-                <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30" name="admin_login">Sign in</button>
+                <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30" name="admin_login">LogIn</button>
 
                 </form>
                     

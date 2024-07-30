@@ -6,6 +6,69 @@ if (!isset($_SESSION['seller_user_name'])) {
 }
 ?>
 
+<style>
+  @media (max-width:768px) {
+    .text-align-center-1 {
+      text-align: center;
+      margin: auto;
+    }
+
+    .full-width-1 {
+      /* border: 1px solid blue; */
+      width: 100%;
+      display: flex;
+      /* color: #2e8780; */
+      margin-top: -10px;
+      /* font-size: ; */
+    }
+
+    .full-width-2 {
+      /* border: 1px solid blue; */
+      width: 100%;
+      display: flex;
+      margin-top:1.5rem;
+      /* color: #2e8780; */
+      /* font-size: ; */
+    }
+
+    .text-align-center-2 {
+      text-align: center;
+      margin: auto;
+    }
+
+    .deactivation-title {
+      color: #3c6263 !important;
+      font-weight: 400;
+      font-size: 16px;
+      text-align: center;
+      margin: auto;
+    }
+
+   
+  }
+
+  .box-shadow-acc-set {
+    /* box-shadow:0px 0px 5px gray ,inset 0px 0px 15px lightgray; */
+    border: 1px solid gray;
+    height: 45px !important;
+    padding-top: 7px;
+    font-size: 15px;
+  }
+
+  .box-shadow-submit-btnn {
+    /* box-shadow: 2px 2px 5px black, inset 0px 0px 15px black; */
+    height: 45px !important;
+    width: 100%;
+    /* margin-right: 0.25rem; */
+  }
+
+  .box-shadow-de-acc {
+    /* box-shadow: 2px 2px 5px black, inset 0px 0px 15px #ab0202; */
+    height: 45px !important;
+    width:100%;
+    /* margin-right: 0.25rem; */
+  }
+</style>
 <?php
 if ($enable_paypal == "yes") {
   if (isset($_POST['submit_paypal_email'])) {
@@ -15,7 +78,7 @@ if ($enable_paypal == "yes") {
     $update_seller = $db->update("sellers", ["seller_paypal_email" => $seller_paypal_email], ["seller_id" => $login_seller_id]);
 
     if ($update_seller) {
-      $weightnForm = ['account_weight' => 30, 'seller_id' => $seller_id];
+      $weightnForm = ['account_weight' => 20, 'seller_id' => $seller_id];
       if ($totalWeight > 0)
         $db->update("seller_profile_weights", $weightnForm, ["seller_id" => $seller_id]);
       else
@@ -37,16 +100,16 @@ if ($enable_paypal == "yes") {
   }
 ?>
 
-  <h5 class="mb-4"> <?= $lang['settings']['paypal_heading']; ?> </h5>
+  <h5 class="mb-4 full-width-1"> <span class="text-align-center-1"><?= $lang['settings']['paypal_heading']; ?></span> </h5>
   <form method="post" class="clearfix mb-3">
     <div class="form-group row">
       <label class="col-md-4 col-form-label"> <?= $lang['label']['paypal_email']; ?> </label>
       <div class="col-md-8">
-        <input type="email" name="seller_paypal_email" value="<?= $login_seller_paypal_email; ?>" placeholder="<?= $lang['placeholder']['paypal_email']; ?>" class="form-control" required />
+        <input type="email" name="seller_paypal_email" value="<?= $login_seller_paypal_email; ?>" placeholder="<?= $lang['placeholder']['paypal_email']; ?>" class="form-control box-shadow-acc-set" required />
       </div>
     </div>
-    <button type="submit" name="submit_paypal_email" class="btn btn-success <?= $floatRight ?>">
-      <?= $lang['button']['change_paypal_email']; ?>
+    <button type="submit" name="submit_paypal_email" class="btn btn-success box-shadow-submit-btnn <?= $floatRight ?>">
+      <i class="fa fa-envelope-o"></i> &nbsp; <?= $lang['button']['change_paypal_email']; ?>
     </button>
   </form>
 <?php
@@ -65,7 +128,7 @@ if ($paymentGateway == 1) {
     <div class="form-group row">
       <label class="col-md-4 col-form-label"> <?= $lang['label']['payoneer_email']; ?> </label>
       <div class="col-md-8">
-        <input type="email" name="seller_payoneer_email" value="<?= $login_seller_payoneer_email; ?>" placeholder="Enter payoneer email" class="form-control" required>
+        <input type="email" name="seller_payoneer_email" value="<?= $login_seller_payoneer_email; ?>" placeholder="Enter payoneer email" class="form-control box-shadow-acc-set" required>
       </div>
     </div>
     <button type="submit" name="submit_payoneer_email" class="btn btn-success <?= $floatRight ?>">
@@ -77,7 +140,7 @@ if ($paymentGateway == 1) {
     $seller_payoneer_email = strip_tags($input->post('seller_payoneer_email'));
     $update_seller = $db->update("sellers", array("seller_payoneer_email" => $seller_payoneer_email), array("seller_id" => $login_seller_id));
     if ($update_seller) {
-      $weightnForm = ['account_weight' => 30, 'seller_id' => $seller_id];
+      $weightnForm = ['account_weight' => 20, 'seller_id' => $seller_id];
       if ($totalWeight > 0)
         $db->update("seller_profile_weights", $weightnForm, ["seller_id" => $seller_id]);
       else
@@ -108,13 +171,13 @@ if ($paymentGateway == 1) {
     <div class="form-group row">
       <label class="col-md-4 col-form-label"> <?= $lang['label']['account_number']; ?> </label>
       <div class="col-md-8">
-        <input type="text" name="m_account_number" value="<?= $login_seller_account_number; ?>" placeholder="<?= $lang['placeholder']['account_number']; ?>" class="form-control" required>
+        <input type="text" name="m_account_number" value="<?= $login_seller_account_number; ?>" placeholder="<?= $lang['placeholder']['account_number']; ?>" class="form-control box-shadow-acc-set" required>
       </div>
     </div>
     <div class="form-group row">
       <label class="col-md-4 col-form-label"> <?= $lang['label']['account_owner']; ?> </label>
       <div class="col-md-8">
-        <input type="text" name="m_account_name" value="<?= $login_seller_account_name; ?>" placeholder="<?= $lang['placeholder']['account_owner']; ?>" class="form-control" required>
+        <input type="text" name="m_account_name" value="<?= $login_seller_account_name; ?>" placeholder="<?= $lang['placeholder']['account_owner']; ?>" class="form-control box-shadow-acc-set" required>
       </div>
     </div>
     <button type="submit" name="update_mobile_money" class="btn btn-success <?= $floatRight ?>">
@@ -127,7 +190,7 @@ if ($paymentGateway == 1) {
     $m_account_name = strip_tags($input->post('m_account_name'));
     $update_seller = $db->update("sellers", array("seller_m_account_number" => $m_account_number, "seller_m_account_name" => $m_account_name), array("seller_id" => $login_seller_id));
     if ($update_seller) {
-      $weightnForm = ['account_weight' => 30, 'seller_id' => $seller_id];
+      $weightnForm = ['account_weight' => 20, 'seller_id' => $seller_id];
       if ($totalWeight > 0)
         $db->update("seller_profile_weights", $weightnForm, ["seller_id" => $seller_id]);
       else
@@ -150,17 +213,17 @@ if ($paymentGateway == 1) {
 
 ?>
 <hr>
-<h5 class="mb-4"> <?= $lang['settings']['bitcoin_wallet_heading']; ?> </h5>
+<h5 class="mb-4 full-width-2"> <span class="text-align-center-2"><?= $lang['settings']['bitcoin_wallet_heading']; ?></span> </h5>
 <form method="post" class="clearfix mb-3">
   <div class="form-group row">
     <label class="col-md-4 col-form-label"> <?= $lang['label']['wallet_address']; ?> </label>
     <div class="col-md-8">
-      <input type="text" name="seller_wallet" value="<?= $login_seller_wallet; ?>" placeholder="<?= $lang['placeholder']['wallet_address']; ?>" class="form-control"/>
+      <input type="text" name="seller_wallet" value="<?= $login_seller_wallet; ?>" placeholder="<?= $lang['placeholder']['wallet_address']; ?>" class="form-control box-shadow-acc-set" />
       <small class="text-danger"><?= $lang['note']['wallet_address']; ?></small>
     </div>
   </div>
-  <button type="submit" name="submit_wallet" class="btn btn-success <?= $floatRight ?>">
-    <?= $lang['button']['update_wallet_address']; ?>
+  <button type="submit" name="submit_wallet" class="btn btn-success box-shadow-submit-btnn <?= $floatRight ?>">
+    <i class="fa fa-pencil-square-o"></i> &nbsp;<?= $lang['button']['update_wallet_address']; ?>
   </button>
 </form>
 <?php
@@ -168,11 +231,11 @@ if (isset($_POST['submit_wallet'])) {
   $seller_wallet = $input->post('seller_wallet');
   $update_seller = $db->update("sellers", array("seller_wallet" => $seller_wallet), array("seller_id" => $login_seller_id));
   if ($update_seller) {
-    $weightnForm = ['account_weight' => 30, 'seller_id' => $seller_id];
-      if ($totalWeight > 0)
-        $db->update("seller_profile_weights", $weightnForm, ["seller_id" => $seller_id]);
-      else
-        $db->insert("seller_profile_weights", $weightnForm);
+    $weightnForm = ['account_weight' => 20, 'seller_id' => $seller_id];
+    if ($totalWeight > 0)
+      $db->update("seller_profile_weights", $weightnForm, ["seller_id" => $seller_id]);
+    else
+      $db->insert("seller_profile_weights", $weightnForm);
     echo "<script>
     swal({
       type: 'success',
@@ -189,12 +252,12 @@ if (isset($_POST['submit_wallet'])) {
 }
 ?>
 <hr>
-<h5 class="mb-4"> <?= $lang['settings']['real_time_notifications']; ?> </h5>
+<h5 class="mb-4 full-width-2"> <span class="text-align-center-2"><?= $lang['settings']['real_time_notifications']; ?> </span></h5>
 <form method="post" class="clearfix">
   <div class="form-group row mb-3">
     <label class="col-md-4 col-form-label"> <?= $lang['label']['enable_sound']; ?> </label>
     <div class="col-md-8">
-      <select name="enable_sound" class="form-control">
+      <select name="enable_sound" class="form-control box-shadow-acc-set">
         <?php if ($login_seller_enable_sound == "yes") { ?>
           <option value="yes"> Yes </option>
           <option value="no"> No </option>
@@ -208,7 +271,7 @@ if (isset($_POST['submit_wallet'])) {
   <div class="form-group row mb-3">
     <label class="col-md-4 col-form-label"> <?= $lang['label']['enable_notifications']; ?> </label>
     <div class="col-md-8">
-      <select name="enable_notifications" class="form-control">
+      <select name="enable_notifications" class="form-control box-shadow-acc-set">
         <?php if ($login_seller_enable_notifications == "1") { ?>
           <option value="1"> Yes </option>
           <option value="0"> No </option>
@@ -219,8 +282,8 @@ if (isset($_POST['submit_wallet'])) {
       </select>
     </div>
   </div>
-  <button type="submit" name="update_sound" class="btn btn-success mt-1 <?= $floatRight ?>">
-    <?= $lang['button']['update_changes']; ?>
+  <button type="submit" name="update_sound" class="btn btn-success mt-1 box-shadow-submit-btnn <?= $floatRight ?>">
+    <i class="fa fa-pencil-square-o"></i> &nbsp;<?= $lang['button']['update_changes']; ?>
   </button>
 </form>
 <?php
@@ -245,7 +308,7 @@ if (isset($_POST['update_sound'])) {
 }
 ?>
 <hr>
-<h5 class="mb-4"> <?= $lang['settings']['change_pass']; ?> </h5>
+<h5 class="mb-4 full-width-2"> <span class="text-align-center-2"><?= $lang['settings']['change_pass']; ?> </span></h5>
 <?php
 $form_errors = Flash::render("change_pass_errors");
 $form_data = Flash::render("form_data");
@@ -265,23 +328,23 @@ if (is_array($form_errors)) {
   <div class="form-group row">
     <label class="col-md-4 col-form-label"> <?= $lang['label']['enter_old_pass']; ?> </label>
     <div class="col-md-8">
-      <input type="text" name="old_pass" class="form-control" required="" />
+      <input type="text" name="old_pass" class="form-control box-shadow-acc-set" required="" />
     </div>
   </div>
   <div class="form-group row">
     <label class="col-md-4 col-form-label"> <?= $lang['label']['enter_new_pass']; ?> </label>
     <div class="col-md-8">
-      <input type="text" name="new_pass" class="form-control" required="" />
+      <input type="text" name="new_pass" class="form-control box-shadow-acc-set" required="" />
     </div>
   </div>
   <div class="form-group row">
     <label class="col-md-4 col-form-label"> <?= $lang['label']['confirm_new_pass']; ?> </label>
     <div class="col-md-8">
-      <input type="text" name="new_pass_again" class="form-control" required="" />
+      <input type="text" name="new_pass_again" class="form-control box-shadow-acc-set" required="" />
     </div>
   </div>
-  <button type="submit" name="change_password" class="btn btn-success <?= $floatRight; ?>">
-    <?= $lang['button']['change_password']; ?>
+  <button type="submit" name="change_password" class="btn btn-success box-shadow-submit-btnn <?= $floatRight; ?>">
+    <i class="fa fa-unlock-alt"></i> &nbsp;<?= $lang['button']['change_password']; ?>
   </button>
 </form>
 <?php
@@ -338,10 +401,10 @@ if (isset($_POST['change_password'])) {
 }
 ?>
 <hr>
-<h5 class="mb-1"> <?= $lang['settings']['account_deactivation']; ?> </h5>
+<h5 class="mb-2 full-width-2"> <span class="text-align-center-2"><?= $lang['settings']['account_deactivation']; ?></span> </h5>
 <ul class="list-unstyled <?= $floatRight ?>">
-  <li class="lead mb-2">
-    <strong> <?= $lang['settings']['what_happens']['title']; ?> </strong>
+  <li class="lead mb-2 full-width-2">
+    <span class="deactivation-title"><?= $lang['settings']['what_happens']['title']; ?></span>
   </li>
   <li><i class="fa fa-hand-o-right"></i> <?= $lang['settings']['what_happens']['1']; ?> </li>
   <li><i class="fa fa-hand-o-right"></i> <?= $lang['settings']['what_happens']['2']; ?> </li>
@@ -354,13 +417,13 @@ if (isset($_POST['change_password'])) {
     <div class="form-group"><!-- form-group Starts -->
       <h5 class="pt-3 pb-3"> <?= $lang['settings']['please_withdraw']; ?> </h5>
     </div><!-- form-group Ends -->
-    <button type="submit" name="deactivate_account" disabled class="btn btn-danger <?= $floatRight ?>">
-      <i class="fa fa-frown-o"></i> <?= $lang['button']['deactivate_account']; ?>
+    <button type="submit" name="deactivate_account" disabled class="btn btn-danger box-shadow-de-acc <?= $floatRight ?>">
+      <i class="fa fa-frown-o"></i> &nbsp; <?= $lang['button']['deactivate_account']; ?>
     </button>
   <?php } elseif ($current_balance == 0) { ?>
     <div class="form-group">
       <label> Why Are You Leaving? </label>
-      <select name="deactivate_reason" class="form-control" required>
+      <select name="deactivate_reason" class="form-control box-shadow-acc-set" required>
         <option value=""> <?= $lang['settings']['reason']['1']; ?> </option>
         <option> <?= $lang['settings']['reason']['2']; ?> </option>
         <option> <?= $lang['settings']['reason']['3']; ?> </option>
@@ -373,8 +436,8 @@ if (isset($_POST['change_password'])) {
         <option> <?= $lang['settings']['reason']['10']; ?> </option>
       </select>
     </div>
-    <button type="submit" name="deactivate_account" class="btn btn-danger <?= $floatRight ?>">
-      <i class="fa fa-frown-o"></i> <?= $lang['button']['deactivate_account']; ?>
+    <button type="submit" name="deactivate_account" class="btn btn-danger box-shadow-de-acc <?= $floatRight ?>">
+      <i class="fa fa-frown-o"></i> &nbsp; <?= $lang['button']['deactivate_account']; ?>
     </button>
   <?php } ?>
 </form>

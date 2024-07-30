@@ -13,6 +13,8 @@ function proposalsQueryWhere($type, $filter_type)
    $where_online = array();
    $where_city = array();
    $where_cat = array();
+   $where_child_cat = array(); // Sub-category array
+   $where_attr_child = array(); // Sub-category array
    $where_delivery_times = array();
    $instant_delivery = 0;
 
@@ -74,6 +76,30 @@ function proposalsQueryWhere($type, $filter_type)
          }
       }
    }
+   if (isset($_REQUEST['child_id'])) {
+      $i = 0;
+      foreach ($_REQUEST['child_id'] as $value) {
+         $i++;
+         if ($value != 0) {
+            $where_child_cat[] = "proposal_child_id=:proposal_child_id_$i";
+            $values["proposal_child_id_$i"] = $value;
+            $where_path .= "child_id[]=" . $value . "&";
+         }
+      }
+   }
+
+   if (isset($_REQUEST['attr_id'])) {
+      $i = 0;
+      foreach ($_REQUEST['attr_id'] as $value) {
+         $i++;
+         if ($value != 0) {
+            $where_attr_child[] = "proposal_attr_id=:proposal_attr_id_$i";
+            $values["proposal_attr_id_$i"] = $value;
+            $where_path .= "attr_id[]=" . $value . "&";
+         }
+      }
+   }
+
    if (isset($_REQUEST['delivery_time'])) {
       $i = 0;
       foreach ($_REQUEST['delivery_time'] as $value) {
@@ -118,7 +144,7 @@ function proposalsQueryWhere($type, $filter_type)
    } elseif ($filter_type == "featured") {
       $query_where .= "AND proposals.proposal_featured=:proposal_featured";
       $values['proposal_featured'] = 'yes';
-   }  elseif ($filter_type == "top") {
+   } elseif ($filter_type == "top") {
       $query_where .= "AND proposals.level_id=:level_id";
       $values['level_id'] = 4;
    } elseif ($filter_type == "tag") {
@@ -139,7 +165,6 @@ function proposalsQueryWhere($type, $filter_type)
       }
    }
 
-
    if (count($where_online) > 0) {
       $query_where .= addAnd($query_where) . " (" . implode(" or ", $where_online) . ")";
    }
@@ -154,6 +179,12 @@ function proposalsQueryWhere($type, $filter_type)
    }
    if (count($where_cat) > 0) {
       $query_where .= " AND (" . implode(" or ", $where_cat) . ")";
+   }
+   if (count($where_child_cat) > 0) { // Sub-category filter condition
+      $query_where .= " AND (" . implode(" or ", $where_child_cat) . ")";
+   }
+   if (count($where_attr_child) > 0) {
+      $query_where .= " AND (" . implode(" or ", $where_attr_child) . ")";
    }
    if (count($where_delivery_times) > 0) {
       $query_where .= " AND (" . implode(" or ", $where_delivery_times) . ")";
@@ -173,6 +204,7 @@ function proposalsQueryWhere($type, $filter_type)
       return $values;
    }
 }
+
 function get_proposals($filter_type)
 {
    global $input;
@@ -189,14 +221,6 @@ function get_proposals($filter_type)
    $query_where = proposalsQueryWhere("query_where", $filter_type);
    $where_path = proposalsQueryWhere("where_path", $filter_type);
    $where_values = proposalsQueryWhere("values", $filter_type);
-   // echo "<pre>";
-   // print_r($_REQUEST);
-   // echo "WHERE<pre>";
-   // print_r($query_where);
-   // echo "PATH<pre>";
-   // print_r($where_path);
-   // echo "VALYE<pre>";
-   // print_r($where_values);
 
    $per_page = 16;
    if (isset($_GET['page'])) {
@@ -216,18 +240,50 @@ function get_proposals($filter_type)
    else
       $where_limit = " ORDER BY created_at {$orderBy} LIMIT {$per_page} OFFSET {$start_from}";
 
-   $sProposals = "SELECT DISTINCT proposals.* from proposals INNER JOIN sellers ON proposals.proposal_seller_id = sellers.seller_id INNER JOIN instant_deliveries ON proposals.proposal_id = instant_deliveries.proposal_id {$query_where} {$where_limit}";
-   $qProposals = $db->query($sProposals, $where_values);
+   if (isset($_SESSION['cat_child_id']) || isset($_SESSION['cat_id']) || isset($_SESSION['child_attr_id'])) {
+      $child_attr_id = $_SESSION['child_attr_id'] ?? null;
+      $cat_child_id = $_SESSION['cat_child_id'] ?? null;
+      $cat_id = $_SESSION['cat_id'] ?? null;
 
+      if ($child_attr_id) {
+         $query_where .= " AND proposals.proposal_attr_id = :child_attr_id";
+         $where_values[':child_attr_id'] = $child_attr_id;
+      }
+
+      if ($cat_child_id) {
+         $query_where .= " AND proposals.proposal_child_id = :cat_child_id";
+         $where_values[':cat_child_id'] = $cat_child_id;
+      }
+
+      if ($cat_id) {
+         $query_where .= " AND proposals.proposal_cat_id = :cat_id";
+         $where_values[':cat_id'] = $cat_id;
+      }
+   }
+
+   $sProposals = "SELECT DISTINCT proposals.* FROM proposals 
+                   INNER JOIN sellers ON proposals.proposal_seller_id = sellers.seller_id 
+                   INNER JOIN instant_deliveries ON proposals.proposal_id = instant_deliveries.proposal_id 
+                   {$query_where} {$where_limit}";
+   $qProposals = $db->query($sProposals, $where_values);
    if ($qProposals->rowCount() > 0) {
       while ($row_proposals = $qProposals->fetch()) {
          $proposal_id = $row_proposals->proposal_id;
          $proposal_title = $row_proposals->proposal_title;
          $proposal_price = $row_proposals->proposal_price;
+         $proposal_cat_id = $row_proposals->proposal_cat_id;
+         $proposal_child_id = $row_proposals->proposal_child_id;
+         $proposal_attr_id = $row_proposals->proposal_attr_id;
+
+         // echo $proposal_child_id; 
+         // echo " - ";
+         // echo  $proposal_cat_id;
+
          if ($proposal_price == 0) {
             $get_p_1 = $db->select("proposal_packages", array("proposal_id" => $proposal_id, "package_name" => "Basic"));
             $proposal_price = $get_p_1->fetch()->price;
          }
+
          $proposal_img1 = getImageUrl2("proposals", "proposal_img1", $row_proposals->proposal_img1);
          $proposal_video = $row_proposals->proposal_video;
          $proposal_seller_id = $row_proposals->proposal_seller_id;
@@ -236,77 +292,76 @@ function get_proposals($filter_type)
          $proposal_featured = $row_proposals->proposal_featured;
          $proposal_enable_referrals = $row_proposals->proposal_enable_referrals;
          $proposal_referral_money = $row_proposals->proposal_referral_money;
-         if (empty($proposal_video)) {
-            $video_class = "";
-         } else {
-            $video_class = "video-img";
-         }
+
+         $video_class = empty($proposal_video) ? "" : "video-img";
+
          $get_seller = $db->select("sellers", array("seller_id" => $proposal_seller_id));
          $row_seller = $get_seller->fetch();
          $seller_user_name = $row_seller->seller_user_name;
          $seller_image = getImageUrl2("sellers", "seller_image", $row_seller->seller_image);
          $seller_level = $row_seller->seller_level;
          $seller_status = $row_seller->seller_status;
-         if (empty($seller_image)) {
-            $seller_image = "empty-image.png";
-         }
-         // Select Proposal Seller Level
-         @$seller_level = $db->select("seller_levels_meta", array("level_id" => $seller_level, "language_id" => $siteLanguage))->fetch()->title;
-         $proposal_reviews = array();
+
+         $seller_image = empty($seller_image) ? "empty-image.png" : $seller_image;
+
+         $seller_level = @$db->select("seller_levels_meta", array("level_id" => $seller_level, "language_id" => $siteLanguage))->fetch()->title;
+
+         $proposal_reviews = [];
          $select_buyer_reviews = $db->select("buyer_reviews", array("proposal_id" => $proposal_id));
          $count_reviews = $select_buyer_reviews->rowCount();
+
          while ($row_buyer_reviews = $select_buyer_reviews->fetch()) {
             $proposal_buyer_rating = $row_buyer_reviews->buyer_rating;
             array_push($proposal_reviews, $proposal_buyer_rating);
          }
+
          $total = array_sum($proposal_reviews);
-         @$average_rating = $total ? $total / count($proposal_reviews) : 0;
+         $average_rating = $total ? $total / count($proposal_reviews) : 0;
+
          $count_favorites = $db->count("favorites", array("proposal_id" => $proposal_id, "seller_id" => $login_seller_id));
-         if ($count_favorites == 0) {
-            $show_favorite_class = "proposal-favorite";
-         } else {
-            $show_favorite_class = "proposal-unfavorite";
-         }
+         $show_favorite_class = $count_favorites == 0 ? "proposal-favorite" : "proposal-unfavorite";
 
          echo '<div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-3">';
+         var_dump(11);
          require("$dir/includes/proposals.php");
          echo '</div>';
       }
    } else {
       if ($filter_type == "search") {
          echo "
-         <div class='col-md-12'>
-            <h1 class='text-center mt-4'><i class='fa fa-meh-o'></i>{$lang['search']['no_results']}</h1>
-         </div>";
+            <div class='col-md-12'>
+                <h1 class='text-center mt-4'><i class='fa fa-meh-o'></i>{$lang['search']['no_results']}</h1>
+            </div>";
       } elseif ($filter_type == "category") {
          if (isset($_SESSION['cat_child_id'])) {
             echo "
-            <div class='col-md-12'>
-            <h1 class='text-center mt-4'> <i class='fa fa-meh-o'></i> {$lang['sub_category']['no_results']} </h1>
-            </div>";
+                <div class='col-md-12'>
+                    <h1 class='text-center mt-4'> <i class='fa fa-meh-o'></i> {$lang['sub_category']['no_results']} </h1>
+                </div>";
          } else {
             echo "
-            <div class='col-md-12'>
-            <h1 class='text-center mt-4'><i class='fa fa-meh-o'></i> {$lang['category']['no_results']} </h1>
-            </div>";
+                <div class='col-md-12'>
+                    <h1 class='text-center mt-4'><i class='fa fa-meh-o'></i> {$lang['category']['no_results']} </h1>
+                </div>";
          }
       } elseif ($filter_type == "tag") {
          if (isset($_SESSION['tag'])) {
             echo "
-         <div class='col-md-12'>
-            <h1 class='text-center mt-4'><i class='fa fa-meh-o'></i> {$lang['tag_proposals']['no_results']} </h1>
-         </div>";
+                <div class='col-md-12'>
+                    <h1 class='text-center mt-4'><i class='fa fa-meh-o'></i> {$lang['tag_proposals']['no_results']} </h1>
+                </div>";
          }
       } else {
          echo "
-         <div class='col-md-12'>
-            <h1 class='text-center mt-4'>
-               <i class='fa fa-meh-o'></i> {$lang['search']['no_results']}
-            </h1>
-         </div>";
+            <div class='col-md-12'>
+                <h1 class='text-center mt-4'>
+                    <i class='fa fa-meh-o'></i> {$lang['search']['no_results']}
+                </h1>
+            </div>";
       }
    }
 }
+
 
 function get_pagination($filter_type)
 {

@@ -34,6 +34,7 @@ if (isset($_POST['register'])) {
 		$name = strip_tags($name);
 		// $name = ucfirst(strtolower($name));
 
+
 		$name = $name;
 
 		$_SESSION['name'] = $name;
@@ -75,19 +76,25 @@ if (isset($_POST['register'])) {
 		// 	array_push($error_array, "An account have been already created from this device. Please try with another device.");
 		// }
 		if (preg_match('/[اأإء-ي]/ui', $input->post('u_name'))) {
-			array_push($error_array, "Foreign characters are not allowed in username, Please try another one.");
+			array_push($error_array, "Foreign characters are not allowed in username. Please try another one.");
 		}
-		if ($check_seller_username > 0) {
-			array_push($error_array, "Opps! This username has already been taken. Please try another one");
+
+		if (preg_match('/[^a-zA-Z0-9]/', $input->post('u_name'))) {
+			array_push($error_array, "Special characters are not allowed in username. Please try another one.");
 		}
 
 		if (strpbrk($input->post('u_name'), ' ') !== false) {
-			array_push($error_array, "Spaces Are Not Allowed In Username. Please Remove The Spaces.");
+			array_push($error_array, "Spaces are not allowed in username. Please remove the spaces.");
+		}
+
+		if ($check_seller_username > 0) {
+			array_push($error_array, "Oops! This username has already been taken. Please try another one.");
 		}
 
 		if ($check_seller_email > 0) {
 			array_push($error_array, "Email has already been taken. Try logging in instead.");
 		}
+
 		if ($pass != $con_pass) {
 			array_push($error_array, "Passwords don't match. Please try again.");
 		}
@@ -188,19 +195,28 @@ if (isset($_POST['register'])) {
 			}
 		}
 
+
 		if (!empty($error_array)) {
 			$_SESSION['error_array'] = $error_array;
-			$message = isset($err) ? $err : $lang['alert']['errors'];
+			
 			echo "
 			<script>
-				swal({
-					type: 'warning',
-					html: $('<div>').text('{$message}'),
-					animation: false,
-					customClass: 'animated tada'
-				}).then(function(){
-					window.open('index','_self')
-				});
+			var errorMessages = '';
+			";
+
+			foreach ($error_array as $error) {
+				echo "errorMessages += '<div>{$error}</div>';\n";
+			}
+
+			echo "
+			swal({
+				type: 'warning',
+				html: errorMessages,
+				animation: false,
+				customClass: 'animated tada'
+			}).then(function(){
+				$('#register-modal').modal('show'); // Show the register modal
+			});
 			</script>";
 		}
 	}
@@ -238,13 +254,16 @@ if (isset($_POST['login'])) {
 		if ($decrypt_password == 0) {
 
 			echo "
-			<script>
+			<script> 
 	        swal({
 	          type: 'warning',
 	          html: $('<div>').text('{$lang['alert']['incorrect_login']}'),
 	          animation: false,
 	          customClass: 'animated tada'
-	        })
+	        }).then(function(){
+				$('#login-modal').modal('show'); // Show the login modal
+			});
+
 		    </script>";
 		} else {
 			if ($seller_status == "block-ban") {

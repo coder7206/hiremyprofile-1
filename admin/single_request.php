@@ -69,9 +69,10 @@ if (!isset($_SESSION['admin_email'])) {
             } else {
                 $file = "";
             }
-
+            date_default_timezone_set('Asia/Kolkata');
             $isS3 = $enable_s3;
-            $date = date("h:i M d, Y");
+            $date = date("h:i A M d, Y");
+
             $insert_support_ticket = $db->insert("support_conversations", array("ticket_id" => $ticket_id, "admin_id" => $admin_id, "sender_id" => 0, "message" => $new_message, "attachment" => $file, "date" => $date));
             if ($insert_support_ticket) {
                 $data = [];
@@ -116,11 +117,11 @@ if (!isset($_SESSION['admin_email'])) {
 
 ?>
 
-    <div class="breadcrumbs">
+    <div class="breadcrumbs pt-4">
         <div class="col-sm-4">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1><i class="menu-icon fa fa-phone-square"></i> Support Settings</h1>
+                    <h1><i class="menu-icon fa fa-phone-square"></i> Support Requests</h1>
                 </div>
             </div>
         </div>
@@ -128,7 +129,7 @@ if (!isset($_SESSION['admin_email'])) {
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <li class="active">Single Request</li>
+                        <li class="active">Single Request</li>                       
                     </ol>
                 </div>
             </div>
@@ -205,7 +206,7 @@ if (!isset($_SESSION['admin_email'])) {
                             <p>
 
                                 <b> Attachment : </b>
-                                <a href="<?= getImageUrl("support_tickets", $attachment); ?>" download>
+                                <a class="text-primary" href="<?= getImageUrl("support_tickets", $attachment); ?>" download>
                                     <?= $attachment; ?>
                                 </a>
 
@@ -220,7 +221,6 @@ if (!isset($_SESSION['admin_email'])) {
                         <p>
 
                             <b> Request Status : </b> <?= ucwords($status); ?> &nbsp;&nbsp;
-
                             <a href="#" class="btn btn-success" data-toggle="collapse" data-target="#status">
                                 Change Status
                             </a>
@@ -315,7 +315,7 @@ if (!isset($_SESSION['admin_email'])) {
                                             <img src="<?= getImageUrl("support_conversations", $conversation->attachment); ?>" class="img-thumbnail" width="100" />
                                         <?php } ?>
 
-                                        <a href="<?= getImageUrl("support_conversations", $conversation->attachment); ?>" target="_blank" class="d-block mt-2">
+                                        <a href="<?= getImageUrl("support_conversations", $conversation->attachment); ?>" target="_blank" class="text-primary d-block mt-2">
                                             <i class="fa fa-download"></i> <?= $conversation->attachment; ?>
                                         </a>
                                     <?php } ?>
@@ -343,7 +343,8 @@ if (!isset($_SESSION['admin_email'])) {
                                 </div><!--- form-group Ends --->
                                 <div class="form-group">
                                     <label class="">Upload File</label>
-                                    <input type="file" class="form-control" name="file">
+                                    <input type="file" class="form-control" name="file" id="fileInput">
+                                    <p id="fileConfirm"></p>
                                 </div>
                                 <input type="submit" name="submit" class="btn btn-success" value="Submit">
                             </form>
@@ -362,3 +363,11 @@ if (!isset($_SESSION['admin_email'])) {
         </div><!--- 2 row Ends --->
     </div>
 <?php } ?>
+<script>
+    document.getElementById('fileInput').addEventListener('change', function() {
+        var file = this.files[0];
+        var fileInfo = "File type: " + file.type + "<br>" +
+            "File size: " + file.size + " bytes";
+        document.getElementById('fileConfirm').innerHTML = fileInfo;
+    });
+</script>

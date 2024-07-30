@@ -24,12 +24,14 @@ if (isset($_POST['submit'])) {
             "proposal_title" => "required",
             "proposal_cat_id" => "required",
             "proposal_child_id" => "required",
+            "proposal_attr_id" => "required",
             "proposal_tags" => "required",
         );
 
         $messages = array(
             "proposal_cat_id" => "you must need to select a category",
-            "proposal_child_id" => "you must need to select a child category",
+            "proposal_child_id" => "you must need to select a branch",
+            "proposal_attr_id" => "you must need to select a attribute",
             "proposal_enable_referrals" => "you must need to enable or disable proposal referrals.",
             "proposal_img1" => "Proposal Image 1 Is Required.", "direct_order" => "Please make a order type choice"
         );
@@ -78,6 +80,9 @@ if (isset($_POST['submit'])) {
                 $data['language_id'] = $login_seller_language;
                 $data['proposal_status'] = "draft";
                 $data['direct_order'] = $direct_order;
+                $data['proposal_attr_id'] = $input->post("proposal_attr_id");
+                $data['skill_title_id'] = $input->post("skill_title_id");
+
 
                 $insert_proposal = $db->insert("proposals", $data);
 
@@ -134,13 +139,69 @@ if (isset($_POST['submit'])) {
         })
     });
 </script>
+<style>
+    @media (max-width:768px) {
+        .full-width {
+            /* border: 2px solid green; */
+            width: 100%;
+            padding: 5px 15px 5px 17px;
+        }
+
+        .padding-left {
+            padding-left: 16px;
+            /* background-color: red; */
+            /* font-size: 15px !important; */
+            /* font-weight: 500; */
+            /* padding-right: 15px; */
+        }
+
+        .margin-l-b-r {
+            margin: 0px 15px 15px 15px;
+            text-align: center;
+        }
+
+        .font-size-small {
+            font-size: 11px;
+            color: #04c4ab !important;
+            padding-left: 1px;
+        }
+
+        .div-textarea textarea {
+            /* border:2px solid green; */
+            font-size: 13px !important;
+        }
+
+        .div-textarea textarea::placeholder {
+            color: lightgray;
+            font-size: 12px;
+            font-weight: 300;
+        }
+
+        .input-left-padding {
+            /* border: 2px solid green; */
+            padding-left: 3.5px;
+            font-size: 13px !important;
+        }
+
+        .text-align-center {
+            text-align: center !important;
+        }
+
+        .font-increase {
+            font-size: 16px;
+            /* color: #126e6b; */
+        }
+
+
+    }
+</style>
 <form action="#" method="post" class="proposal-form">
     <!--- form Starts -->
     <div class="row">
         <div class="col-xs-12">
-            <div class="float-right switch-box">
-                <span class="text"><?= $lang['edit_proposal']['direct_order']['enable']; ?></span>
-                <label class="switch" id="switchOrder">
+            <div class="float-right switch-box full-width">
+                <span class="text font-increase"><?= $lang['edit_proposal']['direct_order']['enable']; ?></span>
+                <label class="switch float-right" id="switchOrder">
                     <input type="checkbox" name="direct_order" id="direct_order" value="1" checked data-toggle="popover" data-placement="right" data-trigger="manual" data-offset="0 72px" title="Information" data-content="When its off, Buyer can't buy this service directly." />
                     <span class="slider instant-slider direct_order"></span>
                 </label>
@@ -149,7 +210,7 @@ if (isset($_POST['submit'])) {
     </div>
     <div class="form-group row">
         <!--- form-group row Starts --->
-        <div class="alert alert-info col-xs-12">
+        <div class="alert alert-info col-xs-12 margin-l-b-r">
             You have <b><?php echo $pendingProposal; ?></b> proposals remaining.
         </div>
         <?php if ($pendingProposal == 0) { ?>
@@ -157,27 +218,33 @@ if (isset($_POST['submit'])) {
                 .out-of-credit {
                     position: absolute;
                     top: 0;
+                    left: 0;
+                    padding: 30vh 0;
                     width: 100%;
                     height: 100%;
-                    background-color: #ffffff;
+                    background-color: #e5e5e5;
                     z-index: 9001;
-                    opacity: 0.7;
-                    font-size: 31px;
-                    font-weight: bold;
+                    opacity: 0.9;
+                    font-size: 45px;
+                    font-weight: bolder;
                     text-align: center;
                     vertical-align: middle;
-                    line-height: 90vh;
+                    /* line-height: 90vh; */
+                }
+
+                .link_color_theme {
+                    color: #00cedc;
                 }
             </style>
             <div class="out-of-credit">
-                Please upgrade plan to add more proposals
+                Please <a href="<?= $site_url; ?>/membership_subs" class="link_color_theme">upgrade plan</a> to add more proposals
             </div>
         <?php } ?>
-        <div class="col-md-3"><?= $lang['label']['proposal_title']; ?></div>
-        <div class="col-md-9">
-            <textarea name="proposal_title" id="proposal_title" rows="3" required="" placeholder="I Will" class="form-control" minlength="50" maxlength="100"></textarea>
+        <div class="col-md-3 padding-left"><?= $lang['label']['proposal_title']; ?></div>
+        <div class="col-md-9 div-textarea">
+            <textarea name="proposal_title" id="proposal_title" rows="3" required="" placeholder="Example: I can make program in core php." class="form-control " minlength="50" maxlength="200"></textarea>
             <small class="form-text text-danger"><?= ucfirst($form_errors['proposal_description'] ?? ""); ?></small>
-            <span class="text-dark d-block">min: 50 max: 100 characters <span class="pull-right"><i class="text-danger" id="typed-characters">0</i> characters</span></span>
+            <span class="text-dark d-block font-size-small ">min: 50 max: 200 characters <span class="pull-right"><i class="text-danger" id="typed-characters">0</i> characters</span></span>
         </div>
     </div>
     <!--- form-group row Ends --->
@@ -185,38 +252,117 @@ if (isset($_POST['submit'])) {
 
     <div class="form-group row">
         <!--- form-group row Starts --->
-        <div class="col-md-3"> <?= $lang['label']['category']; ?> </div>
+        <div class="col-md-3 padding-left"> <?= $lang['label']['category']; ?> </div>
         <div class="col-md-9">
-            <select name="proposal_cat_id" id="category" class="form-control mb-3" required="">
-                <option value="" class="hidden"> Select A Category</option>
-                <?php
-                $get_cats = $db->select("categories");
-                while ($row_cats = $get_cats->fetch()) {
-                    $cat_id = $row_cats->cat_id;
-                    $get_meta = $db->select("cats_meta", array("cat_id" => $cat_id, "language_id" => $siteLanguage));
-                    $cat_title = $get_meta->fetch()->cat_title;
-                ?>
-                    <option <?php if (@$form_data['proposal_cat_id'] == $cat_id) {
-                                echo "selected";
-                            } ?> value="<?= $cat_id; ?>"> <?= $cat_title; ?> </option>
-                <?php } ?>
-            </select>
-            <small class="form-text text-danger"><?= ucfirst($form_errors['proposal_cat_id'] ?? ""); ?></small>
-            <select name="proposal_child_id" id="sub-category" class="form-control" required="">
-                <option value="" class="hidden"> Select A Sub Category</option>
-                <?php if (@$form_data['proposal_child_id']) { ?>
+            <!-- category skill -->
+            <div class="form-group">
+                <select name="proposal_cat_id" id="skill_category_" class="form-control">
                     <?php
-                    $get_c_cats = $db->select("categories_children", array("child_parent_id" => $form_data['proposal_cat_id']));
-                    while ($row_c_cats = $get_c_cats->fetch()) {
-                        $child_id = $row_c_cats->child_id;
-                        $get_meta = $db->select("child_cats_meta", array("child_id" => $child_id, "language_id" => $siteLanguage));
-                        $row_meta = $get_meta->fetch();
-                        $child_title = $row_meta->child_title;
-                        echo "<option " . ($form_data['proposal_cat_id'] == $child_id ? "selected" : "") . " value='$child_id'> $child_title </option>";
+                    $q_skills_relation = $db->select("skills_relation", array("seller_id" => $login_seller_id));
+                    $added_skill_categories = array(); // Array to keep track of added skill categories
+
+                    if ($q_skills_relation->rowCount() > 0) {
+                        while ($row_seller_skills = $q_skills_relation->fetch()) {
+                            $skill_cat_id = $row_seller_skills->skill_cat_id;
+                            $skill_category = $db->select("cats_meta", array("cat_id" => $skill_cat_id))->fetch();
+
+                            if (!in_array($skill_category->cat_title, $added_skill_categories)) {
+                                $added_skill_categories[] = $skill_category->cat_title; // Add to the tracking array
+                    ?>
+                                <option value="<?= $skill_cat_id; ?>" selected><?= $skill_category->cat_title; ?></option>
+                    <?php
+                            }
+                        }
                     }
                     ?>
-                <?php } ?>
-            </select>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3 padding-left"> Branch </div>
+        <div class="col-md-9">
+            <!--  sub category skill-->
+            <div class="form-group">
+                <select name="proposal_child_id" id="skill_sub_category_" class="form-control">
+                    <?php
+                    $q_skills_relation = $db->select("skills_relation", array("seller_id" => $login_seller_id));
+                    $added_skill_sub_categories = array(); // Array to keep track of added skill sub-categories
+
+                    if ($q_skills_relation->rowCount() > 0) {
+                        while ($row_seller_skills = $q_skills_relation->fetch()) {
+                            $skill_child_id = $row_seller_skills->skill_child_id;
+                            $skill_sub_category = $db->select("child_cats_meta", array("child_id" => $skill_child_id))->fetch();
+
+                            if (!in_array($skill_sub_category->child_title, $added_skill_sub_categories)) {
+                                $added_skill_sub_categories[] = $skill_sub_category->child_title; // Add to the tracking array
+                    ?>
+                                <option value="<?= $skill_child_id; ?>" selected><?= $skill_sub_category->child_title; ?></option>
+                    <?php
+                            }
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3 padding-left"> Expertise </div>
+        <div class="col-md-9">
+            <!-- attribute skill -->
+            <div class="form-group">
+                <select name="proposal_attr_id" id="skill_attribute_" class="form-control">
+                    <?php
+                    $q_skills_relation = $db->select("skills_relation", array("seller_id" => $login_seller_id));
+                    $added_sub_sub_categories = array(); // Array to keep track of added sub-sub-categories
+
+                    if ($q_skills_relation->rowCount() > 0) {
+                        while ($row_seller_skills = $q_skills_relation->fetch()) {
+                            $skill_sub_child_id = $row_seller_skills->skill_sub_child_id;
+                            $skill_attribute = $db->select("sub_subcategories", array("attr_id" => $skill_sub_child_id))->fetch();
+
+                            if (!in_array($skill_attribute->sub_subcategory_name, $added_sub_sub_categories)) {
+                                $added_sub_sub_categories[] = $skill_attribute->sub_subcategory_name; // Add to the tracking array
+                    ?>
+                                <option value="<?= $skill_sub_child_id; ?>" selected><?= $skill_attribute->sub_subcategory_name; ?></option>
+                    <?php
+                            }
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3 padding-left"> skills </div>
+        <div class="col-md-9">
+            <!-- skill details -->
+            <div class="form-group">
+                <select name="skill_title_id" id="skill_title_" class="form-control">
+                    <?php
+                    $q_skills_relation = $db->select("skills_relation", array("seller_id" => $login_seller_id));
+                    $added_skill_titles = array(); // Array to keep track of added skill titles
+
+                    if ($q_skills_relation->rowCount() > 0) {
+                        while ($row_seller_skills = $q_skills_relation->fetch()) {
+                            $skill_id = $row_seller_skills->skill_id;
+                            $skill_details = $db->select("seller_skills", array("skill_id" => $skill_id))->fetch();
+
+                            if (!in_array($skill_details->skill_title, $added_skill_titles)) {
+                                $added_skill_titles[] = $skill_details->skill_title; // Add to the tracking array
+                    ?>
+                                <option value="<?= $skill_id; ?>" selected><?= $skill_details->skill_title; ?></option>
+                    <?php
+                            }
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3 padding-left">  </div>
+        <div class="col-md-9">
+            <div class="add-more-category-btn-div">
+                <a href="<?= $site_url ?>/settings?professional_settings">
+                    <span class="add-more-category-btn"> <i class="fa fa-plus"></i> Add more skills</span>
+                </a>
+            </div>
         </div>
     </div>
     <!--- form-group row Ends --->
@@ -266,9 +412,9 @@ while ($row_delivery_times = $get_delivery_times->fetch()) {
 
         <div class="form-group row">
             <!--- form-group row Starts --->
-            <label class="col-md-3 control-label"> <?= $lang['label']['enable_referrals']; ?> </label>
+            <label class="col-md-3 control-label padding-left"> <?= $lang['label']['enable_referrals']; ?> </label>
             <div class="col-md-9">
-                <select name="proposal_enable_referrals" class="proposal_enable_referrals form-control">
+                <select name="proposal_enable_referrals" class="proposal_enable_referrals form-control input-left-padding">
                     <?php if (@$form_data['proposal_enable_referrals'] == "yes") { ?>
                         <option value="yes"> Yes</option>
                         <option value="no"> No</option>
@@ -277,7 +423,7 @@ while ($row_delivery_times = $get_delivery_times->fetch()) {
                         <option value="yes"> Yes</option>
                     <?php } ?>
                 </select>
-                <small>If enabled, other users can promote your proposal by sharing it on different platforms.</small>
+                <small class="font-size-small">If enabled, other users can promote your proposal by sharing it on different platforms.</small>
                 <small class="form-text text-danger"><?= ucfirst($form_errors['proposal_enable_referrals'] ?? ""); ?></small>
             </div>
         </div>
@@ -300,16 +446,16 @@ while ($row_delivery_times = $get_delivery_times->fetch()) {
 
     <div class="form-group row">
         <!--- form-group row Starts --->
-        <div class="col-md-3"><?= $lang['label']['tags']; ?></div>
+        <div class="col-md-3 padding-left"><?= $lang['label']['tags']; ?></div>
         <div class="col-md-9">
-            <input type="text" name="proposal_tags" class="form-control" data-role="tagsinput">
-            <small>Press enter to add your own tags after adding word.</small>
-            <br /><small>Enter at leaset 2 characters to get suggestions.</small>
+            <input type="text" name="proposal_tags" class="form-control input-left-padding" data-role="tagsinput">
+            <small class="font-size-small">Press enter to add your own tags after adding word.</small>
+            <br /><small class="font-size-small">Enter at leaset 2 characters to get suggestions.</small>
             <small class="form-text text-danger"><?= ucfirst($form_errors['proposal_tags'] ?? ""); ?></small>
         </div>
     </div>
     <!--- form-group row Ends --->
-    <div class="form-group text-right mb-0">
+    <div class="form-group text-right mb-0 text-align-center">
         <!--- form-group Starts --->
         <?php if ($row_sellers->no_of_gigs > 0) { ?>
             <a href="view_proposals" class="btn btn-secondary"><?= $lang['button']['cancel']; ?></a>
@@ -319,6 +465,33 @@ while ($row_delivery_times = $get_delivery_times->fetch()) {
     <!--- form-group Starts --->
 
 </form>
+<style>
+    #sub-sub-category {
+        display: none;
+    }
+
+    .add-more-category-btn-div {
+        width: 100%;
+        height: 2.7rem;
+        display: flex;
+    }
+
+    .add-more-category-btn-div a {
+        margin: auto 0;
+    }
+
+    .add-more-category-btn {
+        border: 1px solid lightgray;
+        border-radius: 5px;
+        padding: 0.7rem 1rem;
+        background-color: #e5e5e5;
+    }
+
+    .add-more-category-btn:hover {
+        border: 1px solid grey;
+    }
+</style>
+
 <!--- form Ends -->
 <script>
     const textAreaElement = document.querySelector("#proposal_title");
@@ -331,5 +504,39 @@ while ($row_delivery_times = $get_delivery_times->fetch()) {
             return false;
         }
         typedCharactersElement.textContent = typedCharacters;
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#sub-category').change(function() {
+            var child_id = $(this).val();
+            if (child_id) {
+                $('#sub-sub-category').css('display', 'block');
+                // Check if child_id is correct
+                $.ajax({
+                    type: 'POST',
+                    url: 'fetch_sub_subcategories',
+                    data: {
+                        child_id: child_id
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log("Success response: ", response); // Check the response here
+                        $('#sub-sub-category').html('<option value="" class="hidden">Select A Sub-Sub Category</option>');
+                        $.each(response, function(index, subSubCategory) {
+                            $('#sub-sub-category').append('<option value="' + subSubCategory.id + '">' + subSubCategory.name + '</option>');
+                        });
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error: " + status + ", " + error);
+                        console.log("Response: " + xhr.responseText); // Log the raw response text                        
+                    }
+                });
+            } else {
+                $('#sub-sub-category').html('<option value="" class="hidden">Select A Sub-Sub Category</option>');
+            }
+        });
     });
 </script>

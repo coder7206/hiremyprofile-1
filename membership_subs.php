@@ -112,10 +112,53 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
     <style>
         .fixed {
             position: fixed;
+            transition: all 3s linear;
             top: 0;
             left: 0;
             width: 100%;
             z-index: 100;
+        }
+
+        .alter-margin-top {
+            /* margin-top: -130px; */
+            margin-bottom: 40px;
+        }
+
+        .padding-top-10 {
+            padding-top: 10px;
+        }
+
+        @media(min-width:1025px) {
+            .content {
+                margin: 0px 100px;
+            }
+        }
+
+        @media (min-width:768px) and (max-width:1024px) {
+            .display_flex_001 {
+                width: 100%;
+                display: flex;
+            }
+
+            .content {
+                margin: 0px 22px;
+            }
+        }
+
+        @media(max-width:768px) {
+            .menu {
+                margin: 0 auto;
+                padding: 20px !important;
+
+            }
+        }
+
+        @media(max-width:640px) {
+            .menu {
+                margin: 0 auto;
+                padding: 10px !important;
+
+            }
         }
     </style>
 </head>
@@ -124,11 +167,11 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
     <?php require_once("includes/user_header.php") ?>
     <section class='content'>
         <div class="container-fluid pt-5">
-            <div class="row">
+            <div class="row alter-margin-top">
                 <div class="col-md-12 mb-4 bg-light text-center reg-sec-1 ">
                     <!--- col-lg-8 col-md-7 mb-3 Starts --->
 
-                    <h2> Try Freelancer Membership</h2>
+                    <h2 class="padding-top-10"> Try Freelancer Membership</h2>
                     <p>
                         Designed to maximise your freelancers success and earnings! <br>
                         Change plans anytime, condition apply see FAQ.
@@ -146,7 +189,7 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
 
 
             <div class="row-fluid clearfix">
-                <div class="pricing-wrapper comparison-table clearfix style-3">
+                <div class="pricing-wrapper comparison-table clearfix style-3 display_flex_001">
                     <div class="col-md-4 pricing-col list-feature">
                         <div class="pricing-card">
                             <div class="pricing-header">
@@ -208,6 +251,9 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
                             </div>
                         </div>
                     </div>
+
+
+
                     <?php
                     $get_plan = $db->select("membership_table", ["plan_status" => "Active"]);
                     // check if the user has already subscribed for this package
@@ -217,6 +263,8 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
                     // echo "<pre>"; print_r($planSubscribed); exit;
                     // print("<pre>" . print_r($rowPurchased, true) . "</pre>");
                     // exit;
+
+
                     while ($row_plan = $get_plan->fetch()) {
                         $plan_id = $row_plan->id;
                         $plan_name = $row_plan->plan_name;
@@ -251,7 +299,8 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
                                                                 echo "current unlim";
                                                             } else {
                                                                 echo "business";
-                                                            } ?>">
+                                                            }
+                                                            ?>">
                             <div class="pricing-card">
                                 <div class="pricing-header">
                                     <h5><?= $plan_name ?></h5>
@@ -523,54 +572,55 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
                                         <p>
                                             <i class="fa fa-times unavailable"></i>
                                         </p>
+                                        <?php echo "hello world!"; ?>
                                     </li> -->
                                 </div>
                                 <div class="pricing-footer">
                                     <a href="<?php echo $plan_price_month == 0 ? "#" : $site_url . "/buy_plan?pid=" . $plan_id ?>" class="btn btn-act rounded btn-line<?php echo (($plan_price_month == 0 & !$row_purchsed) || ($row_purchsed && $row_purchsed->memb_tbl_id == $plan_id)) ? " disabled" : ""; ?>">
                                         <span>
                                             <?php
-                                                if (!$rowPurchased && $plan_price_month == 0) {
-                                                    echo "Free (Current)";
+                                            if (!$rowPurchased && $plan_price_month == 0) {
+                                                echo "Free (Current)";
+                                            } else {
+                                                if (!$rowPurchased) {
+                                                    echo "Upgrade";
                                                 } else {
-                                                    if (!$rowPurchased) {
+                                                    if ($rowPurchased->id == $plan_id) {
+                                                        echo "Activated";
+                                                    } else if ($row_plan->plan_price_month != 0 && $rowPurchased->plan_price_month > $row_plan->plan_price_month) {
+                                                        echo "Downgrade";
+                                                    } else if ($row_plan->plan_price_month != 0 && $rowPurchased->plan_price_month < $row_plan->plan_price_month) {
                                                         echo "Upgrade";
                                                     } else {
-                                                        if ($rowPurchased->id == $plan_id) {
-                                                            echo "Activated";
-                                                        } else if ($row_plan->plan_price_month != 0 && $rowPurchased->plan_price_month > $row_plan->plan_price_month) {
-                                                            echo "Downgrade";
-                                                        } else if ($row_plan->plan_price_month != 0 && $rowPurchased->plan_price_month < $row_plan->plan_price_month) {
-                                                            echo "Upgrade";
-                                                        } else {
-                                                            echo "Free";
-                                                        }
+                                                        echo "Free";
                                                     }
                                                 }
-//                                             $isPlanActive = false;
-//                                             // TODO
-//                                             // check if purchased is expired or not
-//                                             if ($row_purchsed) {
-//                                                 $expiryDateTime = date_create($row_purchsed->memb_end_date);
-//                                                 $expiryDateTime = date_format($expiryDateTime, "Y-m-d H:i:s");
-//                                                 $endDate = strtotime($expiryDateTime);
-//                                                 $today = strtotime("now");
-//                                                 $isPlanActive = $today > $endDate ? false : true;
-//                                             }
-// // echo $isPlanActive ? "YES" : "NO"; echo $row_purchsed->plan_price_month ." -- " .$row_plan->plan_price_month; exit;
-//                                             if ((!$row_purchsed && $plan_price_month == 0) || ($row_purchsed && $plan_id == $row_purchsed->memb_tbl_id)) {
-//                                                 echo "Activated";
-//                                             } else {
-//                                                 if (!$row_purchsed) {
-//                                                     echo "Upgrade";
-//                                                 } else {
-//                                                     if ($row_plan->plan_price_month != 0 && $row_purchsed->plan_price_month > $row_plan->plan_price_month)
-//                                                         echo "Downgrade";
-//                                                     else if ($row_plan->plan_price_month != 0 && $row_purchsed->plan_price_month < $row_plan->plan_price_month)
-//                                                         echo 'Upgrade';
-//                                                     else
-//                                                         echo "Free";
-//                                                 }
-//                                             }
+                                            }
+                                            //                                             $isPlanActive = false;
+                                            //                                             // TODO
+                                            //                                             // check if purchased is expired or not
+                                            //                                             if ($row_purchsed) {
+                                            //                                                 $expiryDateTime = date_create($row_purchsed->memb_end_date);
+                                            //                                                 $expiryDateTime = date_format($expiryDateTime, "Y-m-d H:i:s");
+                                            //                                                 $endDate = strtotime($expiryDateTime);
+                                            //                                                 $today = strtotime("now");
+                                            //                                                 $isPlanActive = $today > $endDate ? false : true;
+                                            //                                             }
+                                            // // echo $isPlanActive ? "YES" : "NO"; echo $row_purchsed->plan_price_month ." -- " .$row_plan->plan_price_month; exit;
+                                            //                                             if ((!$row_purchsed && $plan_price_month == 0) || ($row_purchsed && $plan_id == $row_purchsed->memb_tbl_id)) {
+                                            //                                                 echo "Activated";
+                                            //                                             } else {
+                                            //                                                 if (!$row_purchsed) {
+                                            //                                                     echo "Upgrade";
+                                            //                                                 } else {
+                                            //                                                     if ($row_plan->plan_price_month != 0 && $row_purchsed->plan_price_month > $row_plan->plan_price_month)
+                                            //                                                         echo "Downgrade";
+                                            //                                                     else if ($row_plan->plan_price_month != 0 && $row_purchsed->plan_price_month < $row_plan->plan_price_month)
+                                            //                                                         echo 'Upgrade';
+                                            //                                                     else
+                                            //                                                         echo "Free";
+                                            //                                                 }
+                                            //                                             }
                                             ?>
                                         </span>
                                         <i class="fa fa-arrow-right"></i>
@@ -1156,11 +1206,11 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
             }
 
             a[href]:after {
-                content: " ("attr(href) ")";
+                content: " (" attr(href) ")";
             }
 
             abbr[title]:after {
-                content: " ("attr(title) ")";
+                content: " (" attr(title) ")";
             }
 
             a[href^="#"]:after,
@@ -1200,7 +1250,7 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
             }
 
             .navbar {
-                display: none;
+                /* display: none; */
             }
 
             .btn>.caret,
@@ -1727,7 +1777,7 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
 
         .style-3 .price {
             color: #616161;
-            font-size: 60px;
+            font-size: 50px;
             font-weight: 400;
             line-height: normal;
         }
@@ -1883,7 +1933,7 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
         }
 
         label {
-            display: block;
+            display: inline-block;
             margin: 0 0 4px 0;
             padding: 15px 15px 15px 0;
             line-height: 1;
@@ -1896,7 +1946,7 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
         }
 
         input {
-            display: none;
+            /* display: none; */
         }
 
         .menu ul {
@@ -1927,8 +1977,8 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
             display: block;
             position: absolute;
             content: '';
-            top: 10px;
-            left: 6px;
+            top: 9px;
+            left: 5px;
             width: 10px;
             height: 2px;
             background: var(--black);
@@ -1938,8 +1988,8 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
             display: block;
             position: absolute;
             content: '';
-            top: 6px;
-            left: 10px;
+            top: 5px;
+            left: 9px;
             width: 2px;
             height: 10px;
             background: var(--black);
@@ -1957,8 +2007,29 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
 
         /*Style open tab*/
     </style>
+    <!-- <script>
+         new header script
+        $(document).ready(function() {
+            var sticky = $('.sticky');
+            var stickyOffset = sticky.offset().top;
+
+            $(window).scroll(function() {
+                var scroll = $(window).scrollTop();
+
+                if (scroll >= stickyOffset) {
+                    sticky.addClass('fixed');
+                    $('.container-fluid').css('margin-top', '140px');
+                    sticky.css('transition', 'all 2s linear');
+                } else {
+                    sticky.removeClass('fixed');
+                    $('.container-fluid').css('margin-top', '0px');
+                    sticky.css('transition', 'all 2s linear');
+                }
+            });
+        });
+    </script> -->
 </body>
-<script>
+<!-- <script>
     var stickyOffset = $('.sticky').offset().top;
 
     $(window).scroll(function() {
@@ -1975,6 +2046,6 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
             $('.container-fluid ').css('margin-top', '0px')
         }
     });
-</script>
+</script> -->
 
 </html>

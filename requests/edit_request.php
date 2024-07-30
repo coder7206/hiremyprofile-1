@@ -278,7 +278,7 @@ Please confirm your email to use this feature.
                                                 <span class="input-group-addon font-weight-bold">
                                                     <?= $s_currency; ?>
                                                 </span>
-                                                <input type="number" name="request_budget" min="<?= $min_proposal_price; ?>" placeholder="<?= $lang['placeholder']['5_minimum']; ?>" class="form-control input-lg" value="<?= isset($form_data['request_budget']) ? $form_data['request_budget'] : null;  ?>" required>
+                                                <input type="number" name="request_budget" min="<?= $min_proposal_price; ?>" placeholder="<?= $lang['placeholder']['5_minimum']; ?>" class="form-control input-lg" value="<?= isset($form_data['request_budget']) ? $form_data['request_budget'] : null;  ?>" required maxlength="8">
                                             </div>
                                         </div>
                                     </div>

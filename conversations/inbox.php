@@ -43,18 +43,22 @@ require("includes/inboxFunctions.php");
   <style>
     .fixed {
       position: fixed;
-      top: 0;
+      top: 0;transition: all 3s linear;
       left: 0;
       width: 100%;
       z-index: 100;
+    }
+    .alter-margin-top{
+      /* margin-top:-70px !important; */
+      margin-bottom: 45px !important;
     }
   </style>
 </head>
 
 <body class="is-responsive">
   <?php require_once("../includes/header.php"); ?>
-  <div class="container-fluid pl-md-5 pr-md-5 p-0">
-    <div class="row mr-0 ml-0 mt-sm-0 mt-md-4 mb-md-4 box-inbox">
+  <div class="container-fluid pl-md-5 pr-md-5 p-0 ">
+    <div class="row mr-3 ml-3 mt-sm-0 mt-md-4 mb-md-4 box-inbox alter-margin-top">
       <?php require_once("includes/sidebar.php"); ?>
       <?php require_once("includes/body.php"); ?>
     </div>
@@ -65,8 +69,9 @@ require("includes/inboxFunctions.php");
   <div id="send-offer-div"></div>
   <?php require_once("includes/javascript.php"); ?>
   <?php require_once("../includes/footerInbox.php"); ?>
+  <?php require_once("../includes/footer.php"); ?>
 
-  <script>
+  <!-- <script>
     var stickyOffset = $('.sticky').offset().top;
 
     $(window).scroll(function() {
@@ -83,7 +88,28 @@ require("includes/inboxFunctions.php");
         $('.container-fluid ').css('margin-top', '0px')
       }
     });
-  </script>
+  </script> -->
+  <!-- <script>
+     new header script
+    $(document).ready(function() {
+      var sticky = $('.sticky');
+      var stickyOffset = sticky.offset().top;
+
+      $(window).scroll(function() {
+        var scroll = $(window).scrollTop();
+
+        if (scroll >= stickyOffset) {
+          sticky.addClass('fixed');
+          $('.container-fluid').css('margin-top', '140px');
+          sticky.css('transition', 'all 2s linear'); 
+        } else {
+          sticky.removeClass('fixed');
+          $('.container-fluid').css('margin-top', '0px');
+          sticky.css('transition', 'all 2s linear'); 
+        }
+      });
+    });
+  </script> -->
 </body>
 
 </html>

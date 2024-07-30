@@ -151,6 +151,35 @@ if (isset($_GET['pid'])) {
                                         </div>
                                     </div>
                                 <?php } ?>
+
+
+
+                                <?php
+                                $exist_sellers = $db->query("SELECT * FROM proposals WHERE proposal_seller_id = '$login_seller_id'");
+                                while($exist_proposals = $exist_sellers->fetch()){
+                                $proposal_seller_id = $exist_proposals->proposal_seller_id;                                
+                            }
+
+                                if (empty($proposal_seller_id)) { ?>
+                                    <div id="demo">
+                                        <div style="padding:0px 10px;">
+                                            <table>
+                                                <tr class='table-danger'>
+                                                    <td colspan='5'>
+                                                        <center class="box-shadow-bg-clr">
+                                                            <h3 class='pb-4 pt-4 pl-5 pr-5'>
+                                                                Please create a proposal in order to find relevant job. <a href='<?= $site_url; ?> /proposals/create_proposal' class='text-info'>Click here</a> to create proposal
+                                                            </h3>
+                                                        </center>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+
+
+
                                 <div class="col-md-12 mb-3">
                                     <div class="card payment-options">
                                         <div class="card-header">
@@ -300,6 +329,8 @@ if (isset($_GET['pid'])) {
                             </div>
                         </div>
 
+
+
                         <!--        order summary-->
                         <div class="col-md-5">
                             <div class="card checkout-details">
@@ -336,6 +367,8 @@ if (isset($_GET['pid'])) {
                         </div>
                     </div>
                 </div>
+
+
 
                 <script>
                     $(document).ready(function() {
@@ -496,7 +529,7 @@ if (isset($_GET['pid'])) {
             <?php } ?>
             <?php require_once("includes/footer.php"); ?>
 
-            <script src="<?=$site_url?>/js/paypal.js" id="paypal-js" data-base-url="<?= $site_url; ?>" data-payment-type="proposal"></script>
+            <script src="<?= $site_url ?>/js/paypal.js" id="paypal-js" data-base-url="<?= $site_url; ?>" data-payment-type="proposal"></script>
 
         </body>
 

@@ -18,13 +18,13 @@
 
     .slide-left,
     .slide-right {
-        background-color: #fff;
+        /* background-color: #fff; */
         position: absolute;
         z-index: 4;
         top: 50%;
         width: 50px;
         height: 50px;
-        right: 20px;
+        right: 10px;
         margin-top: -24px;
         text-align: center;
         opacity: 1;
@@ -38,13 +38,27 @@
     }
 
     .slide-right {
-        left: 20px;
+        left: 10px;
+    }
+
+    .margin-top-f {
+        margin-top: 50px;
+    }
+
+    #myCarousel .carousel-inner .carousel-item.active {
+        /* border: 2px solid grey; */
+        padding: 1rem;
+        width: 85%;
+        height: 29.3rem; 
+        margin: 1rem auto;
+        /* background-color: lightgrey; */
+        box-shadow: inset 0px 0px 25px lightgray;
     }
 </style>
 
 <?php $jwplayer_code = ""; ?>
 
-<div id="myCarousel" class="carousel slide">
+<div id="myCarousel" class="carousel slide margin-top-f">
     <ol class="carousel-indicators">
         <?php if (!empty($proposal_video)) { ?>
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -167,9 +181,8 @@
         <?php if (!empty($proposal_yt_url)) { ?>
             <div class="carousel-item">
                 <div class="embed-responsive embed-responsive-16by9">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/<?=$ytId?>"
-                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-                </iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/<?= $ytId ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                    </iframe>
                 </div>
             </div>
         <?php } ?>
@@ -193,21 +206,23 @@
             <!-- card-body Starts -->
             <div class="owl-carousel owl-theme">
                 <!--- owl-carousel owl-theme Starts --->
-                <?php $i = 0; if (!empty($proposal_video)) { ?>
-                    <div class="item active" data-position="<?=$i?>">
+                <?php $i = 0;
+                if (!empty($proposal_video)) { ?>
+                    <div class="item active" data-position="<?= $i ?>">
                         <a href="#">
                             <img src="../../images/youtube.jpg" alt="youtube.jpg">
                         </a>
                     </div>
 
                     <?php if (!empty($proposal_img1)) { ?>
-                    <div class="item" data-position="<?=$i+1?>">
-                        <a><img src="<?= $show_img1; ?>" alt="<?= $proposal_img1; ?>"></a>
-                    </div>
-                    <?php $i++; } ?>
+                        <div class="item" data-position="<?= $i + 1 ?>">
+                            <a><img src="<?= $show_img1; ?>" alt="<?= $proposal_img1; ?>"></a>
+                        </div>
+                    <?php $i++;
+                    } ?>
 
                     <?php if (!empty($proposal_img2)) { ?>
-                        <div class="item" data-position="<?=$i?>">
+                        <div class="item" data-position="<?= $i ?>">
                             <a>
                                 <?php if ($img_2_extension == "mp3" or $img_2_extension == "wav") { ?>
                                     <img src="../proposal_files/audio.jpg" alt="<?= $proposal_img2; ?>">
@@ -216,10 +231,11 @@
                                 <?php } ?>
                             </a>
                         </div>
-                    <?php $i++; } ?>
+                    <?php $i++;
+                    } ?>
 
                     <?php if (!empty($proposal_img3)) { ?>
-                        <div class="item" data-position="<?=$i?>">
+                        <div class="item" data-position="<?= $i ?>">
 
                             <a>
                                 <?php if ($img_3_extension == "mp3" or $img_3_extension == "wav") { ?>
@@ -230,10 +246,11 @@
                             </a>
 
                         </div>
-                    <?php $i++; } ?>
+                    <?php $i++;
+                    } ?>
 
                     <?php if (!empty($proposal_img4)) { ?>
-                        <div class="item" data-position="<?=$i?>">
+                        <div class="item" data-position="<?= $i ?>">
 
                             <a>
                                 <?php if ($img_4_extension == "mp3" or $img_4_extension == "wav") { ?>
@@ -244,24 +261,27 @@
                             </a>
 
                         </div>
-                    <?php $i++; } ?>
+                    <?php $i++;
+                    } ?>
                     <?php if (!empty($proposal_yt_url)) { ?>
-                    <div class="item" data-position="<?=$i?>">
-                        <a href="#">
-                            <?=$ytImg?>
-                        </a>
-                    </div>
-                    <?php $i++; } ?>
+                        <div class="item" data-position="<?= $i ?>">
+                            <a href="#">
+                                <?= $ytImg ?>
+                            </a>
+                        </div>
+                    <?php $i++;
+                    } ?>
 
                 <?php } else { ?>
                     <?php if (!empty($proposal_img1)) { ?>
-                    <div class="item active" data-position="<?=$i?>">
-                        <a><img src="<?= $show_img1; ?>" alt="<?= $proposal_img1; ?>"></a>
-                    </div>
-                    <?php $i++; } ?>
+                        <div class="item active" data-position="<?= $i ?>">
+                            <a><img src="<?= $show_img1; ?>" alt="<?= $proposal_img1; ?>"></a>
+                        </div>
+                    <?php $i++;
+                    } ?>
 
                     <?php if (!empty($proposal_img2)) { ?>
-                        <div class="item" data-position="<?=$i?>">
+                        <div class="item" data-position="<?= $i ?>">
 
                             <a>
                                 <?php if ($img_2_extension == "mp3" or $img_2_extension == "wav") { ?>
@@ -272,10 +292,11 @@
                             </a>
 
                         </div>
-                    <?php $i++; } ?>
+                    <?php $i++;
+                    } ?>
 
                     <?php if (!empty($proposal_img3)) { ?>
-                        <div class="item" data-position="<?=$i?>">
+                        <div class="item" data-position="<?= $i ?>">
 
                             <a>
                                 <?php if ($img_3_extension == "mp3" or $img_3_extension == "wav") { ?>
@@ -286,10 +307,11 @@
                             </a>
 
                         </div>
-                    <?php $i++; } ?>
+                    <?php $i++;
+                    } ?>
 
                     <?php if (!empty($proposal_img4)) { ?>
-                        <div class="item" data-position="<?=$i?>">
+                        <div class="item" data-position="<?= $i ?>">
 
                             <a>
                                 <?php if ($img_4_extension == "mp3" or $img_4_extension == "wav") { ?>
@@ -300,14 +322,16 @@
                             </a>
 
                         </div>
-                    <?php $i++; } ?>
+                    <?php $i++;
+                    } ?>
                     <?php if (!empty($proposal_yt_url)) { ?>
-                    <div class="item" data-position="<?=$i?>">
-                        <a href="#">
-                            <?=$ytImg?>
-                        </a>
-                    </div>
-                    <?php $i++; } ?>
+                        <div class="item" data-position="<?= $i ?>">
+                            <a href="#">
+                                <?= $ytImg ?>
+                            </a>
+                        </div>
+                    <?php $i++;
+                    } ?>
 
                 <?php } ?>
 

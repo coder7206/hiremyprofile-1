@@ -15,7 +15,7 @@ $row_proposals = $select_proposals->fetch();
 $proposal_url = $row_proposals->proposal_url;
 $proposal_seller_id = $row_proposals->proposal_seller_id;
 
-$processing_fee = processing_fee($_SESSION['c_sub_total']);
+$processing_fee = $processing_fee($_SESSION['c_sub_total']);
 
 $seller_fetch = $db->select("sellers",array("seller_id" => $proposal_seller_id));
 $proposal_seller = $seller_fetch->fetch();

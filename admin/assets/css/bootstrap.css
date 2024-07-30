@@ -405,7 +405,7 @@ h6, .h6 {
 }
 
 .lead {
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-weight: 300;
 }
 
@@ -3751,7 +3751,7 @@ tbody.collapse.show {
 }
 
 .nav-tabs {
-  border-bottom: 1px solid #dee2e6;
+  /* border-bottom: 1px solid #dee2e6; */
 }
 
 .nav-tabs .nav-item {
@@ -7263,6 +7263,9 @@ button.bg-dark:hover {
   left: 0;
   z-index: 1030;
 }
+/* .sticky{
+  transition: all 0.3s ease;
+} */
 
 @supports ((position: -webkit-sticky) or (position: sticky)) {
   .sticky-top {
@@ -8879,7 +8882,7 @@ a.text-dark:focus, a.text-dark:hover {
     page-break-after: avoid;
   }
   .navbar {
-    display: none;
+    /* display: none; */
   }
   .badge {
     border: 1px solid #000;

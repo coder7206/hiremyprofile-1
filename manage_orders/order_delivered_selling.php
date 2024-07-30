@@ -1,12 +1,20 @@
 <div class="table-responsive box-table mt-3">
 	<table class="table table-bordered" id="orderSellerDelivered">
 		<thead>
+			<style>
+				@media (max-width:768px) {
+					.font-size-3 {
+						font-size: 13px !important;
+						padding: 10px !important;
+					}
+				}
+			</style>
 			<tr>
-				<th><?= $lang['th']['order_summary']; ?></th>
-				<th><?= $lang['th']['order_date']; ?></th>
-				<th><?= $lang['th']['due_on']; ?></th>
-				<th><?= $lang['th']['total']; ?></th>
-				<th><?= $lang['th']['status2']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['order_summary']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['order_date']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['due_on']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['total']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['status2']; ?></th>
 			</tr>
 		</thead>
 		<tbody>

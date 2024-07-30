@@ -32,15 +32,71 @@ $login_seller_id = $row_login_seller->seller_id;
     <?php if (!empty($site_favicon)) { ?>
         <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
     <?php } ?>
+    <style>
+        .padding-10 {
+            padding: 9px 15px;
+        }
+
+        @media (max-width:641px)  and (max-width:767px) {
+            .top-padding {
+                /* border:1px solid green; */
+                padding: 2px 0px 0px 1px;
+                text-align: center;
+            }
+
+            .padding-alter4 {
+                padding: 0px 15px;
+            }
+
+
+        }
+
+        @media (max-width:640px){
+            .width-increase-5 {
+                width: 100%;
+                height: 40px;
+                /* box-shadow: 0px 0px 1px gray, inset 0px 0px 15px #d5f5ee; */
+            }
+            .padding-alter4 {
+                padding: 0px 0px;
+            }
+            .top-padding {
+                /* border:1px solid green; */
+                padding: 2px 0px 0px 1px;
+                /* text-align: center; */
+                width: 100%;
+                display: flex;
+            }
+
+            .text-align-center1 {
+                text-align: center;
+                margin: auto;
+            }
+        }
+
+        @media(min-width:768px) {
+
+            .badge-float-right {
+                float: right;
+                margin-top: -3px;
+                padding-top: 5px;
+                margin-right: -9px !important;
+            }
+
+            .padding-alter4 {
+                padding: 0px 15px;
+            }
+        }
+    </style>
 </head>
 
 <body class="is-responsive">
     <?php require_once("../includes/user_header.php"); ?>
-    <div class="container mb-3" style="margin-top: 195px;">
-        <div class="row">
-            <div class="col-md-12 mb-4">
-                <h1 class="pull-left"> <?= $lang["titles"]["manage_requests"]; ?> </h1>
-                <a href="post_request" class="btn btn-success pull-right">
+    <div class="container-fluid px-5 py-5">
+        <div class="row padding-alter4">
+            <div class="col-md-12 mb-2 pb-3">
+                <h1 class="pull-left top-padding mt-1"> <span class="text-align-center1"> <?= $lang["titles"]["manage_requests"]; ?> </span></h1>
+                <a href="post_request" class="btn btn-success pull-right pt-2 mt-1 width-increase-5">
                     <i class="fa fa-plus-circle"></i> Post New Request
                 </a>
             </div>

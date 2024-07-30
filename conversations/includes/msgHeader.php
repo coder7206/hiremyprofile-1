@@ -36,14 +36,17 @@ $seller_image = @$row_seller->seller_image;
 $seller_user_name = @$row_seller->seller_user_name;
 $seller_status = @$row_seller->seller_status;
 
-// if (check_status($seller_id) == "Online") {
-if ($seller_status == "online") {
+if (check_status($seller_id) == "Online") {
+// if ($seller_status == "online") {
 	$statusClass = "class='text-success font-weight-bold'";
 } else {
 	$statusClass = "style='color:#868e96; font-weight:bold;'";
 }
-
-$date = date("M d, h:i A");
+ 
+// $date = date("M d, h:i A");
+date_default_timezone_set('Asia/Kolkata');
+$isS3 = $enable_s3;
+$date = date("h:i A M d, Y");
 
 $select_starred = $db->select("starred_messages", array("seller_id" => $login_seller_id, "message_group_id" => $message_group_id));
 $count_starred = $select_starred->rowCount();
@@ -63,9 +66,11 @@ $count_unread = $select_unread->rowCount();
 if ($count_unread == 1) {
 	$unread = "read";
 	$unread_i = "fa-envelope-o";
+	// echo "bye";
 } else {
 	$unread = "unread";
 	$unread_i = "fa-envelope-open-o";
+	// echo "hello";
 }
 
 
@@ -96,7 +101,7 @@ if ($count_archived == 1) {
 
 		<span <?= $statusClass; ?>><?= ucwords($seller_status); //check_status($seller_id); ?></span>
 
-		| Local Time <i class="fa fa-clock-o"></i> <?= $date; ?>
+		| Current Time <i class="fa fa-clock-o"></i> <?= $date; ?>
 
 	</span>
 

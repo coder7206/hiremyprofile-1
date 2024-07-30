@@ -1,9 +1,10 @@
 <?php
-	
-	session_start();
-	require_once "fb-config.php";
 
-	try {
+
+	session_start(); 
+	require_once "fb-config.php"; 
+
+	try { 
 		$accessToken = $helper->getAccessToken();
 	} catch (\Facebook\Exceptions\FacebookResponseException $e) {
 		echo "Response Exception: " . $e->getMessage();
@@ -11,12 +12,12 @@
 	} catch (\Facebook\Exceptions\FacebookSDKException $e) {
 		echo "SDK Exception: " . $e->getMessage();
 		exit();
-	}
+	} 
 	if (!$accessToken) {
-		echo "<script> window.open('login','_self'); </script>";
+		echo "<script> window.open('login','_self'); </script>"; 
 		exit();
 	}
-
+ 
 	$oAuth2Client = $FB->getOAuth2Client();
 	if(!$accessToken->isLongLived())
 		$accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);

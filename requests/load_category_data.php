@@ -34,14 +34,15 @@ $relevant_requests = $row_general_settings->relevant_requests;
 $requests_query = get_buyer_request_query($login_seller_id);
 if ($requests_query != "")
 	$requests_query = " AND {$requests_query}";
-// if ($relevant_requests == "no") {
-// 	$requests_query = "";
-// }
+	// if ($relevant_requests == "no") {
+	// 	$requests_query = "";
+	// }
 ;
 
+
 $data = "
-		<tr class='table-danger'>
-			<td colspan='5'><center><h3 class='pb-4 pt-4'>
+		<tr class='table-danger '>
+			<td colspan='5' class='box-shadow-bg-clr'><center><h3 class='pb-4 pt-4 heading_3'>
 			Please create a proposal in order to find relevant job. <a href='{$site_url}/proposals/create_proposal' class='text-info'>Click here</a> to create proposal
 		</h3></center></td>
 		</tr>
@@ -127,10 +128,10 @@ if (!empty($requests_query)) {
 				</ul>
 			</div>";
 			$data .= "</td>";
-			$data .= "<td>{$count_send_offers}</td>";
-			$data .= "<td>{$request_date}</td>";
-			$data .= "<td>{$delivery_time} <a href='#' class='remove-link remove_request' data-remove-id='{$request_id}'> Remove Request </a></td>";
-			$data .= "<td class='text-info font-weight-bold'>$";
+			$data .= "<td class='text-align-center'>{$count_send_offers}</td>";
+			$data .= "<td class='text-align-center'>{$request_date}</td>";
+			$data .= "<td class='text-align-center'>{$delivery_time} <a href='#' class='remove-link remove_request' data-remove-id='{$request_id}'> Remove Request </a></td>";
+			$data .= "<td class='text-info font-weight-bold text-align-center'>$";
 			if (!empty($request_budget))
 				$data .= $request_budget;
 			else
@@ -159,7 +160,7 @@ if (!empty($requests_query)) {
 	} else {
 		$qProposals = $db->query("SELECT proposal_id FROM `proposals` where proposal_seller_id ='$sellerId' and proposal_status='active' ORDER BY 1 DESC");
 		$cProposals = $qProposals->rowCount();
-		if ($cProposals > 0 )
+		if ($cProposals > 0)
 			$data = "
 				<tr class='table-danger'>
 					<td colspan='5'><center><h3 class='pb-4 pt-4'><i class='fa fa-frown-o'></i> No requests that matches any of your proposals/services yet!.</h3></center></td>

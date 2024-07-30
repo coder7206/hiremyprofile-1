@@ -36,7 +36,7 @@ if (empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)) {
 		$select_sellers = $db->select("sellers", array("seller_user_name" => $_SESSION['seller_user_name']));
 		$row_sellers = $select_sellers->fetch();
 
-		$checkuser = $db->select("memb_plan_detail where seller_id = $row_sellers->seller_id and memb_status = 'active'  order by id desc LIMIT 1");
+		$checkuser = $db->select("memb_plan_detail where seller_id = $row_sellers->seller_id and memb_status = 'Active'  order by id desc LIMIT 1");
 		$row_purchsed = $checkuser->fetch();
 		if ($row_purchsed) {
 			$exp_date = $row_purchsed->memb_end_date;

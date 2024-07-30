@@ -63,7 +63,7 @@ $count_active_proposals = $db->count("proposals", array("proposal_seller_id" => 
 
 ?>
 <div class="col-md-8 <?= ($lang_dir == "right" ? 'order-2 order-sm-1 pl-0 pr-3' : 'pr-lg-0 ') ?>">
-	<ul class="list-unstyled messages mb-0 <?= ($lang_dir == "right" ? 'direction-rtl' : '') ?>">
+	<ul class="list-unstyled messages mb-0 <?= ($lang_dir == "right" ? 'direction-rtl' : '') ?> chatBgImage">
 		<?php require_once("display_messages.php"); ?>
 	</ul>
 	<?php require_once("sendMessage.php"); ?>
@@ -84,9 +84,13 @@ $count_active_proposals = $db->count("proposals", array("proposal_seller_id" => 
 
 		<a href="../<?= $seller_user_name; ?>">
 			<?php if (!empty($seller_image)) { ?>
-				<img src="<?= $seller_image; ?>" width="50" class="rounded-circle">
+				<div class="convertion-image-circle">
+					<img src="<?= $seller_image; ?>" width="50" class="rounded-circle">
+				</div>
 			<?php } else { ?>
-				<img src="../user_images/empty-image.png" width="50" class="rounded-circle">
+				<div class="convertion-image-circle">
+					<img src="../user_images/empty-image.png" width="50" class="rounded-circle">
+				</div>
 			<?php } ?>
 		</a>
 

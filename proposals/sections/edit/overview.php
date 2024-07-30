@@ -11,19 +11,20 @@ $get_meta = $db->select("child_cats_meta", array("child_id" => $d_proposal_child
 $row_meta = $get_meta->fetch();
 $child_title = $row_meta->child_title;
 
+
 ?>
 <script>
-    $(function() {
+	$(function() {
 		<?php if ($check and (!isset($_GET['video']) and !isset($_GET['instant_delivery']) and !isset($_GET['publish']))) { ?>
-        $('#direct_order').popover('show')
+			$('#direct_order').popover('show')
 		<?php } ?>
-        $("#direct_order").on('change', function() {
-            if ($("#direct_order").is(":checked"))
-                $('#direct_order').popover('show')
-            else
-                $('#direct_order').popover('hide')
-        })
-    });
+		$("#direct_order").on('change', function() {
+			if ($("#direct_order").is(":checked"))
+				$('#direct_order').popover('show')
+			else
+				$('#direct_order').popover('hide')
+		})
+	});
 </script>
 <form action="#" method="post" class="proposal-form">
 	<!--- form Starts -->
@@ -36,9 +37,9 @@ $child_title = $row_meta->child_title;
 					<span class="slider  direct_order"></span>
 				</label> -->
 				<label class="switch" id="switchOrder">
-                    <input type="checkbox" name="direct_order" id="direct_order" value="2" <?php echo $check; ?> data-toggle="popover" data-placement="right" data-trigger="manual" data-offset="0 72px" title="Information" data-content="When its off, Buyer can't buy this service directly." />
-                    <span class="slider instant-slider direct_order"></span>
-                </label>
+					<input type="checkbox" name="direct_order" id="direct_order" value="2" <?php echo $check; ?> data-toggle="popover" data-placement="right" data-trigger="manual" data-offset="0 72px" title="Information" data-content="When its off, Buyer can't buy this service directly." />
+					<span class="slider instant-slider direct_order"></span>
+				</label>
 			</div>
 		</div>
 	</div>
@@ -46,9 +47,9 @@ $child_title = $row_meta->child_title;
 		<!--- form-group row Starts --->
 		<div class="col-md-3"><?= $lang['label']['proposal_title']; ?></div>
 		<div class="col-md-9">
-			<textarea name="proposal_title" id="proposal_title" rows="2" placeholder="I Will" required="" class="form-control" minlength="50" maxlength="100"><?= $d_proposal_title; ?></textarea>
+			<textarea name="proposal_title" id="proposal_title" rows="2" placeholder="I Will" required="" class="form-control" minlength="50" maxlength="200"><?= $d_proposal_title; ?></textarea>
 			<small class="form-text text-danger"><?= ucfirst($form_errors['proposal_title'] ?? ""); ?></small>
-			<span class="text-dark d-block">min: 50 max: 100 characters <span class="pull-right"><i class="text-danger" id="typed-characters"><?=strlen($d_proposal_title) ?></i> characters</span></span>
+			<span class="text-dark d-block">min: 50  max: 200 characters <span class="pull-right"><i class="text-danger" id="typed-characters"><?= strlen($d_proposal_title) ?></i> characters</span></span>
 		</div>
 	</div>
 	<!--- form-group row Ends --->
@@ -82,8 +83,27 @@ $child_title = $row_meta->child_title;
 					$child_title = $row_meta->child_title;
 					echo "<option value='$child_id'> $child_title </option>";
 				}
+				?> 
+			</select>
+
+			<select name="proposal_attr_id" id="sub-sub-category" class="form-control" required>
+				<option value="<?= $d_proposal_child_id; ?>" selected> <?= $child_title; ?> </option>
+				<?php
+				$get_c_cats = $db->query("select * from categories_children where child_parent_id='$d_proposal_cat_id' and not child_id='$d_proposal_child_id'");
+				while ($row_c_cats = $get_c_cats->fetch()) {
+					$child_id = $row_c_cats->child_id;
+					$get_meta = $db->select("child_cats_meta", array("child_id" => $child_id, "language_id" => $siteLanguage));
+					$row_meta = $get_meta->fetch();
+					$child_title = $row_meta->child_title;
+					echo "<option value='$child_id'> $child_title </option>";
+				}
 				?>
 			</select>
+
+
+
+
+
 		</div>
 	</div>
 	<!--- form-group row Ends --->
@@ -162,8 +182,8 @@ $child_title = $row_meta->child_title;
 		<div class="col-md-3"><?= $lang['label']['tags']; ?></div>
 		<div class="col-md-9">
 			<input type="text" name="proposal_tags" class="form-control" data-role="tagsinput" value="<?= $d_proposal_tags; ?>">
-            <small>Press enter to add your own tags after adding word.</small>
-            <br /><small>Enter at leaset 2 characters to get suggestions.</small>
+			<small>Press enter to add your own tags after adding word.</small>
+			<br /><small>Enter at leaset 2 characters to get suggestions.</small>
 		</div>
 		<small class="form-text text-danger"><?= ucfirst($form_errors['proposal_tags'] ?? ""); ?></small>
 	</div>
@@ -176,24 +196,24 @@ $child_title = $row_meta->child_title;
 	</div>
 	<div class="clearfix"></div>
 	<?php if ($d_proposal_status == 'active') { ?>
-	<div class="form-group mb-0 float-right">
-		<small class="text-muted">Your proposal is "Active", if you edits the form it will go to reviews.</small>
-	</div>
+		<div class="form-group mb-0 float-right">
+			<small class="text-muted">Your proposal is "Active", if you edits the form it will go to reviews.</small>
+		</div>
 	<?php } ?>
 	<!--- form-group Starts --->
 
 </form>
 <!--- form Ends -->
 <script>
-    const textAreaElement = document.querySelector("#proposal_title");
-    const typedCharactersElement = document.querySelector("#typed-characters");
-    const maximumCharacters = 100;
+	const textAreaElement = document.querySelector("#proposal_title");
+	const typedCharactersElement = document.querySelector("#typed-characters");
+	const maximumCharacters = 100;
 
-    textAreaElement.addEventListener("keydown", (event) => {
-        const typedCharacters = textAreaElement.value.length;
-        if (typedCharacters > maximumCharacters) {
-            return false;
-        }
-        typedCharactersElement.textContent = typedCharacters;
-    });
+	textAreaElement.addEventListener("keydown", (event) => {
+		const typedCharacters = textAreaElement.value.length;
+		if (typedCharacters > maximumCharacters) {
+			return false;
+		}
+		typedCharactersElement.textContent = typedCharacters;
+	});
 </script>

@@ -4,15 +4,15 @@
          <tr>
             <td width="100%" align="center" style="vertical-align: top; background-color: #FAFAFA">
                <a href="<?= $site_url; ?>" target="_blank">
-                  <img src="<?= $site_logo; ?>" border="0" alt="GigToDo" class="logo">
+                  <img src="<?= $site_logo; ?>" border="0" alt="hiremyprofile" class="logo">
                </a>
             </td>
          </tr>
          <tr>
             <td width="100%" align="left" style="vertical-align:top">
-               <a href="<?= $site_url; ?>" target="_blank">
+               <!-- <a href="<?= $site_url; ?>" target="_blank">
                   <img src="<?= img_url("banner.jpg"); ?>" class='banner' alt="<?= $site_name; ?>">
-               </a>
+               </a> -->
             </td>
          </tr>
          <tr>

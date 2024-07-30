@@ -808,3 +808,16 @@ if ($a_instruction == 1) {
 		include("edit_instruction.php");
 	}
 }
+
+
+if ($cat_attr == 1) {
+	if (isset($_GET['cat_attr'])) {
+		include("cat_attr.php");
+	}
+}
+
+if ($cat_attr_icon == 1) {
+	if (isset($_GET['cat_attr_icon'])) {
+		include("cat_attr_icon.php");
+	}
+}

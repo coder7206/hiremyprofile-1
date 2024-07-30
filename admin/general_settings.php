@@ -3,10 +3,7 @@
 @session_start();
 if (!isset($_SESSION['admin_email'])) {
     echo "<script>window.open('login','_self');</script>";
-}
-else
-
-    {
+} else {
 
     $get_general_settings = $db->select("general_settings");
     $row_general_settings = $get_general_settings->fetch();
@@ -92,7 +89,7 @@ else
     require 'updateHtaccess.php';
     require 'timezones.php';
 
-    ?>
+?>
     <script src="../js/jquery.min.js"></script>
     <div class="breadcrumbs">
         <div class="col-sm-4"><!--- col-sm-4 Ends --->
@@ -132,8 +129,7 @@ else
                                         <span class="input-group-addon">
                                             <b><i class="fa fa-laptop"></i></b>
                                         </span>
-                                        <input type="text" name="site_title" class="form-control"
-                                               value="<?= $site_title; ?>" required="">
+                                        <input type="text" name="site_title" class="form-control" value="<?= $site_title; ?>" required="">
 
                                     </div>
 
@@ -148,12 +144,12 @@ else
                                         <span class="input-group-addon"><b><i class="fa fa-link"></i></b></span>
                                         <select name="site_www" class="form-control site_www" required="">
                                             <option value="1" <?php if ($site_www == 1) {
-                                                echo "selected";
-                                            } ?>> Yes
+                                                                    echo "selected";
+                                                                } ?>> Yes
                                             </option>
                                             <option value="0" <?php if ($site_www == 0) {
-                                                echo "selected";
-                                            } ?>> No
+                                                                    echo "selected";
+                                                                } ?>> No
                                             </option>
                                         </select>
                                     </div>
@@ -167,12 +163,12 @@ else
                                         <span class="input-group-addon"><b><i class="fa fa-link"></i></b></span>
                                         <select name="wish_do_manual_payouts" class="form-control" required="">
                                             <option value="1" <?php if ($wish_do_manual_payouts == 1) {
-                                                echo "selected";
-                                            } ?>> Yes
+                                                                    echo "selected";
+                                                                } ?>> Yes
                                             </option>
                                             <option value="0" <?php if ($wish_do_manual_payouts == 0) {
-                                                echo "selected";
-                                            } ?>> No
+                                                                    echo "selected";
+                                                                } ?>> No
                                             </option>
                                         </select>
                                     </div>
@@ -182,8 +178,7 @@ else
                             <div class="form-group row"><!--- form-group row Starts --->
                                 <label class="col-md-3 control-label"> Site Description : </label>
                                 <div class="col-md-6">
-                                    <textarea name="site_desc" class="form-control" rows="5"
-                                              required=""><?= $site_desc; ?></textarea>
+                                    <textarea name="site_desc" class="form-control" rows="5" required=""><?= $site_desc; ?></textarea>
                                 </div>
                             </div><!--- form-group row Ends --->
 
@@ -192,8 +187,7 @@ else
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"><b><i class="fa fa-flash"></i></b></span>
-                                        <input type="text" name="site_keywords" class="form-control"
-                                               value="<?= $site_keywords; ?>" required="">
+                                        <input type="text" name="site_keywords" class="form-control" value="<?= $site_keywords; ?>" required="">
                                     </div>
                                 </div>
                             </div><!--- form-group row Ends --->
@@ -206,8 +200,7 @@ else
                                         <span class="input-group-addon">
                                             <b><i class="fa fa-pencil"></i></b>
                                         </span>
-                                        <input type="text" name="subheader_tagline" class="form-control"
-                                               value="<?= $subheader_tagline; ?>" required="">
+                                        <input type="text" name="subheader_tagline" class="form-control" value="<?= $subheader_tagline; ?>" required="">
 
                                     </div>
 
@@ -219,8 +212,7 @@ else
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"><b><i class="fa fa-user"></i></b></span>
-                                        <input type="text" name="site_author" class="form-control"
-                                               value="<?= $site_author; ?>" required="">
+                                        <input type="text" name="site_author" class="form-control" value="<?= $site_author; ?>" required="">
                                     </div>
                                 </div>
                             </div><!--- form-group row Ends --->
@@ -230,10 +222,8 @@ else
                                 <label class="col-md-3 control-label"> Site Name : </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <span class="input-group-addon"> <b><i
-                                                        class="fa fa-check-square-o"></i></b> </span>
-                                        <input type="text" name="site_name" class="form-control"
-                                               value="<?= $site_name; ?>" required="">
+                                        <span class="input-group-addon"> <b><i class="fa fa-check-square-o"></i></b> </span>
+                                        <input type="text" name="site_name" class="form-control" value="<?= $site_name; ?>" required="">
                                     </div>
                                 </div>
                             </div><!--- form-group row Ends --->
@@ -273,11 +263,10 @@ else
                                 <label class="col-md-3 control-label"> Site Logo Text : </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b><i class="fa fa-check-square-o"></i></b>
-</span>
-                                        <input type="text" name="site_logo_text" class="form-control"
-                                               value="<?= $site_logo_text; ?>">
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-check-square-o"></i></b>
+                                        </span>
+                                        <input type="text" name="site_logo_text" class="form-control" value="<?= $site_logo_text; ?>">
                                     </div>
                                 </div>
                             </div>
@@ -289,9 +278,9 @@ else
                                 <label class="col-md-3 control-label"> Site Logo Image : </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b><i class="fa fa-paper-plane"></i></b>
-</span>
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-paper-plane"></i></b>
+                                        </span>
                                         <input type="file" name="site_logo_image" class="form-control">
                                     </div>
                                     <img style="margin-top:7px;" src="<?= $site_logo_image; ?>" width="90" height="30">
@@ -318,9 +307,9 @@ else
                                 <label class="col-md-3 control-label"> Site Mobile Logo : </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b><i class="fa fa-paper-plane"></i></b>
-</span>
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-paper-plane"></i></b>
+                                        </span>
                                         <input type="file" name="site_mobile_logo" class="form-control">
                                     </div>
                                     <img class="mt-1" src="<?= $site_mobile_logo; ?>" width="25" height="25">
@@ -333,9 +322,9 @@ else
                                 <label class="col-md-3 control-label"> Site Email Logo : </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b><i class="fa fa-paper-plane"></i></b>
-</span>
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-paper-plane"></i></b>
+                                        </span>
                                         <input type="file" name="site_logo" class="form-control">
                                     </div>
                                     <img class="mt-1" src="<?= $site_logo; ?>" width="110" height="40">
@@ -346,9 +335,9 @@ else
                                 <label class="col-md-3 control-label"> Site Watermark Image : </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-      <span class="input-group-addon">
-        <b><i class="fa fa-paper-plane"></i></b>
-      </span>
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-paper-plane"></i></b>
+                                        </span>
                                         <input type="file" name="site_watermark" class="form-control">
                                     </div>
                                     <img class="mt-1" src="../images/<?= $s_watermark; ?>" width="110" height="40">
@@ -358,8 +347,7 @@ else
                             <div class="form-group row"><!--- form-group row Starts --->
                                 <label class="col-md-3 control-label"> Site Color : </label>
                                 <div class="col-md-6">
-                                    <input type="color" name="site_color" class="form-control p-0 pl-1 pr-1"
-                                           value="<?= $site_color; ?>">
+                                    <input type="color" name="site_color" class="form-control p-0 pl-1 pr-1" value="<?= $site_color; ?>">
                                 </div>
                             </div><!--- form-group row Ends --->
 
@@ -367,8 +355,7 @@ else
                             <div class="form-group row"><!--- form-group row Starts --->
                                 <label class="col-md-3 control-label"> Site Hover Color : </label>
                                 <div class="col-md-6">
-                                    <input type="color" name="site_hover_color" class="form-control p-0 pl-1 pr-1"
-                                           value="<?= $site_hover_color; ?>">
+                                    <input type="color" name="site_hover_color" class="form-control p-0 pl-1 pr-1" value="<?= $site_hover_color; ?>">
                                 </div>
                             </div><!--- form-group row Ends --->
 
@@ -376,16 +363,14 @@ else
                             <div class="form-group row"><!--- form-group row Starts --->
                                 <label class="col-md-3 control-label"> Site Border Color : </label>
                                 <div class="col-md-6">
-                                    <input type="color" name="site_border_color" class="form-control p-0 pl-1 pr-1"
-                                           value="<?= $site_border_color; ?>">
+                                    <input type="color" name="site_border_color" class="form-control p-0 pl-1 pr-1" value="<?= $site_border_color; ?>">
                                 </div>
                             </div><!--- form-group row Ends --->
 
                             <div class="form-group row"><!--- form-group row Starts --->
                                 <label class="col-md-3 control-label"> Google Analytics Tracking ID: </label>
                                 <div class="col-md-6">
-                                    <input type="text" name="google_analytics" class="form-control"
-                                           value="<?= $google_analytics; ?>">
+                                    <input type="text" name="google_analytics" class="form-control" value="<?= $google_analytics; ?>">
                                 </div>
                             </div><!--- form-group row Ends --->
 
@@ -393,15 +378,14 @@ else
                                 <label class="col-md-3 control-label"> Site Url : </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b><i class="fa fa-globe"></i></b>
-</span>
-                                        <input type="text" name="site_url" class="form-control"
-                                               value="<?= $site_url; ?>" required="">
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-globe"></i></b>
+                                        </span>
+                                        <input type="text" name="site_url" class="form-control" value="<?= $site_url; ?>" required="">
                                     </div>
                                     <small class="form-text text-muted">
                                         <span class="text-danger font-weight-bold">NB:</span>
-                                        Enter the complete url. Ex: https://www.GigToDo.com
+                                        Enter the complete url. Ex: https://www.hiremyprofile.com
                                     </small>
                                 </div>
                             </div><!--- form-group row Ends --->
@@ -412,8 +396,7 @@ else
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"> <b><i class="fa fa-envelope-o"></i></b> </span>
-                                        <input type="text" name="site_email_address" class="form-control"
-                                               value="<?= $site_email_address; ?>">
+                                        <input type="text" name="site_email_address" class="form-control" value="<?= $site_email_address; ?>">
                                     </div>
                                 </div>
                             </div>
@@ -426,12 +409,12 @@ else
                                         <span class="input-group-addon"><b><i class="fa fa-link"></i></b></span>
                                         <select name="language_switcher" class="form-control" required="">
                                             <option value="1" <?php if ($language_switcher == 1) {
-                                                echo "selected";
-                                            } ?>> Yes
+                                                                    echo "selected";
+                                                                } ?>> Yes
                                             </option>
                                             <option value="0" <?php if ($language_switcher == 0) {
-                                                echo "selected";
-                                            } ?>> No
+                                                                    echo "selected";
+                                                                } ?>> No
                                             </option>
                                         </select>
                                     </div>
@@ -445,12 +428,12 @@ else
                                         <span class="input-group-addon"><b><i class="fa fa-google"></i></b></span>
                                         <select name="enable_google_translate" class="form-control" required="">
                                             <option value="1" <?php if ($enable_google_translate == 1) {
-                                                echo "selected";
-                                            } ?>> Yes
+                                                                    echo "selected";
+                                                                } ?>> Yes
                                             </option>
                                             <option value="0" <?php if ($enable_google_translate == 0) {
-                                                echo "selected";
-                                            } ?>> No
+                                                                    echo "selected";
+                                                                } ?>> No
                                             </option>
                                         </select>
                                     </div>
@@ -463,8 +446,7 @@ else
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"> <b><i class="fa fa-copyright"></i></b> </span>
-                                        <input type="text" name="site_copyright" class="form-control"
-                                               value="<?= $site_copyright; ?>">
+                                        <input type="text" name="site_copyright" class="form-control" value="<?= $site_copyright; ?>">
                                     </div>
                                 </div>
                             </div><!--- form-group row Ends --->
@@ -475,8 +457,7 @@ else
                                 <div class="col-md-6">
                                     <select name="site_timezone" class="form-control site_logo_type" required="">
                                         <?php foreach ($timezones as $key => $zone) { ?>
-                                            <option <?= ($site_timezone == $zone) ? "selected=''" : ""; ?>
-                                                    value="<?= $zone; ?>"><?= $zone; ?></option>
+                                            <option <?= ($site_timezone == $zone) ? "selected=''" : ""; ?> value="<?= $zone; ?>"><?= $zone; ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -484,31 +465,27 @@ else
                             <!--- form-group row Ends --->
 
                             <div class="form-group row"><!--- form-group row Starts --->
-                                <label class="col-md-3 control-label"> Google Recaptcha Site Key : <br/>
-                                    <small><a target="_blank"
-                                              href=https://help.gigtodoscript.com/knowledge/details/12/Steps%20on%20Getting%20Google%20reCaptcha%20key%20%20secret.html"
-                                              class="text-success">How To?</a></small>
+                                <label class="col-md-3 control-label"> Google Recaptcha Site Key : <br />
+                                    <small><a target="_blank" href="#" class="text-success">How To?</a></small>
+                                    <!-- https://help.gigtodoscript.com/knowledge/details/12/Steps%20on%20Getting%20Google%20reCaptcha%20key%20%20secret.html -->
                                 </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"> <b><i class="fa fa-key"></i></b> </span>
-                                        <input type="text" name="recaptcha_site_key" class="form-control"
-                                               value="<?= $recaptcha_site_key; ?>">
+                                        <input type="text" name="recaptcha_site_key" class="form-control" value="<?= $recaptcha_site_key; ?>">
                                     </div>
                                 </div>
                             </div><!--- form-group row Ends --->
 
                             <div class="form-group row"><!--- form-group row Starts --->
-                                <label class="col-md-3 control-label"> Google Re captcha Secret Key : <br/>
-                                    <small><a target="_blank"
-                                              href="https://help.gigtodoscript.com/knowledge/details/12/Steps%20on%20Getting%20Google%20reCaptcha%20key%20%20secret.html"
-                                              class="text-success">How To?</a></small>
+                                <label class="col-md-3 control-label"> Google Re captcha Secret Key : <br />
+                                    <small><a target="_blank" href="#" class="text-success">How To?</a></small>
+                                    <!-- https://help.gigtodoscript.com/knowledge/details/12/Steps%20on%20Getting%20Google%20reCaptcha%20key%20%20secret.html -->
                                 </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"> <b><i class="fa fa-key"></i></b> </span>
-                                        <input type="text" name="recaptcha_secret_key" class="form-control"
-                                               value="<?= $recaptcha_secret_key; ?>">
+                                        <input type="text" name="recaptcha_secret_key" class="form-control" value="<?= $recaptcha_secret_key; ?>">
                                     </div>
                                 </div>
                             </div><!--- form-group row Ends --->
@@ -518,11 +495,10 @@ else
                                 <label class="col-md-3 control-label"> JwPlayer Code :</label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b><i class="fa fa-play"></i></b>
-</span>
-                                        <input type="text" name="jwplayer_code" class="form-control"
-                                               value="<?= $jwplayer_code; ?>">
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-play"></i></b>
+                                        </span>
+                                        <input type="text" name="jwplayer_code" class="form-control" value="<?= $jwplayer_code; ?>">
                                     </div>
                                 </div>
                             </div>
@@ -538,10 +514,10 @@ else
                                             $id = $row_currencies->id;
                                             $name = $row_currencies->name;
                                             $symbol = $row_currencies->symbol;
-                                            ?>
+                                        ?>
                                             <option <?php if (@$site_currency == $id) {
-                                                echo "selected";
-                                            } ?> value="<?= $id; ?>">
+                                                        echo "selected";
+                                                    } ?> value="<?= $id; ?>">
                                                 <?= $name . " ($symbol)"; ?>
                                             </option>
                                         <?php } ?>
@@ -628,10 +604,9 @@ else
                                     <div class="input-group">
                                         <!--- input-group Starts --->
                                         <span class="input-group-addon">
-<b><?= $s_currency; ?></b>
-</span>
-                                        <input type="number" name="referral_money" class="form-control" min="1"
-                                               value="<?= $referral_money; ?>">
+                                            <b><?= $s_currency; ?></b>
+                                        </span>
+                                        <input type="number" name="referral_money" class="form-control" min="1" value="<?= $referral_money; ?>">
                                     </div>
                                     <!--- input-group Ends --->
                                     <small class="form-text text-muted">
@@ -646,8 +621,7 @@ else
                                 <label class="col-md-3 control-label"> Order Auto Complete : </label>
                                 <div class="col-md-6">
                                     <div class="input-group"><!--- input-group Starts --->
-                                        <input type="number" name="order_auto_complete" class="form-control" min="1"
-                                               value="<?= $order_auto_complete; ?>">
+                                        <input type="number" name="order_auto_complete" class="form-control" min="1" value="<?= $order_auto_complete; ?>">
                                         <span class="input-group-addon"><b>days</b></span>
                                     </div><!--- input-group Ends --->
                                     <small class="form-text text-muted">
@@ -724,8 +698,7 @@ else
                                 <label class="col-md-3 control-label"> Websocket Address : </label>
                                 <div class="col-md-6">
 
-                                    <input type="url" name="websocket_address" class="form-control"
-                                           placeholder="Websocket Address" value="<?= $websocket_address; ?>">
+                                    <input type="url" name="websocket_address" class="form-control" placeholder="Websocket Address" value="<?= $websocket_address; ?>">
 
                                     <small class="form-text text-muted">Address should be look like this :
                                         ws://127.0.0.1:8080
@@ -738,8 +711,7 @@ else
                                 <!--- form-group row Starts --->
                                 <label class="col-md-3 control-label"></label>
                                 <div class="col-md-6">
-                                    <input type="submit" name="general_settings_update"
-                                           class="form-control btn btn-success" value="Update General Settings">
+                                    <input type="submit" name="general_settings_update" class="form-control btn btn-success" value="Update General Settings">
                                 </div>
                             </div>
                             <!--- form-group row Ends --->
@@ -769,11 +741,10 @@ else
                                 <label class="col-md-3 control-label"> Level One Seller Ratings : </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b>%</b>
-</span>
-                                        <input type="text" name="level_one_rating" class="form-control"
-                                               value="<?= $level_one_rating; ?>">
+                                        <span class="input-group-addon">
+                                            <b>%</b>
+                                        </span>
+                                        <input type="text" name="level_one_rating" class="form-control" value="<?= $level_one_rating; ?>">
                                     </div>
                                     <small class="form-text text-muted">
                                         Positive ratings (in percentage) required to become a level one seller.
@@ -786,11 +757,10 @@ else
                                 <label class="col-md-3 control-label"> Level One Completed <br>Orders : </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b><i class="fa fa-archive"></i></b>
-</span>
-                                        <input type="text" name="level_one_orders" class="form-control"
-                                               value="<?= $level_one_orders; ?>">
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-archive"></i></b>
+                                        </span>
+                                        <input type="text" name="level_one_orders" class="form-control" value="<?= $level_one_orders; ?>">
                                     </div>
                                     <small class="form-text text-muted">
                                         No. of orders required to be completed to become level one seller.
@@ -804,8 +774,7 @@ else
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"><b>%</b></span>
-                                        <input type="text" name="level_two_rating" class="form-control"
-                                               value="<?= $level_two_rating; ?>">
+                                        <input type="text" name="level_two_rating" class="form-control" value="<?= $level_two_rating; ?>">
                                     </div>
                                     <small class="form-text text-muted">
                                         Positive ratings (in percentage) required to become a level two seller.
@@ -818,11 +787,10 @@ else
                                 <label class="col-md-3 control-label"> Level Two Seller Completed Orders: </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b><i class="fa fa-archive"></i></b>
-</span>
-                                        <input type="text" name="level_two_orders" class="form-control"
-                                               value="<?= $level_two_orders; ?>">
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-archive"></i></b>
+                                        </span>
+                                        <input type="text" name="level_two_orders" class="form-control" value="<?= $level_two_orders; ?>">
                                     </div>
                                     <small class="form-text text-muted">
                                         No. of orders required to be completed to become level two seller.
@@ -836,8 +804,7 @@ else
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"><b>%</b></span>
-                                        <input type="text" name="level_top_rating" class="form-control"
-                                               value="<?= $level_top_rating; ?>">
+                                        <input type="text" name="level_top_rating" class="form-control" value="<?= $level_top_rating; ?>">
                                     </div>
                                     <small class="form-text text-muted">
                                         Positive ratings (in percentage) required to become a top rated seller.
@@ -850,11 +817,10 @@ else
                                 <label class="col-md-3 control-label"> Top Rated Seller Completed Orders : </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b><i class="fa fa-archive"></i></b>
-</span>
-                                        <input type="text" name="level_top_orders" class="form-control"
-                                               value="<?= $level_top_orders; ?>">
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-archive"></i></b>
+                                        </span>
+                                        <input type="text" name="level_top_orders" class="form-control" value="<?= $level_top_orders; ?>">
                                     </div>
                                     <small class="form-text text-muted">
                                         No. of orders required to be completed to become top rated seller.
@@ -982,8 +948,7 @@ else
                             <div class="form-group row"><!--- form-group row Starts --->
                                 <label class="col-md-3 control-label"></label>
                                 <div class="col-md-6">
-                                    <input type="submit" name="seller_settings_update"
-                                           class="form-control btn btn-success" value="Update Seller Settings">
+                                    <input type="submit" name="seller_settings_update" class="form-control btn btn-success" value="Update Seller Settings">
                                 </div>
                             </div><!--- form-group row Ends --->
                         </form><!--- form Ends --->
@@ -1001,8 +966,7 @@ else
                     <!--- card mb-5 Starts --->
                     <div class="card-header">
                         <!--- card-header Starts --->
-                        <h4 class="h4"><i class="fa fa-facebook-square" style="color:blue"></i> <i style="color:red"
-                                                                                                   class="fa fa-google-plus-square"></i>
+                        <h4 class="h4"><i class="fa fa-facebook-square" style="color:blue"></i> <i style="color:red" class="fa fa-google-plus-square"></i>
                             Social Media Login Settings </h4>
                     </div>
                     <!--- card-header Ends --->
@@ -1032,17 +996,15 @@ else
                             <div class="form-group row">
                                 <!--- form-group row Starts --->
                                 <label class="col-md-3 control-label"> Facebook App Id :
-                                    <small><a target="_blank"
-                                              href="http://help.gigtodoscript.com/knowledge/details/6/.html"
-                                              class="text-success">How To?</a></small>
+                                    <small><a target="_blank" href="#" class="text-success">How To?</a></small>
+                                    <!-- http://help.gigtodoscript.com/knowledge/details/6/.html -->
                                 </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b><i class="fa fa-facebook"></i></b>
-</span>
-                                        <input type="text" name="fb_app_id" class="form-control"
-                                               value="<?= $fb_app_id; ?>">
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-facebook"></i></b>
+                                        </span>
+                                        <input type="text" name="fb_app_id" class="form-control" value="<?= $fb_app_id; ?>">
                                     </div>
                                 </div>
                             </div>
@@ -1052,11 +1014,10 @@ else
                                 <label class="col-md-3 control-label"> Facebook App Secret : </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b><i class="fa fa-facebook"></i></b>
-</span>
-                                        <input type="text" name="fb_app_secret" class="form-control"
-                                               value="<?= $fb_app_secret; ?>">
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-facebook"></i></b>
+                                        </span>
+                                        <input type="text" name="fb_app_secret" class="form-control" value="<?= $fb_app_secret; ?>">
                                     </div>
                                 </div>
                             </div>
@@ -1064,17 +1025,15 @@ else
                             <div class="form-group row">
                                 <!--- form-group row Starts --->
                                 <label class="col-md-3 control-label"> Google Client Id :
-                                    <small><a target="_blank"
-                                              href="http://help.gigtodoscript.com/knowledge/details/7/.html"
-                                              class="text-success">How To?</a></small>
+                                    <small><a target="_blank" href="#" class="text-success">How To?</a></small>
+                                    <!-- http://help.gigtodoscript.com/knowledge/details/7/.html -->
                                 </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b><i class="fa fa-google"></i></b>
-</span>
-                                        <input type="text" name="g_client_id" class="form-control"
-                                               value="<?= $g_client_id; ?>">
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-google"></i></b>
+                                        </span>
+                                        <input type="text" name="g_client_id" class="form-control" value="<?= $g_client_id; ?>">
                                     </div>
                                 </div>
                             </div>
@@ -1084,11 +1043,10 @@ else
                                 <label class="col-md-3 control-label"> Google Client Secret : </label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-<span class="input-group-addon">
-<b><i class="fa fa-google"></i></b>
-</span>
-                                        <input type="text" name="g_client_secret" class="form-control"
-                                               value="<?= $g_client_secret; ?>">
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-google"></i></b>
+                                        </span>
+                                        <input type="text" name="g_client_secret" class="form-control" value="<?= $g_client_secret; ?>">
                                     </div>
                                 </div>
                             </div>
@@ -1096,8 +1054,7 @@ else
                             <div class="form-group row"><!--- form-group row Starts --->
                                 <label class="col-md-3 control-label"></label>
                                 <div class="col-md-6">
-                                    <input type="submit" name="social_settings_update"
-                                           class="form-control btn btn-success" value="Update Social Login Settings">
+                                    <input type="submit" name="social_settings_update" class="form-control btn btn-success" value="Update Social Login Settings">
                                 </div>
                             </div><!--- form-group row Ends --->
                         </form>
@@ -1138,11 +1095,10 @@ else
                                 <div class="col-md-6">
 
                                     <div class="input-group">
-      <span class="input-group-addon">
-        <b><i class="fa fa-key"></i></b>
-      </span>
-                                        <input type="text" name="mobileApp_apiKey" class="form-control"
-                                               value="<?= $mobileApp_apiKey; ?>" placeholder="Api Key">
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-key"></i></b>
+                                        </span>
+                                        <input type="text" name="mobileApp_apiKey" class="form-control" value="<?= $mobileApp_apiKey; ?>" placeholder="Api Key">
                                     </div>
 
                                 </div>
@@ -1157,11 +1113,10 @@ else
                                 <div class="col-md-6">
 
                                     <div class="input-group">
-      <span class="input-group-addon">
-        <b><i class="fa fa-google"></i></b>
-      </span>
-                                        <input type="text" name="google_app_link" class="form-control"
-                                               value="<?= $google_app_link; ?>" placeholder="App Link">
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-google"></i></b>
+                                        </span>
+                                        <input type="text" name="google_app_link" class="form-control" value="<?= $google_app_link; ?>" placeholder="App Link">
                                     </div>
 
                                 </div>
@@ -1176,11 +1131,10 @@ else
                                 <div class="col-md-6">
 
                                     <div class="input-group">
-      <span class="input-group-addon">
-        <b><i class="fa fa-apple"></i></b>
-      </span>
-                                        <input type="text" name="apple_app_link" class="form-control"
-                                               value="<?= $apple_app_link; ?>" placeholder="App Link">
+                                        <span class="input-group-addon">
+                                            <b><i class="fa fa-apple"></i></b>
+                                        </span>
+                                        <input type="text" name="apple_app_link" class="form-control" value="<?= $apple_app_link; ?>" placeholder="App Link">
                                     </div>
 
                                 </div>
@@ -1190,8 +1144,7 @@ else
                             <div class="form-group row"><!--- form-group row Starts --->
                                 <label class="col-md-3 control-label"></label>
                                 <div class="col-md-6">
-                                    <input type="submit" name="update_app_settings" class="form-control btn btn-success"
-                                           value="Update App Settings">
+                                    <input type="submit" name="update_app_settings" class="form-control btn btn-success" value="Update App Settings">
                                 </div>
                             </div><!--- form-group row Ends --->
 
@@ -1205,43 +1158,43 @@ else
         </div><!--- 4 row Ends --->
 
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
 
-                <?php if($paymentGateway == 0){ ?>
+                <?php if ($paymentGateway == 0) { ?>
 
-                $("select[name='disable_local_video']").change(function () {
+                    $("select[name='disable_local_video']").change(function() {
 
-                    var select = $(this);
-                    var value = $(this).val();
-                    if (value == "1") {
-                        // alert('not found')
+                        var select = $(this);
+                        var value = $(this).val();
+                        if (value == "1") {
+                            // alert('not found')
 
-                        swal({
-                            text: 'You don’t seem to have the Gateway Plugin installed or activated. This means without the local video upload, users will not be able to add videos to their proposals. Do you still wish to proceed with this command?',
-                            type: 'warning',
-                            confirmButtonText: 'Yes',
-                            showCancelButton: true,
-                            cancelButtonText: 'No'
-                        }).then((result) => {
-                            if (result.value) {
-                                $(this).val(1);
-                            } else {
-                                $(this).val(0);
-                            }
-                        });
+                            swal({
+                                text: 'You don’t seem to have the Gateway Plugin installed or activated. This means without the local video upload, users will not be able to add videos to their proposals. Do you still wish to proceed with this command?',
+                                type: 'warning',
+                                confirmButtonText: 'Yes',
+                                showCancelButton: true,
+                                cancelButtonText: 'No'
+                            }).then((result) => {
+                                if (result.value) {
+                                    $(this).val(1);
+                                } else {
+                                    $(this).val(0);
+                                }
+                            });
 
-                    }
+                        }
 
-                });
+                    });
 
                 <?php } ?>
 
-                <?php if($site_logo_type == "text"){ ?>
-                $('.site_logo_image').hide();
-                <?php }else{ ?>
-                $('.site_logo_text').hide();
+                <?php if ($site_logo_type == "text") { ?>
+                    $('.site_logo_image').hide();
+                <?php } else { ?>
+                    $('.site_logo_text').hide();
                 <?php } ?>
-                $(".site_logo_type").change(function () {
+                $(".site_logo_type").change(function() {
                     var value = $(this).val();
                     if (value == "text") {
                         $('.site_logo_image').hide();
@@ -1410,7 +1363,6 @@ else
                         echo "<script>alert_success('General Settings has been updated successfully.','index?general_settings');</script>";
                     }
                 }
-
             }
         }
 
@@ -1449,4 +1401,4 @@ else
         }
 
         ?>
-<?php } ?>
+    <?php } ?>

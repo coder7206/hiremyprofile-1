@@ -1,30 +1,38 @@
 <?php
+session_start();
 require_once("includes/db.php");
-require_once("functions/functions.php");
-
+require_once("functions/functions.php"); 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 if (isset($_SESSION['seller_user_name'])) {
+
   $login_seller_user_name = $_SESSION['seller_user_name'];
   $select_login_seller = $db->select("sellers", array("seller_user_name" => $login_seller_user_name));
   $row_login_seller = $select_login_seller->fetch();
   $login_seller_id = $row_login_seller->seller_id;
   if (isset($_GET['delete_language'])) {
+    // echo "hello";
     $delete_language_id = $input->get('delete_language');
     $delete_language = $db->delete("languages_relation", array("relation_id" => $delete_language_id, "seller_id" => $login_seller_id));
     if ($delete_language->rowCount() == 1) {
-      echo "<script>alert('One Language has been deleted.')</script>";
-      echo "<script> indow.open('$login_seller_user_name','_self') </script>";
+     echo "<script>alert('One Language has been deleted.')</script>";
+     echo "<script> window.open('$login_seller_user_name','_self') </script>";
+      
     } else {
       echo "<script> window.open('$login_seller_user_name','_self') </script>";
+     echo "<script>alert('One Language has been deleted.')</script>";
+     
     }
   }
-  if (isset($_GET['delete_skill'])) {
+  if (isset($_GET['delete_skill'])) {   
     $delete_skill_id = $input->get('delete_skill');
     $delete_skill = $db->delete("skills_relation", array("relation_id" => $delete_skill_id, "seller_id" => $login_seller_id));
     if ($delete_skill->rowCount() == 1) {
       echo "<script>alert('One skill has been deleted.')</script>";
-      echo "<script> window.open('$login_seller_user_name','_self') </script>";
+       echo "<script> window.open('$login_seller_user_name','_self') </script>";
     } else {
-      echo "<script> window.open('$login_seller_user_name','_self') </script>";
+       echo "<script> window.open('$login_seller_user_name','_self') </script>";
+      echo "<script>alert('One skill hasn't been deleted.')</script>";
     }
   }
 }
@@ -58,7 +66,7 @@ if (isset($row_plan_detail) && $row_plan_detail) {
 /* seller skills details*/
 
 if ($count_seller == 0) {
-  echo "<script>window.open('index','_self');</script>";
+//  echo "<script>window.open('$get_seller_user_name','_self');</script>";
 }
 
 ?>
@@ -95,9 +103,31 @@ if ($count_seller == 0) {
     .fixed {
       position: fixed;
       top: 0;
+      transition: all 3s linear;
       left: 0;
       width: 100%;
       z-index: 100;
+    }
+
+  
+
+   
+    @media(min-width:768px) and (max-width:1440px) {
+      .padding-alter8 {
+        margin: 0px 0px;
+      }
+    }
+    @media(min-width:640px) and (max-width:767px) {
+      .padding-alter8 {
+        margin: 0px 10px;
+      }
+    }
+
+    @media (max-width:767px) {   
+      .padding-alter8a {
+        border: 1px solid green;
+        margin-top: 0px !important;
+      }
     }
   </style>
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -109,15 +139,15 @@ if ($count_seller == 0) {
   <?php require_once("includes/user_profile_header.php"); ?>
   <div class="container">
     <!-- Container starts -->
-    <div class="row">
-      <div class="col-md-4 mt-4">
-        <?php require_once("includes/user_sidebar.php"); ?>
+    <div class="row padding-alter8">
+      <div class="col-md-4 mt-5 mb-4 ">   
+        <?php require_once("includes/user_sidebar.php"); ?>  
       </div>
       <div class="col-md-8">
         <div class="row">
-          <div class="col-md-12">
-            <div class="card mt-4 mb-4 rounded-0">
-              <div class="card-body">
+          <div class="col-md-12"> 
+            <div class="card mt-5 mb-4 rounded-0 padding-alter8a">
+              <div class="card-body box-shadow-6a">
                 <h2>
                   <?= str_replace('{user_name}', $get_seller_user_name, $lang['user_profile']['user_proposals']); ?>
                 </h2>
@@ -151,7 +181,7 @@ if ($count_seller == 0) {
                 </h3>
               <?php } ?>
             </div>
-          <?php
+          <?php 
           }
           while ($row_proposals = $get_proposals->fetch()) {
             $proposal_id = $row_proposals->proposal_id;
@@ -201,13 +231,13 @@ if ($count_seller == 0) {
               $show_favorite_class = "proposal-unfavorite";
             }
           ?>
-            <div class="col-lg-4 col-md-6 col-sm-6 mb-3">
+            <div class="col-lg-4 col-md-6 col-sm-6 mb-5 mt-3">
               <?php require("includes/proposals.php"); ?>
             </div>
           <?php } ?>
           <?php if (isset($_SESSION['seller_user_name']) and $_SESSION['seller_user_name'] == $get_seller_user_name) { ?>
-            <a href="proposals/create_proposal" class="col-lg-4 col-md-6 col-sm-6 mb-3">
-              <div class="proposal-card-base mp-proposal-card add-new-proposal">
+            <a href="proposals/create_proposal" class="col-lg-4 col-md-6 col-sm-6 mb-5 mt-3">
+              <div class="proposal-card-base mp-proposal-card add-new-proposal box-shadow-6">
                 <?= $lang['button']['create_new_proposal']; ?>
               </div>
             </a>
@@ -298,7 +328,7 @@ if ($count_seller == 0) {
 
     });
   </script>
-  <script>
+  <!-- <script>
     var stickyOffset = $('.sticky').offset().top;
 
     $(window).scroll(function() {
@@ -314,7 +344,28 @@ if ($count_seller == 0) {
         $('.container-fluid ').css('margin-top', '0px')
       }
     });
-  </script>
+  </script> -->
+  <!-- <script>
+     new header script
+    $(document).ready(function() {
+      var sticky = $('.sticky');
+      var stickyOffset = sticky.offset().top;
+
+      $(window).scroll(function() {
+        var scroll = $(window).scrollTop();
+
+        if (scroll >= stickyOffset) {
+          sticky.addClass('fixed');
+          $('.container-fluid').css('margin-top', '140px');
+          sticky.css('transition', 'all 2s linear'); 
+        } else {
+          sticky.removeClass('fixed');
+          $('.container-fluid').css('margin-top', '0px');
+          sticky.css('transition', 'all 2s linear'); 
+        }
+      });
+    });
+  </script> -->
 
 </body>
 

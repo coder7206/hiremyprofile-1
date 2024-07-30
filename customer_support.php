@@ -3,7 +3,7 @@
 session_start();
 require_once("includes/db.php");
 require_once("functions/mailer.php");
-// require_once("social-config.php");
+require_once("social-config.php");
 
 if (isset($_SESSION['seller_user_name'])) {
   $login_seller_user_name = $_SESSION['seller_user_name'];
@@ -69,10 +69,74 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
   <style>
     .fixed {
       position: fixed;
+      transition: all 3s linear;
       top: 0;
       left: 0;
       width: 100%;
       z-index: 100;
+    }
+
+    .box-shadow-7 {
+      /* box-shadow: 0px 0px 5px black,inset 0px 0px 35px #00c8d4; */
+      background-color: white;
+      /* text-shadow: 0px 0px 2px black; */
+    }
+
+    .box-shadow-7body {
+      /* box-shadow: 0px 0px 5px black,inset 0px 0px 35px gray; */
+      background-color: white;
+      /* text-shadow: 0px 0px 2px black; */
+    }
+
+    .box-shadow-7stag {
+      /* box-shadow: 0px 0px 5px black,inset 0px 0px 10px lightseagreen; */
+      background-color: white;
+      /* text-shadow: 0px 0px 2px black; */
+    }
+
+    .padding-alter13 {
+      padding: 0px 2rem;
+    }
+
+    .margin-top-120 {
+      margin-top: 30px;
+      /* margin-bottom: 50px; */
+    }
+
+    @media (max-width:768px) {
+      .full-width {
+        width: 100%;
+        display: flex;
+        /* color: #256156; */
+        font-size: 20px !important;
+      }
+
+      .text-align-center {
+        text-align: center;
+        margin: auto;
+      }
+
+      .margin-top-120 {
+        margin-top: 30px;
+        /* margin-bottom: 50px; */
+      }
+
+      .padding-alter13 {
+        padding: 0px 15px;
+      }
+    }
+
+    @media(max-width:639px) {
+      .padding-alter13 {
+        padding: 0px 1px;
+      }
+    }
+
+    @media(min-width:1024px) {
+      .margin-top-120 {
+        margin-top: 0px;
+        /* margin-bottom: 50px; */
+      }
     }
   </style>
 </head>
@@ -81,8 +145,8 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
 
   <?php require_once("includes/header.php"); ?>
 
-  <div style="margin-top: 142px;" class="container pb-4"><!-- Container starts -->
-    <div class="row">
+  <div class="container-fluid pb-4 margin-top-120"><!-- Container starts -->
+    <div class="row padding-alter13">
       <?php
       $get_contact_support = $db->select("contact_support");
       $row_contact_support = $get_contact_support->fetch();
@@ -92,7 +156,7 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
       $contact_heading = $row_meta->contact_heading;
       $contact_desc = $row_meta->contact_desc;
       ?>
-      <div class="col-md-12 mt-4">
+      <div class="col-md-12">
         <?php if (!isset($_SESSION['seller_user_name'])) { ?>
           <div class="alert alert-warning rounded-0">
             <p class="lead mt-1 mb-1 text-center">
@@ -102,34 +166,34 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
         <?php } ?>
       </div>
     </div>
-    <div class="row customer-support" style="<?= ($lang_dir == "right" ? 'direction: rtl;' : '') ?>">
+    <div class="row customer-support padding-alter13" style="<?= ($lang_dir == "right" ? 'direction: rtl;' : '') ?>">
       <div class="col-md-12">
-        <div class="card">
-          <div class="card-header text-center make-white">
-            <h2><?= $enquiryId == 1 ? 'Raise a dispute' : $contact_heading; ?></h2>
+        <div class="card mt-4 mb-4">
+          <div class="card-header text-center make-white pt-4  box-shadow-7">
+            <h2 class="full-width"><span class="text-align-center"><?= $enquiryId == 1 ? 'Raise a dispute' : $contact_heading; ?></span></h2>
             <p class="text-muted pt-1"><?= $contact_desc; ?></p>
           </div>
-          <div class="card-body">
+          <div class="card-body box-shadow-7body">
             <center>
-              <form class="col-md-8 contact-form" action="" method="POST" enctype="multipart/form-data">
+              <form class="col-md-8 contact-form mt-4 mb-5" action="" method="POST" enctype="multipart/form-data" autocomplete="off">
                 <div class="form-group">
-                  <?php if($enquiryId == 1) { ?>
-                  <input type="hidden" name="enquiry_type" value="<?=$enquiryId?>" />
+                  <?php if ($enquiryId == 1) { ?>
+                    <input type="hidden" name="enquiry_type" value="<?= $enquiryId ?>" />
                   <?php } else { ?>
-                  <label class="<?= $floatRight ?>"><?= $lang['label']['select_enquiry']; ?></label>
-                  <select name="enquiry_type" class="form-control select_tag" required>
-                    <option value="" url="customer_support"><?= $lang['label']['select_enquiry2']; ?></option>
-                    <?php
-                    $get_enquiry_types = $db->select("enquiry_types");
-                    while ($row_enquiry_types = $get_enquiry_types->fetch()) {
-                      $enquiry_id = $row_enquiry_types->enquiry_id;
-                      $enquiry_title = $row_enquiry_types->enquiry_title;
-                      echo "<option value='$enquiry_id' " . (@$_GET['enquiry_id'] == $enquiry_id ? "selected" : "") . " url='customer_support?enquiry_id=$enquiry_id'>
+                    <label class="<?= $floatRight ?>"><?= $lang['label']['select_enquiry']; ?></label>
+                    <select name="enquiry_type" class="form-control select_tag box-shadow-7stag" required>
+                      <option value="" url="customer_support"><?= $lang['label']['select_enquiry2']; ?></option>
+                      <?php
+                      $get_enquiry_types = $db->select("enquiry_types");
+                      while ($row_enquiry_types = $get_enquiry_types->fetch()) {
+                        $enquiry_id = $row_enquiry_types->enquiry_id;
+                        $enquiry_title = $row_enquiry_types->enquiry_title;
+                        echo "<option value='$enquiry_id' " . (@$_GET['enquiry_id'] == $enquiry_id ? "selected" : "") . " url='customer_support?enquiry_id=$enquiry_id'>
                         $enquiry_title
                         </option>";
-                    }
-                    ?>
-                  </select>
+                      }
+                      ?>
+                    </select>
                   <?php } ?>
                 </div>
                 <?php if (isset($_GET['enquiry_id'])) { ?>
@@ -144,7 +208,7 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
                   <?php if ($_GET['enquiry_id'] == 1 or $_GET['enquiry_id'] == 2) { ?>
                     <div class="form-group">
                       <label class="<?= $floatRight ?>"><?= $lang['label']['order_number']; ?></label>
-                      <input type="text" class="form-control" name="order_number" required="" value="<?= $orderNumber ?>">
+                      <input type="text" class="form-control" name="order_number" required="" value="<?= $orderNumber ?>" maxlength="15">
                     </div>
                     <div class="form-group">
                       <label class="<?= $floatRight ?>"><?= $lang['label']['user_role']; ?></label>
@@ -157,8 +221,20 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
                   <?php } ?>
                   <div class="form-group">
                     <label class="<?= $floatRight ?>"><?= $lang['label']['attachment']; ?></label>
-                    <input type="file" class="form-control" name="file">
+                    <input type="file" class="form-control" name="file" id="file" required>
+                    <p id="fileInfo" class="float-left"></p>
                   </div>
+
+
+                  <script>
+                    document.getElementById('file').addEventListener('change', function() {
+                      var file = this.files[0];
+                      var fileInfo = "File type: " + file.type + "<br>" +
+                        "File size: " + file.size + " bytes";
+                      document.getElementById('fileInfo').innerHTML = fileInfo;
+                    });
+                  </script>
+
                   <?php if (!empty($recaptcha_site_key) and !empty($recaptcha_secret_key)) { ?>
                     <div class="form-group">
                       <label><?= $lang['label']['google_recaptch']; ?></label>
@@ -241,8 +317,10 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
           $isS3 = $enable_s3;
 
           $number = mt_rand();
-
-          $date = date("h:i M d, Y");
+          date_default_timezone_set('Asia/Kolkata');
+          $isS3 = $enable_s3;
+          $date = date("h:i A M d, Y");
+          // $date = date("h:i M d, Y");
           $insert_support_ticket = $db->insert("support_tickets", array("enquiry_id" => $enquiry_type, "number" => $number, "sender_id" => $login_seller_id, "subject" => $subject, "message" => $message, "order_number" => $order_number, "order_rule" => $order_rule, "attachment" => $file, "date" => $date, "isS3" => $isS3, "status" => 'open'));
           if ($insert_support_ticket) {
 
@@ -315,7 +393,7 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
       });
     });
   </script>
-  <script>
+  <!-- <script>
     var stickyOffset = $('.sticky').offset().top;
 
     $(window).scroll(function() {
@@ -325,14 +403,40 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
 
       if (scroll >= stickyOffset) {
         sticky.addClass('fixed');
-
-        $('.container-fluid ').css('margin-top', '140px')
+        $('.container-fluid ').css('margin-top', '140px');
+        $('.fixed ').css('transition', 'all 2s linear');
       } else {
         sticky.removeClass('fixed')
-        $('.container-fluid ').css('margin-top', '0px')
+        $('.container-fluid ').css('margin-top', '0px');
+        $('.sticky ').css('transition', 'all 2s linear');
       }
     });
-  </script>
+
+
+    new header script
+  </script> -->
+<!--   
+  <script>
+    $(document).ready(function() {
+      var sticky = $('.sticky');
+      var stickyOffset = sticky.offset().top;
+
+      $(window).scroll(function() {
+        var scroll = $(window).scrollTop();
+
+        if (scroll >= stickyOffset) {
+          sticky.addClass('fixed');
+          $('.container-fluid').css('margin-top', '140px');
+          sticky.css('transition', 'all 2s linear'); 
+        } else {
+          sticky.removeClass('fixed');
+          $('.container-fluid').css('margin-top', '0px');
+          sticky.css('transition', 'all 2s linear'); 
+        }
+      });
+    });
+  </script> -->
+
 </body>
 
 </html>

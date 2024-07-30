@@ -55,7 +55,7 @@ body {
           <!-- form Starts -->
           <h3>Welcome</h3>
           <hr>
-          <p>Welcome to the GigToDoScript installer. Finish all 3 steps in about 2 minutes, and start using the best freelance marketplace script in the world. All fields with (<span class="text-danger">*</span>) must be filled. For guidance refer to <a target="_blank" href="http://help.gigtodoscript.com/knowledge/details/4/.html" class="text-success">How To?</a> </p>
+          <p>Welcome to the HiremyprofileScript installer. Finish all 3 steps in about 2 minutes, and start using the best freelance marketplace script in the world. All fields with (<span class="text-danger">*</span>) must be filled. For guidance refer to <a target="_blank" href="#" class="text-success">How To?</a> </p>
           <h3>Database Information</h3>
           <hr>
           <p>Before getting started, we need some database information in order to proceed.</p>

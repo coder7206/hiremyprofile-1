@@ -5,11 +5,138 @@ $limit = 5; //isset($homePerPage) ? $homePerPage : 5;
 $requests_query = $where_child_id = get_buyer_request_query($login_seller_id);
 $relevant_requests = $row_general_settings->relevant_requests;
 ?>
+
+<style>
+    @media (max-width:768px) {
+        .nav-item-width {
+            /* border:2px solid green; */
+            width: 50%;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .nav-item-width:hover {
+            /* border: 1px solid #00c8d4 !important; */
+        }
+
+        .badge-float-right {
+            float: right;
+            margin-top: -3px;
+            padding-top: 5px;
+            margin-right: -9px;
+        }
+
+        .heading-31 {
+            /* background-color: green; */
+            font-size: 20px;
+            padding-left: 4px;
+            padding-top: 4px;
+        }
+
+        .font-size {
+            font-size: 13px !important;
+            /* margin: 10px !important; */
+            /* background-color: green !important; */
+        }
+
+        .font-size-th {
+            font-size: 11px !important;
+            padding: 5px !important;
+            text-align: center;
+            /* margin: 10px !important; */
+            /* background-color: green !important; */
+        }
+
+        .float_left {
+            float: left;
+        }
+
+        .font-size-4 {
+            font-size: 20px;
+        }
+
+        .text-align-center {
+            text-align: center;
+        }
+    }
+
+    .font-size-4 {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    @media(min-width:768px) {
+        .width-increase {
+            width: 140px;
+            text-align: center;
+            /* box-shadow: 0px 0px 1px black,inset 0px 0px 15px #f5fffe; */
+        }
+    }
+
+    .heading-31 {
+        /* background-color: green; */
+        font-size: 20px;
+        padding-left: 4px;
+        padding-top: 4px;
+        width: 40%;
+        /* text-align: right; */
+    }
+
+
+
+    @media (min-width:769px) {
+        #sub-category {
+            /* width: auto; */
+            width: 25%;
+            margin-top: -40px !important;
+        }
+
+        .pt-pr {
+            padding: 9px 15px;
+        }
+
+        .badge-float-right {
+            float: right;
+            margin-top: -3px;
+            padding-top: 5px;
+            margin-right: -9px;
+        }
+
+        .width_55 {
+            width: 55%;
+        }
+
+        .text-align-center {
+            text-align: center;
+        }
+
+        .width_45percent {
+            overflow-wrap: anywhere;
+        }
+
+        .width_10 {
+            width: 10%;
+        }
+    }
+
+    .font-size-th {
+        padding: 13px !important;
+        text-align: center;
+        border: 1px solid lightgray !important;
+        /* box-shadow: 0px 0px 5px black, inset 0px 0px 15px #00c8d4; */
+    }
+
+    .padding {
+        padding: 5px;
+    }
+</style>
 <ul class="nav nav-tabs mt-3">
     <!-- nav nav-tabs Starts -->
-    <li class="nav-item">
-        <a href="#active-requests" data-toggle="tab" class="nav-link make-black <?= $activetab == "active" ? "active" : "" ?>">
-            <?= $lang['tabs']['active2']; ?> <span class="badge badge-success" id="activeReqSpan">
+    <li class="nav-item width-increase nav-item-width">
+        <a href="#active-requests" data-toggle="tab" class="nav-link make-black <?= $activetab == "active" ? "active" : "" ?> pt-pr">
+            <?= $lang['tabs']['active2']; ?> <span class="badge badge-success badge-float-right" id="activeReqSpan">
                 <?php
                 // $i_requests = 0;
                 // $i_send_offers = 0;
@@ -51,20 +178,20 @@ $relevant_requests = $row_general_settings->relevant_requests;
     $count_offers = $db->count("send_offers", array("sender_id" => $login_seller_id));
     if (isset($_SESSION['seller_user_name'])) {
     ?>
-        <li class="nav-item">
-            <a href="#sent-offers" data-toggle="tab" class="nav-link make-black <?= $activetab == "offers" ? "active" : "" ?>">
-                <?= $lang['tabs']['offers_sent']; ?> <span class="badge badge-success"> <?= $count_offers; ?> </span>
+        <li class="nav-item width-increase nav-item-width">
+            <a href="#sent-offers" data-toggle="tab" class="nav-link make-black <?= $activetab == "offers" ? "active" : "" ?> pt-pr">
+                <?= $lang['tabs']['offers_sent']; ?> <span class="badge badge-success badge-float-right"> <?= $count_offers; ?> </span>
             </a>
         </li>
     <?php } ?>
 </ul>
 <div class="tab-content mt-4">
-    <div id="active-requests" class="tab-pane fade <?= $activetab == "active" ? "show active" : "" ?>">
-        <div class="table-responsive box-table">
-            <h3 class="float-left ml-2 mt-3 mb-3"> Buyer Requests </h3>
+    <div id="active-requests" class="tab-pane fade <?= $activetab == "active" ? "show active" : "" ?> box-shadow-buyer-request">
+        <div class="box-table width-99  box-shadow-head31">
+            <h3 class="float_left ml-2 mt-3 mb-3 heading-31"> Buyer Requests </h3>
             <?php // if (isset($_SESSION['seller_user_name']) && !(isset($homePerPage))) {
             ?>
-            <select id="sub-category" class="form-control float-right sort-by mt-3 mb-3 mr-3">
+            <select id="sub-category" class="form-control float-right sort-by mt-3 mb-3 mr-2 font-size">
                 <option value="all"> All Subcategories</option>
                 <?php
                 if (!empty($where_child_id)) {
@@ -81,14 +208,14 @@ $relevant_requests = $row_general_settings->relevant_requests;
             </select>
             <?php // }
             ?>
-            <table class="table table-bordered" id="buyerRequestsTbl">
-                <thead>
+            <table class="table-responsive table table-bordered" id="buyerRequestsTbl">
+                <thead class="mt-3">
                     <tr>
-                        <th>Request</th>
-                        <th>Offers</th>
-                        <th>Date</th>
-                        <th>Duration</th>
-                        <th>Budget</th>
+                        <th class="font-size-th width_55">Request</th>
+                        <th class="font-size-th text-align-center">Budget</th>
+                        <th class="font-size-th text-align-center">Date</th>
+                        <th class="font-size-th text-align-center">Duration</th>
+                        <th class="font-size-th text-align-center">Offers</th>
                     </tr>
                 </thead>
                 <tbody id="load-data">
@@ -104,15 +231,15 @@ $relevant_requests = $row_general_settings->relevant_requests;
         </div>
     </div>
     <div id="sent-offers" class="tab-pane fade <?= $activetab == "offers" ? "show active" : "" ?>">
-        <div class="table-responsive box-table">
-            <h3 class="ml-2 mt-3 mb-3"> OFFERS SUBMITTED </h3>
+        <div class="table-responsive box-table box-shadow-rdpy">
+            <h3 class="ml-2 mt-3 mb-3 font-size-4 text-align-center padding"> OFFERS SUBMITTED </h3>
             <table class="table table-bordered" id="offerSentTbl">
                 <thead>
                     <tr>
-                        <th>Request</th>
-                        <th>Duration</th>
-                        <th>Price</th>
-                        <th>Your Request</th>
+                        <th class="font-size-th">Request</th>
+                        <th class="font-size-th width_10">Duration</th>
+                        <th class="font-size-th width_10">Price</th>
+                        <th class="font-size-th">Your Request</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -243,14 +370,14 @@ $relevant_requests = $row_general_settings->relevant_requests;
                         id,
                         action: 'offer-sent',
                     }
-                    }).done(function(data) {
-                        $('body #wait').removeClass("loader");
-                        tableRow.find('td').fadeOut('fast',
-                            function(){
-                                tableRow.fadeOut().remove();
-                            }
-                        );
-                    });
+                }).done(function(data) {
+                    $('body #wait').removeClass("loader");
+                    tableRow.find('td').fadeOut('fast',
+                        function() {
+                            tableRow.fadeOut().remove();
+                        }
+                    );
+                });
             }
         });
     })

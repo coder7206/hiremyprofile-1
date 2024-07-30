@@ -76,7 +76,8 @@ if($seller_id == $login_seller_id){
   $receiver_id = $seller_id;
 }
 
-$last_update_date = date("h:i: M d, Y");
+date_default_timezone_set('Asia/Kolkata');
+$last_update_date = date("h:i A M d, Y");
 $n_date = date("F d, Y");
 
 ?>

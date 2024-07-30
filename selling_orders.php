@@ -33,18 +33,30 @@ $login_seller_id = $row_login_seller->seller_id;
 		<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
 
 	<?php } ?>
+	<style>
+		.width-99 {
+			/* border: 2px solid green; */
+			display:flex;
+		}
+		.margin-auto{
+			/* border:1px solid yellow; */
+			margin:auto;
+		}
+		
+	
+	</style>
 </head>
 
 <body class="is-responsive">
 	<?php require_once("includes/user_header.php"); ?>
-	<div class="container mb-5" style="margin-top: 205px;">
+	<div class="container-fluid mb-5 pt-5">
 		<div class="row">
 			<div class="col-md-12">
-				<h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["selling_orders"]; ?></h1>
+				<h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?> width-99"><span class="margin-auto"><?= $lang["titles"]["selling_orders"]; ?></span></h1>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-12 mt-5 mb-3">
+			<div class="col-md-12 mt-4 mb-3">
 				<?php include('user_selling_orders.php'); ?>
 			</div>
 		</div>

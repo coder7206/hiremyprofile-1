@@ -21,7 +21,7 @@
 
    $data['sender_user_name'] = "Message Sender";
    $data['message_date'] = date("h:i: F d, Y");
-   $data['message'] = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout";
+   $data['messagere'] = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout";
    $data['message_group_id'] = "";
 
    $data['seller_user_name'] = "{Seller Username}";

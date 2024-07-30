@@ -48,7 +48,7 @@ if ($reason == "order_message") {
 }
 
 if ($reason == "order_revision") {
-	return "Requested for a revision.";
+	return "Requested for a revision."; 
 }
 
 if ($reason == "order_completed") {
@@ -93,6 +93,9 @@ if ($reason == "withdrawal_declined") {
 if ($reason == "withdrawal_approved") {
 	return "your withdrawal request has been completed. click here to view.";
 }
+if ($reason == "extendTimeRequest") {
+	return "Wants to extend the order delivery.";
+}
 
 if ($reason == "extendTimeDeclined") {
 	return "Has Declined your extention.";
@@ -102,7 +105,7 @@ if ($reason == "extendTimeAccepted") {
 	return "Has accepted your extension. Time was increased successfully.";
 }
 
-if ($reason == "buyerExtendTimeAccepted") {
+if ($reason == "buyerextendTimeAccepted") {
 	return "Time increased successfully.";
 }
 
@@ -135,7 +138,7 @@ if (in_array($reason, $pReports)) {
 
 $pAReports = ['profile_approved', 'professional_approved', 'account_approved'];
 if (in_array($reason, $pAReports)) {
-	return "has approved profile update.";
+	return "has approved profile update."; 
 }
 
 if ($reason == "dispute_raised") {

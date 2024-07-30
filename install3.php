@@ -61,9 +61,11 @@
           <p>
             
             You have successfully completed the installation process. Now you're all set! You can start using our script. If you have any questions or face any issues, open a ticket on our 
-            <a target="_blank" class="text-success" href="http://help.gigtodoscript.com">Support Help Desk</a> 
-            and someone will get to you ASAP. If you want customizations on this script, or need help on any other project, email us at info@pixinal.com or info@GigToDoScript.com. Please like us on 
-            <a target="_blank" href="https://www.facebook.com/gigtodoscript" class="text-success">Facebook.</a>
+            <a target="_blank" class="text-success" href="https://hiremyprofile.com//customer_support">
+            <!--help url from old   -->
+            Support Help Desk</a> 
+            and someone will get to you ASAP. If you want customizations on this script, or need help on any other project, email us at info@hiremyprofile.com. Please like us on 
+            <a target="_blank" href="https://www.facebook.com/hiremyprofilescript" class="text-success">Facebook.</a>
 
             <br>
           </p>

@@ -1,24 +1,50 @@
-<div class="table-responsive box-table">
-    <table class="table table-bordered" id="requestActive">
-        <thead>
-            <tr>
-                <th><?= $lang['th']['title']; ?></th>
-                <th><?= $lang['th']['description']; ?></th>
-                <th><?= $lang['th']['date']; ?></th>
-                <th><?= $lang['th']['offers']; ?></th>
-                <th><?= $lang['th']['budget']; ?></th>
-                <th><?= $lang['th']['actions']; ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="table-info">
+<style>
+	@media (max-width:768px) {
+		.font-size-3 {
+			font-size: 13px !important;
+			padding: 10px !important;
+		}
+
+		.heading_3 {
+			font-size: 20px;
+			width: 100%;
+		}
+	}
+	.font-size-3 {
+			/* font-size: 11px !important; */
+			padding: 13px !important;
+			text-align: center;
+			/* box-shadow: 0px 0px 5px black, inset 0px 0px 15px #00c8d4; */
+		}
+		.box-shadow-req-act{
+			/* box-shadow:0px 0px 5px black; */
+			/* border:2px solid green !important; */
+		}
+		.box-shadow-manage{
+			/* box-shadow: 0px 0px 5px black, inset 0px 0px 70px red; */
+		}
+</style>
+<div class="table-responsive box-table  box-shadow-req-act">
+	<table class="table table-bordered" id="requestActive">
+		<thead>
+			<tr>
+				<th class="font-size-3"><?= $lang['th']['title']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['description']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['date']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['offers']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['budget']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['actions']; ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="table-info">
 				<td colspan="6">
 					data fetching...
 				</td>
 			</tr>
-        </tbody>
-    </table>
-    <nav id="pagination-request-active" aria-label="Active request navigation"></nav>
+		</tbody>
+	</table>
+	<nav id="pagination-request-active" aria-label="Active request navigation"></nav>
 </div>
 
 <script type="text/javascript">

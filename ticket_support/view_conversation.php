@@ -215,7 +215,7 @@ $allowed = array('jpeg', 'jpg', 'gif', 'png');
                       <img src="<?= getImageUrl("support_conversations", $conversation->attachment); ?>" class="img-thumbnail" width="100" />
                     <?php } ?>
 
-                    <a href="<?= getImageUrl("support_conversations", $conversation->attachment); ?>" target="_blank" class="d-block mt-2">
+                    <a href="<?= getImageUrl("support_conversations", $conversation->attachment); ?>" target="_blank" class="text-primary d-block mt-2">
                       <i class="fa fa-download"></i> <?= $conversation->attachment; ?>
                     </a>
 

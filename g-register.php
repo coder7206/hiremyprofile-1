@@ -49,7 +49,7 @@ if ($check_seller_email > 0) {
 <head>
 	<title> <?= $site_name; ?> - Google Registration </title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="author" content="GigToDoScript">
+	<meta name="author" content="HireMyProfileScript">
 	<link href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
 	<link href="styles/bootstrap.css" rel="stylesheet">
 	<link href="styles/styles.css" rel="stylesheet">
@@ -177,7 +177,7 @@ if ($check_seller_email > 0) {
 				<script>
 				swal({
 					type: 'warning',
-					text: 'An accound have been already created from this device. Please try with another one.',
+					text: 'An account have been already created from this device. Please try with another one.',
 				});
 				</script>";
 			} else if ($check_seller_username > 0) {

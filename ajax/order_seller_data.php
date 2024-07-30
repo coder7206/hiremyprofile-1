@@ -6,6 +6,8 @@ if (!$isAjax)
 
 require_once("../includes/db.php");
 
+
+
 //Get page number from Ajax POST
 if (isset($_REQUEST["page"])) {
     $pageNumber = filter_var($_REQUEST["page"], FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_STRIP_HIGH); //filter number
@@ -113,7 +115,7 @@ As you can see I have passed several parameters to the function. */
 } else {
     $data = "
     <tr class='table-danger'>
-        <td colspan='5'><center><h3 class='pb-4 pt-4'><i class='fa fa-meh-o'></i> {$noResult}</h3></center></td>
+        <td colspan='5'><center><h3 class='pb-4 pt-4 heading_3'><i class='fa fa-meh-o'></i> {$noResult}</h3></center></td>
     </tr>
     ";
     $paginationData = null;

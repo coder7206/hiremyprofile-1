@@ -8,3 +8,6 @@
 	$gClient->setApplicationName("");
 	$gClient->setRedirectUri("$site_url/g-callback");
 	$gClient->addScope("https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email");
+
+	
+	  

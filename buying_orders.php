@@ -32,16 +32,59 @@ $login_seller_id = $row_login_seller->seller_id;
 	<?php if (!empty($site_favicon)) { ?>
 		<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
 	<?php } ?>
+	<style>
+		@media(min-width:769px) {
+			.padding-alter1 {
+				padding: 2rem 3rem;
+			}
+		}
+
+		@media (max-width:768px) {
+			.text-align-center {
+				text-align: center;
+				margin: auto;
+			}
+			.padding-alter1 {
+				padding: 5px 25px;
+			}
+
+			.full-width {
+				width: 100%;
+				/* border:1px solid green; */
+				font-size: 20px !important;
+				display: flex;
+			}
+
+			.top_margin {
+				margin-top: 19px !important;
+			}
+
+			.font-size-3 {
+				font-size: 13px !important;
+				padding: 10px !important;
+			}
+
+			.heading_3 {
+				font-size: 20px;
+				width: 100%;
+			}
+		}
+		@media(max-width:639px){
+			.padding-alter1 {
+				padding: 5px 17px;
+			}
+		}
+	</style>
 </head>
 
 <body class="is-responsive">
 	<?php require_once("includes/user_header.php"); ?>
-	<div class="container mb-3" style="margin-top: 205px;">
+	<div class="container-fluid padding-alter1">
 		<div class="row">
 			<div class="col-md-12">
-				<h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["buying_orders"]; ?></h1>
+				<h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?> full-width"><span class="text-align-center"><?= $lang["titles"]["buying_orders"]; ?></span></h1>
 			</div>
-			<div class="col-md-12 mt-5 mb-3">
+			<div class="col-md-12 mt-3 mb-3 top_margin">
 				<?php include('user_buying_orders.php'); ?>
 			</div>
 		</div>

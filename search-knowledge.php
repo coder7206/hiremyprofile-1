@@ -21,7 +21,7 @@ $output = [];
 
 if($count_articles > 0){
 
-	$results = [];
+	$results = []; 
 	
 	while($row_articles = $get_articles->fetch()){
 		$results[] = $row_articles;

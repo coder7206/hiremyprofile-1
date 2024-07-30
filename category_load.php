@@ -9,7 +9,8 @@ switch ($_REQUEST['zAction']) {
 		get_category_proposals();
 		break;
 
-	case "get_category_pagination":
+	case "get_category_pagination":    
 		get_category_pagination();
-		break;
+		break;    
 }
+ 

@@ -33,7 +33,7 @@ $d_delivery_id = $row_proposal->delivery_id;
 ?>
 <h5 class="font-weight-normal float-left">Pricing</h5>
 <div class="float-right switch-box">
-  <span class="text">Fixed Price :</span>
+  <span class="text">Fixed Price : </span>
   <label class="switch">
     <?php if ($d_proposal_price == "0" or isset($_POST["fixedPriceOff"])) { ?>
       <input type="checkbox" class="pricing">
@@ -126,6 +126,11 @@ $d_delivery_id = $row_proposal->delivery_id;
   <a href="#" class="btn btn-secondary float-left back-to-instant"><?= $lang['button']['back']; ?></a>
   <input class="btn btn-success float-right" type="submit" form="pricing-form" value="<?= $lang['button']['save_continue']; ?>">
 </div><!--- form-group Starts --->
+
+
+
+
+
 <?php if ($d_proposal_status == 'active') { ?>
   <div class="clearfix"></div>
 	<div class="form-group mb-0 float-right">
@@ -140,6 +145,10 @@ $d_delivery_id = $row_proposal->delivery_id;
       <?php if ($d_proposal_price == "0" or isset($_POST["fixedPriceOff"])) { ?>
         $('.proposal-price').hide();
         $('.proposal-price input[name="proposal_price"]').attr('min', 0);
+
+
+
+        
       <?php } else if ($d_proposal_price != "0" and !isset($_POST["fixedPriceOff"])) { ?>
 
         $('.packages input[name="proposal_packages[1][price]"]').attr('min', 0);

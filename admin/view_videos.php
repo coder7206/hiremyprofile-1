@@ -1,5 +1,5 @@
 <?php
-
+//error_reporting(0);
 @session_start();
 if(!isset($_SESSION['admin_email'])){
 echo "<script>window.open('login','_self');</script>";
@@ -65,9 +65,18 @@ echo "<script>window.open('login','_self');</script>";
         $video_name = $row_videos->video_title;
         $video_desc = $row_videos->video_desc;
         $video_section = $row_videos->video_section;
+        $video_url =  $row_videos->video_url;
+
         
-        // $video_image = getImageUrl("slider",$row_videos->slide_image); 
-        // $s_extension = pathinfo($slide_image, PATHINFO_EXTENSION);
+        $get_slides = $db->select("slider",array("language_id" => $adminLanguage));
+        while($row_slides = $get_slides->fetch()){
+        $slide_id = $row_slides->slide_id;
+        $slide_name = $row_slides->slide_name;        
+        $slide_image = getImageUrl("slider",$row_slides->slide_image);
+        $s_extension = pathinfo($slide_image, PATHINFO_EXTENSION);
+
+        //$video_image = getImageUrl("slider",$row_videos->slide_image); 
+        //$s_extension = pathinfo($slide_image, PATHINFO_EXTENSION);
 
         ?>
 
@@ -83,14 +92,20 @@ echo "<script>window.open('login','_self');</script>";
 
                     </div>
 
+                    <div>
+                        <video class="img-fluid" width="100%" controls>
+                          <source src="<?php echo  $video_url ?>;" type="video/mp4">
+                        </video>
+                    </div>
+
                     <div class="card-body"><!--- card-body Starts --->
                       
-                      <?php if($s_extension == "mp4" or $s_extension == "webm" or $s_extension == "ogg"){ ?>
-                        <!-- <video class="img-fluid" controls>
+                      <?php if($s_extension == "mp4" or $s_extension == "webm" or $s_extension == "ogg" or $s_extension == ""){ ?>
+                        <video class="img-fluid" controls>
                           <source src="<?= $slide_image; ?>" type="video/mp4">
-                        </video> -->
+                        </video>
                       <?php }else{ ?>
-                        <!-- <img src="<?= $slide_image; ?>" class="img-fluid"> -->
+                        <img src="<?= $slide_image; ?>" class="img-fluid">
                       <?php } ?>
 
                       <p><?= $video_desc;?></p>
@@ -131,7 +146,7 @@ echo "<script>window.open('login','_self');</script>";
 
             </div><!--- col-lg-3 col-md-6 mb-lg-0 mb-3 Ends --->
 
-            <?php } ?>
+            <?php } } ?>
 
     </div><!--- row Ends --->
 

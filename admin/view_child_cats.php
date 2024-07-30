@@ -97,9 +97,9 @@ echo "<script>window.open('login','_self');</script>";
 
                         $per_page = 10;
 
-                        if(isset($_GET['view_child_cats'])){
+                        if($_GET['view_child_cats']){
                             
-                        $page = $input->get('view_child_cats');
+                        $page = $_GET['view_child_cats'];
 
                         if($page == 0){ $page = 1; }
                             

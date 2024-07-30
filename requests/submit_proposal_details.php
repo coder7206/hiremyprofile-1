@@ -57,7 +57,7 @@ $proposal_title = $row_proposals->proposal_title;
 
 	<div class="modal-header"><!--- modal-header Starts --->
 
-		<h5 class="modal-title h5"> Specify Your Proposal Details </h5>
+		<h5 class="modal-title h5"> Specify Your Proposal Details2 </h5>
 
 		<button class="close" data-dismiss="modal"> &times; </button>
 
@@ -109,28 +109,26 @@ $proposal_title = $row_proposals->proposal_title;
 
 				<hr>
 
-				<div class="form-group"><!--- form-group Starts --->
-
-					<label class="font-weight-bold"> Delivery Time : </label>
-
-					<select class="form-control float-right" name="delivery_time">
-
+				<div class="form-group">
+					<label class="font-weight-bold"> Delivery Time: </label>
+					<select class="form-control float-right" id="delivery_time_select" name="delivery_time">
 						<?php
 
-						$get_delivery_times = $db->select("delivery_times");
+						$get_delivery_times = $db->select("delivery_times"); 
 
 						while ($row_delivery_times = $get_delivery_times->fetch()) {
 
 							$delivery_proposal_title = $row_delivery_times->delivery_proposal_title;
 
 							echo "<option value='$delivery_proposal_title'> $delivery_proposal_title </option>";
+					
 						}
-
+						
 						?>
-
+						<option value="custom">Custom</option>
 					</select>
-
-				</div><!--- form-group Ends --->
+					<input type="text" class="form-control mt-2 d-none" id="custom_delivery_time" name="custom_delivery_time" placeholder="Enter custom delivery time">
+				</div>
 
 				<hr>
 
@@ -169,48 +167,58 @@ $proposal_title = $row_proposals->proposal_title;
 <div id="insert_offer"></div>
 
 
+
+
 <script>
 	$(document).ready(function() {
+		// Toggle custom delivery time input based on selection
+		$("#delivery_time_select").change(function() {
+			var customInput = $("#custom_delivery_time");
+			if ($(this).val() === 'custom') {
+				customInput.removeClass('d-none');
+				customInput.prop('required', true);
+			} else {
+				customInput.addClass('d-none');
+				customInput.prop('required', false);
+			}
+		});
 
 		$("#proposal-details-form").submit(function(event) {
-
 			event.preventDefault();
 
-			description = $("textarea[name='description']").val();
+			var description = $("textarea[name='description']").val();
+			var delivery_time = $("#delivery_time_select").val();
+			var custom_delivery_time = $("#custom_delivery_time").val();
+			var amount = $("input[name='amount']").val();
 
-			delivery_time = $("select[name='delivery_time']").val();
-
-			amount = $("input[name='amount']").val();
-
-			if (description == "" | delivery_time == "" | amount == "") {
-
+			if (description === "" || (delivery_time === "custom" && custom_delivery_time === "") || amount === "") {
 				swal({
 					type: 'warning',
 					text: 'You Must Need To Fill Out All Fields Before Submitting Offer.'
 				});
-
-			} else {
-
-
-				$.ajax({
-
-					method: "POST",
-					url: "<?= $site_url; ?>/requests/insert_offer",
-					data: $('#proposal-details-form').serialize()
-
-				}).done(function(data) {
-
-					$("#submit-proposal-details").modal('hide');
-
-					$("#insert_offer").html(data);
-
-				});
-
-
+				return;
 			}
 
+			// If custom delivery time is selected, use the custom value
+			if (delivery_time === "custom") {
+				delivery_time = custom_delivery_time;
+			}
+
+			// Serialize the form data and include the custom delivery time if selected
+			var formData = $('#proposal-details-form').serializeArray();
+			formData.push({
+				name: 'delivery_time',
+				value: delivery_time
+			});
+
+			$.ajax({
+				method: "POST",
+				url: "<?= $site_url; ?>/requests/insert_offer",
+				data: $.param(formData)
+			}).done(function(data) {
+				$("#submit-proposal-details").modal('hide');
+				$("#insert_offer").html(data);
+			});
 		});
-
-
 	});
 </script>

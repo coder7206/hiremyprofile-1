@@ -98,18 +98,140 @@ if ($oSellerWeight) {
 	<?php } ?>
 	<script src="<?= $site_url; ?>/js/jquery.easy-autocomplete.min.js"></script>
 	<link href="<?= $site_url; ?>/styles/easy-autocomplete.min.css" rel="stylesheet">
+	<style>
+		@media (max-width:768px) {
+			.full-width {
+				width: 100%;
+				/* border:1px solid green; */
+				font-size: 22px;
+				display: flex;
+			}
+
+			.text-align-center {
+				text-align: center;
+				margin: auto;
+				/* color: #2e8780; */
+			}
+
+			/* .margin-top {
+				border: 1px solid green;
+			} */
+
+		}
+
+
+
+		.box-shadow-8 {
+			border: 1px solid gray;
+			/* box-shadow: 0px 0px 10px black, inset 0px 0px 155px lightseagreen; */
+		}
+
+		.border12 {
+			border: 2px solid black;
+			height: 60px;
+			padding-top: 18px;
+			font-size: 16px;
+			/* box-shadow:inset 0px 0px 15px gray; */
+		}
+
+		.square-box {
+			/* border:1px solid red; */
+			width: 50px;
+			height: 35px;
+			margin-top: -7px;
+			background-color: whitesmoke;
+			color: green;
+			padding: 9px 0px 0px 14px;
+			font-size: 13px;
+			border-radius: 3px;
+			/* box-shadow:inset 0px 0px 10px gray; */
+		}
+
+
+
+		@media(max-width:1100px) and (min-width:900px) {
+			.border12 {
+				/* border: 2px solid black; */
+				height: 60px;
+				padding: 18px 8px;
+				font-size: 14px;
+				/* box-shadow:inset 0px 0px 15px gray; */
+			}
+
+			.square-box {
+				/* border:1px solid red; */
+				width: 35px;
+				height: 35px;
+				margin-top: -7px;
+				background-color: whitesmoke;
+				color: green;
+				padding: 9px 0px 0px 8px;
+				font-size: 11px;
+				border-radius: 3px;
+				/* box-shadow:inset 0px 0px 10px gray; */
+			}
+
+			.box-shadow8 {
+				border: 1px solid gray;
+				/* box-shadow: 0px 0px 10px black, inset 0px 0px 55px lightseagreen; */
+				/* height:30vh !important; */
+				padding: 8px;
+			}
+		}
+
+		.required_parameter_details {
+			background-color: #e5e5e5;
+			padding: 1rem;
+			border-radius: 5px;
+		}
+
+		.background_color_greys {
+			background-color: #e5e5e5;
+			margin-bottom: 3px;
+		}
+
+		@media(max-width:899px) and (min-width:768px) {
+			.border12 {
+				/* border: 2px solid black; */
+				height: 60px;
+				padding: 18px 5px;
+				font-size: 14px;
+				/* box-shadow:inset 0px 0px 15px gray; */
+			}
+
+			.square-box {
+				/* border:1px solid red; */
+				width: 30px;
+				height: 35px;
+				margin-top: -7px;
+				background-color: whitesmoke;
+				color: green;
+				padding: 9px 0px 0px 5px;
+				font-size: 11px;
+				border-radius: 3px;
+				/* box-shadow:inset 0px 0px 10px gray; */
+			}
+
+			.box-shadow8 {
+				border: 1px solid gray;
+				/* box-shadow: 0px 0px 10px black, inset 0px 0px 55px lightseagreen; */
+				/* height:30vh !important; */
+				padding: 5px;
+			}
+		}
+	</style>
 </head>
 
 <body class="is-responsive">
 	<?php require_once("includes/user_header.php"); ?>
-	<div class="container mb-3" style="margin-top: 205px;">
+	<div class="container-fluid p-5">
 		<div class="row terms-page" style="<?= ($lang_dir == "right" ? 'direction: rtl;' : '') ?>">
 			<div class="col-md-3 mb-3">
 				<div class="card">
-					<div class="card-body">
-						<ul class="nav nav-pills flex-column mt-2">
-							<li class="nav-item">
-								<a data-toggle="pill" href="#profile_settings" class="nav-link
+					<div class="card-body box-shadow8">
+						<ul class="nav nav-pills flex-column mt-4 mb-4">
+							<li class="nav-item background_color_greys">
+								<a data-toggle="pill" href="#profile_settings" class="nav-link border border12
 						<?php
 						if (!isset($_GET['profile_settings']) and !isset($_GET['account_settings']) and !isset($_GET['professional_settings'])) {
 							echo "active";
@@ -120,32 +242,71 @@ if ($oSellerWeight) {
 						?>
 						">
 									<?= $lang["titles"]["settings"]["profile_settings"]; ?>
-									<span class="badge badge-primary pull-right"><?=$profileWeight??0?>%</span>
+									<span class="square-box pull-right"><?= $profileWeight ?? 0 ?>%</span>
 								</a>
 							</li>
-							<li class="nav-item">
-								<a data-toggle="pill" href="#professional_settings" class="nav-link <?php if (isset($_GET['professional_settings'])) {
-																									echo "active";
-																								} ?> ">
+							<li class="nav-item background_color_greys">
+								<a data-toggle="pill" href="#professional_settings" class="nav-link border border12 <?php if (isset($_GET['professional_settings'])) {
+																														echo "active";
+																													} ?> ">
 									<?= $lang["titles"]["settings"]["professional_settings"]; ?>
-									<span class="badge badge-primary pull-right"><?=$professionalWeight??0?>%</span>
+									<span class="square-box pull-right"><?= $professionalWeight ?? 0 ?>%</span>
 								</a>
 							</li>
-							<li class="nav-item">
-								<a data-toggle="pill" href="#account_settings" class="nav-link <?php if (isset($_GET['account_settings'])) {
-																									echo "active";
-																								} ?> ">
+							<li class="nav-item background_color_greys">
+								<a data-toggle="pill" href="#account_settings" class="nav-link border border12 <?php if (isset($_GET['account_settings'])) {
+																													echo "active";
+																												} ?> ">
 									<?= $lang["titles"]["settings"]["account_settings"]; ?>
-									<span class="badge badge-primary pull-right"><?=$accountWeight??0?>%</span>
+									<span class="square-box pull-right"><?= $accountWeight ?? 0 ?>%</span>
 								</a>
 							</li>
 						</ul>
 					</div>
+					<div class="m-3 required_parameter_details" id="seller-sidebar" style="<?= $activeTab == "buyer" ? "display: none" : "" ?>">
+						<div class="card card1  text-dark border-0 px-2 py-3 mb-4 box-shadow-buyer1">
+							<div class="d-flex align-items-center justify-content-space-between">
+								<h6>Set up your account</h6>
+								<h6><?= $totalWeight ?>%</h6>
+							</div>
+							<div class="progress" style="height: 10px; border-radius: 1rem;">
+								<div class="progress-bar" role="progressbar" style="width: <?= $totalWeight ?>%;" aria-valuenow="<?= $totalWeight ?>" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+						</div>
+						<?php if ($profileWeight == 0) { ?>
+							<div class="card card1 theme-bg text-white border-0   px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row mb-4 box-shadow-buyer1">
+								<a href="<?= $site_url ?>/settings?profile_settings">
+									<h6 class="mb-0 text-white"> <i class="fa fa-user mr-1"></i> <span>Complete your profile</span></h6>
+								</a>
+								<label class="mb-0 text-white font-weight-bold">+40%</label>
+							</div>
+						<?php
+						}
+						if ($professionalWeight == 0) {
+						?>
+							<div class="card card1 theme-bg text-white border-0   px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row mb-4 box-shadow-buyer1">
+								<a href="<?= $site_url ?>/settings?professional_settings">
+									<h6 class="mb-0 text-white"> <i class="fa fa-briefcase mr-1"></i> <span>Complete your professional</span></h6>
+								</a>
+								<label class="mb-0 text-white font-weight-bold">+40%</label>
+							</div>
+						<?php
+						}
+						if ($accountWeight == 0) {
+						?>
+							<div class="card card1 theme-bg text-white border-0  px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row mb-4 box-shadow-buyer1">
+								<a href="<?= $site_url ?>/settings?account_settings">
+									<h6 class="mb-0 text-white"> <i class="fa fa-money mr-1"></i> <span>Complete your account</span></h6>
+								</a>
+								<label class="mb-0 text-white font-weight-bold">+20%</label>
+							</div>
+						<?php } ?>
+					</div>
 				</div>
 			</div>
-			<div class="col-md-9">
-				<div class="card">
-					<div class="card-body">
+			<div class="col-md-9 mb-4">
+				<div class="card box-shadow-8">
+					<div class="card-body m-1 p-3">
 						<div class="tab-content">
 							<div id="profile_settings" class="tab-pane fade <?php if (!isset($_GET['profile_settings']) and !isset($_GET['account_settings'])  and !isset($_GET['professional_settings'])) {
 																				echo "show active";
@@ -153,19 +314,19 @@ if ($oSellerWeight) {
 																			if (isset($_GET['profile_settings'])) {
 																				echo "show active";
 																			} ?>">
-								<h2 class="mb-4"><?= $lang["titles"]["settings"]["profile_settings"]; ?></h2>
+								<h2 class="mb-4 full-width"><span class="text-align-center"><?= $lang["titles"]["settings"]["profile_settings"]; ?></span></h2>
 								<?php require_once("profile_settings.php") ?>
 							</div>
 							<div id="professional_settings" class="tab-pane fade <?php if (isset($_GET['professional_settings'])) {
-																				echo "show active";
-																			} ?>">
-								<h2 class="mb-4"><?= $lang["titles"]["settings"]["professional_settings"]; ?></h2>
+																						echo "show active";
+																					} ?>">
+								<h2 class="mb-4 full-width margin-top"><span class="text-align-center"><?= $lang["titles"]["settings"]["professional_settings"]; ?></span></h2>
 								<?php require_once("professional_settings.php") ?>
 							</div>
 							<div id="account_settings" class="tab-pane fade <?php if (isset($_GET['account_settings'])) {
 																				echo "show active";
 																			} ?>">
-								<h2 class="mb-4"><?= $lang["titles"]["settings"]["account_settings"]; ?></h2>
+								<h2 class="mb-4 full-width"><span class="text-align-center"><?= $lang["titles"]["settings"]["account_settings"]; ?></span></h2>
 								<?php require_once("account_settings.php") ?>
 							</div>
 						</div>

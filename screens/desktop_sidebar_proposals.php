@@ -11,7 +11,12 @@
     $enableVideo = 0;
   }
 ?>
-<div class="proposal-card-base mp-proposal-card"><!--- proposal-card-base mp-proposal-card Starts --->
+<style> 
+  .box-shadow-mpcard{
+    /* box-shadow:0px 0px 5px black; */
+  }
+</style>
+<div class="proposal-card-base mp-proposal-card box-shadow-mpcard"><!--- proposal-card-base mp-proposal-card Starts --->
   <a href="<?= $site_url; ?>/proposals/<?= $seller_user_name; ?>/<?= $proposal_url; ?>">
   <img src="<?= $proposal_img1; ?>" class="img-fluid">
   </a>

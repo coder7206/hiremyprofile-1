@@ -264,7 +264,7 @@ margin-top: -5px;
 }
 
 .proposal-card-base .proposal-rating strong {
-    color: ##ffbf00;
+    color: #ffbf00;
 }
 
 .proposal-card-base.list-view-card .gig-fav {
@@ -665,7 +665,7 @@ input[type=checkbox] {
 
 input[type=checkbox] {
     vertical-align: bottom;
-    *vertical-align: baseline;
+    vertical-align: baseline;
 }
 
 .fake-check-black.check-text .chk-img {

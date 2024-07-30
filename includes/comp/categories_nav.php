@@ -1,6 +1,11 @@
-<div class="sub_header col-xs-12 sm-hidden">
+<style>
+  .how_it_works_link a:hover {
+    color: grey !important;
+  }
+</style>
+<div class="sub_header col-xs-12 sm-hidden box-shadow-cat-nav">
   <div class="sub_header_inner row">
-    <div class="col-sm-6">
+    <div class="col-sm-6">     
       <ul class="sub_header_menu">
         <li>
           <a href="<?= $site_url ?>/categories/graphics-design">
@@ -26,13 +31,13 @@
         <?php } ?>
       </ul>
     </div>
-    <div class="col-sm-6 right_text" align="right">
+    <div class="col-sm-6" align="right">
       <ul class="sub_header_menu">
         <li>
           <?php echo $row_general_settings->subheader_tagline; ?>
         </li>
-        <li>
-          <a href="how-it-works">How it works?</a>
+        <li class="how_it_works_link">
+          <a href="<?= $site_url ?>/how-it-works" style="font-size:18px;" class="text-primary">How it works?</a>
         </li>
       </ul>
     </div>
@@ -275,4 +280,25 @@
     </div>
   </div>
 </div>
+<!-- <script>
+  var lastScrollTop = 0;
+  
+  window.addEventListener('scroll', function() {
+    var hidescrolldown = document.querySelector('#hidescrolldown');
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop) {
+      // Scrolling down
+      hidescrolldown.style.display = 'none';
+    } else {
+      // Scrolling up
+      hidescrolldown.style.display = 'block';
+    }
+
+    lastScrollTop = scrollTop;
+  });
+</script> -->
+
+
+
 <?php include("mobile_menu.php"); ?>

@@ -26,11 +26,7 @@ $pagePosition = (($pageNumber - 1) * $limit);
 $spQuery = "SELECT * FROM buyer_requests WHERE seller_id=:seller_id  AND request_status=:request_status";
 $sQuery = "SELECT * FROM buyer_requests WHERE seller_id=:seller_id  AND request_status=:request_status ORDER BY 1 DESC LIMIT " . $pagePosition . ", " . $limit;
 $sBind = ["seller_id" => $sellerId, "request_status" => $status];
-$noResult = $status == 'active' ? $lang['manage_requests']['no_active'] :
-    ($status == 'pause' ? $lang['manage_requests']['no_pause'] :
-        ($status == 'pending' ? $lang['manage_requests']['no_pending'] :
-            ( $status == 'unapproved'  ? $lang['manage_requests']['no_unapproved'] :
-                ( $status == 'modification'  ? $lang['manage_requests']['no_modification'] : ''))));
+$noResult = $status == 'active' ? $lang['manage_requests']['no_active'] : ($status == 'pause' ? $lang['manage_requests']['no_pause'] : ($status == 'pending' ? $lang['manage_requests']['no_pending'] : ($status == 'unapproved'  ? $lang['manage_requests']['no_unapproved'] : ($status == 'modification'  ? $lang['manage_requests']['no_modification'] : ''))));
 
 //get total number of records from database for pagination
 $query = $db->query($spQuery, $sBind);
@@ -62,21 +58,20 @@ if ($rowCount > 0) {
                 <div class="dropdown">
                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
                 <div class="dropdown-menu">';
-            $data .= '<a href="' . $site_url . '/requests/active_request?request_id=' .$request_id .'" class="dropdown-item">
+            $data .= '<a href="' . $site_url . '/requests/active_request?request_id=' . $request_id . '" class="dropdown-item">
             Submit for Approval
                 </a>';
-            $data .= '<a href="' . $site_url . '/requests/edit_request?request_id=' .$request_id .'" class="dropdown-item">
+            $data .= '<a href="' . $site_url . '/requests/edit_request?request_id=' . $request_id . '" class="dropdown-item">
                 Edit
                     </a>';
             $confirm = 'Are you sure to delete this request?';
-            $data .= '<a href="' . $site_url . '/requests/delete_request?request_id=' . $request_id .'" class="dropdown-item" onclick="return confirm(\'Are you sure you want to delete?\');">
+            $data .= '<a href="' . $site_url . '/requests/delete_request?request_id=' . $request_id . '" class="dropdown-item" onclick="return confirm(\'Are you sure you want to delete?\');">
                         Delete
                     </a>';
             $data .= '</div>
             </div>
         </td>';
             $data .= "</tr>";
-
         }
     } else {
         while ($oResult = $query->fetch()) { //fetch values
@@ -88,7 +83,7 @@ if ($rowCount > 0) {
             $count_offers = $db->count("send_offers", array("request_id" => $request_id, "status" => 'active'));
             $data .= "<tr>";
             $data .= "<td>" . $request_title . "</td>";
-            $data .= "<td>" . $request_description . "</td>";
+            $data .= "<td class='desc-wrap'>" . $request_description . "</td>";
             $data .= "<td>" . $request_date . "</td>";
             $data .= "<td>" . $count_offers . "</td>";
             $data .= "<td class='text-success'>" . showPrice($request_budget) . "</td>";
@@ -97,21 +92,21 @@ if ($rowCount > 0) {
                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
                 <div class="dropdown-menu">';
             if ($status == 'active') {
-                $data .= '<a href="' . $site_url . '/requests/view_offers?request_id=' .$request_id .'" target="blank" class="dropdown-item">View Offers</a>';
-                $data .= '<a href="' . $site_url . '/requests/pause_request?request_id=' .$request_id .'" class="dropdown-item">
+                $data .= '<a href="' . $site_url . '/requests/view_offers?request_id=' . $request_id . '" target="blank" class="dropdown-item">View Offers</a>';
+                $data .= '<a href="' . $site_url . '/requests/pause_request?request_id=' . $request_id . '" class="dropdown-item">
                         Pause
                     </a>';
             }
             if ($status == 'pause') {
-                $data .= '<a href="' . $site_url . '/requests/active_request?request_id=' .$request_id .'" class="dropdown-item">
+                $data .= '<a href="' . $site_url . '/requests/active_request?request_id=' . $request_id . '" class="dropdown-item">
                 Submit for Approval
                     </a>';
             }
-            $data .= '<a href="' . $site_url . '/requests/edit_request?request_id=' .$request_id .'" class="dropdown-item">
+            $data .= '<a href="' . $site_url . '/requests/edit_request?request_id=' . $request_id . '" class="dropdown-item">
                 Edit
                     </a>';
             $confirm = 'Are you sure to delete this request?';
-            $data .= '<a href="' . $site_url . '/requests/delete_request?request_id=' . $request_id .'" class="dropdown-item" onclick="return confirm(\'Are you sure you want to delete?\');">
+            $data .= '<a href="' . $site_url . '/requests/delete_request?request_id=' . $request_id . '" class="dropdown-item" onclick="return confirm(\'Are you sure you want to delete?\');">
                         Delete
                     </a>';
             $data .= '</div>
@@ -125,13 +120,13 @@ if ($rowCount > 0) {
     if ($status == 'modification')
         $data = "
         <tr class='table-danger'>
-            <td colspan='3'><center><h3 class='pb-4 pt-4'><i class='fa fa-meh-o'></i> {$noResult}</h3></center></td>
+            <td colspan='3' class='box-shadow-manage'><center><h3 class='pb-4 pt-4 heading_3'><i class='fa fa-meh-o'></i> {$noResult}</h3></center></td>
         </tr>
         ";
     else
         $data = "
         <tr class='table-danger'>
-            <td colspan='6'><center><h3 class='pb-4 pt-4'><i class='fa fa-meh-o'></i> {$noResult}</h3></center></td>
+            <td colspan='6' class='box-shadow-manage'><center><h3 class='pb-4 pt-4 heading_3'><i class='fa fa-meh-o'></i> {$noResult}</h3></center></td>
         </tr>
         ";
     $paginationData = null;
@@ -139,3 +134,4 @@ if ($rowCount > 0) {
 header("Content-type: application/json");
 echo json_encode(["data" => $data, "pagination" => $paginationData]);
 exit;
+?>

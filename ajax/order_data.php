@@ -94,7 +94,7 @@ if ($rowCount > 0) {
 } else {
     $data = "
     <tr class='table-danger'>
-        <td colspan='5'><center><h3 class='pb-4 pt-4'><i class='fa fa-meh-o'></i> {$noResult}</h3></center></td>
+        <td colspan='5' class='box-shadow-ord-data'><center><h3 class='pb-4 pt-4 heading_3'><i class='fa fa-meh-o'></i> {$noResult}</h3></center></td>
     </tr>
     ";
     $paginationData = null;

@@ -28,4 +28,4 @@ echo "<script>window.open('login','_self');</script>";
 			}
 		}
 	}
-}
+} 

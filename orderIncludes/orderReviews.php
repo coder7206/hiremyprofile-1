@@ -166,14 +166,20 @@ if ($count_all_reviews == "00") {
 
 <?php } ?>
 
-
+<style>
+.border-style-review-div{
+    /* border:1px solid grey; */
+    border-radius: 10px;
+    box-shadow: 0px 0px 13px lightgray;
+}
+</style>
 <?php if ($seller_id == $login_seller_id) { ?>
 
     <?php if ($count_seller_reviews == 0) { ?>
 
-        <div class="order-review-box mb-3 p-3">
+        <div class="border-style-review-div mb-3 p-4">
 
-            <h3 class="text-center text-white"> Please Submit a Review For Your Buyer</h3>
+            <h3 class="text-center text-dark"> Please Submit a Review For Your Buyer</h3>
 
             <div class="row">
 
@@ -183,7 +189,7 @@ if ($count_all_reviews == "00") {
 
                         <div class="form-group">
 
-                            <label class="h6 text-white">Review Rating</label>
+                            <label class="h6 text-dark">Review Rating</label>
 
                             <select name="rating" class="rating-select">
 
@@ -271,9 +277,9 @@ if ($count_all_reviews == "00") {
 
     <?php if ($count_buyer_reviews == 0) { ?>
 
-        <div class="order-review-box mb-3 p-3">
+        <div class="border-style-review-div mb-3 p-4">
 
-            <h3 class="text-center text-white"> Please Submit a Review For Your Seller</h3>
+            <h3 class="text-center text-dark"> Please Submit a Review For Your Seller</h3>
 
             <div class="row">
 
@@ -283,7 +289,7 @@ if ($count_all_reviews == "00") {
 
                         <div class="form-group">
 
-                            <label class="h6 text-white">Review Rating</label>
+                            <label class="h6 text-dark">Review Rating</label>
 
                             <select name="rating" class="rating-select">
 

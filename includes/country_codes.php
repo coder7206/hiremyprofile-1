@@ -1,4 +1,13 @@
-<select name="country_code" class="form-control border-right-0">
+<style>
+.box-shadow-allcc{
+	  /* box-shadow:0px 0px 5px gray ,inset 0px 0px 15px lightgray; */
+      border:1px solid gray;
+      height:45px !important;
+      padding-top:7px;
+      font-size: 15px;
+		}
+</style>
+<select name="country_code" class="form-control border-right-0 box-shadow-allcc">
 
 	<?php 
 

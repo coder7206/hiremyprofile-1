@@ -41,13 +41,39 @@ $login_seller_id = $row_login_seller->seller_id;
 
 	<?php } ?>
 
+	<style>
+		@media (max-width:768px) {
+			.font-size-3 {
+				font-size: 13px !important;
+				padding: 10px !important;
+				text-align: center;
+			}
+
+			.text-align-center {
+				text-align: center;
+			}
+
+			.mrg-top {
+				/* margin-top: 165px !important; */
+				margin-bottom: 20px !important;
+			}
+
+			.font-size-5 {
+				font-size: 19px;
+				font-weight: 500;
+			}
+
+		
+		}
+	</style>
+
 </head>
 
 <body class="is-responsive">
 
 	<?php include("includes/user_header.php"); ?>
 
-	<div class="container" style="margin-top: 200px;">
+	<div class="container-fluid mrg-top">
 		<!-- container Starts -->
 
 		<div class="row">
@@ -56,7 +82,7 @@ $login_seller_id = $row_login_seller->seller_id;
 			<div class="col-md-12 mt-5">
 				<!-- col-md-12 mt-5 Starts -->
 
-				<h1 class="mb-4"> Withdrawal Requests </h1>
+				<h1 class="mb-4 text-align-center"> Withdrawal Requests </h1>
 
 				<div class="table-responsive box-table">
 					<!-- table-responsive box-table Starts -->
@@ -68,17 +94,17 @@ $login_seller_id = $row_login_seller->seller_id;
 
 							<tr>
 
-								<th><?= $lang['th']['no']; ?></th>
+								<th class="font-size-3"><?= $lang['th']['no']; ?></th>
 
-								<th><?= $lang['th']['ref_no']; ?></th>
+								<th class="font-size-3"><?= $lang['th']['ref_no']; ?></th>
 
-								<th><?= $lang['th']['date']; ?></th>
+								<th class="font-size-3"><?= $lang['th']['date']; ?></th>
 
-								<th><?= $lang['th']['amount']; ?></th>
+								<th class="font-size-3"><?= $lang['th']['amount']; ?></th>
 
-								<th><?= $lang['th']['method']; ?></th>
+								<th class="font-size-3"><?= $lang['th']['method']; ?></th>
 
-								<th><?= $lang['th']['status']; ?></th>
+								<th class="font-size-3"><?= $lang['th']['status']; ?></th>
 
 							</tr>
 
@@ -112,100 +138,100 @@ $login_seller_id = $row_login_seller->seller_id;
 									$i++;
 							?>
 
-								<tr>
+									<tr>
 
-									<td> <?= $i; ?> </td>
+										<td> <?= $i; ?> </td>
 
-									<td class="text-danger"> <?= $ref; ?> </td>
+										<td class="text-danger"> <?= $ref; ?> </td>
 
-									<td> <?= $date; ?> </td>
+										<td> <?= $date; ?> </td>
 
-									<td class="text-success"> <?= "$s_currency$amount.00"; ?> </td>
+										<td class="text-success"> <?= "$s_currency$amount.00"; ?> </td>
 
-									<td class="text-success"> <?= $m_text; ?> </td>
+										<td class="text-success"> <?= $m_text; ?> </td>
 
-									<td class="<?php if ($status == "pending" or $status == "declined") {
-													echo "text-danger";
-												} else {
-													echo "text-success";
-												} ?>">
+										<td class="<?php if ($status == "pending" or $status == "declined") {
+														echo "text-danger";
+													} else {
+														echo "text-success";
+													} ?>">
 
-										<?= ucfirst($status); ?>
+											<?= ucfirst($status); ?>
 
-										<?php if ($method == "moneygram" and $status == "completed" and $paymentGateway == 1) { ?>
-											<a href="#" data-toggle="modal" data-target="#ref-<?= $id; ?>" class="float-right small">View Ref No</a>
-										<?php } ?>
-
-										<?php if ($status == "declined") { ?>
-
-											<a href="#" data-toggle="modal" data-target="#reason-<?= $id; ?>" class="float-right small">View Reason</a>
-
-										<?php } ?>
-
-									</td>
-
-								</tr>
-
-								<?php
-								if ($paymentGateway == 1) {
-									include("plugins/paymentGateway/refModal.php");
-								}
-								?>
-
-								<div id="reason-<?= $id; ?>" class="modal fade">
-									<!-- reason modal fade Starts -->
-
-									<div class="modal-dialog">
-										<!-- modal-dialog Starts -->
-
-										<div class="modal-content">
-											<!-- modal-content Starts -->
-
-											<div class="modal-header">
-												<!-- modal-header Starts -->
-
-												<h5 class="modal-title"> Reason </h5>
-
-												<button class="close" data-dismiss="modal"> <span> &times; </span> </button>
-
-											</div><!-- modal-header Ends -->
-
-											<div class="modal-body text-center">
-												<!-- modal-body Starts -->
-
-												<p><?= $row->message; ?></p>
-
-											</div><!-- modal-body Ends -->
-
-										</div><!-- modal-content Ends -->
-
-									</div><!-- modal-dialog Ends -->
-
-								</div><!-- reason modal fade Ends -->
-
-								<?php if (isset($_GET['id']) and $_GET['id'] == $id) { ?>
-
-									<script type="text/javascript">
-										$(document).ready(function() {
-
-											<?php if ($status == "completed" and $method == "moneygram" and $paymentGateway == 1) { ?>
-												$('#ref-<?= $id; ?>').modal('show');
-											<?php } elseif ($status == "declined") { ?>
-												$('#reason-<?= $id; ?>').modal('show');
+											<?php if ($method == "moneygram" and $status == "completed" and $paymentGateway == 1) { ?>
+												<a href="#" data-toggle="modal" data-target="#ref-<?= $id; ?>" class="float-right small">View Ref No</a>
 											<?php } ?>
 
-										});
-									</script>
+											<?php if ($status == "declined") { ?>
 
-								<?php } ?>
+												<a href="#" data-toggle="modal" data-target="#reason-<?= $id; ?>" class="float-right small">View Reason</a>
+
+											<?php } ?>
+
+										</td>
+
+									</tr>
+
+									<?php
+									if ($paymentGateway == 1) {
+										include("plugins/paymentGateway/refModal.php");
+									}
+									?>
+
+									<div id="reason-<?= $id; ?>" class="modal fade">
+										<!-- reason modal fade Starts -->
+
+										<div class="modal-dialog">
+											<!-- modal-dialog Starts -->
+
+											<div class="modal-content">
+												<!-- modal-content Starts -->
+
+												<div class="modal-header">
+													<!-- modal-header Starts -->
+
+													<h5 class="modal-title"> Reason </h5>
+
+													<button class="close" data-dismiss="modal"> <span> &times; </span> </button>
+
+												</div><!-- modal-header Ends -->
+
+												<div class="modal-body text-center">
+													<!-- modal-body Starts -->
+
+													<p><?= $row->message; ?></p>
+
+												</div><!-- modal-body Ends -->
+
+											</div><!-- modal-content Ends -->
+
+										</div><!-- modal-dialog Ends -->
+
+									</div><!-- reason modal fade Ends -->
+
+									<?php if (isset($_GET['id']) and $_GET['id'] == $id) { ?>
+
+										<script type="text/javascript">
+											$(document).ready(function() {
+
+												<?php if ($status == "completed" and $method == "moneygram" and $paymentGateway == 1) { ?>
+													$('#ref-<?= $id; ?>').modal('show');
+												<?php } elseif ($status == "declined") { ?>
+													$('#reason-<?= $id; ?>').modal('show');
+												<?php } ?>
+
+											});
+										</script>
+
+									<?php } ?>
 
 
-							<?php
+								<?php
 								}
 							} else {
-							?>
-								<tr class="table-danger">
-									<td colspan="6">0 records found.</td>
+								?>
+								<tr class="table-danger text-align-center">
+									<td colspan="6" class="font-size-5">0 records found.</td>
 								</tr>
 							<?php } ?>
 						</tbody>

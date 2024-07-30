@@ -68,9 +68,13 @@ $a_currencies = $row_rights->currencies;
 $a_languages = $row_rights->languages;
 $a_m_plan = $row_rights->membplan;
 
+
 $a_admins = $row_rights->admins;
 $a_videos = $row_rights->videos;
 $a_instruction = $row_rights->instruction;
+
+$cat_attr = $row_rights->cat_attr;
+$cat_attr_icon = $row_rights->cat_attr_icon;
 
 $get_app_license = $db->select("app_license");
 $row_app_license = $get_app_license->fetch();
@@ -146,7 +150,7 @@ if ($notifierPlugin == 1) {
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Admin Panel - Control Your Entire Site.</title>
-	<meta name="description" content="hire my profile">
+	<meta name="description" content="hiremyprofile">
 	<meta name="author" content="https://github.com/jaygaha">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="apple-touch-icon" href="apple-icon.png">
@@ -162,6 +166,27 @@ if ($notifierPlugin == 1) {
 	<style>
 		.d-none-on-backend-precessing {
 			display: table !important;
+		}
+
+		.right-panel {
+			width: 80% !important;
+		}
+
+		.position_fixed_background {
+			/* position:fixed; */
+			/* display: flex; */
+		}
+
+		/* .nav-bar-head-ler{
+			position: fixed !important;
+			z-index: 2222;
+			background-color: #272c33;
+			padding:0 18px 0 10px !important;
+			margin:0 -5px !important;
+		} */
+		.pos-iti-onf-xed {
+			/* position:fixed; */
+			/* border: 2px solid green; */
 		}
 	</style>
 	<?php if (!empty($site_favicon)) { ?>
@@ -230,115 +255,125 @@ if ($notifierPlugin == 1) {
 	<!-- <script id="minimal" src="assets/js/minimal.js" data-purchase-code="<?= $purchase_code; ?>" data-license="<?= $license_type; ?>"data-website="<?= $website; ?>"></script> -->
 
 	<!-- Left Panel -->
-	<aside id="left-panel" class="d-none-on-backend-precessing left-panel">
-		<nav class="navbar navbar-expand-sm navbar-default">
-			<div class="navbar-header">
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu">
-					<i class="fa fa-bars"></i>
-				</button>
-				<a class="navbar-brand" href="index?dashboard">
-					<?= $site_name; ?> <span class="badge badge-success p-2 font-weight-bold">ADMIN</span>
-				</a>
-				<a class="navbar-brand hidden" href="./"><span class="badge badge-success pt-2 pb-2">A</span></a>
-			</div>
-			<div id="main-menu" class="main-menu collapse navbar-collapse">
-				<?php include("includes/sidebar.php"); ?>
-			</div>
-		</nav>
-		<div class="container clearfix">
-	</aside>
+	<div class="position_fixed_background">
+		<aside id="left-panel" class="d-none-on-backend-precessing left-panel">
+			<nav class="navbar navbar-expand-sm navbar-default pos-iti-onf-xed" id="scrolling">
+				<div class="navbar-header">
+					<button class="navbar-toggler nav-bar-head-ler" type="button" data-toggle="collapse" data-target="#main-menu">
+						<i class="fa fa-bars"></i>
+					</button>
+					<a class="navbar-brand nav-bar-head-ler" href="index?dashboard">
+						<?= $site_name; ?> <span class="badge badge-success p-2 font-weight-bold">ADMIN</span>
+					</a>
+					<a class="navbar-brand hidden nav-bar-head-ler" href="./"><span class="badge badge-success pt-2 pb-2">A</span></a>
+				</div>
+				<div id="main-menu" class="main-menu collapse navbar-collapse">
+					<?php include("includes/sidebar.php"); ?>
+				</div>
+			</nav>
+			<div class="container clearfix">
+		</aside>
 
 
-	<!-- Left Panel -->
+		<!-- Left Panel -->
 
-	<!-- Right Panel -->
-	<div id="right-panel" class="right-panel">
+		<!-- Right Panel -->
+		<div id="right-panel" class="right-panel">
 
-		<!-- Header-->
-		<header id="header" class="header">
-			<div class="header-menu"><?php include("includes/admin_header.php"); ?></div>
-		</header>
-		<!-- Header-->
+			<!-- Header-->
+			<header id="header" class="header header-stycky-position">
+				<div class="header-menu"><?php include("includes/admin_header.php"); ?></div>
+			</header>
+			<!-- Header-->
 
-		<?php
+			<?php
 
-		if ((empty($purchase_code) or empty($license_type) or empty($website)) and is_localhost() == false) {
-			include("proceed.php");
-		} else {
-
-			$check_purchase = check_purchase();
-			if ($check_purchase == 0 and is_localhost() == false) {
+			if ((empty($purchase_code) or empty($license_type) or empty($website)) and is_localhost() == false) {
 				include("proceed.php");
 			} else {
-				include("includes/body.php");
+
+				$check_purchase = check_purchase();
+				if ($check_purchase == 0 and is_localhost() == false) {
+					include("proceed.php");
+				} else {
+					include("includes/body.php");
+				}
 			}
-		}
 
-		?>
+			?>
 
-		<style>
-			.d-none-on-backend-precessing {
-				display: table-cell !important;
-			}
-		</style>
+			<style>
+				.d-none-on-backend-precessing {
+					display: table-cell !important;
+				}
+			</style>
 
-		<div class="container clearfix">
-			<!--- container clearfix Starts --->
-			<div class="row">
-				<!--- row Starts --->
-				<div id="languagePanel" class="bg-light col-md-12 p-2 pb-0 mb-0">
-					<!--- languagePanel Starts --->
-					<div class="row">
-						<div class="col-md-6">
-							<!--- col-md-6 Starts --->
-							<p class="col-form-label font-weight-normal mb-0 pb-0">
-								Current Selected Language: <strong><?= $currentLanguage; ?></strong>
-							</p>
-						</div>
-						<!--- col-md-6 Ends --->
-						<div class="col-md-6 float-right">
-							<!--- col-md-6 Starts --->
-							<div class="form-group row mb-0 pb-0">
-								<!--- form-group row Starts --->
-								<label class="col-md-2"></label>
-								<label class="col-md-4 col-form-label"> Change Language: </label>
-								<div class="col-md-6">
-									<select id="languageSelect" class="form-control">
-										<?php
-										$get_languages = $db->select("languages");
-										while ($row_languages = $get_languages->fetch()) {
-											$id = $row_languages->id;
-											$title = $row_languages->title;
-										?>
-											<option data-url="<?= "$site_url/admin/index?change_language=$id"; ?>" <?= ($id == $_SESSION["adminLanguage"]) ? "selected" : ""; ?>>
-												<?= $title; ?>
-											</option>
-										<?php } ?>
-									</select>
-								</div>
+			<div class="container clearfix">
+				<!--- container clearfix Starts --->
+				<div class="row">
+					<!--- row Starts --->
+					<div id="languagePanel" class="bg-light col-md-12 p-2 pb-0 mzb-0">
+						<!--- languagePanel Starts --->
+						<div class="row">
+							<div class="col-md-6">
+								<!--- col-md-6 Starts --->
+								<p class="col-form-label font-weight-normal mb-0 pb-0">
+									Current Selected Language: <strong><?= $currentLanguage; ?></strong>
+								</p>
 							</div>
-							<!--- form-group row Ends --->
+							<!--- col-md-6 Ends --->
+							<div class="col-md-6 float-right">
+								<!--- col-md-6 Starts --->
+								<div class="form-group row mb-0 pb-0">
+									<!--- form-group row Starts --->
+									<label class="col-md-2"></label>
+									<label class="col-md-4 col-form-label"> Change Language: </label>
+									<div class="col-md-6">
+										<select id="languageSelect" class="form-control">
+											<?php
+											$get_languages = $db->select("languages");
+											while ($row_languages = $get_languages->fetch()) {
+												$id = $row_languages->id;
+												$title = $row_languages->title;
+											?>
+												<option data-url="<?= "$site_url/admin/index?change_language=$id"; ?>" <?= ($id == $_SESSION["adminLanguage"]) ? "selected" : ""; ?>>
+													<?= $title; ?>
+												</option>
+											<?php } ?>
+										</select>
+									</div>
+								</div>
+								<!--- form-group row Ends --->
+							</div>
+							<!--- col-md-6 Ends -->
 						</div>
-						<!--- col-md-6 Ends -->
 					</div>
+					<!--- languagePanel Ends --->
 				</div>
-				<!--- languagePanel Ends --->
+				<!--- row Ends --->
 			</div>
-			<!--- row Ends --->
-		</div>
-		<!--- container clearfix Ends --->
+			<!--- container clearfix Ends --->
 
-		<br><br><br>
-		<script>
-			$(document).ready(function() {
-				$("#languageSelect").change(function() {
-					var url = $("#languageSelect option:selected").data("url");
-					window.location.href = url;
+			<br><br><br>
+			<script>
+				$(document).ready(function() {
+					$("#languageSelect").change(function() {
+						var url = $("#languageSelect option:selected").data("url");
+						window.location.href = url;
+					});
 				});
-			});
-		</script>
 
-	</div><!-- Right Panel -->
+				// scrolling script
+
+				function scrollingOver() {
+					let scrolling = document.querySelector("#scrolling");
+
+				}
+			</script>
+
+		</div><!-- Right Panel -->
+
+	</div>
 	<script src="https://cdn.ckeditor.com/4.19.1/standard/ckeditor.js"></script>
 	<script>
 		CKEDITOR.replace('editor1');

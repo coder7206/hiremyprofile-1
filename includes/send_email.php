@@ -26,9 +26,14 @@ $data['to'] = $seller_email;
 $data['subject'] = "$site_name : Activate Your New Account!";
 $data['seller_user_name'] = $seller_user_name;
 $data['verification_link'] = "$site_url/includes/verify_email?code=$seller_verification";
-
+// print_r($data);
+$maildata= send_mail($data);
+print_r($maildata);
 if(send_mail($data)){
 	echo "Ok";
+}
+else{
+	echo "not send";
 }
 
 ?>

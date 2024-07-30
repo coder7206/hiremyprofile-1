@@ -48,13 +48,13 @@ if (isset($_POST['profile-approve'])) {
     $upForm['seller_headline'] = $oSPUpdate->seller_headline;
     $upForm['seller_about'] = $oSPUpdate->seller_about;
 
-    $update = $db->update("sellers", $upForm, ["seller_id"=>$seller_id]);
+    $update = $db->update("sellers", $upForm, ["seller_id" => $seller_id]);
 
     if ($update) {
 
         $db->update("sellers_profile_tmp", ['status' => 1], ["seller_id" => $seller_id]);
 
-        $weightnForm = ['profile_weight' => 35, 'seller_id' => $seller_id];
+        $weightnForm = ['profile_weight' => 40, 'seller_id' => $seller_id];
         if ($oWeigtiness) { // Update
             $db->update("seller_profile_weights", $weightnForm, ["seller_id" => $seller_id]);
         } else { // Add
@@ -91,7 +91,7 @@ if (isset($_POST['profile-modification'])) {
 if (isset($_POST['professional-approve'])) {
     $update = $db->update("seller_pro_info", ['status' => 1], ["seller_id" => $seller_id]);
     if ($update) {
-        $weightnForm = ['professional_weight' => 35, 'seller_id' => $seller_id];
+        $weightnForm = ['professional_weight' => 40, 'seller_id' => $seller_id];
         if ($oWeigtiness) { // Update
             $db->update("seller_profile_weights", $weightnForm, ["seller_id" => $seller_id]);
         } else { // Add
@@ -469,7 +469,8 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                     <!--- thead Starts --->
                                     <tr>
                                         <th>Category</th>
-                                        <th>Skills</th>
+                                        <th>Sub category</th>
+                                        <th>Attribute</th>
                                     </tr>
                                 </thead>
                                 <!--- thead Ends --->
@@ -484,6 +485,7 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
 
                                             $proId = $oProfessional->id;
                                             $catId = $oProfessional->category_id;
+                                            $subCatId = $oProfessional->sub_category_id;
                                             $startDate = $oProfessional->start_date;
                                             $endDate = $oProfessional->end_date;
                                             $professionalStatus = $status = $oProfessional->status; // 1=active 0=pending 2=modification
@@ -494,6 +496,7 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                             $sellerProInfo[] = $proId;
 
                                             $category_meta = $db->select("cats_meta", ["cat_id" => $catId])->fetch();
+                                            $subcat_meta = $db->select("child_cats_meta", ["child_id" => $subCatId])->fetch();
                                     ?>
                                             <tr class="<?= $trClass ?>">
                                                 <td>
@@ -501,13 +504,17 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                                     <small class="text-muted"><?= $startDate ?>-<?= $endDate ?></small>
                                                 </td>
                                                 <td>
+                                                    <?= $subcat_meta->child_title; ?>
+                                                </td>
+
+                                                <td>
                                                     <?php
                                                     $qProOptions = $db->select("seller_pro_info_options", ["seller_pro_info_id" => $proId]);
                                                     $cProOption = $qProOptions->rowCount();
                                                     if ($cProOption > 0) :
                                                         while ($oProOption = $qProOptions->fetch()) :
                                                             $proInfoId = $oProOption->professional_info_id;
-                                                            $info = $db->select("professional_info", ["id" => $proInfoId])->fetch();
+                                                            $info = $db->select("professional_info", array("id" => $proInfoId, "sub_category_id" =>  $subcat_meta->child_id))->fetch();
                                                     ?>
                                                             <span class="badge badge-info"><?= $info->title ?></span>
                                                     <?php
@@ -521,14 +528,14 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                         if ($professionalStatus == 0) :
                                         ?>
                                             <tr class="table-info">
-                                                <td colspan="2" class="font-weight-light">Seller have requested to review their professional information updates.</td>
+                                                <td colspan="3" class="font-weight-light">Seller have requested to review their professional information updates.</td>
                                             </tr>
                                         <?php
                                         endif;
                                         if ($professionalStatus == 2) :
                                         ?>
                                             <tr class="table-warning">
-                                                <td colspan="2" class="font-weight-light">You have send modification requests.</td>
+                                                <td colspan="3" class="font-weight-light">You have send modification requests.</td>
                                             </tr>
                                         <?php
                                         endif;
@@ -536,7 +543,7 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                             $proInfoIds = count($sellerProInfo) > 0 ? implode(', ', $sellerProInfo) : '';
                                         ?>
                                             <tr class="table-info">
-                                                <td colspan="2">
+                                                <td colspan="3">
                                                     <form action="" method="POST" class="mb-1">
                                                         <button class="btn btn-success" type="submit" name="professional-approve" formaction=""><i class="fa fa-thumbs-o-up"></i> Approve</button>
                                                     </form>
@@ -552,7 +559,7 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                         endif;
                                     } else { ?>
                                         <tr class="table-danger">
-                                            <td colspan="2">Seller haven't added thier professional info yet.</td>
+                                            <td colspan="3">Seller haven't added thier professional info yet.</td>
                                         </tr>
                                     <?php } ?>
                                 </tbody><!--- tbody Ends --->

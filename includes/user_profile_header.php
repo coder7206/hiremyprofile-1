@@ -52,7 +52,21 @@ if (isset($login_seller_id)) {
 $follow_id = isset($follow_tbl_data) && $follow_tbl_data ? $follow_tbl_data->id : 0;
 
 ?>
-<div class="col-md-12 user-header pl-5 pr-5 pt-5 pb-5" style="margin-top: 115px;background: url(<?= $seller_cover_image; ?>);">
+<style>
+  @media(max-width:768px) {
+    .user-header-mt {
+      margin-top: 68px;
+    }
+  }
+
+  @media(min-width:768px) {
+    .user-header-mt {
+      margin-top: 151px;
+    }
+  }
+</style>
+<div class="col-md-12 user-header user-header-mt pl-5 pr-5 pt-5 pb-5">
+  <!-- style="background: url(<?= $seller_cover_image; ?>);" -->
   <?php if (isset($_SESSION['seller_user_name'])) { ?>
     <?php if ($_SESSION['seller_user_name'] == $seller_user_name) { ?>
       <a href="settings?profile_settings" class="btn btn-edit btn-success"><i class="fa fa-pencil"></i> Edit&nbsp;</a>
@@ -74,7 +88,7 @@ $follow_id = isset($follow_tbl_data) && $follow_tbl_data ? $follow_tbl_data->id 
       <img src="images/level_badge_3.png" class="level_badge">
     <?php } ?>
   </div>
-  <div class="content-bar mt-3">
+  <div class="content-bar mt-3" style="background-color: #00000052;">
     <h1> Hi, I'm <?= ucfirst($seller_user_name); ?> </h1>
     <span class="headline">
       <?= $seller_headline; ?>
@@ -105,40 +119,40 @@ $follow_id = isset($follow_tbl_data) && $follow_tbl_data ? $follow_tbl_data->id 
     <?php } ?>
   </div>
   <div class="content-bar">
-  <?php if ($count_proposals != 0) { ?>
-    <?php if (!isset($_SESSION['seller_user_name'])) { ?>
-      <a class="btn btn-success mt-3" href="login.php"> Contact <small>(<?= $seller_user_name; ?>)</small></a>
+    <?php if ($count_proposals != 0) { ?>
+      <?php if (!isset($_SESSION['seller_user_name'])) { ?>
+        <a class="btn btn-success mt-3" href="login.php"> Contact <small>(<?= $seller_user_name; ?>)</small></a>
 
-    <?php } else { ?>
-      <?php if ($_SESSION['seller_user_name'] != $seller_user_name) { ?>
-        <a class="btn btn-success mt-3" href="<?= $site_url; ?>/conversations/message?seller_id=<?= $seller_id ?>">
-          Contact <small>(<?= $seller_user_name; ?>)</small>
+      <?php } else { ?>
+        <?php if ($_SESSION['seller_user_name'] != $seller_user_name) { ?>
+          <a class="btn btn-success mt-3" href="<?= $site_url; ?>/conversations/message?seller_id=<?= $seller_id ?>">
+            Contact <small>(<?= $seller_user_name; ?>)</small>
 
-        </a>
+          </a>
 
-        <?php if ($follow_id) { ?>
-          <button class="follow btn btn-primary mt-3" id="unfollow" value="<?= $seller_id ?>">Unfollow</button>
+          <?php if ($follow_id) { ?>
+            <button class="follow btn btn-primary mt-3" id="unfollow" value="<?= $seller_id ?>">Unfollow</button>
 
-          <!--<button class="follow btn btn-success mt-3" id="follow">
+            <!--<button class="follow btn btn-success mt-3" id="follow">
                     <span class="msg-following" id="Following">Following</span>
                   </button>-->
-        <?php } else { ?>
-          <button class="follow btn btn-outline-success mt-3 text-light" id="follow" value="<?= $seller_id ?>">Follow</button>
-        <?php } ?>
+          <?php } else { ?>
+            <button class="follow btn btn-outline-success mt-3 bg-secondary text-light" id="follow" value="<?= $seller_id ?>">Follow</button>
+          <?php } ?>
 
-        <button class="btn btn-outline-success mt-3 text-light">
-          <i class="fa fa-thumbs-o-up" data-toggle="tooltip" data-placement="top" title="Recommend"></i> 0 recommendation
-        </button>
-        <!-- <button class="btn btn-success mt-3">
+          <button class="btn btn-outline-success mt-3 text-light bg-secondary">
+            <i class="fa fa-thumbs-o-up" data-toggle="tooltip" data-placement="top" title="Recommend"></i> 0 recommendation
+          </button>
+          <!-- <button class="btn btn-success mt-3">
           <i class="fa fa-thumbs-up" data-toggle="tooltip" data-placement="top" title="Recommend"></i> 9 recommendation
         </button> -->
 
+        <?php } ?>
       <?php } ?>
+    <?php } else { ?>
+      <br><br>
+      <?= (empty($seller_headline) and check_status($seller_id) != "Online") ? "<br><br>" : ""; ?>
     <?php } ?>
-  <?php } else { ?>
-    <br><br>
-    <?= (empty($seller_headline) and check_status($seller_id) != "Online") ? "<br><br>" : ""; ?>
-  <?php } ?>
   </div>
 
 </div>

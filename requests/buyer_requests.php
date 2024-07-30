@@ -4,7 +4,7 @@ require_once("../includes/db.php");
 
 if (!isset($_SESSION['seller_user_name'])) {
   echo "<script>window.open('../login','_self')</script>";
-}
+} 
 
 $login_seller_user_name = $_SESSION['seller_user_name'];
 $select_login_seller = $db->select("sellers", array("seller_user_name" => $login_seller_user_name));
@@ -35,22 +35,117 @@ $login_seller_offers = $row_login_seller->seller_offers;
   <?php if (!empty($site_favicon)) { ?>
     <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
   <?php } ?>
+  <style>
+    .box-shadow-sbr {
+      /* box-shadow:0px 0px 5px black, inset 0px 0px 15px lightgray; */
+      height: 45px;
+    }
+
+    .box-shadow-sbrb {
+      /* box-shadow:0px 0px 5px black, inset 0px 0px 15px #00c8d4; */
+      height: 45px;
+      padding:0.375rem 1.25rem;
+    }
+
+    .padding-alter9 {
+      /* margin-top: -120px; */
+      /* border:2px solid green; */
+      padding: 2rem;
+    }
+    .margin-top-6 {
+        margin-top: 1rem;
+        /* border:2px solid green; */
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+      }
+
+    @media (max-width:768px) {
+      .padding-alter9 {
+        /* margin-top: -130px; */
+        /* border:2px solid green; */
+        padding: 0px 10px;
+      }
+
+      .width-100 {
+        width: 100%;
+        display: flex;
+        margin-top: -5px !important;
+        margin-bottom: 16px !important;
+        /* border:1px solid yellow; */
+      }
+
+
+
+      .margin-top-5 {
+        /* background-color: green; */
+        padding-top: 2px;
+      }
+
+      .margin-top-6 {
+        margin-top: 1rem;
+        /* border:2px solid green; */
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+      }
+
+      .heading-3 {
+        /* background-color: green; */
+        font-size: 16px !important;
+        /* border: 1px solid green;         */
+        width: 40%;
+        padding-top: 5px;
+        /* margin: 50% !important; */
+
+      }
+
+      .width-99 {
+        /* border: 2px solid green; */
+      }
+
+      .font-size-th {
+        padding: 1px !important;
+        /* font-size: 1px !important; */
+        /* font-weight: 300; */
+        /* background-color: green; */
+      }
+
+      .font-size {
+        font-size: 13px !important;
+        /* margin: 10px !important; */
+        /* border: 1px solid green; */
+        width: 40% !important;
+        /* background-color: green !important; */
+      }
+
+      .heading_3 {
+        font-size: 20px;
+        width: 100%;
+      }
+    }
+    @media (max-width:640px) {
+      .padding-alter9 {
+        /* margin-top: -130px; */
+        /* border:2px solid green; */
+        padding: 0px 0px;
+      }
+    }
+  </style>
 </head>
 
 <body class="is-responsive">
   <?php require_once("../includes/user_header.php"); ?>
   <div class="container-fluid">
-    <div class="row buyer-requests">
-      <div class="col-md-12 mt-5">
+    <div class="row buyer-requests padding-alter9">
+      <div class="col-md-12">
         <!--        <h1 class="col-md-9 float-left">-->
         <!-- <? ////= $lang["titles"]["buyer_requests"];
               ?>
        <h1>-->
-        <div class="col-md-3 float-right">
+        <div class="col-md-3 float-right margin-top-6">
           <div class="input-group">
-            <input type="text" id="search-input" placeholder="Search Buyer Requests" class="form-control">
+            <input type="text" id="search-input" placeholder="Search Buyer Requests" class="form-control box-shadow-sbr">
             <span class="input-group-btn">
-              <button class="btn btn-success" id="req-search"> <i class="fa fa-search"></i> </button>
+              <button class="btn btn-success box-shadow-sbrb" id="req-search"> <i class="fa fa-search"></i> </button>
             </span>
           </div>
         </div>
@@ -60,7 +155,7 @@ $login_seller_offers = $row_login_seller->seller_offers;
         if (isset($_SESSION['seller_user_name'])) {
         ?>
           <h5 class="text-right mr-3">
-            <i class="fa fa-list-alt"></i> <?= $login_seller_offers; ?> Bids Left This Month
+            <i class="fa fa-list-alt margin-top-5"></i> &nbsp;<?= $login_seller_offers; ?> Bids Left This Month
           </h5>
         <?php } ?>
         <div class="clearfix"></div>

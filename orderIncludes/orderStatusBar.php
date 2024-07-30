@@ -1,5 +1,5 @@
-<?php if($order_status == "pending" or $order_status == "progress" or $order_status == "delivered" or $order_status == "revision requested" or $order_status == "cancellation requested"){ ?>
-<div id="order-status-bar" style="margin-top: 181px;">
+<?php if($order_status == "pending" or $order_status == "progress" or $order_status == "delivered" or $order_status == "revision requested" or $order_status == "cancellation requested" or $order_status){ ?>
+<div id="order-status-bar" style="margin-top: 151px;">
   <div class="container">
     <div class="row">
       <div class="col-md-10 offset-md-1">
@@ -13,11 +13,11 @@
           </span>
         </h5>
       </div>
-    </div>
+    </div> 
 </div>
 </div>
 <?php }elseif($order_status == "cancelled"){ ?>
-  <div id="order-status-bar" style="margin-top: 180px;">
+  <div id="order-status-bar" style="margin-top: 151px;">
   <div class="container">
     <div class="row">
       <div class="col-md-10 offset-md-1">
@@ -32,7 +32,7 @@
   </div>
 </div>
 <?php }elseif($order_status == "completed" ){ ?>
-<div id="order-status-bar" class="completed text-white" style="margin-top: 180px;">
+<div id="order-status-bar" class="completed text-white" style="margin-top: 151px;">
     <div class="row">
     <!--  <div class="col-md-10 offset-md-1"> -->
       <div class="container">

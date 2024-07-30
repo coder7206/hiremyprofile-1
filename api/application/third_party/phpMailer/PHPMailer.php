@@ -362,6 +362,7 @@ class PHPMailer
      * @var OAuth
      */
     protected $oauth;
+    
 
     /**
      * The SMTP server timeout in seconds.

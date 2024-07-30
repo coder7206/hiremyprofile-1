@@ -43,6 +43,17 @@ if (isset($_GET["delete_comment"])) {
       width: 280px;
       height: 150px;
     }
+    .mt-6{
+      margin-top:60px;
+    }
+    .px-6{
+      padding: 0 25px;
+    }
+    @media(min-width:1025px){
+      .mt-6{
+      margin-top:105px;
+    }
+    }
   </style>
 
 </head>
@@ -50,7 +61,7 @@ if (isset($_GET["delete_comment"])) {
 <body class="is-responsive blog">
   <?php require_once("../includes/header.php"); ?>
 
-  <header id="how_to" style="margin-top: 115px">
+  <header id="how_to" class="mt-6">
     <!--- how_to Starts --->
     <div class="cell">
       <h2 class="text-center text-white"><?= $lang['blog']['title']; ?></h2>
@@ -60,7 +71,7 @@ if (isset($_GET["delete_comment"])) {
   <!--- how_to Ends --->
 
   <br><br>
-  <div class="container mb-5">
+  <div class="container mb-5 px-6">
     <!--- container Starts --->
     <div class="row">
       <!--- row Starts --->

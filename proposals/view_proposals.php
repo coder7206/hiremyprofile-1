@@ -25,7 +25,7 @@ $row_plan_detail = $select_memb_plan_detail->fetch();
 //$memb_tbl = $db->select('membership_table',array('id'=>$memb_tbl_id));
 
 //$row_membership_table = $memb_tbl->fatch();
-
+ 
 //var_dump($row_membership_table);
 
 // $num_of_gigs = $row_membership_table->create_active_service;
@@ -75,7 +75,81 @@ $count_declined_proposals = $db->count("proposals", array("proposal_seller_id" =
 
 	<!-- Include the PayPal JavaScript SDK -->
 	<script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&disable-funding=credit,card&currency=<?= $paypal_currency_code; ?>"></script>
+	<style>
+		/* .padding-40 {
+			padding: 1px 40px 20px 40px !important;
+		} */
 
+		
+		@media(min-width:1024px){
+			.alter-margin-top{
+			/* border:1px solid green; */
+			padding:3rem;
+			/* margin-top: -130px; */
+		}
+		}
+
+		
+		@media(min-width:900px) and (max-width:1023px){
+			.alter-margin-top{
+			/* border:1px solid green; */
+			padding:10px 7px;
+			/* margin-top: -130px; */
+		}
+		}
+		@media(min-width:768px) and (max-width:899px) {
+			.alter-margin-top{
+			/* border:1px solid green; */
+			padding:10px 7px;
+			/* margin-top: -130px; */
+		}
+		}
+		@media (max-width:768px) {
+			.display_flex-2 {
+				width: 100%;
+				display: flex;
+				margin-top: 10px;
+				margin-bottom: 20px;
+			}
+			.alter-margin-top{
+			/* border:1px solid green; */
+			padding:10px 7px;
+			/* margin-top: -140px; */
+		}
+			/*  */
+			.text-align-center {
+				text-align: center;
+				margin: auto;
+				/* color: #126e6b; */
+			}
+
+			.full_width {
+				width: 100%;
+				/* border: 1px solid green; */
+				font-size: 16px;
+				color: gray;
+				padding-top: 5px;
+				font-weight: 300;
+				margin-bottom: 0px !important;
+			}
+
+			.right-float {
+				float: right;
+			}
+
+			.margin-bottom-1 {
+				margin-bottom: 0px !important;
+			}
+		}
+
+		@media(max-width:639px){
+			.alter-margin-top{
+			/* border:1px solid green; */
+			padding:10px 0px;
+			/* margin-top: -140px; */
+		}
+		}
+	</style>
 </head>
 
 <body class="is-responsive">
@@ -92,20 +166,20 @@ $count_declined_proposals = $db->count("proposals", array("proposal_seller_id" =
 	?>
 	<div class="container-fluid view-proposals">
 		<!-- container-fluid view-proposals Starts -->
-		<div class="row">
+		<div class="row alter-margin-top">
 			<!-- row Starts -->
-			<div class="col-md-12 mt-5 mb-3">
+			<div class="col-md-12 mt-2 margin-bottom-1 padding-40">
 				<!-- col-md-12 mt-5 mb-3 Starts -->
-				<h1 class="pull-left"><?= $lang["titles"]["view_proposals"]; ?></h1>
-				<label class="pull-right lead">
+				<h1 class="pull-left display_flex-2"><span class="text-align-center"><?= $lang["titles"]["view_proposals"]; ?></span></h1>
+				<label class="pull-right lead full_width">
 					<!-- pull-right lead Starts -->
-					<?= $lang['view_proposals']['vacation_mode']; ?>
+					<span id="paddin-top"><?= $lang['view_proposals']['vacation_mode']; ?></span>
 					<?php if ($login_seller_vacation == "off") { ?>
-						<button id="turn_on_seller_vaction" data-toggle="button" class="btn btn-lg btn-toggle">
+						<button id="turn_on_seller_vaction" data-toggle="button" class="btn btn-lg btn-toggle right-float">
 							<div class="toggle-handle"></div>
 						</button>
 					<?php } else { ?>
-						<button id="turn_off_seller_vaction" data-toggle="button" class="btn btn-lg btn-toggle active">
+						<button id="turn_off_seller_vaction" data-toggle="button" class="btn btn-lg btn-toggle active right-float">
 							<div class="toggle-handle"></div>
 						</button>
 					<?php } ?>

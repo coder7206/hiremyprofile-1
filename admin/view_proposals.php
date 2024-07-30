@@ -110,9 +110,9 @@ if (!isset($_SESSION['admin_email'])) {
 
                                     $per_page = 10;
 
-                                    if (isset($_GET['view_proposals'])) {
+                                    if ($_GET['view_proposals']) {
 
-                                        $page = $input->get('view_proposals');
+                                        $page = $_GET['view_proposals'];
 
                                         if ($page == 0) {
                                             $page = 1;

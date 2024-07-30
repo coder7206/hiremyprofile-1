@@ -10,3 +10,4 @@ switch ($_REQUEST['zAction']) {
 		get_search_pagination();
 		break;
 }
+ 

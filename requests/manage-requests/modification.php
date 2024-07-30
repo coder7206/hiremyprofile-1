@@ -1,10 +1,22 @@
-<div class="table-responsive box-table">
+
+<style>
+	@media (max-width:768px){
+		.font-size-3 {
+            font-size: 13px !important;
+            padding: 10px !important;
+            text-align: center;
+         }
+		
+	}
+</style>
+
+<div class="table-responsive box-table box-shadow-req-act">
     <table class="table table-bordered" id="requestModification">
         <thead>
             <tr>
-                <th><?= $lang['th']['modification_proposal_title']; ?></th>
-                <th><?= $lang['th']['modification_message']; ?></th>
-                <th><?= $lang['th']['actions']; ?></th>
+                <th class="font-size-3"><?= $lang['th']['modification_proposal_title']; ?></th>
+                <th class="font-size-3"><?= $lang['th']['modification_message']; ?></th>
+                <th class="font-size-3"><?= $lang['th']['actions']; ?></th>
             </tr>
         </thead>
         <tbody>

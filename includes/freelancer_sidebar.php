@@ -35,7 +35,7 @@ if (isset($_GET['seller_skill'])) {
 ?>
 
 <div class="card border-success mb-3">
-	<div class="card-body pb-2 pt-3 <?= ($lang_dir == "right" ? 'text-right' : '') ?>">
+	<div class="card-body box-shadow-freelancer-sb pb-2 pt-3 <?= ($lang_dir == "right" ? 'text-right' : '') ?>">
 		<ul class="nav flex-column">
 			<li class="nav-item checkbox checkbox-success">
 				<label>
@@ -51,13 +51,13 @@ if (isset($_GET['seller_skill'])) {
 
 
 <div class="card border-success mb-3">
-	<div class="card-header bg-success">
+	<div class="card-header bg-success box-shadow-freelancer-sbh">
 		<h3 class="<?= ($lang_dir == "right" ? 'float-right' : 'float-left') ?> text-white h5">Skills</h3>
 		<button class="btn btn-secondary btn-sm <?= ($lang_dir == "right" ? 'float-left' : 'float-right') ?> clear_seller_skill clearlink" onclick="clearSkill()">
 			<?= $lang['sidebar']['clear_filter']; ?>
 		</button>
-	</div>
-	<div class="card-body">
+	</div>	
+	<div class="card-body box-shadow-freelancer-sb">
 		<ul class="nav flex-wrap flex-row">
 			<?php
 			$qSkills = $db->select("seller_skills");
@@ -90,7 +90,7 @@ if (isset($_GET['seller_skill'])) {
 			<?= $lang['sidebar']['clear_filter']; ?>
 		</button>
 	</div>
-	<div class="card-body">
+	<div class="card-body box-shadow-freelancer-sb">
 		<ul class="nav flex-column">
 			<?php
 			$sellers = $db->query("select DISTINCT seller_country from sellers");
@@ -113,13 +113,13 @@ if (isset($_GET['seller_skill'])) {
 </div> -->
 
 <div class="card border-success mb-3">
-	<div class="card-header bg-success">
+	<div class="card-header bg-success box-shadow-freelancer-sbh">
 		<h3 class="<?= ($lang_dir == "right" ? 'float-right' : 'float-left') ?> text-white h5"><?= $lang['sidebar']['seller_level']; ?></h3>
 		<button class="btn btn-secondary btn-sm <?= ($lang_dir == "right" ? 'float-left' : 'float-right') ?> clear_seller_level clearlink" onclick="clearLevel()">
 			<?= $lang['sidebar']['clear_filter']; ?>
 		</button>
 	</div>
-	<div class="card-body">
+	<div class="card-body box-shadow-freelancer-sb">
 		<ul class="nav flex-column">
 			<?php
 			$sellers = $db->query("select DISTINCT seller_level from sellers");
@@ -141,13 +141,13 @@ if (isset($_GET['seller_skill'])) {
 	</div>
 </div>
 <div class="card border-success mb-3">
-	<div class="card-header bg-success">
+	<div class="card-header bg-success box-shadow-freelancer-sbh">
 		<h3 class="<?= ($lang_dir == "right" ? 'float-right' : 'float-left') ?> text-white h5"><?= $lang['sidebar']['seller_lang']; ?></h3>
 		<button class="btn btn-secondary btn-sm <?= ($lang_dir == "right" ? 'float-left' : 'float-right') ?> clear_seller_language clearlink" onclick="clearLanguage()">
 			<?= $lang['sidebar']['clear_filter']; ?>
 		</button>
 	</div>
-	<div class="card-body">
+	<div class="card-body box-shadow-freelancer-sb">
 		<ul class="nav flex-column">
 			<?php
 			$sellers = $db->query("select DISTINCT seller_language from sellers");

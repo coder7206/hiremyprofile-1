@@ -46,7 +46,7 @@ if(!isset($_SESSION['checkout_seller_id']) and !isset($_SESSION['cart_seller_id'
 	</style>
 </head>
 <body class="is-responsive">
-	<img src="images/bg4.jpeg" alt="logout-pic">
+	<img src="images/12bg4.jpeg" alt="logout-pic">
 </body>
 </html>
 <?php

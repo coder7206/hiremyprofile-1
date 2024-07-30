@@ -43,12 +43,158 @@ $login_seller_image = getImageUrl2("sellers", "seller_image", $row_login_seller-
   <?php if (!empty($site_favicon)) { ?>
     <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
   <?php } ?>
+  <style>
+    @media (max-width:768px) {
+      .font-size-4 {
+        font-size: 16px;
+        color: gray;
+        /* border: 1px solid gray; */
+        margin: auto;
+      }
+
+      .heading_4-h {
+        /* border: 1px solid yellow; */
+        /* font-size: 25px; */
+        /* color: #00c8d4; */
+        text-align: center;
+        margin: auto;
+      }
+
+      .text_under_line {
+        /* border-bottom: 1px solid lightgray; */
+        display: flex;
+        /* padding-bottom: 10px; */
+        width: 100%;
+
+      }
+
+      .favorite_desc {
+        border: 1px solid lightgray;
+        font-size: 15px;
+        color: #086569;
+        padding: 10px 12px;
+        /* text-align: center; */
+        margin-bottom: 10vh;
+      }
+
+      .heading_3 {
+        font-size: 20px;
+        color: gray;
+        padding-top: 0px !important;
+        margin-bottom: 5vh;
+      }
+
+      .full-width-p {
+        width: 100%;
+        display: flex;
+        margin-bottom: 35px;
+      }
+
+
+
+
+      .bg-color1 {
+        background-color: #f5c6cb;
+        /* padding-bottom: 5vh; */
+        margin: auto;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+        width: 92%;
+        /* border:2px solid green; */
+        /* box-shadow:0px 0px 6px black, inset 0px 0px 75px red; */
+      }
+    }
+
+    .height-50 {
+      /* padding-left:0px;
+     padding-right:0px; */
+    }
+
+    .font-size-4 {
+      font-size: 16px;
+      color: gray;
+      /* border: 1px solid gray; */
+      margin: auto;
+    }
+
+    .favorite_desc {
+      /* border: 1px solid lightgray; */
+      font-size: 15px;
+      /* width:60%; */
+    }  
+
+    .bg-color1 {
+      background-color: #f5c6cb;
+      padding-bottom: 5vh;
+      margin: auto;
+      margin-top: 3rem;
+      margin-bottom: 3rem;
+      width: 92%;
+      /* box-shadow:0px 0px 6px black, inset 0px 0px 75px red; */
+    }
+
+    .top-margin-m {
+      margin: auto;
+    }
+@media(min-width:1024px){
+    .padding-alter2 {
+      /* padding:0px 2px; */
+      margin: 0px 35px 2px 32px;
+    }
+  }
+   @media(max-width:1023px) and (min-width:768px){
+    .padding-alter2 {
+        margin: 0px 22px 0px 10px;
+      }
+      .gnav-header #mobilemenu{
+        padding-left:2px !important;
+      }
+   }
+    @media(min-width:641px) and (max-width:767px) {
+      .padding-alter2 {
+        margin: 0px 0px 0px 0px;
+      }
+      .gnav-header #mobilemenu{
+        padding-left:2px !important;
+      }
+      .border {
+      /* border: 1px solid gray !important; */
+      box-shadow: 0px 0px 2px black,inset 0px 0px 25px lightsteelblue;
+      border-radius: 3px;
+      margin:1.25rem;
+    }
+    }
+    @media(min-width:421px) and (max-width:640px) {
+      .padding-alter2 {
+        margin: 0px 0px 0px 0px;
+      }
+      .border {
+      /* border: 1px solid gray !important; */
+      box-shadow: 0px 0px 2px black,inset 0px 0px 25px lightsteelblue;
+      border-radius: 3px;
+      margin:1.25rem;
+    }
+    }
+    @media(max-width:420px) {
+      .padding-alter2 {
+        margin: 0px 0px 0px 0px;
+      }
+      .border {
+      /* border: 1px solid gray !important; */
+      box-shadow: 0px 0px 2px black,inset 0px 0px 25px lightsteelblue;
+      border-radius: 3px;
+      margin:1.25rem;
+    }
+    }
+
+    
+  </style>
 </head>
 
 <body class="is-responsive">
   <?php require_once("includes/header.php"); ?>
 
-  <div class="container mb-3" style="margin-top: 140px;">
+  <div class="container-fluid mb-3">
     <?php
     $get_favorites = $db->select("favorites", array("seller_id" => $login_seller_id));
     $count_favorites = $get_favorites->rowCount();
@@ -70,16 +216,16 @@ $login_seller_image = getImageUrl2("sellers", "seller_image", $row_login_seller-
       }
     }
     ?>
-    <div class="row justify-content-center p-4 mb-3">
+    <div class="row justify-content-center mb-3 padding-alter2">
       <div class="row" id="favorites">
-        <div class="col-lg-8 col-md-12 mb-3">
-          <h1>
-            <?= $lang["titles"]["favorites"]["title"]; ?>
-            <small><?= str_replace("{count}", $count_favorites, $lang['favorites']['count']); ?></small>
-          </h1>
-          <p class="favorite-description"><?= $lang["titles"]["favorites"]["desc"]; ?></p>
+        <div class="col-lg-8 col-md-8 mb-3">
+          <h2 class="text_under_line">
+            <span class="heading_4-h"><?= $lang["titles"]["favorites"]["title"]; ?></span>
+          </h2>
+          <p class="full-width-p"><small class="font-size-4"><?= str_replace("{count}", $count_favorites, $lang['favorites']['count']); ?></small></p>
+          <p class="favorite-description favorite_desc"><?= $lang["titles"]["favorites"]["desc"]; ?></p>
         </div>
-        <div class="col-lg-3 col-md-12">
+        <div class="col-lg-3 col-md-4 pt-5 border">
           <div class="favorite-owner mb-lg-5 mb-md-0 mb-0">
             <?php if (!empty($login_seller_image)) { ?>
               <img src="<?= $login_seller_image; ?>">
@@ -96,10 +242,8 @@ $login_seller_image = getImageUrl2("sellers", "seller_image", $row_login_seller-
       </div>
     </div>
   </div>
-
   <hr>
-
-  <div class="container pt-1">
+  <div class="container pt-1 bg-color1">
     <div class="row mb-4">
       <?php
       $get_favorites = $db->select("favorites", array("seller_id" => $login_seller_id));
@@ -163,7 +307,7 @@ $login_seller_image = getImageUrl2("sellers", "seller_image", $row_login_seller-
     if ($count_favorites == 0) {
 
       echo "<span class='text-center'>
-      <h3 class='pt-5 pb-5'><i class='fa fa-meh-o'></i> {$lang['favorites']['no_favorites']}</h3>
+      <h3 class='pt-5 pb-5 heading_3'><i class='fa fa-meh-o'></i> {$lang['favorites']['no_favorites']}</h3>
       </span>";
     }
     ?>

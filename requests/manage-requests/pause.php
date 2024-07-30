@@ -1,13 +1,25 @@
-<div class="table-responsive box-table">
+
+<style>
+	@media (max-width:768px){
+		.font-size-3 {
+            font-size: 13px !important;
+            padding: 10px !important;
+            text-align: center;
+         }
+		
+	}
+</style>
+
+<div class="table-responsive box-table box-shadow-req-act">
     <table class="table table-bordered" id="requestPause">
         <thead>
             <tr>
-                <th><?= $lang['th']['title']; ?></th>
-                <th><?= $lang['th']['description']; ?></th>
-                <th><?= $lang['th']['date']; ?></th>
-                <th><?= $lang['th']['offers']; ?></th>
-                <th><?= $lang['th']['budget']; ?></th>
-                <th><?= $lang['th']['actions']; ?></th>
+                <th class="font-size-3"><?= $lang['th']['title']; ?></th>
+                <th class="font-size-3"><?= $lang['th']['description']; ?></th>
+                <th class="font-size-3"><?= $lang['th']['date']; ?></th>
+                <th class="font-size-3"><?= $lang['th']['offers']; ?></th>
+                <th class="font-size-3"><?= $lang['th']['budget']; ?></th>
+                <th class="font-size-3"><?= $lang['th']['actions']; ?></th>
             </tr>
         </thead>
         <tbody>

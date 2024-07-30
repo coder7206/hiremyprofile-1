@@ -1,5 +1,5 @@
 <div class="col-md-12">
-<div class="card card-body mb-4 freelancerBox">
+<div class="card card-body mb-4 freelancerBox box-shadow-freelancer-sb">
 	<figure class="wt-userlistingimg">
 		<?php if(!empty($seller_image)){ ?>
 		<img src="<?= $seller_image; ?>" width="100" class="rounded img-fluid">
@@ -59,7 +59,7 @@
 				}
 				?>
 				<h4 class="mb-1"><?php printf("%.1f", $average); ?>/<small class="text-muted font-weight-normal">5</small></h4>
-				<a>(<?= $count_reviews; ?> Reviews)</a>
+				<a>(<?= $count_reviews; ?> Reeviews)</a>
 				</div>
 			</div>
 		</div>

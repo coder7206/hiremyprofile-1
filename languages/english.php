@@ -8,7 +8,7 @@ $lang["become_seller"] = "Become a Seller";
 $lang["find_job"] = "Find Job";
 $lang["sign_in"] = "Log In";
 $lang["join_now"] = "Join Now";
-$lang["mobile_join_now"] = "Join";
+$lang["mobile_join_now"] = "Join Now";
 $lang['no_results'] = "No Results Found.";
 
 $lang['more'] = "More";
@@ -61,7 +61,7 @@ $lang["menu"]["logout"] = "Logout";
 
 
 /// Buttons
-$lang["search"]["placeholder"] = "Find Services";
+$lang["search"]["placeholder"] = " Find Services . . .";
 $lang["search"]["button"] = "Search";
 $lang["view_all"] = "VIEW ALL";
 $lang["see_all"] = "See All";
@@ -99,7 +99,7 @@ $lang["popup"]["view_dashboard"] = "View Dashboard";
 
 $lang["popup"]['knowledge_bank']['title'] = "Knowledge Bank";
 $lang["popup"]['knowledge_bank']['heading'] = "Our how to guides";
-$lang["popup"]['knowledge_bank']['all_articles'] = "All Articles:";
+$lang["popup"]['knowledge_bank']['all_articles'] = "What is Hiremyprofile :";
 $lang["popup"]['knowledge_bank']['search'] = "Search Results For ";
 $lang["popup"]['knowledge_bank']['no_results'] = "Sorry, we couldn't find any results for your search.";
 
@@ -164,7 +164,7 @@ $lang["sidebar"]["categories"] = "Categories";
 $lang["sidebar"]["delivery_time"] = "Delivery Time";
 $lang["sidebar"]["seller_skill"] = "Seller Skill";
 $lang["sidebar"]["seller_level"] = "Seller Level";
-$lang["sidebar"]["seller_lang"] = "Seller Lang";
+$lang["sidebar"]["seller_lang"] = "Seller Langauge";
 $lang["sidebar"]["clear_filter"] = "<i class='fa fa-times-circle'></i> Clear Filter";
 
 
@@ -206,18 +206,18 @@ $lang["how_it_works"]['title'] = "How Our Platform Works";
 $lang["how_it_works"]['desc'] = "Secure, innovative and user friendly platform for buying and selling online services/proposals.";
 $lang["how_it_works"]['buyers']['title'] = "Buyers";
 $lang["how_it_works"]['buyers']['desc'] = "Whether you need a logo designed for your new website, or a video presenter who will help you introduce your company to potential clients, or even a tutor to help you with school assignments, you are at the right place. For everything that you do not know how to do yourself, or you simply don’t have the time, {site_name} sellers are at your service.";
-$lang["how_it_works"]['buyers']['column_1'] = "<h3>1) Find a service that you need</h3><p>Compare prices, portfolios, delivery time, ratings and community recommendations in order to find a seller that best suits your needs. If you have a specific question, simply send them an enquiry. You can also post a request.</p>";
-$lang["how_it_works"]['buyers']['column_2'] = "<h3>3) Follow up the transaction</h3><p>Exchange files and feedback with the seller via the built-in conversation and transaction management system. The seller will deliver service within a specified time frame.</p>";
-$lang["how_it_works"]['buyers']['column_3'] = "<h3>5) Request For Modification</h3><p>If for some reason you are not satisfied with the work delivered, you can go ahead and request for modification, and your seller will do the requested modifications.</p>";
-$lang["how_it_works"]['buyers']['column_4'] = "<h3>2) Submit your details</h3><p>Be as detailed as possible so the seller can provide you with the quality service that you are expecting. Your payment is held secure until you confirm that the service is performed to your satisfaction.</p>";
-$lang["how_it_works"]['buyers']['column_5'] = "<h3>4) Proposal/Service Delivered</h3><p>Once you are happy with the service performed & delivered, you can mark the transaction complete, and we'll make sure that the seller gets paid. Help the community by leaving a feedback for the seller.</p>";
-$lang["how_it_works"]['buyers']['column_6'] = "<h3>6) Rate Your Seller</h3><p>Once completed, please rate and provide feedback about your seller. This will help inform the decisions of other buyers looking through proposals/services.</p>";
+$lang["how_it_works"]['buyers']['column_1'] = "<h4 class='color-of-heading'>1) Find a service that you need</h4><p class='color-of-paragraph'>Compare prices, portfolios, delivery time, ratings and community recommendations in order to find a seller that best suits your needs. If you have a specific question, simply send them an enquiry. You can also post a request.</p>";
+$lang["how_it_works"]['buyers']['column_2'] = "<h4 class='color-of-heading'>3) Follow up the transaction</h4><p class='color-of-paragraph'>Exchange files and feedback with the seller via the built-in conversation and transaction management system. The seller will deliver service within a specified time frame.</p>";
+$lang["how_it_works"]['buyers']['column_3'] = "<h4 class='color-of-heading'>5) Request For Modification</h4><p class='color-of-paragraph'>If for some reason you are not satisfied with the work delivered, you can go ahead and request for modification, and your seller will do the requested modifications.</p>";
+$lang["how_it_works"]['buyers']['column_4'] = "<h4 class='color-of-heading'>2) Submit your details</h4><p class='color-of-paragraph'>Be as detailed as possible so the seller can provide you with the quality service that you are expecting. Your payment is held secure until you confirm that the service is performed to your satisfaction.</p>";
+$lang["how_it_works"]['buyers']['column_5'] = "<h4 class='color-of-heading'>4) Proposal/Service Delivered</h4><p class='color-of-paragraph'>Once you are happy with the service performed & delivered, you can mark the transaction complete, and we'll make sure that the seller gets paid. Help the community by leaving a feedback for the seller.</p>";
+$lang["how_it_works"]['buyers']['column_6'] = "<h4 class='color-of-heading'>6) Rate Your Seller</h4><p class='color-of-paragraph'>Once completed, please rate and provide feedback about your seller. This will help inform the decisions of other buyers looking through proposals/services.</p>";
 $lang["how_it_works"]['sellers']['title'] = "Sellers";
 $lang["how_it_works"]['sellers']['desc'] = "{site_name} provides you with an opportunity to turn knowledge, talent, skill or a hobby into a permanent or temporal source of income. We are here to provide security, privacy, convenience and timely payments, so you can keep doing what you love the most. So, bring the talent and we will make earning as easy as 1,2,3";
-$lang["how_it_works"]['sellers']['column_1'] = "<h3>1) Post a Proposal/service</h3><p>Post a proposal/service that is in accordance with your skills. Be as specific as possible so your potential clients know exactly what they are getting for the money they are willing to pay.</p>";
-$lang["how_it_works"]['sellers']['column_2'] = "<h3>3) Build your reputation</h3><p>Make sure you treat all of your customers the same, and try to provide the best possible service regardless of the transaction value. Satisfied customers will recommend you to their friends.</p>";
-$lang["how_it_works"]['sellers']['column_3'] = "<h3>2) Communicate promptly</h3><p>Respond to customer enquiries, as well as requests for custom offers, within a reasonable time. Good communication is a prerequisite for successful cooperation.</p>";
-$lang["how_it_works"]['sellers']['column_4'] = "<h3>4) Precise delivery dates</h3><p>Try as much as possible to deliver orders withing pre-specified delivery dates . Buyers tend to cancel once an order passes the delivery date. Not good for business.</p>";
+$lang["how_it_works"]['sellers']['column_1'] = "<h4 class='color-of-heading'>1) Post a Proposal/service</h4><p class='color-of-paragraph'>Post a proposal/service that is in accordance with your skills. Be as specific as possible so your potential clients know exactly what they are getting for the money they are willing to pay.</p>";
+$lang["how_it_works"]['sellers']['column_2'] = "<h4 class='color-of-heading'>3) Build your reputation</h4><p class='color-of-paragraph'>Make sure you treat all of your customers the same, and try to provide the best possible service regardless of the transaction value. Satisfied customers will recommend you to their friends.</p>";
+$lang["how_it_works"]['sellers']['column_3'] = "<h4 class='color-of-heading'>2) Communicate promptly</h4><p class='color-of-paragraph'>Respond to customer enquiries, as well as requests for custom offers, within a reasonable time. Good communication is a prerequisite for successful cooperation.</p>";
+$lang["how_it_works"]['sellers']['column_4'] = "<h4 class='color-of-heading'>4) Precise delivery dates</h4><p class='color-of-paragraph'>Try as much as possible to deliver orders withing pre-specified delivery dates . Buyers tend to cancel once an order passes the delivery date. Not good for business.</p>";
 
 ///  Start Selling Page
 
@@ -333,7 +333,7 @@ $lang['tabs']['declined'] = "Declined";
 /// Requests Tabs
 $lang['tabs']['active_requests'] = "Active Requests";
 $lang['tabs']['pause_requests'] = "Paused Requests";
-$lang['tabs']['pending_approval'] = "Pending Approval";
+$lang['tabs']['pending_approval'] = "Pending Approvel";
 $lang['tabs']['unapproved'] = "Unapproved";
 
 /// Manage Contacts Tabs
@@ -400,7 +400,7 @@ $lang["cookie_box"]['button'] = "Got It.";
 
 /// Footer
 $lang["categories"] = "CATEGORIES";
-$lang["about"] = "ABOUT";
+$lang["about"] = "ABOUT US";
 $lang["find_us_on"] = "FIND US ON";
 $lang["mobile_apps"] = "Mobile Apps";
 
@@ -421,7 +421,7 @@ $lang['proposals']['add_video_description'] = "(Optional) Supported Video Extens
 $lang['proposals']['add_video'] = "Add Video";
 $lang['proposals']['remove_video'] = "Remove Video";
 
-// Gigtodo 2.0
+// HIREMYPROFILE 2.0
 
 $lang["pages"] = "PAGES";
 
@@ -475,7 +475,7 @@ $lang['label']['enable_notifications'] = "Enable Sliding Notifications";
 $lang['label']['enter_old_pass'] = "Enter Old Password";
 
 $lang['label']['select_enquiry'] = "Select Relevant Inquiry Subject";
-$lang['label']['select_enquiry2'] = "Select Inquiry Subject";
+$lang['label']['select_enquiry2'] = "Select Relevant Inquiry Subject";
 $lang['label']['subject'] = "Subject *";
 $lang['label']['message'] = "Message *";
 $lang['label']['order_number'] = "Order Number *";
@@ -512,7 +512,7 @@ $lang['placeholder']['username'] = "Enter Your Username";
 $lang['placeholder']['email'] = "Enter Your Email";
 $lang['placeholder']['phone'] = "Enter Your Phone";
 $lang['placeholder']['password'] = "Enter Your Password";
-$lang['placeholder']['password_confirm'] = "Enter Your Password Again";
+$lang['placeholder']['password_confirm'] = "Confirm Password";
 $lang['placeholder']['username_or_email'] = "Enter Your Username Or Email";
 $lang['placeholder']['search_username'] = "Search for a username";
 $lang['placeholder']['request_title'] = "Request Title";
@@ -556,6 +556,7 @@ $lang['warning']['foreign_characters'] = "Foreign characters are not allowed in 
 $lang['warning']['dont_match'] = "Passwords don't match. Please try again.";
 
 $lang['warning']['spaces_not_allowed'] = "Spaces Are Not Allowed In Username. Please Remove The Spaces.";
+$lang['warning']['special_charactor_not_allowed'] = "Special charactor Are Not Allowed In Username";
 
 /// Buttons
 
@@ -630,7 +631,7 @@ $lang['button']['submut'] = "Submit";
 $lang['th']['buyer_names'] = "Buyer Names";
 $lang['th']['seller_names'] = "Seller Names";
 
-$lang['th']['no'] = "No";
+$lang['th']['no'] = "Sr No";
 $lang['th']['ref_no'] = "Ref No";
 $lang['th']['date'] = "Date";
 $lang['th']['for'] = "For";
@@ -641,8 +642,8 @@ $lang['th']['status'] = "Status";
 $lang['th']['order_summary'] = "ORDER SUMMARY";
 $lang['th']['order_date'] = "ORDER DATE";
 $lang['th']['due_on'] = "DUE ON";
-$lang['th']['total'] = "TOTAL";
-$lang['th']['status2'] = "STATUS";
+$lang['th']['total'] = "TOTAL ORDERS";
+$lang['th']['status2'] = "ORDERS STATUS";
 
 $lang['th']['proposal_title'] = "Proposal's Title";
 $lang['th']['proposal_price'] = "Proposal's Price";
@@ -749,7 +750,7 @@ $lang['settings']['account_deactivation'] = "ACCOUNT DEACTIVATION";
 $lang['settings']['please_withdraw'] = "Please withdraw your revenues before deactivating your account.";
 
 $lang['settings']['what_happens']['title'] = "What happens when you deactivate your account?";
-$lang['settings']['what_happens']['1'] = "Your profile and services won't be shown on Gigtodo anymore.";
+$lang['settings']['what_happens']['1'] = "Your profile and services won't be shown on hiremyprofile anymore.";
 $lang['settings']['what_happens']['2'] = "Any open orders will be canceled and refunded.";
 $lang['settings']['what_happens']['3'] = "You won't be able to re-activate your proposals/services.";
 $lang['settings']['what_happens']['4'] = "You won't be able to restore your account.";
@@ -914,7 +915,7 @@ $lang['inbox']['delete'] = "Delete";
 
 //// Manage Requests Page
 
-$lang['manage_requests']['no_active'] = "You've have no active requests at the moment.";
+$lang['manage_requests']['no_active'] = "You've no active requests at the moment.";
 $lang['manage_requests']['no_pause'] = "You currently have no requests paused.";
 $lang['manage_requests']['no_pending'] = "You currently have no requests pending.";
 $lang['manage_requests']['no_modification'] = "You currently have no requests for modification.";
@@ -923,7 +924,7 @@ $lang['manage_requests']['no_unapproved'] = "You currently have no unapproved re
 
 //// Post A Request Page Sidebar
 
-$lang['post_request']['heading_1'] = "Chose A Category";
+$lang['post_request']['heading_1'] = "Choose A Category";
 $lang['post_request']['heading_2'] = "Once you place your order, when would you like your service delivered?";
 $lang['post_request']['heading_3'] = "What is your budget for this service?";
 // $lang['post_request']['heading_1'] = "";
@@ -944,7 +945,7 @@ $lang['post_request']['column_4']['desc'] = "Enter an amount you are willing to 
 
 /// Knowledge Bank Page
 
-$lang['knowledge_bank']['title'] = "KNOWLEDGE BANK FOR HireMyProfile";
+$lang['knowledge_bank']['title'] = "KNOWLEDGE BANK FOR Hiremyprofile";
 $lang['knowledge_bank']['desc'] = "Everything you need to know";
 
 /// Single Article Page
@@ -973,7 +974,7 @@ $lang['single_ticket']['reply_to_admin'] = "Reply To Admin";
 $lang['single_ticket']["can't_send"] = "You Can't Send Message Now Because Ticket status is closed now.";
 
 
-/// Gigtodo Notifier Plugin
+/// hiremyprofile Notifier Plugin
 
 /// Inbox
 $lang['notifier_plugin']['new_message'] = "$site_name - You've received a message from {seller_user_name}";

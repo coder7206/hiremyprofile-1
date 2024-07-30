@@ -6,6 +6,7 @@ require_once("functions/functions.php");
 ?>
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
+
 <head>
   <title> <?= $site_name; ?> - <?= $lang['featured_proposals']['title']; ?> </title>
   <meta name="description" content="">
@@ -30,7 +31,7 @@ require_once("functions/functions.php");
   <?php } ?>
 </head>
 
-<body class="bg-white is-responsive">
+<body class="bg-white is-responsive" style="background-color:green;">
   <?php require_once("includes/header.php"); ?>
   <div class="container-fluid mt-5"><!-- Container start -->
     <div class="row">

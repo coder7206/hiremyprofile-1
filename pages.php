@@ -1,5 +1,5 @@
 <?php
-  // require_once("social-config.php");
+  require_once("social-config.php");
   $page = $db->select("pages",array('url'=>$slug))->fetch();
   $page_id = $page->id;
   $page_title = $page->title;

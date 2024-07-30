@@ -11,11 +11,34 @@ if ($videoPlugin == 1) {
 	$enableVideo = 0;
 }
 ?>
-<div class="proposal-card-base mp-proposal-card">
-	<!--- proposal-card-base mp-proposal-card Starts --->
-	<a href="<?= $site_url; ?>/proposals/<?= $seller_user_name; ?>/<?= $proposal_url; ?>">
-		<img src="<?= $proposal_img1; ?>" class="img-fluid">
-	</a>
+ 
+
+<style>
+	.favoriteIcon-style {
+		position: absolute;
+		left: 10px;  
+		top: 10px;     
+	}
+</style>
+
+<div class="proposal-card-base mp-proposal-card box-shadow-mpcard">
+	<!--- proposal-card-base mp-proposal-card Starts ---> 
+	<div class="proposal_image_div_style">
+		<a href="<?= $site_url; ?>/proposals/<?= $seller_user_name; ?>/<?= $proposal_url; ?>">
+			<img src="<?= $proposal_img1; ?>" class="">
+		</a>
+
+		<?php if (isset($_SESSION['seller_user_name'])) { ?>
+			<?php if ($proposal_seller_id != $login_seller_id) { ?>
+				<i data-id="<?= $proposal_id; ?>" href="#" class="fa fa-heart favoriteIcon-style <?= $show_favorite_class; ?>" data-toggle="tooltip" data-placement="top" title="Favorite"></i>
+			<?php } ?>
+		<?php } else { ?>
+			<a href="#" data-toggle="modal" data-target="#login-modal">
+				<i class="fa fa-heart proposal-favorite favoriteIcon-style" data-toggle="tooltip" data-placement="top" title="Favorite"></i>
+			</a>
+		<?php } ?>
+
+	</div>
 	<div class="proposal-card-caption">
 		<!--- proposal-card-caption Starts --->
 		<div class="proposal-seller-info">
@@ -31,17 +54,8 @@ if ($videoPlugin == 1) {
 					<?= $seller_level; ?>
 				</div>
 			</div>
-			<div class="favoriteIcon">
-				<?php if (isset($_SESSION['seller_user_name'])) { ?>
-					<?php if ($proposal_seller_id != $login_seller_id) { ?>
-						<i data-id="<?= $proposal_id; ?>" href="#" class="fa fa-heart <?= $show_favorite_class; ?>" data-toggle="tooltip" data-placement="top" title="Favorite"></i>
-					<?php } ?>
-				<?php } else { ?>
-					<a href="#" data-toggle="modal" data-target="#login-modal">
-						<i class="fa fa-heart proposal-favorite" data-toggle="tooltip" data-placement="top" title="Favorite"></i>
-					</a>
-				<?php } ?>
-			</div>
+			From: <?= showPrice($proposal_price); ?>
+
 		</div>
 		<!--- gig-seller-info Ends --->
 		<a href="<?= $site_url; ?>/proposals/<?= $seller_user_name; ?>/<?= $proposal_url; ?>" class="proposal-link-main js-proposal-card-imp-data">
@@ -61,6 +75,9 @@ if ($videoPlugin == 1) {
 				</span>
 			</span>
 		</div>
+
+		
+
 		<?php if (check_status($proposal_seller_id) == "Online") { ?>
 			<div class="is-online float-right">
 				<i class="fa fa-circle"></i> <?= $lang['proposals']['online']; ?>
@@ -68,45 +85,45 @@ if ($videoPlugin == 1) {
 		<?php } ?>
 	</div>
 	<!--- proposal-card-caption Ends --->
-	<footer class="proposal-card-footer">
-		<!--- proposal-card-footer Starts --->
-		<div class="proposal-fav">
+	<!-- <footer class="proposal-card-footer"> -->
+	<!--- proposal-card-footer Starts --->
+	<!-- <div class="proposal-fav"> -->
 
-			<?php if ($proposal_enable_referrals == "yes" & $enable_referrals == "yes") { ?>
+	<?php if ($proposal_enable_referrals == "yes" & $enable_referrals == "yes") { ?>
 
-				<?php if (isset($_SESSION['seller_user_name'])) { ?>
-					<?php if ($proposal_seller_id != $login_seller_id) { ?>
-						<a class="icn-list proposal-offer" data-id="<?= $proposal_id; ?>">
-							<?php require("$dir/images/affiliate.svg"); ?>
-						</a>
-					<?php } ?>
-				<?php } else { ?>
-					<a class="icn-list" data-toggle="modal" data-target="#login-modal">
-						<?php require("$dir/images/affiliate.svg"); ?>
-					</a>
-				<?php } ?>
-
-			<?php } ?>
-
-			<?php if ($enableVideo == 1) { ?>
-				<a class="icn-list" data-toggle="tooltip" data-placement="top" title="<?= $lang['proposals']['video']; ?>">
-					<?php require("$dir/images/camera.svg"); ?>
+		<?php if (isset($_SESSION['seller_user_name'])) { ?>
+			<?php if ($proposal_seller_id != $login_seller_id) { ?>
+				<a class="icn-list proposal-offer" data-id="<?= $proposal_id; ?>">
+					<?php require("$dir/images/affiliate.svg"); ?>
 				</a>
 			<?php } ?>
+		<?php } else { ?>
+			<a class="icn-list" data-toggle="modal" data-target="#login-modal">
+				<?php require("$dir/images/affiliate.svg"); ?>
+			</a>
+		<?php } ?>
 
-			<?php if ($enable_delivery == 1) { ?>
-				<a class="icn-list" data-toggle="tooltip" data-placement="top" title="<?= $lang['proposals']['instant_delivery']; ?>">
-					<?php require("$dir/images/flash.svg"); ?>
-				</a>
-			<?php } ?>
+	<?php } ?>
 
-		</div>
-		<div class="proposal-price">
+	<?php if ($enableVideo == 1) { ?>
+		<a class="icn-list" data-toggle="tooltip" data-placement="top" title="<?= $lang['proposals']['video']; ?>">
+			<?php require("$dir/images/camera.svg"); ?>
+		</a>
+	<?php } ?>
+
+	<?php if ($enable_delivery == 1) { ?>
+		<a class="icn-list" data-toggle="tooltip" data-placement="top" title="<?= $lang['proposals']['instant_delivery']; ?>">
+			<?php require("$dir/images/flash.svg"); ?>
+		</a>
+	<?php } ?>
+
+	<!-- </div> -->
+	<!-- <div class="proposal-price">
 			<a>
 				<small><?= $lang['proposals']['starting_at']; ?></small><?= showPrice($proposal_price); ?>
 			</a>
-		</div>
-	</footer>
+		</div> -->
+	<!-- </footer> -->
 	<!--- proposal-card-footer Ends --->
 </div>
 <!--- proposal-card-base mp-proposal-card Ends --->

@@ -166,8 +166,8 @@ if (!isset($_SESSION['admin_email'])) {
                   <!--- tbody Starts --->
                   <?php
                   $per_page = 10;
-                  if (isset($_GET['sales'])) {
-                    $page = $input->get('sales');
+                  if ($_GET['sales']) {
+                    $page = $_GET['sales'];
                     if ($page == 0) {
                       $page = 1;
                     }

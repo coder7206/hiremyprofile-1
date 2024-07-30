@@ -33,7 +33,7 @@ $count_trash_proposals = $db->count("proposals", array("proposal_status" => "tra
 
             ?>
 
-        </select>
+        </select> 
 
     </div>
     <!--- form-group Ends --->

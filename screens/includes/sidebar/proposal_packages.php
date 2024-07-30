@@ -1,4 +1,4 @@
-<div class="card-header pt-0 pl-3 tabs-header">
+<div class="card-header pt-0 pl-3 tabs-header box-shadow-cheader">
     <ul class="nav nav-tabs card-header-tabs rounded-0 justify-content-center">
         <?php
         $i = 0;

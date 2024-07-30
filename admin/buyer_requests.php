@@ -23,7 +23,7 @@ if (!isset($_SESSION['admin_email'])) {
 
 ?>
 
-    <div class="breadcrumbs">
+    <div class="breadcrumbs pt-4">
 
         <div class="col-sm-4">
             <div class="page-header float-left">
@@ -45,15 +45,58 @@ if (!isset($_SESSION['admin_email'])) {
 
     </div>
 
+    <style>
+        #tenPercent {
+            width: 11%
+        }
+
+        #fifteenPercent {
+            width: 15%;
+        }
+
+        #twentyPercent {
+            width: 20%;
+        }
+
+        #tenePercent {
+            width: 10%;
+        }
+
+        #tennnPercent {
+            width: 10%;
+        }
+
+        #twelvePercent {
+            width: 12%;
+        }
+
+        #tennPercent {
+            width: 10%;
+        }
+
+        .after-final-inspection-lm {
+            /* width: 78%; */
+            float: right;
+        }
+
+        #variableactive,
+        #variablepending,
+        #variablewhole,
+        #variablepause,
+        #variableunapproved {
+            padding: 15px 30px;
+        }
+    </style>
+
     <div class="container-fluid">
 
         <div class="row"><!--- 2 row Starts --->
 
             <div class="col-lg-12"><!--- col-lg-12 Starts --->
 
-                <div class="card"><!--- card Starts --->
+                <div class="card after-final-inspection-lm"><!--- card Starts --->
 
-                    <div class="card-header"><!--- card-header Starts --->
+                    <div class="card-header mt-2"><!--- card-header Starts --->
 
                         <h4 class="h4">View Pending Buyer Requests</h4>
 
@@ -61,55 +104,55 @@ if (!isset($_SESSION['admin_email'])) {
 
                     <div class="card-body"><!--- card-body Starts --->
 
-                        <a href="index?buyer_requests" class="<?php if ($status == " all ") {
-                                                                    echo "text-muted ";
-                                                                } ?> mr-2">
+                        <a href="index?buyer_requests" id="variablewhole" class="<?php if ($status == " all ") {
+                                                                                        echo "text-muted ";
+                                                                                    } ?> mr-2">
 
                             All (<?= $count_all_requests; ?>)
 
                         </a>
 
-                        <span class="mr-2">|</span>
+                        <span class="mr-1">|</span>
 
-                        <a href="index?buyer_requests&status=active" class="<?php if ($status == " all ") {
-                                                                                echo "text-muted ";
-                                                                            } ?> mr-2">
+                        <a href="index?buyer_requests&status=active" id="variableactive" class="<?php if ($status == " all ") {
+                                                                                                    echo "text-muted ";
+                                                                                                } ?> mr-2">
 
                             Active (<?= $count_active_requests; ?>)
 
                         </a>
 
-                        <span class="mr-2">|</span>
+                        <span class="mr-1">|</span>
 
-                        <a href="index?buyer_requests&status=pending" class="<?php if ($status == " all ") {
-                                                                                    echo "text-muted ";
-                                                                                } ?> mr-2">
+                        <a href="index?buyer_requests&status=pending" id="variablepending" class="<?php if ($status == " all ") {
+                                                                                                        echo "text-muted ";
+                                                                                                    } ?> mr-2">
 
                             Pending (<?= $count_pending_requests; ?>)
 
                         </a>
 
-                        <span class="mr-2">|</span>
+                        <span class="mr-1">|</span>
 
-                        <a href="index?buyer_requests&status=unapproved" class="<?php if ($status == " all ") {
-                                                                                    echo "text-muted ";
-                                                                                } ?> mr-2">
+                        <a href="index?buyer_requests&status=unapproved" id="variableunapproved" class="<?php if ($status == " all ") {
+                                                                                                            echo "text-muted ";
+                                                                                                        } ?> mr-2">
 
                             Declined (<?= $count_unapproved_requests; ?>)
 
                         </a>
 
-                        <span class="mr-2">|</span>
+                        <span class="mr-1">|</span>
 
-                        <a href="index?buyer_requests&status=pause" class="<?php if ($status == " all ") {
-                                                                                echo "text-muted ";
-                                                                            } ?> mr-2">
+                        <a href="index?buyer_requests&status=pause" id="variablepause" class="<?php if ($status == " all ") {
+                                                                                                    echo "text-muted ";
+                                                                                                } ?> mr-2">
 
                             Paused (<?= $count_pause_requests; ?>)
 
                         </a>
 
-                        <div class="table-responsive mt-3"><!--- table-responsive Starts --->
+                        <div class="table-responsive mt-3" style="overflow-wrap: anywhere;"><!--- table-responsive Starts --->
 
                             <table class="table table-bordered"><!--- table table-bordered table-hover Starts --->
 
@@ -117,19 +160,19 @@ if (!isset($_SESSION['admin_email'])) {
 
                                     <tr>
 
-                                        <th>BUYER</th>
+                                        <th id="tenPercent">BUYER</th>
 
-                                        <th>TITLE</th>
+                                        <th id="fifteenPercent">TITLE</th>
 
-                                        <th>DESCRIPTION</th>
+                                        <th id="twentyPercent">DESCRIPTION</th>
 
-                                        <th>FILE</th>
+                                        <th id="tennPercent">FILE</th>
 
-                                        <th>DURATION</th>
+                                        <th id="twelvePercent">DURATION</th>
 
-                                        <th>BUDGET</th>
+                                        <th id="tennnPercent">BUDGET</th>
 
-                                        <th>STATUS</th>
+                                        <th id="tenePercent">STATUS</th>
 
                                         <th>ACTION</th>
 
@@ -143,9 +186,9 @@ if (!isset($_SESSION['admin_email'])) {
 
                                     $per_page = 10;
 
-                                    if (isset($_GET['buyer_requests'])) {
+                                    if ($_GET['buyer_requests']) {
 
-                                        $page = $input->get('buyer_requests');
+                                        $page = $_GET['buyer_requests'];
 
                                         if ($page == 0) {
                                             $page = 1;
@@ -203,17 +246,20 @@ if (!isset($_SESSION['admin_email'])) {
                                             <td>
 
                                                 <?php if (!empty($request_file)) { ?>
-
-                                                    <a href="<?= getImageUrl("buyer_requests", $request_file); ?>" download class="text-primary">
-
+                                                    <a href="<?= getImageUrl("buyer_requests", $request_file); ?>" download="<?= $request_file; ?>" class="text-primary" id="downloadLink">
                                                         <i class="fa fa-download"></i><?= $request_file; ?>
-
                                                     </a>
+                                                    <iframe id="fileDisplay" style="width:100%; height:500px; display: none;"></iframe>
 
-                                                <?php } else { ?> No File Attached
-
+                                                    <script>
+                                                        document.getElementById('downloadLink').addEventListener('click', function() {
+                                                            document.getElementById('fileDisplay').src = this.href;
+                                                            document.getElementById('fileDisplay').style.display = 'block';
+                                                        });
+                                                    </script>
+                                                <?php } else { ?>
+                                                    No File Attached
                                                 <?php } ?>
-
                                             </td>
 
                                             <td><?= $delivery_time; ?></td>
@@ -338,5 +384,72 @@ if (!isset($_SESSION['admin_email'])) {
         </div><!--- 2 row Ends --->
 
     </div>
+
+<?php } ?>
+
+<script>
+    let variablewhole = document.getElementById("variablewhole");
+    let variableunapproved = document.getElementById("variableunapproved");
+    let variablepending = document.getElementById("variablepending");
+    let variablepause = document.getElementById("variablepause");
+    let variableactive = document.getElementById("variableactive");
+</script>
+
+<!-- pending -->
+<?php if ($status == "pending") { ?>
+    <script>
+        variablepending.style = "color:white; background-color:black";
+        variableunapproved.style = "color:black; background-color:lightgray";
+        variablepause.style = "color:black; background-color:lightgray";
+        variableactive.style = "color:black; background-color:lightgray";
+        variablewhole.style = "color:black; background-color:lightgray";
+    </script>
+
+<?php } ?>
+<!-- unapproved -->
+<?php if ($status == "unapproved") { ?>
+    <script>
+        variablepending.style = "color:black; background-color:lightgray";
+        variableunapproved.style = "color:white; background-color:black";
+        variablepause.style = "color:black; background-color:lightgray";
+        variableactive.style = "color:black; background-color:lightgray";
+        variablewhole.style = "color:black; background-color:lightgray";
+    </script>
+
+<?php } ?>
+
+<?php if ($status == "active") { ?>
+    <script>
+        variablepending.style = "color:black; background-color:lightgray";
+        variableunapproved.style = "color:black; background-color:lightgray";
+        variablepause.style = "color:black; background-color:lightgray";
+        variableactive.style = "color:white; background-color:black";
+        variablewhole.style = "color:black; background-color:lightgray";
+    </script>
+
+<?php } ?>
+
+<!-- variablepause -->
+
+<?php if ($status == "pause") { ?>
+    <script>
+        variablepending.style = "color:black; background-color:lightgray";
+        variableunapproved.style = "color:black; background-color:lightgray";
+        variablepause.style = "color:white; background-color:black";
+        variableactive.style = "color:black; background-color:lightgray";
+        variablewhole.style = "color:black; background-color:lightgray";
+    </script>
+
+<?php } ?>
+
+
+<?php if ($status == "") { ?>
+    <script>
+        variablepending.style = "color:black; background-color:lightgray";
+        variableunapproved.style = "color:black; background-color:lightgray";
+        variablepause.style = "color:black; background-color:lightgray";
+        variableactive.style = "color:black; background-color:lightgray";
+        variablewhole.style = "color:white; background-color:black";
+    </script>
 
 <?php } ?>

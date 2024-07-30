@@ -34,24 +34,24 @@
           </script>
         <?php } ?>
         <?php
-          if (in_array("An accound have been already created from this device. Please try with another one.", $error_array)) {
+        if (in_array("An accound have been already created from this device. Please try with another one.", $error_array)) {
         ?>
-        <div class="alert alert-danger">
-          An accound have been already created from this device. Please try with another one.
-        </div>
+          <div class="alert alert-danger">
+            An accound have been already created from this device. Please try with another one.
+          </div>
         <?php } ?>
         <?php if ($enable_social_login == "yes") { ?>
           <div class="text-center">
             <div class="social-login">
-              <?php if (!empty($fb_app_id) & !empty($fb_app_secret)) { ?>
-                <!-- <button class="btn facebook-btn social-btn mt-2" type="button" onclick="window.location = '<?= $fLoginURL ?>';"><span><i class="fa fa-facebook" aria-hidden="true"></i> -->
-                <button class="btn facebook-btn social-btn mt-2" type="button"><span><i class="fa fa-facebook" aria-hidden="true"></i>
+              <?php if (!empty($fb_app_id) && !empty($fb_app_secret)) { ?>
+                <button class="btn facebook-btn social-btn mt-2" type="button" onclick="window.location = '<?= $fLoginURL ?>';"><span><i class="fa fa-facebook" aria-hidden="true"></i>
+                    <!-- <button class="btn facebook-btn social-btn mt-2" type="button"><span><i class="fa fa-facebook" aria-hidden="true"></i> -->
                     Register with Facebook</span> </button>
               <?php } ?>
-              <?php if (!empty($g_client_id) & !empty($g_client_secret)) { ?>
-                <!-- <button class="btn google-btn social-btn mt-2" type="button" onclick="window.location = '<?= $gLoginURL ?>';"><span><i class="fa fa-google" aria-hidden="true"></i> -->
-                <button class="btn google-btn social-btn mt-2" type="button"><span><i class="fa fa-google" aria-hidden="true"></i>
-                    Register with Google+</span> </button>
+              <?php if (!empty($g_client_id) && !empty($g_client_secret)) { ?>
+                <button class="btn google-btn social-btn mt-2" type="button" onclick="window.location = '<?= $gLoginURL ?>';"><span><i class="fa fa-google" aria-hidden="true"></i>
+                    <!-- <button class="btn google-btn social-btn mt-2" type="button"><span><i class="fa fa-google" aria-hidden="true"></i> -->
+                    Register with Google</span> </button>
               <?php } ?>
             </div>
           </div>
@@ -64,7 +64,7 @@
         <form action="" method="post" class="pb-3">
           <div class="form-row">
             <div class="form-group col-md-6">
-              <input type="text" class="form-control" name="name" placeholder="<?= $lang['placeholder']['full_name']; ?>" value="<?php if (isset($_SESSION['name'])) echo $_SESSION['name']; ?>" required="">
+              <input type="text" class="form-control" name="name" placeholder="<?= $lang['placeholder']['full_name']; ?>" value="<?php if (isset($_SESSION['name'])) echo $_SESSION['name']; ?>" required="" minlength="6">
             </div>
             <div class="form-group col-md-6">
               <input type="email" class="form-control" name="email" placeholder="<?= $lang['placeholder']['email']; ?>" value="<?php if (isset($_SESSION['email'])) echo $_SESSION['email']; ?>" required="">
@@ -72,28 +72,61 @@
             </div>
 
             <div class="form-group col-md-12">
-              <input type="text" class="form-control" name="u_name" placeholder="Enter Your Username <?= $lang['warning']['no_spaces']; ?>" value="<?php if (isset($_SESSION['u_name'])) echo $_SESSION['u_name']; ?>" required="">
+              <input type="text" class="form-control" name="u_name" placeholder="Enter Your Username" value="<?php if (isset($_SESSION['u_name'])) echo $_SESSION['u_name']; ?>" required="" minlength="4">
               <small class="form-text text-muted"><?= $lang['warning']['note']; ?></small>
               <?php
-                if (in_array("Opps! This username has already been taken. Please try another one", $error_array))
-                  echo "<span style='color:red;'>{$lang['warning']['username_already']}</span> <br>";
+              if (in_array("Opps! This username has already been taken. Please try another one", $error_array))
+                echo "<span style='color:red;'>{$lang['warning']['username_already']}</span> <br>";
 
-                if (in_array("Username must be greater that 4 characters long or less than 25 characters.", $error_array))
-                  echo "<span style='color:red;'>{$lang['warning']['username_greater']}</span> <br>";
+              if (in_array("Username must be greater that 4 characters long or less than 25 characters.", $error_array))
+                echo "<span style='color:red;'>{$lang['warning']['username_greater']}</span> <br>";
 
-                if (in_array("Spaces Are Not Allowed In Username. Please Remove The Spaces.", $error_array))
-                  echo "<span style='color:red;'>{$lang['warning']['spaces_not_allowed']}</span> <br>";
+              if (in_array("Spaces Are Not Allowed In Username. Please Remove The Spaces.", $error_array))
+                echo "<span style='color:red;'>{$lang['warning']['spaces_not_allowed']}</span> <br>";
+
+              if (in_array("Special characters are not allowed in username. Please try another one.", $error_array)) {
+                echo "<span style='color:red;'>Special characters are not allowed in username. Please try another one.</span> <br>";
+              }
+
               ?>
             </div>
 
             <div class="form-group col-md-6">
-              <input type="password" class="form-control" name="pass" placeholder="<?= $lang['placeholder']['password']; ?>" required="">
+              <input type="password" class="form-control" name="pass" id="passeyeicon" placeholder="<?= $lang['placeholder']['password']; ?>" required="" minlength="8">
+              <img src="<?= $site_url ?>/images/closed-eye.png" id="passwordeyeicon">
             </div>
             <div class="form-group col-md-6">
-              <input type="password" class="form-control" name="con_pass" placeholder="<?= $lang['placeholder']['password_confirm']; ?>" required="">
+              <input type="password" class="form-control" name="con_pass" id="inputpass" placeholder="<?= $lang['placeholder']['password_confirm']; ?>" required="" minlength="8">
+              <img src="<?= $site_url ?>/images/closed-eye.png" id="eyeiconstyle">
               <?php if (in_array("Passwords don't match. Please try again.", $error_array)) echo "<span style='color:red;'>{$lang['warning']['dont_match']}</span> <br>"; ?>
             </div>
+            <script>
+              let passeyeicon = document.getElementById("passeyeicon");
+              let passwordeyeicon = document.getElementById("passwordeyeicon");
+              passwordeyeicon.onclick = function() {
+                if (passeyeicon.type == "password") {
+                  passeyeicon.type = "text";
+                  passwordeyeicon.src = "<?= $site_url ?>/images/open-eye.png"
 
+                } else {
+                  passeyeicon.type = "password";
+                  passwordeyeicon.src = "<?= $site_url ?>/images/closed-eye.png"
+                }
+              }
+
+
+              let inputpass = document.getElementById("inputpass");
+              let eyeiconstyle = document.getElementById("eyeiconstyle");
+              eyeiconstyle.onclick = function() {
+                if (inputpass.type == "password") {
+                  inputpass.type = "text";
+                  eyeiconstyle.src = "<?= $site_url ?>/images/open-eye.png"
+                } else {
+                  inputpass.type = "password";
+                  eyeiconstyle.src = "<?= $site_url ?>/images/closed-eye.png"
+                }
+              }
+            </script>
             <div class="form-group col-md-12">
               <hr class="">
               <input type="hidden" style="position: relative; top: 1px;" id="check" value="1" checked required="" />
@@ -225,14 +258,14 @@
           <div class="text-center">
             <div class="social-login">
               <?php if (!empty($fb_app_id) & !empty($fb_app_secret)) { ?>
-                <!-- <button class="btn facebook-btn social-btn mt-2" type="button" onclick="window.location = '<?= $fLoginURL ?>';"><span><i class="fa fa-facebook" aria-hidden="true"></i> -->
-                <button class="btn facebook-btn social-btn mt-2" type="button"><span><i class="fa fa-facebook" aria-hidden="true"></i>
+                <button class="btn facebook-btn social-btn mt-2" type="button" onclick="window.location = '<?= $fLoginURL ?>';"><span><i class="fa fa-facebook" aria-hidden="true"></i>
+                    <!-- <button class="btn facebook-btn social-btn mt-2" type="button"><span><i class="fa fa-facebook" aria-hidden="true"></i> -->
                     Sign in with Facebook</span> </button>
               <?php } ?>
               <?php if (!empty($g_client_id) & !empty($g_client_secret)) { ?>
-                <!-- <button class="btn google-btn social-btn mt-2" type="button" onclick="window.location = '<?= $gLoginURL ?>';"><span><i class="fa fa-google" aria-hidden="true"></i> -->
-                <button class="btn google-btn social-btn mt-2" type="button"><span><i class="fa fa-google" aria-hidden="true"></i>
-                    Sign in with Google+</span> </button>
+                <button class="btn google-btn social-btn mt-2" type="button" onclick="window.location = '<?= $gLoginURL ?>';"><span><i class="fa fa-google" aria-hidden="true"></i>
+                    <!-- <button class="btn google-btn social-btn mt-2" type="button"><span><i class="fa fa-google" aria-hidden="true"></i> -->
+                    Sign in with Google</span> </button>
               <?php } ?>
             </div>
             <div class="clearfix"></div>

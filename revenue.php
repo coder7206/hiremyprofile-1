@@ -80,16 +80,156 @@ EOT;
 	<?php if (!empty($site_favicon)) { ?>
 		<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
 	<?php } ?>
+	<style>
+		.mrg-top {
+			/* margin-top: 10px; */
+		}
+
+		.padding-10 {
+			padding: 18px;
+		}
+
+		.padding-2 {
+			padding: 2rem 3rem;
+		}
+
+		.increase-height {
+			/* height: 35vh; */
+		}
+
+		.left-right-padding {
+			/* background-color:#f2fcfc; */
+			padding-top: 10px;
+			padding-bottom: 5px;
+			/* box-shadow: 0px 0px 2px 1px gray; */
+			/* outline: 2px solid yellow; */
+		}
+
+		.bottom-margin {
+			margin-top: 3vh;
+			font-size: 17px;
+			font-weight: 800;
+			color: #0a6158;
+			text-decoration: underline;
+		}
+
+		.color_red {
+			color: red;
+			margin-top: 3.5vh;
+			font-size: 35px;
+			font-weight: 800;
+		}
+
+		.font-size-3 {
+			text-align: center;
+			margin: auto;
+			color: gray;
+			padding: 13px !important;
+			/* box-shadow:0px 0px 5px black,inset 0px 0px 15px #00c8d4; */
+		}
+
+		.withdraw-body {
+			/* border: 1px solid green; */
+			height: 8vh;
+			/* background-color:#f58f7a !important; */
+		}
+
+	
+
+		@media (max-width:768px) {
+
+
+			.text-align-center {
+				text-align: center;
+				margin: auto;
+			}
+
+			.flex-display {
+				width: 100%;
+				display: flex;
+				margin-bottom: 23px;
+				/* color: #126e6b; */
+				/* border:1px solid green; */
+			}
+
+			.full_width {
+				/* border: 1px solid green; */
+				width: 100%;
+				font-size: 15px;
+				color: gray;
+				font-weight: 400;
+				height: 23px;
+
+			}
+
+			.right_float {
+				float: right;
+				font-size: 17px;
+				padding: 1px 15px;
+				border: 1px solid lightgray;
+				border-radius: 2px;
+				margin-top: -3px;
+				/* background-color: #f1fef7; */
+			}
+
+			.left-right-padding {
+				/* border: 1px solid blue; */
+				padding-top: 10px;
+				padding-bottom: 5px;
+			}
+
+
+
+			.card-body-padding {
+				padding-top: 0px;
+				padding-bottom: 0px;
+			}
+
+			.font-size-3 {
+				text-align: center;
+				margin: auto;
+				color: gray;
+				padding: 10px;
+				font-size: 13px !important;
+			}
+
+			.mrg-top {
+				/* margin-top: 195px !important; */
+			}
+
+			.color_red {
+				color: red;
+			}
+
+		}
+		@media(max-width:640px){
+			.padding-2 {
+			padding: 1px 15px;
+		}
+		}
+
+		@media (max-width:440px) {
+			.align-center {
+				margin-left: 60px;
+			}
+		}
+
+		@media (min-width:440px) and (max-width:768px) {
+			.align-center {
+				margin-left: 110px;
+			}
+		}
+	</style>
 </head>
 
 <body class="is-responsive">
 	<?php require_once("includes/user_header.php"); ?>
-	<div class="container mb-3" style="margin-top: 205px;">
+	<div class="container-fluid mrg-top padding-2">
 		<div class="row">
-			<div class="col-md-12">
-				<h2 class="pull-left"><?= $lang["titles"]["revenue"]; ?></h2>
-				<p class="lead pull-right">
-					Available For Withdrawal: <span class="font-weight-bold text-success"> <?= showPrice($current_balance); ?> </span>
+			<div class="col-md-12 padding-10">
+				<h2 class="pull-left flex-display"><span class="text-align-center"><?= $lang["titles"]["revenue"]; ?></span></h2>
+				<p class="lead pull-right full_width">
+					<span>Available For Withdrawal: </span><span class="font-weight-bold text-success right_float"> <?= showPrice($current_balance); ?> </span>
 				</p>
 			</div>
 			<div class="col-md-12">
@@ -112,24 +252,24 @@ EOT;
 					</div> <!-- Alert ends -->
 				<?php } ?>
 
-				<div class="card mb-3 rounded-0">
-					<div class="card-body">
-						<div class="row">
-							<div class="col-md-3 text-center border-box">
-								<p> Withdrawals </p>
-								<h2> <?= showPrice($withdrawn); ?></h2>
+				<div class="card mb-5 rounded-0">
+					<div class="card-body card-body-padding box-shadow-revanue">
+						<div class="row increase-height">
+							<div class="col-md-3 text-center border-box left-right-padding">
+								<p class="bottom-margin"> Withdrawals </p>
+								<h2 class="color_red"> <?= showPrice($withdrawn); ?></h2>
 							</div>
-							<div class="col-md-3 text-center border-box">
-								<p> Used To Order Proposals/Services </p>
-								<h2> <?= showPrice($used_purchases); ?></h2>
+							<div class="col-md-3 text-center border-box left-right-padding">
+								<p class="bottom-margin"> Used To Order Proposals/Services </p>
+								<h2 class="color_red"> <?= showPrice($used_purchases); ?></h2>
 							</div>
-							<div class="col-md-3 text-center border-box">
-								<p> Pending Clearance </p>
-								<h2> <?= showPrice($pending_clearance); ?></h2>
+							<div class="col-md-3 text-center border-box left-right-padding">
+								<p class="bottom-margin"> Pending Clearance </p>
+								<h2 class="color_red"> <?= showPrice($pending_clearance); ?></h2>
 							</div>
-							<div class="col-md-3 text-center border-box">
-								<p> Available Income </p>
-								<h2> <?= showPrice($current_balance); ?></h2>
+							<div class="col-md-3 text-center border-box left-right-padding">
+								<p class="bottom-margin"> Available Income </p>
+								<h2 class="color_red"> <?= showPrice($current_balance); ?></h2>
 							</div>
 						</div>
 					</div>
@@ -137,7 +277,7 @@ EOT;
 
 				<?php if (($current_balance >= $withdrawal_limit and !empty($payout_anyday)) or ($current_balance >= $withdrawal_limit and empty($payout_anyday) and $seller_payouts == 0 & date("d") >= $payout_day)) { ?>
 
-					<label class="lead pull-left mt-1"> Withdraw To: </label>
+					<label class="lead pull-left mt-1 align-center"> Withdraw To: </label>
 					<?php if ($enable_paypal == "yes") { ?>
 						<button class="btn btn-success ml-2" data-toggle="modal" data-target="#paypal_withdraw_modal">
 							<i class="fa fa-paypal"></i> Paypal Account
@@ -171,7 +311,7 @@ EOT;
 
 				<?php } else { ?>
 
-					<label class="lead pull-left mt-1"> Withdraw To: </label>
+					<label class="lead pull-left mt-1 align-center"> Withdraw To: </label>
 					<?php if ($enable_paypal == "yes") { ?>
 						<button class="btn btn-default ml-2" <?= $withdrawLimitText; ?>>
 							<i class="fa fa-paypal"></i> Paypal Account
@@ -208,16 +348,16 @@ EOT;
 
 				<?php } ?>
 
-				<div class="table-responsive box-table mt-4">
+				<div class="table-responsive box-table mt-4 box-shadow-rev-table">
 					<table class="table table-bordered">
 						<thead>
 							<tr>
-								<th><?= $lang['th']['date']; ?></th>
-								<th><?= $lang['th']['for']; ?></th>
-								<th><?= $lang['th']['amount']; ?></th>
+								<th class="font-size-3"><?= $lang['th']['date']; ?></th>
+								<th class="font-size-3"><?= $lang['th']['for']; ?></th>
+								<th class="font-size-3"><?= $lang['th']['amount']; ?></th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody class="withdraw-body box-shadow-rev-tablebody">
 							<?php
 							$get_revenues = $db->select("revenues", array("seller_id" => $login_seller_id), "DESC");
 							while ($row_revenues = $get_revenues->fetch()) {

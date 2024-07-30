@@ -43,11 +43,16 @@ if (isset($_GET["delete_comment"])) {
   <script type="text/javascript" src="../js/ie.js"></script>
   <script type="text/javascript" src="../js/sweat_alert.js"></script>
   <script type="text/javascript" src="../js/jquery.min.js"></script>
+  <style>
+    .p-6 {
+      padding: 0rem 3rem 2rem;
+    }
+  </style>
 </head>
 
 <body class="is-responsive">
   <?php require_once("../includes/header.php"); ?>
-  <div class="container-fluid pt-5 pb-5">
+  <div class="container-fluid p-6">
     <!-- Container starts -->
 
     <h2 class="<?= $textRight; ?>"><a class="text-dark" href="#">General</a></h2>

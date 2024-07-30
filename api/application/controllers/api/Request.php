@@ -283,7 +283,7 @@ class Request extends APIAuth
         $response = $this->request_model->delete(['request_id' => $id, 'seller_id' => $userId]);
         $data['message'] = "Not deleted";
         $data['status'] = FALSE;
-        $status = 200;
+        $status = 200; 
         if ($response > 0) {
             $data['message'] = "Data deleted successfully";
             $data['status'] = TRUE;

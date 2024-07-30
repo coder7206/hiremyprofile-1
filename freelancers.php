@@ -3,10 +3,10 @@ session_start();
 require_once("includes/db.php");
 require_once("functions/functions.php");
 
-if (!isset($_SESSION['seller_user_name'])) {
-  echo "<script>window.open('{$site_url}/login','_self')</script>";
-  exit;
-}
+// if (isset($_SESSION['seller_user_name'])) {
+//   echo "<script>window.open('{$site_url}/login','_self')</script>";
+// }
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
@@ -32,103 +32,106 @@ if (!isset($_SESSION['seller_user_name'])) {
   <?php if (!empty($site_favicon)) { ?>
     <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
   <?php } ?>
+
+  <style>
+    .body-background-none{
+      /* background-color: white !important; */
+      /* padding-top: 50px; */
+      margin-top:-5px !important;
+    }
+    @media(min-width:1200px) {
+      /* .col-xl-10 {
+        -ms-flex: 0 0 83.333333%;
+        flex: 0 0 97.333333%;
+        max-width: 97.333333%;
+      } */
+    }
+
+    @media(max-width:1024px) and (min-width:769px) {
+      .margin-top {
+        margin-top: 2rem;
+        margin-bottom: -1rem;
+      }
+      .padding-alter10a{
+        /* border:2px solid green; */
+        padding:0px 13px;
+      }
+    }
+
+
+    @media(max-width:768px) {
+      .container-fluid {
+        /* margin-top: 4px !important; */
+      }
+      .padding-alter10a{
+        /* border:2px solid green; */
+        padding:0px 1px;
+      }
+
+      .margin-top {
+        margin-top: 2rem;
+        margin-bottom: -1rem;
+      }
+
+      .font-size-13px {
+        font-size: 16px;
+        font-weight: 300;
+        color: gray;
+      }
+    }
+
+    @media(min-width:640px) and (max-width:768px){
+      .padding-alter10a{
+        /* border:2px solid green; */
+        padding:0px 13px;
+      }
+    }
+  </style>
 </head>
 
 <body class="is-responsive">
   <?php require_once("includes/header.php"); ?>
-  <?php if ($seller_verification != "ok") { ?>
-    <div class="container-fluid">
-      <!-- Container start -->
-      <div class="row">
-        <div class="col-md-12">
-          <center>
-            <h1> <?= $lang['freelancers']['title']; ?> </h1>
-            <p class="lead"><?= $lang['freelancers']['desc']; ?></p>
-          </center>
-          <hr class="mt-5 pt-2">
-        </div>
-        <div class="col-md-12">
-          <div class='alert alert-danger rounded-0 mt-0 text-center'>
-            Please confirm your email to use this feature.
+
+  <div class="container-fluid body-background-none">
+    <!-- Container start -->
+    <div class="row padding-alter10a">
+      <div class="col-md-12 margin-top">
+        <center>
+          <h1> <?= $lang['freelancers']['title']; ?> </h1>
+          <p class="lead font-size-13px"><?= $lang['freelancers']['desc']; ?></p>
+        </center>
+        <hr class="mt-4 pt-2">
+      </div>
+    </div>
+    <div class="row mt-3 justify-content-center padding-alter10a">
+      <!-- <div class="col-lg-10 col-md-12"> -->
+      <div class="col-xl-10 col-lg-12 col-md-12">
+        <div class="row">
+          <div class="col-lg-3 col-md-4 col-sm-12 <?= ($lang_dir == "right" ? 'order-2 order-sm-1' : '') ?>">
+            <?php require_once("includes/freelancer_sidebar.php"); ?>
           </div>
-          <div class="alert alert-warning clearfix activate-email-class mb-5">
-            <div class="float-left mt-2">
-              <i style="font-size: 125%;" class="fa fa-exclamation-circle"></i>
-              <?php
-              $message = $lang['popup']['email_confirm']['text'];
-              $message = str_replace('{seller_email}', $seller_email, $message);
-              $message = str_replace('{link}', "$site_url/customer_support", $message);
-              echo $message;
-              ?>
+          <div class="col-lg-9 col-md-8 col-sm-12 <?= ($lang_dir == "right" ? 'order-1 order-sm-2' : '') ?>">
+            <div class="row flex-wrap" id="freelancers">
+              <!-- Here Freelancers Gona Show -->
+              <?php get_freelancers(); ?>
             </div>
-            <div class="float-right">
-              <button id="send-email" class="btn btn-success btn-sm float-right text-white"><?= $lang["popup"]["email_confirm"]['button']; ?></button>
+            <div id="wait"></div>
+            <br>
+            <div class="row justify-content-center mb-5 mt-0">
+              <!-- row justify-content-center Starts -->
+              <nav>
+                <!-- nav Starts -->
+                <ul class="pagination" id="freelancer_pagination">
+                  <!-- Here Pagination Gona Show -->
+                  <?php get_freelancer_pagination(); ?>
+                </ul>
+              </nav><!-- nav Ends -->
             </div>
           </div>
-          <script>
-            $(document).ready(function() {
-              $("#send-email").click(function() {
-                $("#wait").addClass('loader');
-                $.ajax({
-                  method: "POST",
-                  url: "<?= $site_url; ?>/includes/send_email",
-                  success: function() {
-                    $("#wait").removeClass('loader');
-                    $("#send-email").html("Resend Email");
-                    swal({
-                      type: 'success',
-                      text: '<?= $lang['alert']['confirmation_email']; ?>',
-                    });
-                  }
-                });
-              });
-            });
-          </script>
         </div>
       </div>
     </div>
-  <?php } else { ?>
-    <div class="container-fluid">
-      <!-- Container start -->
-      <div class="row">
-        <div class="col-md-12">
-          <center>
-            <h1> <?= $lang['freelancers']['title']; ?> </h1>
-            <p class="lead"><?= $lang['freelancers']['desc']; ?></p>
-          </center>
-          <hr class="mt-5 pt-2">
-        </div>
-      </div>
-      <div class="row mt-3 justify-content-center">
-        <!-- <div class="col-lg-10 col-md-12"> -->
-        <div class="col-xl-10 col-lg-12 col-md-12">
-          <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-12 <?= ($lang_dir == "right" ? 'order-2 order-sm-1' : '') ?>">
-              <?php require_once("includes/freelancer_sidebar.php"); ?>
-            </div>
-            <div class="col-lg-9 col-md-8 col-sm-12 <?= ($lang_dir == "right" ? 'order-1 order-sm-2' : '') ?>">
-              <div class="row flex-wrap" id="freelancers">
-                <!-- Here Freelancers Gona Show -->
-                <?php get_freelancers(); ?>
-              </div>
-              <div id="wait"></div>
-              <br>
-              <div class="row justify-content-center mb-5 mt-0">
-                <!-- row justify-content-center Starts -->
-                <nav>
-                  <!-- nav Starts -->
-                  <ul class="pagination" id="freelancer_pagination">
-                    <!-- Here Pagination Gona Show -->
-                    <?php get_freelancer_pagination(); ?>
-                  </ul>
-                </nav><!-- nav Ends -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div><!-- Container ends -->
-  <?php } ?>
+  </div><!-- Container ends -->
   <?php require_once("includes/footer.php"); ?>
   <script>
     function get_freelancers() {

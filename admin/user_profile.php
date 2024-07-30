@@ -31,12 +31,12 @@ echo "<script>window.open('login','_self');</script>";
 ?>
 <script src="../js/jquery.min.js"></script>
 
-    <div class="breadcrumbs">
+    <div class="breadcrumbs pt-4">
 
         <div class="col-sm-4">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1><i class="menu-icon fa fa-user"></i> Admins</h1>
+                    <h1><i class="menu-icon fa fa-user"></i> admin</h1>
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@ echo "<script>window.open('login','_self');</script>";
 
                             <div class="col-md-6">
 
-                                <input type="text" name="admin_country" class="form-control" required value="<?= $a_country; ?>">
+                                <input type="text" name="admin_country" class="form-control" required placeholder="Country Name" value="<?= $a_country; ?>">
 
                             </div>
 
@@ -122,7 +122,7 @@ echo "<script>window.open('login','_self');</script>";
 
                             <div class="col-md-6">
 
-                              <input type="text" name="admin_job" class="form-control" required value="<?= $a_job; ?>">
+                              <input type="text" name="admin_job" class="form-control" required placeholder="Job Title" > <!-- value="<?= $a_job; ?>" -->
 
                             </div>
 
@@ -134,7 +134,7 @@ echo "<script>window.open('login','_self');</script>";
 
                             <div class="col-md-6">
 
-                                <input type="text" name="admin_contact" class="form-control" required value="<?= $a_contact; ?>">
+                                <input type="text" name="admin_contact" class="form-control" required placeholder="Contact No" > <!-- value="<?= $a_contact; ?>" -->
 
                             </div>
 
@@ -147,7 +147,7 @@ echo "<script>window.open('login','_self');</script>";
 
                             <div class="col-md-6">
 
-                         <textarea name="admin_about" class="form-control" rows="3"><?= $a_about; ?></textarea>
+                         <textarea name="admin_about" class="form-control" rows="3" placeholder="About"></textarea> <!-- <?= $a_about; ?> -->
 
                             </div>
 
@@ -200,7 +200,7 @@ echo "<script>window.open('login','_self');</script>";
 
                                     </span>
 
-                                    <input type="password" name="admin_pass" id="password" class="form-control">
+                                    <input type="password" name="admin_pass" placeholder="Password" id="password" class="form-control">
 
                                     <span class="input-group-addon">
 
@@ -237,7 +237,7 @@ echo "<script>window.open('login','_self');</script>";
 
                             </span>
 
-                        <input type="password" name="confirm_admin_pass" id="confirm_password" class="form-control">
+                        <input type="password" name="confirm_admin_pass" id="confirm_password" placeholder="Confirm Password" class="form-control">
 
                         </div><!--- input-group Ends --->
 
@@ -471,7 +471,7 @@ if(isset($_POST['update'])){
       if($update_admin){
          echo "
          <script>
-            alert_success('Your User Profile Has Been Updated Successfully,So Please Login Again.','logout');
+            alert_success('Your User Profile Has Been Updated Successfully.','index?dashboard');
          </script>";
       }
 

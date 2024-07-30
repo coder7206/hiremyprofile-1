@@ -13,7 +13,7 @@ NB: If changes don't apply, try adding "!important" For example:
 /********** Start Writing Your Own Custom CSS Code Here ***********/
 .fixed {
     position: fixed;
-    top:0; left:0;
+    top:0; left:0;transition: all 3s linear;
     width: 100%;
     z-index: 100;
 }

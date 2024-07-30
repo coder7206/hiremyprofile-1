@@ -122,18 +122,62 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
   <?php if (!empty($site_favicon)) { ?>
     <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
   <?php } ?>
+  <style>
+    @media(max-width:768px) {
+      .half-width {
+        width: 50%;
+        text-align: center;
+      }
+
+      .badge-float-right {
+        float: right;
+        margin-top: -3px;
+        padding-top: 5px;
+        margin-right: -9px !important;
+      }
+       .alter-margin-padding{
+      /* margin-top:rem; */
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+    }
+    .badge-float-right {
+        float: right;
+        margin-top: -3px;
+        padding-top: 5px;
+        margin-right: -9px !important;
+      }
+      
+      @media(min-width:768px){
+    .width-increase {
+      width: 170px;
+      text-align: center;
+    }
+    .alter-margin-padding{
+      /* margin-top:rem; */
+      padding:3rem;
+    }
+  }
+    .pt-pr{
+      padding:9px 15px;
+    }
+    .card-header {
+			padding:1rem 1.5rem;
+		}
+   
+  </style>
 </head>
 
 <body class="is-responsive">
   <?php require_once("includes/user_header.php") ?>
-  <div class="container mt-4 mb-5" style="max-width: 1200px !important; margin-top: 205px !important;">
+  <div class="container-fluid alter-margin-padding">
     <div class="row">
       <div class="col-md-4 <?= ($lang_dir == "right" ? 'order-2 order-sm-1' : '') ?>">
         <?php require_once("includes/dashboard_sidebar.php"); ?>
       </div>
       <div class="col-md-8">
         <div class="card rounded-0">
-          <div class="card-body p-0">
+          <div class="card-body p-0 box-shadow1">
             <div class="row pl-3 pr-3 pb-2 pt-2 mt-4">
               <div class="col-md-4 text-center border-box">
                 <?php
@@ -186,26 +230,26 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
           </div>
         </div>
         <div class="card rounded-0 mt-3 bottom-tabs-dash">
-          <div class="card-header">
+          <div class="card-header box-shadow-chead">
             <ul class="nav nav-tabs card-header-tabs">
-              <li class="nav-item">
+              <li class="nav-item half-width width-increase">
                 <?php $count_notifications = $db->count("notifications", array("receiver_id" => $login_seller_id)); ?>
-                <a href="#notifications" data-toggle="tab" class="nav-link make-black active">
-                  <?= $lang['menu']['notifications']; ?> <span class="badge badge-success"><?= $count_notifications; ?> </span>
+                <a href="#notifications" data-toggle="tab" class="nav-link make-black active pt-pr">
+                  <?= $lang['menu']['notifications']; ?> <span class="badge badge-success badge-float-right"><?= $count_notifications; ?> </span>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item half-width width-increase">
                 <?php
                 $select_all_inbox_sellers = $db->query("select * from inbox_sellers where (receiver_id='$login_seller_id' or sender_id='$login_seller_id') AND NOT message_status='empty'");
                 $count_all_inbox_sellers = $select_all_inbox_sellers->rowCount();
                 ?>
-                <a href="#inbox" data-toggle="tab" class="nav-link make-black">
-                  <?= $lang['menu']['messages']; ?> <span class="badge badge-success"><?= $count_all_inbox_sellers; ?></span>
+                <a href="#inbox" data-toggle="tab" class="nav-link make-black pt-pr">
+                  <?= $lang['menu']['messages']; ?> <span class="badge badge-success badge-float-right"><?= $count_all_inbox_sellers; ?></span>
                 </a>
               </li>
             </ul>
           </div>
-          <div class="card-body p-0">
+          <div class="card-body p-0 box-shadow-btd">
             <div class="tab-content dashboard">
               <div id="notifications" class="tab-pane fade show active mt-3">
                 <?php

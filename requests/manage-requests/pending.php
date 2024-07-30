@@ -1,24 +1,42 @@
-<div class="table-responsive box-table">
-    <table class="table table-bordered" id="requestPending">
-        <thead>
-            <tr>
-                <th><?= $lang['th']['title']; ?></th>
-                <th><?= $lang['th']['description']; ?></th>
-                <th><?= $lang['th']['date']; ?></th>
-                <th><?= $lang['th']['offers']; ?></th>
-                <th><?= $lang['th']['budget']; ?></th>
-                <th><?= $lang['th']['actions']; ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="table-info">
+<style>
+	@media (max-width:768px) {
+		.font-size-3 {
+			font-size: 13px !important;
+			padding: 10px !important;
+			text-align: center;
+		}
+
+		.desc-wrap {		
+			/* border: 1px solid red !important; */
+			word-break:break-all;			
+		}
+	}
+	.box-shadow-reqpend{
+		/* box-shadow: 0px 0px 5px black, inset 0px 0px 25px gray; */
+	}
+</style>
+
+<div class="table-responsive box-table box-shadow-req-act">
+	<table class="table table-bordered" id="requestPending">
+		<thead>
+			<tr>
+				<th class="font-size-3"><?= $lang['th']['title']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['description']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['date']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['offers']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['budget']; ?></th>
+				<th class="font-size-3"><?= $lang['th']['actions']; ?></th>
+			</tr>
+		</thead>
+		<tbody class="box-shadow-reqpend">
+			<tr class="table-info">
 				<td colspan="6">
 					data fetching...
 				</td>
 			</tr>
-        </tbody>
-    </table>
-    <nav id="pagination-request-pending" aria-label="pending request navigation"></nav>
+		</tbody>
+	</table>
+	<nav id="pagination-request-pending" aria-label="pending request navigation"></nav>
 </div>
 
 <script type="text/javascript">

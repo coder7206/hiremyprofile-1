@@ -25,7 +25,7 @@ function isHTML($string)
         // not HTML
         return false;
     }
-}
+} 
 
 // $deviceType = "phone";
 
@@ -56,6 +56,7 @@ $row_proposal = $select_proposal->fetch();
 $proposal_title = $row_proposal->proposal_title;
 $proposal_cat_id = $row_proposal->proposal_cat_id;
 $proposal_child_id = $row_proposal->proposal_child_id;
+$proposal_attr_id = $row_proposal->proposal_attr_id;
 $proposal_price = $row_proposal->proposal_price;
 $proposal_img1 = $row_proposal->proposal_img1;
 $proposal_img2 = $row_proposal->proposal_img2;
@@ -104,6 +105,25 @@ $proposal_child_url = $get_child->fetch()->child_url;
 $get_meta = $db->select("child_cats_meta", array("child_id" => $proposal_child_id, "language_id" => $siteLanguage));
 $row_meta = $get_meta->fetch();
 @$proposal_child_title = $row_meta->child_title;
+
+
+// select proposal attribute category
+
+$get_attribute = $db->select("cat_attribute", array("attr_id" => $proposal_attr_id));
+if ($get_attribute->rowCount() > 0) {
+    $proposal_attr_url = $get_attribute->fetch()->cat_attr;
+} else {
+    // echo "No attributes found.";
+}
+
+$get_meta = $db->select("sub_subcategories", array("attr_id" => $proposal_attr_id, "language_id" => $siteLanguage));
+if ($get_meta->rowCount() > 0) {
+    $row_meta = $get_meta->fetch();
+    @$proposal_attr_title = $row_meta->sub_subcategory_name;
+} else {
+    // echo "No sub subcategories found.";
+}
+
 
 // Select Proposal Delivery Time
 $get_delivery_time = $db->select("delivery_times", array('delivery_id' => $delivery_id));

@@ -8,7 +8,7 @@ require_once("functions/functions.php");
 if (strpos($_SERVER["REQUEST_URI"], 'index') !== false) {
 	header("location: $site_url");
 }
-// require_once("social-config.php");
+require_once("social-config.php");
 $site_title = $row_general_settings->site_title;
 
 // FOR BOOKMARK
@@ -62,10 +62,32 @@ if ($_POST) {
 	<style>
 		.fixed {
 			position: fixed;
+			transition: all 3s linear;
 			top: 0;
 			left: 0;
 			width: 100%;
 			z-index: 100;
+		}
+
+
+		.scroller-up {
+			position: fixed;
+
+		}
+
+		.scroller-up-down {
+			position: absolute;
+
+		}
+
+		.imgtop {
+			width: 15rem;
+		}
+
+		#fontSize {
+			font-size: 13px;
+			font-weight: 400;
+			padding-left: 0;
 		}
 	</style>
 </head>
@@ -98,9 +120,9 @@ if ($_POST) {
 						<h2 class="sub-title"></h2>
 						<div class="search-box">
 							<div class="search-placeholder">
-								<span class="svg-icon search-magnifier"><i class="fa fa-search"></i></span>
+								<span class="svg-icon search-magnifier"><i class="fa fa-search">&nbsp;Query</i></span>
 							</div>
-							<input type="text" id="sm-search" value="">
+							<input type="text" id="sm-search" placeholder="">
 						</div>
 					</div>
 				</header>
@@ -110,17 +132,21 @@ if ($_POST) {
 						<ul></ul>
 					</div>
 					<div class="pull-left search-single">
-						<div class="breadcrumbs">
+						<div class="breadcrumbs scroller-up">
 							<a href="#" class="home-link" data-id="">
 								<i class="fa fa-home"></i> <i class="fa fa-angle-right"></i>
-								&nbsp;<span class="sm-category"></span>
+								&nbsp;<span class="sm-category"></span>&nbsp;
+								<i class="fa fa-angle-right"></i>
+								<span class="sm-title" id="fontSize"></span>
 							</a>
 						</div>
-						<div class="sm-title"></div>
-						<div class="img imgtop"></div>
-						<div class="sm-content"></div>
-						<div class="img imgright"></div>
-						<div class="img imgbottom"></div>
+						<div class="scroller-up-down">
+							<div class="sm-title"></div>
+							<div class="img imgtop"></div>
+							<div class="sm-content"></div>
+							<div class="img imgright"></div>
+							<div class="img imgbottom"></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -134,7 +160,7 @@ if ($_POST) {
 		</script>
 		<script type="text/javascript" src="js/knowledge-bank.js"></script>
 	<?php endif; ?>
-	<script>
+	<!-- <script>
 		var stickyOffset = $('.sticky').offset().top;
 
 		$(window).scroll(function() {
@@ -151,7 +177,28 @@ if ($_POST) {
 				$('.container-fluid ').css('margin-top', '0px')
 			}
 		});
-	</script>
+	</script> -->
+	<!-- <script> 
+		new header script
+		$(document).ready(function() {
+			var sticky = $('.sticky');
+			var stickyOffset = sticky.offset().top;
+
+			$(window).scroll(function() {
+				var scroll = $(window).scrollTop();
+
+				if (scroll >= stickyOffset) {
+					sticky.addClass('fixed');
+					$('.container-fluid').css('margin-top', '140px');
+					sticky.css('transition', 'all 2s linear');
+				} else {
+					sticky.removeClass('fixed');
+					$('.container-fluid').css('margin-top', '0px');
+					sticky.css('transition', 'all 2s linear');
+				}
+			});
+		});
+	</script> -->
 </body>
 
 </html>

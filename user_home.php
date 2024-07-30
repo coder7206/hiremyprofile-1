@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 $login_seller_user_name = $_SESSION['seller_user_name'];
 $select_login_seller = $db->select("sellers", array("seller_user_name" => $login_seller_user_name));
 $row_login_seller = $select_login_seller->fetch();
@@ -76,17 +77,18 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
     .about-section-1 .nav-tabs .nav-item.show .nav-link {
         color: #fff;
         background-color: #00c8d4;
-        width: 30%;
+        width: 50%;
         text-align: center;
         font-weight: normal;
     }
 
     .about-section-1 .nav-tabs .nav-link {
         color: #495057;
-        /*background-color: #00c8d4;*/
-        width: 30%;
+        background-color: #fafafa;
+        width: 50%;
         text-align: center;
         font-weight: normal;
+        border: 1px solid #f0f2f2;
     }
 
     .about-section-1 .nav-tabs .nav-link.active::after {
@@ -108,12 +110,360 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
 
     .user_border {
         border: 1px solid #edefed;
-        padding-top: 30px;
+        padding-top: 20px;
     }
 
     .hide {
         display: none;
     }
+
+    .nitin-1 {
+        margin: auto;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .proposals_image_div {
+        width: 100%;
+        height: 150px;
+        overflow: hidden;
+        padding: 5px;
+    }
+
+
+    /* respo-nsive-screen-for-size-less-then-768px-section-start */
+    @media (max-width: 767px) {
+
+
+        .alter-top-margin {
+            /* margin-top: 50px !important; */
+            padding: 0rem;
+        }
+
+        .b-t-m-resize {
+            border: 1px solid lightblue;
+            border-top: none;
+        }
+
+        #featured-candi-response {
+            margin-top: 10px;
+        }
+
+        .o-view_all_styling-div {
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+
+
+
+
+
+
+        .respo-for-mob-scr {
+            /* background-color: #00C8D4; */
+            /* border: 2px solid black; */
+            justify-content: center;
+            width: 100%;
+        }
+
+        #mobile_responsive_screen {
+            display: block;
+            margin: 50px auto;
+            width: 100%;
+        }
+
+        #disp-lay-fl-ex {
+            /* border:2px solid blue; */
+            margin: auto;
+        }
+
+        .second-class-respo {
+            /* border:2px solid red;  */
+            font-size: 13px;
+        }
+
+        .btn-view-hire-respo {
+            border: 2px solid #00C8D4;
+            margin: auto;
+            width: 100%;
+        }
+
+        .btn-view-hire-respo:hover {
+            text-decoration: underline;
+            border: 3px solid green;
+        }
+
+        .mobile-pic-respo-sett {
+            display: none;
+        }
+
+
+
+
+        .row {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+
+        .col-1,
+        .col-2,
+        .col-3,
+        .col-4,
+        .col-5,
+        .col-6,
+        .col-7,
+        .col-8,
+        .col-9,
+        .col-10,
+        .col-11,
+        .col-12,
+        .col,
+        .col-auto,
+        .col-sm-1,
+        .col-sm-2,
+        .col-sm-3,
+        .col-sm-4,
+        .col-sm-5,
+        .col-sm-6,
+        .col-sm-7,
+        .col-sm-8,
+        .col-sm-9,
+        .col-sm-10,
+        .col-sm-11,
+        .col-sm-12,
+        .col-sm,
+        .col-sm-auto,
+        .col-md-1,
+        .col-md-2,
+        .col-md-3,
+        .col-md-4,
+        .col-md-5,
+        .col-md-6,
+        .col-md-7,
+        .col-md-8,
+        .col-md-9,
+        .col-md-10,
+        .col-md-11,
+        .col-md-12,
+        .col-md,
+        .col-md-auto,
+        .col-lg-1,
+        .col-lg-2,
+        .col-lg-3,
+        .col-lg-4,
+        .col-lg-5,
+        .col-lg-6,
+        .col-lg-7,
+        .col-lg-8,
+        .col-lg-9,
+        .col-lg-10,
+        .col-lg-11,
+        .col-lg-12,
+        .col-lg,
+        .col-lg-auto,
+        .col-xl-1,
+        .col-xl-2,
+        .col-xl-3,
+        .col-xl-4,
+        .col-xl-5,
+        .col-xl-6,
+        .col-xl-7,
+        .col-xl-8,
+        .col-xl-9,
+        .col-xl-10,
+        .col-xl-11,
+        .col-xl-12,
+        .col-xl,
+        .col-xl-auto {
+            position: relative;
+            width: 100%;
+            min-height: 1px;
+            padding-right: 2px;
+            padding-left: 2px;
+        }
+
+
+
+
+
+        .title-selling-order-headling {
+            /* background-color: green; */
+            text-align: center;
+        }
+
+        .text-align-center {
+            text-align: center;
+        }
+
+        .heading_3 {
+            font-size: 20px;
+            width: 100%;
+        }
+
+        table tr td:first-child {
+            min-width: none !important;
+        }
+
+        .text-align-right {
+            margin-left: 10px;
+            /* margin-top: 4px; */
+        }
+
+        .text_center {
+            /* border: 2px solid green; */
+            margin: auto !important;
+            /* box-shadow: 1px 1px 7px black; */
+        }
+
+        .col_md_12 {
+            /* border: 2px solid blue; */
+            width: 100%;
+            display: flex;
+        }
+
+        .heading_4 {
+            font-size: 16px;
+        }
+    }
+
+    .text-align-right {
+        margin-left: 10px;
+        /* margin-top: 4px; */
+    }
+
+    .margin-top-25 {
+        margin-top: 0.25rem !important;
+    }
+
+    @media(min-width:768px) and (max-width:1024px) {
+        .alter-top-margin {
+            /* margin-top: 50px !important; */
+            /* padding: 0px !important; */
+        }
+
+    }
+
+    /* respo-nsive-screen-for-size-less-then-768px-section-end */
+    /* respo-nsive-screen-for-size-between-768px-to-1600px-section-start */
+    @media (min-width: 768px) and (max-width: 1600px) {
+        .b-t-m-resize {
+            border: 1px solid lightblue;
+            border-top: none;
+        }
+
+        .alter-top-margin {
+            /* margin-top: 50px !important; */
+            padding: 2.5rem 2.5rem 0rem;
+        }
+
+        #featured-candi-response {
+            margin-top: 10px;
+        }
+
+        .o-view_all_styling-div {
+            height: 50px;
+        }
+
+
+
+        .second-class-respo {
+            /* border:2px solid red;  */
+            font-size: 13px;
+        }
+
+        .btn-view-hire-respo {
+            border: 2px solid #00C8D4;
+            margin: auto;
+            width: 100%;
+        }
+
+        .btn-view-hire-respo:hover {
+            text-decoration: underline;
+            border: 3px solid green;
+        }
+
+        /* .create_proposal_atleast {
+            border: 1px solid #e5e5e5;
+            background-color: #e5e5e5;
+            margin: 24px 0 0 0;
+            border-radius: 3px;
+            padding: 1px 15px 0 15px;
+        } */
+
+        .create_proposal_atleast {
+            font-size: 13.5px;
+            font-weight: 500;
+            display: flex;
+            width: 100%;
+            padding: 13px;
+            border-radius: 3px;
+            background-color: white;
+            border: 1px solid #00C8D4;
+
+        }
+
+        .create_proposal_atleast button {
+            float: inline-end;
+            font-size: 17px;
+            padding: 10px 25px;
+            border: none;
+            color: #fff;
+            background-color: #00c8d4;
+            border-radius: 3px;
+            display: flex;
+            width: 40%;
+        }
+
+        .papargraph_block {
+            display: block;
+            width: 100%;
+            margin: auto;
+        }
+
+        .span_restyling_sect {
+            width: 100%;
+        }
+    }
+
+    .strong-text {
+        font-size: 22px;
+    }
+
+    .box-shadow-bbody1 {
+        /* box-shadow: inset 0px 0px 65px #ebfaf8; */
+        border: 1px solid lightgrey;
+    }
+
+
+
+    .pl-6 {
+        /* padding-left: 2rem !important; */
+    }
+
+    .textendstyle {
+        text-align: end;
+    }
+
+    .card_footer_bottom_amount {
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem;
+        background-color: #e5e5e54f;
+    }
+
+    .theme-color-starting-at {
+        color: #00cedc;
+        padding-top: 4px;
+    }
+
+    /* respo-nsive-screen-for-size-between-768px-to-1600px-section-end */
 </style>
 <script>
     function myBookmark(x) {
@@ -134,12 +484,12 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
 
         form.submit();
     }
-    $(function(){
+    $(function() {
         // $("a#buyer_tab").click(function(){
         //     $('#buyer-sidebar').show();
         //     $('#seller-sidebar').hide();
         // });
-        $('.nav-tabs a').click(function(){
+        $('.nav-tabs a').click(function() {
             var tabValue = $(this).data('value')
             if (tabValue == "buyer") {
                 $('body #buyer-sidebar').show();
@@ -152,30 +502,30 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
         })
     })
 </script>
-<div class="container-fluid pt-5">
-    <div class="row">
-        <div class="user_border buyer_box col-xl-3 col-lg-4 <?= ($lang_dir == "right" ? 'order-2 order-sm-1' : '') ?> hidden-xs">
+<div class="container-fluid">
+    <div class="row alter-top-margin">
+        <div class="user_border buyer_box col-xl-3 mb-5 col-lg-3 box-shadow-bbody1 <?= ($lang_dir == "right" ? 'order-2 order-sm-1' : '') ?> hidden-xs">
             <?php include("includes/buyer_home_sidebar.php"); ?>
         </div>
-        <div class="user_border seller_box hide col-xl-3 col-lg-4 <?= ($lang_dir == "right" ? 'order-2 order-sm-1' : '') ?> hidden-xs">
+        <div class="user_border seller_box hide col-xl-3 col-lg-3 box-shadow-bbody1 <?= ($lang_dir == "right" ? 'order-2 order-sm-1' : '') ?> hidden-xs">
             <?php include("includes/buyer_home_sidebar.php"); ?>
         </div>
-        <div class="col-xl-9 col-lg-8 pb-5">
+        <div class="col-xl-9 col-lg-9 p-3 box-shadow-bbody">
             <div class="about-section-1">
                 <div class="top_bas nav nav-tabs font-weight-bold text-largest" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link <?= $activeTab == "buyer" ? "active" : "" ?>" data-toggle="tab" data-value="buyer" href="#Buyer" role="tab" aria-selected="<?= $activeTab == "buyer" ? "true" : "false" ?>" id="buyer_tab">Buyer </a>
+                    <a class="nav-item nav-link strech_full_scr  box-shadow-sfs <?= $activeTab == "buyer" ? "active" : "" ?>" data-toggle="tab" data-value="buyer" href="#Buyer" role="tab" aria-selected="<?= $activeTab == "buyer" ? "true" : "false" ?>" id="buyer_tab"><span class="strong-text"> Buyer </span></a>
                     <?php if ($activeTab == "seller") { ?>
-                        <a class="nav-item nav-link active" data-toggle="tab" data-value="seller" href="#Seller" role="tab" aria-selected="true" id="seller_tab">Seller <i onclick="myBookmark(this)" data-bookmark-seller="no" class="fa fa-bookmark" data-toggle="tooltip" data-placement="top" title="Remove Bookmark"></i></a>
+                        <a class="nav-item nav-link active strech_full_scr box-shadow-sfs" data-toggle="tab" data-value="seller" href="#Seller" role="tab" aria-selected="true" id="seller_tab">Seller<i onclick="myBookmark(this)" data-bookmark-seller="no" class="fa fa-bookmark text-align-right" data-toggle="tooltip" data-placement="top" title="Remove Bookmark"></i></a>
                     <?php } else { ?>
-                        <a class="nav-item nav-link" data-toggle="tab" data-value="seller" href="#Seller" role="tab" aria-selected="false" id="seller_tab">Seller <i onclick="myBookmark(this)" data-bookmark-seller="yes" class="fa fa-bookmark-o" data-toggle="tooltip" data-placement="top" title="Add Bookmark"></i></a>
+                        <a class="nav-item nav-link  box-shadow-sfs" data-toggle="tab" data-value="seller" href="#Seller" role="tab" aria-selected="false" id="seller_tab"> <span class="strong-text"> Seller </span><i onclick="myBookmark(this)" data-bookmark-seller="yes" class="fa fa-bookmark-o" data-toggle="tooltip" data-placement="top" title="Add Bookmark"></i></a>
                     <?php } ?>
                 </div>
             </div>
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade <?= $activeTab == "buyer" ? "show active" : "" ?>" id="Buyer" role="tabpanel">
                     <div class="about-section-2 pt-5">
-                        <div class="col-xs-12">
-                            <div class="card rounded-0">
+                        <div class="col-xs-12 px-1">
+                            <div class="card rounded-0  box-shadow-buyer-body">
                                 <div class="card-body p-0">
                                     <div class="row pl-3 pr-3 pb-2 pt-2 mt-4">
                                         <div class="col-xs-6 text-center border-box">
@@ -213,8 +563,8 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
 
                             <!-- Start Manage Request -->
                             <div class="row">
-                                <div class="col-md-12 mt-5 mb-3">
-                                    <h1 class="pull-left"> <?= $lang["titles"]["manage_requests"]; ?> </h1>
+                                <div class="col-md-12 mt-5 mb-3 margin-top-25">
+                                    <h1 class="text-align-center"> <?= $lang["titles"]["manage_requests"]; ?> </h1>
                                 </div>
                                 <div class="col-md-12">
                                     <?php include('requests/manage_requests_body.php'); ?>
@@ -224,24 +574,37 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
 
                             <!-- Buyer Contacts -->
                             <div class="row">
-                                <div class="col-md-12 mt-5 mb-3">
-                                    <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["manage_contacts"]; ?></h1>
+                                <div class="col-md-12 mt-5 mb-3 margin-top-25">
+                                    <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?> text-align-center"><?= $lang["titles"]["manage_contacts"]; ?></h1>
                                 </div>
                                 <div class="col-md-12">
                                     <?php include('buyer_contacts.php'); ?>
                                 </div>
                             </div>
                             <!-- End Buyer Contacts -->
+                            <!--  -->
+
+                            <!-- top plan purchased people displayed section start -->
+
+                            <!-- ######################################## -->
+                            <!-- ############### NEW HTML CODE: END ############### --- ############### NEW HTML CODE: END ############### -->
+
+
+
+
+
+                            <!-- top plan purchased people displayed section end -->
+
 
                             <!-- Recently Viewd Start -->
                             <div class="row">
-                                <div class="col-md-12 mt-5 mb-3">
+                                <div class="col-md-12 mt-5 mb-3 margin-top-25">
                                     <h1 class="pull-left"> <?= $lang['sidebar']['recently_viewed']; ?> </h1>
                                 </div>
                                 <div class="col-md-12 mt-3">
                                     <div class="row">
                                         <?php
-                                        $select_recent = $db->query("select * from recent_proposals WHERE seller_id='$login_seller_id' AND EXISTS (SELECT * FROM proposals WHERE proposals.proposal_id = recent_proposals.proposal_id AND proposals.proposal_status='active') order by 1 DESC LIMIT 0,4");
+                                        $select_recent = $db->query("select * from recent_proposals WHERE seller_id='$login_seller_id' AND EXISTS (SELECT * FROM proposals WHERE proposals.proposal_id = recent_proposals.proposal_id AND proposals.proposal_status='active') order by 1 DESC LIMIT 0,3");
                                         $count_recent = $select_recent->rowCount();
                                         if ($count_recent == 0) {
                                             // echo "<p class='text-muted'> <i class='fa fa-frown-o'></i> {$lang['sidebar']['no_recently_viewed']} </p>";
@@ -254,7 +617,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                         ?>
                                             <?php
                                             $i = 0;
-                                            $select_recent = $db->query("select * from recent_proposals where seller_id='$login_seller_id' order by 1 DESC LIMIT 0,4");
+                                            $select_recent = $db->query("select * from recent_proposals where seller_id='$login_seller_id' order by 1 DESC LIMIT 0,3");
                                             while ($row_recent = $select_recent->fetch()) {
                                                 $proposal_id = $row_recent->proposal_id;
                                                 $get_proposals = $db->query("select * from proposals where proposal_id='$proposal_id' AND proposal_status='active'");
@@ -315,14 +678,16 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                         $enableVideo = 0;
                                                     }
                                             ?>
-                                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 mb-4">
+                                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 mb-4">
                                                         <div class="card-box card">
                                                             <div class="subcategory">
-                                                                <a href="proposals/<?= $seller_user_name; ?>/<?= $proposal_url; ?>">
-                                                                    <picture class="card-img-top">
-                                                                        <img class="rounded-0" src="<?= $proposal_img1; ?>">
-                                                                    </picture>
-                                                                </a>
+                                                                <div class="proposals_image_div">
+                                                                    <a href="proposals/<?= $seller_user_name; ?>/<?= $proposal_url; ?>">
+                                                                        <picture class="card-img-top">
+                                                                            <img class="rounded-0" src="<?= $proposal_img1; ?>">
+                                                                        </picture>
+                                                                    </a>
+                                                                </div>
                                                                 <div class="card-body">
                                                                     <div class="d-flex">
                                                                         <div class="rounded-circle overflow-hidden d-flex justify-content-center align-items-center user-pic">
@@ -340,12 +705,12 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                                             </div> -->
                                                                         </div>
                                                                     </div>
-                                                                    <p class="my-4">
-                                                                        <?= truncate($proposal_title, 150); ?>
-                                                                        <a href="<?= $site_url; ?>/<?= $seller_user_name; ?>" class="btn-link">
+                                                                    <p class="my-3">
+                                                                        <?= truncate($proposal_title, 50); ?> <a href="<?= $site_url; ?>/<?= $seller_user_name; ?>" class="btn-link">
                                                                             Read more
                                                                         </a>
                                                                     </p>
+                                                                    <!-- <p class="textendstyle mt-1"></p> -->
                                                                     <div class="d-flex justify-content-between align-items-center">
                                                                         <div class="font-weight-bold text-info">
                                                                             <i class="fa fa-star"></i>
@@ -361,22 +726,24 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class=" d-flex justify-content-between align-items-center py-3 px-3 bt-xs-1 ">
-                                                                    <ul class="list-inline mb-0">
+                                                                <div class="card_footer_bottom_amount">
+                                                                    <!-- <ul class="list-inline mb-0">
                                                                         <li class="list-inline-item dropdown">
                                                                             <a id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="text-muted fa fa-bars"></a>
-                                                                            <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                                               <a class="dropdown-item" href="#">Action</a>
                                                                               <a class="dropdown-item" href="#">Another action</a>
                                                                               <a class="dropdown-item" href="#">Something else here</a>
-                                                                            </div> -->
+                                                                            </div>
                                                                         </li>
-                                                                        <!-- <li class="list-inline-item">
+                                                                        <li class="list-inline-item">
                                                                           <a class="text-muted fa fa-heart"></a>
-                                                                        </li> -->
-                                                                    </ul>
+                                                                        </li>
+                                                                    </ul> -->
+                                                                    <div class="theme-color-starting-at">
+                                                                        <strong>STARTING AT </strong>
+                                                                    </div>
                                                                     <div>
-                                                                        <span class="text-secondary">STARTING AT </span>
                                                                         <strong class="text-largest pl-2"><?= showPrice($proposal_price); ?></strong>
                                                                     </div>
                                                                 </div>
@@ -393,7 +760,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
 
                             <!-- Buy again Start -->
                             <div class="row">
-                                <div class="col-md-12 mt-5 mb-3">
+                                <div class="col-md-12 mt-5 mb-3 margin-top-25">
                                     <h1 class="pull-left"> Buy again from your favorite
                                         sellers </h1>
                                 </div>
@@ -404,18 +771,6 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                             <!-- Buyer Videos -->
                             <div class="row">
                                 <div class="body-max-width px-3 py-5 home-section4">
-                                    <div id="carouselExampleControls" class="carousel slide py-5" data-ride="carousel">
-                                        <div class="carousel-inner">
-                                            <?php include('buyer_videos.php'); ?>
-                                        </div>
-                                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                                            <span class="fa fa-chevron-left" aria-hidden="true">
-                                            </span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                                            <span class="fa fa-chevron-right" aria-hidden="true"></span>
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                             <!-- Seller Videos -->
@@ -423,114 +778,164 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                     </div>
                 </div>
                 <div class="tab-pane fade <?= $activeTab == "seller" ? "show active" : "" ?>" id="Seller" role="tabpanel">
-                    <div class="about-section-2 pt-5">
-                        <div class="">
-                            <div class="row">
-                            <div class="col-xs-12">
-                                <div class="alert alert-info col-xs-12">
-                                    You have active membership <?php echo $planName; ?>
-                                    <?php if (!$row_purchsed) {
-                                        echo 'please <a href="membership_subs">upgrade</a> ';
-                                    } ?></php>
+                    <div>
+                        <div id="seller-sidebar" style="<?= $activeTab == "buyer" ? "display: none" : "" ?>">
+                            <div class="card card1  text-dark border-0 px-4 py-3 mb-4 box-shadow-buyer1">
+                                <div class="d-flex align-items-center justify-content-space-between">
+                                    <h6>Set up your account</h6>
+                                    <h6><?= $totalWeight ?>%</h6>
                                 </div>
+                                <div class="progress" style="height: 10px; border-radius: 1rem;">
+                                    <div class="progress-bar" role="progressbar" style="width: <?= $totalWeight ?>%;" aria-valuenow="<?= $totalWeight ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
-                                <div class="col-xs-12">
-                                    <div class="card rounded-0">
-                                        <div class="card-body p-0">
-                                            <div class="row pl-3 pr-3 pb-2 pt-2 mt-4">
-                                                <div class="col-md-4 col-sm-6 text-center border-box">
-                                                    <?php
-                                                    $count_orders = $db->count("orders", array("seller_id" => $login_seller_id, "order_status" => 'completed'));
-                                                    ?>
-                                                    <a href="selling_orders">
-                                                        <img width="" src="images/comp/completed.png" alt="completed">
-                                                        <h5 class="text-muted pt-2"> <?= $lang["dashboard"]['orders_completed']; ?></h5>
-                                                        <h3 class="text-success"><?= $count_orders; ?></h3>
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-4 col-sm-6 text-center border-box">
-                                                    <?php
-                                                    $count_orders = $db->count("orders", array("seller_id" => $login_seller_id, "order_active" => 'yes'));
-                                                    ?>
-                                                    <a href="selling_orders">
-                                                        <img width="" src="images/comp/debt.png" alt="debt">
-                                                        <h5 class="text-muted pt-2"> <?= $lang["dashboard"]['sales_in_queue']; ?></h5>
-                                                        <h3 class="text-success"><?= $count_orders; ?></h3>
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-4 col-sm-6 text-center border-box">
-                                                    <a href="revenue">
-                                                        <img width="" src="images/comp/financial.png" alt="financial">
-                                                        <h5 class="text-muted pt-2"> <?= $lang["dashboard"]['earnings']; ?> </h5>
-                                                        <h3 class="text-success"><?= showPrice($month_earnings); ?></h3>
-                                                    </a>
+                            </div>
+                            <?php if ($profileWeight == 0) { ?>
+                                <div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row mb-4 box-shadow-buyer1">
+                                    <a href="<?= $site_url ?>/settings?profile_settings">
+                                        <h6 class="mb-0 text-white"> <i class="fa fa-user mr-3"></i> <span>Complete your profile</span></h6>
+                                    </a>
+                                    <label class="mb-0 text-white font-weight-bold">+40%</label>
+                                </div>
+                            <?php
+                            }
+                            if ($professionalWeight == 0) {
+                            ?>
+                                <div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row mb-4 box-shadow-buyer1">
+                                    <a href="<?= $site_url ?>/settings?professional_settings">
+                                        <h6 class="mb-0 text-white"> <i class="fa fa-briefcase mr-3"></i> <span>Complete your professional</span></h6>
+                                    </a>
+                                    <label class="mb-0 text-white font-weight-bold">+40%</label>
+                                </div>
+                            <?php
+                            }
+                            if ($accountWeight == 0) {
+                            ?>
+                                <div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row mb-4 box-shadow-buyer1">
+                                    <a href="<?= $site_url ?>/settings?account_settings">
+                                        <h6 class="mb-0 text-white"> <i class="fa fa-money mr-3"></i> <span>Complete your account</span></h6>
+                                    </a>
+                                    <label class="mb-0 text-white font-weight-bold">+20%</label>
+                                </div>
+                            <?php } ?>
+                        </div>
+
+
+
+
+                        <div class="create_proposal_atleast">
+                            <p class="papargraph_block">Start Selling</p>
+                            <span class="span_restyling_sect"><button type="button">Create proposal</button></span>
+                        </div>
+
+                        <div class="about-section-2 pt-5">
+                            <div class="">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="alert alert-info col-xs-12 text-align-center box-shadow-yham py-3">
+                                            Current Membership- <?php echo $planName; ?>
+                                            <?php if (!$row_purchsed) {
+                                                echo 'please <a href="membership_subs">upgrade</a> ';
+                                            } ?></php>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="card rounded-0 box-shadow-start-btm">
+                                            <div class="card-body p-0">
+                                                <div class="row pl-3 pr-3 pb-2 pt-2 mt-4">
+                                                    <div class="col-md-4 col-sm-6 text-center border-box">
+                                                        <?php
+                                                        $count_orders = $db->count("orders", array("seller_id" => $login_seller_id, "order_status" => 'completed'));
+                                                        ?>
+                                                        <a href="selling_orders">
+                                                            <img width="" src="images/comp/completed.png" alt="completed">
+                                                            <h5 class="text-muted pt-2"> <?= $lang["dashboard"]['orders_completed']; ?></h5>
+                                                            <h3 class="text-success"><?= $count_orders; ?></h3>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6 text-center border-box">
+                                                        <?php
+                                                        $count_orders = $db->count("orders", array("seller_id" => $login_seller_id, "order_active" => 'yes'));
+                                                        ?>
+                                                        <a href="selling_orders">
+                                                            <img width="" src="images/comp/debt.png" alt="debt">
+                                                            <h5 class="text-muted pt-2"> <?= $lang["dashboard"]['sales_in_queue']; ?></h5>
+                                                            <h3 class="text-success"><?= $count_orders; ?></h3>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6 text-center border-box">
+                                                        <a href="revenue">
+                                                            <img width="" src="images/comp/financial.png" alt="financial">
+                                                            <h5 class="text-muted pt-2"> <?= $lang["dashboard"]['earnings']; ?> </h5>
+                                                            <h3 class="text-success"><?= showPrice($month_earnings); ?></h3>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <br>
                                         </div>
-                                        <br>
+                                    </div>
+
+                                    <div class="col-md-12 mt-5">
+                                        <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?> title-selling-order-headling"><?= $lang["titles"]["selling_orders"]; ?></h1>
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <?php include('user_selling_orders.php'); ?>
                                     </div>
                                 </div>
-
-                                <div class="col-md-12 mt-5">
-                                    <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["selling_orders"]; ?></h1>
+                                <!-- Buyer request -->
+                                <div class="row buyer-requests">
+                                    <div class="col-md-12 mt-3">
+                                        <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?> text-align-center"><?= $lang["titles"]["buyer_requests"]; ?></h1>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <?php
+                                        include('requests/user_buyer_requests.php');
+                                        ?>
+                                    </div>
                                 </div>
-                                <div class="col-md-12 mt-3">
-                                    <?php include('user_selling_orders.php'); ?>
-                                </div>
-                            </div>
-                            <!-- Buyer request -->
-                            <div class="row buyer-requests">
-                                <div class="col-md-12 mt-3">
-                                    <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["buyer_requests"]; ?></h1>
-                                </div>
-                                <div class="col-md-12">
+                                <!-- End Buyer Request  -->
+                                <!-- Proposal -->
+                                <div class="row">
+                                    <div class="col-md-12 mt-3">
+                                        <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?> text-align-center"><?= $lang["titles"]["view_proposals"]; ?></h1>
+                                    </div>
+                                    <div class="append-modal"></div>
                                     <?php
-                                    include('requests/user_buyer_requests.php');
+                                    $active = "active";
+                                    include('proposals/user_view_proposal.php');
                                     ?>
                                 </div>
-                            </div>
-                            <!-- End Buyer Request  -->
-                            <!-- Proposal -->
-                            <div class="row">
-                                <div class="col-md-12 mt-3">
-                                    <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["view_proposals"]; ?></h1>
-                                </div>
-                                <div class="append-modal"></div>
-                                <?php
-                                $active = "active";
-                                include('proposals/user_view_proposal.php');
-                                ?>
-                            </div>
-                            <!-- End Proposal -->
-                            <!-- Buyer Contacts -->
-                            <div class="row">
+                                <!-- End Proposal -->
+                                <!-- Buyer Contacts -->
+                                <div class="row">
 
-                                <div class="col-md-12 mt-3">
-                                    <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>"><?= $lang["titles"]["manage_contacts"]; ?> </h1>
-                                </div>
-                                <div class="col-md-12 mt-3">
-                                    <?php include('seller_contacts.php'); ?>
-                                </div>
-                            </div>
-                            <!-- End Buyer Contacts -->
-                            <!-- Seller Videos -->
-                            <div class="row">
-                                <div class="body-max-width px-3 py-5 home-section4">
-                                    <div id="carouselExampleControls" class="carousel slide py-5" data-ride="carousel">
-                                        <div class="carousel-inner">
-                                            <?php include('seller_videos.php'); ?>
-                                        </div>
-                                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                                            <span class="fa fa-chevron-left" aria-hidden="true">
-                                            </span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                                            <span class="fa fa-chevron-right" aria-hidden="true"></span>
-                                        </a>
+                                    <div class="col-md-12 mt-3">
+                                        <h1 class="<?= ($lang_dir == "right" ? 'text-right' : '') ?> text-align-center"><?= $lang["titles"]["manage_contacts"]; ?> </h1>
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <?php include('seller_contacts.php'); ?>
                                     </div>
                                 </div>
+                                <!-- End Buyer Contacts -->
+                                <!-- Seller Videos -->
+                                <div class="row">
+                                    <div class="body-max-width px-3 py-5 home-section4">
+                                        <div id="carouselExampleControls" class="carousel slide py-5" data-ride="carousel">
+                                            <div class="carousel-inner">
+                                                <?php include('seller_videos.php'); ?>
+                                            </div>
+                                            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                                <span class="fa fa-chevron-left" aria-hidden="true">
+                                                </span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                                <span class="fa fa-chevron-right" aria-hidden="true"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Seller Videos -->
                             </div>
-                            <!-- Seller Videos -->
                         </div>
                     </div>
                 </div>
@@ -538,9 +943,67 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
         </div>
     </div>
 </div>
+<div class="third_section_div_style desktop-view-only">
+    <div class="third_sectioninner_div_style">
+        <div class="third_sectioninner_60">
+            <p class="margin_according_content color_theme_color">Freelance talent hub</p>
+            <h2 class="margin_according_content mb-3">Access a world of independent talent.</h2>
+            <div class="third_sectioninner_60paragraph">
+                <div class="main-list-content-div-fth">
+                    <div class="image-icon-fth"><img src="images/first_icon.png" alt="no image" width="100%" class="m-auto">
+                    </div>
+                    <div class="content-img-fth">
+                        <p>
+                            "Hiremyprofile" offers a user-friendly platform where individuals can build comprehensive profiles showcasing their skills, experience, and expertise across various industries.
+                        </p>
+                    </div>
+                </div>
 
+                <div class="main-list-content-div-fth">
+                    <div class="image-icon-fth"><img src="images/quality_icon.png" alt="no image" width="100%" class="m-auto">
+                    </div>
+                    <div class="content-img-fth">
+                        <p>
+                            Employers can efficiently explore these profiles to identify candidates who align with their project needs or job openings.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="main-list-content-div-fth">
+                    <div class="image-icon-fth"><img src="images/payment_icon.png" alt="no image" width="100%" class="m-auto">
+                    </div>
+                    <div class="content-img-fth">
+                        <p>
+                            The platform enhances communication channels, enabling direct interaction between employers and job seekers to discuss opportunities.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="main-list-content-div-fth">
+                    <div class="image-icon-fth"><img src="images/fourth_icon.png" alt="no image" width="100%" class="m-auto">
+                    </div>
+                    <div class="content-img-fth">
+                        <p>
+                            With detailed insights into each candidate's qualifications, "Hiremyprofile" aims to facilitate successful matches and productive collaborations in the hiring process.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="third_sectioninner_40">
+            <video width="100%" id="videotemp">
+                <source src="videos/yjky.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="play-icon" id="play-icon"><i class="fa fa-play"></i></div>
+
+            <!-- <iframe width="100%" height="100%" src="videos/yjky.mp4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+        </div>
+    </div>
+</div>
 <!-- Container ends -->
-<br>
 <div class="append-modal"></div>
 <div id="featured-proposal-modal"></div>
 <div id="quota-finish" class="modal fade">

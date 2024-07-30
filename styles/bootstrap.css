@@ -75,9 +75,7 @@
     h3 {
         page-break-after: avoid;
     }
-    .navbar {
-        display: none;
-    }
+   
     .badge {
         border: 1px solid #000;
     }
@@ -242,7 +240,7 @@ a {
 }
 
 a:hover {
-    color: #0056b3;
+    color: #00c8d4;
     text-decoration: underline;
 }
 
@@ -495,7 +493,7 @@ h6,
 }
 
 .lead {
-    font-size: 1.25rem;
+    font-size: 1.24rem;
     font-weight: 300;
 }
 
@@ -696,14 +694,14 @@ pre code {
     .container {
         /*max-width: 1140px;*/
         /*max-width: 1200px !important;*/
-        max-width: 1310px !important;
+        max-width: 1320px !important;
     }
 }
 
 .container-fluid {
     width: 100%;
-    padding-right: 19px;
-    padding-left: 19px;
+    padding-right: 15px;
+    padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
 }
@@ -1753,7 +1751,7 @@ pre code {
 
 .table-bordered th,
 .table-bordered td {
-    border: 1px solid #e9ecef;
+    border: 1px solid lightgrey !important;
 }
 
 .table-bordered thead th,
@@ -1994,13 +1992,13 @@ pre code {
 .table-responsive {
     display: block;
     width: 100%;
-    overflow-x: auto;
+    overflow-x: auto !important;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 .table-responsive.table-bordered {
-    border: 0;
+    /* border: 1px solid #e9ecef; */
 }
 
 .form-control {
@@ -2474,7 +2472,7 @@ select.form-control-lg:not([size]):not([multiple]),
 .btn:focus,
 .btn.focus {
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    /* box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); */
 }
 
 .btn.disabled,
@@ -2506,7 +2504,7 @@ fieldset[disabled] a.btn {
 
 .btn-primary:focus,
 .btn-primary.focus {
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+    /* box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); */
 }
 
 .btn-primary.disabled,
@@ -2521,7 +2519,7 @@ fieldset[disabled] a.btn {
     color: #fff;
     background-color: #0062cc;
     border-color: #005cbf;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+    /* box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); */
 }
 
 .btn-secondary {
@@ -3401,8 +3399,8 @@ tbody.collapse.show {
 .input-group .form-control {
     position: relative;
     z-index: 2;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
+    -ms-flex: 1 1 auto !important;
+    flex: 1 1 auto !important;
     width: 1%;
     margin-bottom: 0;
 }
@@ -3805,6 +3803,7 @@ tbody.collapse.show {
     color: #495057;
     background-color: #fff;
     border-color: #ddd #ddd #fff;
+  
 }
 
 .nav-tabs .dropdown-menu {
@@ -4053,6 +4052,11 @@ tbody.collapse.show {
 }
 
 @media (min-width: 1024px) {
+    
+.table-responsive {
+    display: inline-table;
+    width: 100%;}
+
     .navbar-expand-lg {
         -ms-flex-flow: row nowrap;
         flex-flow: row nowrap;
@@ -4383,7 +4387,7 @@ tbody.collapse.show {
 
 .card-header-tabs {
     margin-right: -0.625rem;
-    margin-bottom: -0.75rem;
+    margin-bottom: -1.05rem;
     margin-left: -0.625rem;
     border-bottom: 0;
 }
@@ -4411,6 +4415,7 @@ tbody.collapse.show {
     width: 100%;
     border-top-left-radius: calc(0.25rem - 1px);
     border-top-right-radius: calc(0.25rem - 1px);
+    display: flex;
 }
 
 .card-img-bottom {
@@ -4794,6 +4799,7 @@ tbody.collapse.show {
     position: relative;
     padding: 0.75rem 1.25rem;
     margin-bottom: 1rem;
+    /* margin-top:7.45rem; */
     border: 1px solid transparent;
     border-radius: 0.25rem;
 }
@@ -6270,7 +6276,7 @@ a.bg-dark:hover {
     }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
     .d-lg-none {
         display: none !important;
     }
@@ -7475,22 +7481,22 @@ a.bg-dark:hover {
 
 .pt-5,
 .py-5 {
-    padding-top: 3rem !important;
+    padding-top: 1.5rem !important;
 }
 
 .pr-5,
 .px-5 {
-    padding-right: 3rem !important;
+    padding-right: 1.5rem !important;
 }
 
 .pb-5,
 .py-5 {
-    padding-bottom: 3rem !important;
+    padding-bottom: 1.5rem !important;
 }
 
 .pl-5,
 .px-5 {
-    padding-left: 3rem !important;
+    padding-left: 1.5rem !important;
 }
 
 .m-auto {
@@ -8017,7 +8023,7 @@ a.bg-dark:hover {
     }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
     .m-lg-0 {
         margin: 0 !important;
     }
@@ -8715,5 +8721,11 @@ a.text-dark:hover {
     visibility: hidden !important;
 }
 
+
+@media(min-width:1024px){
+    .navbar {
+        display: flex;
+    }
+}
 
 /*# sourceMappingURL=bootstrap.css.map */

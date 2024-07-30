@@ -32,12 +32,10 @@ if (isset($_GET['n_id'])) {
 			} elseif ($reason == "withdrawal_approved" or $reason == "withdrawal_declined") {
 				echo "<script>window.open('withdrawal_requests?id=$order_id','_self');</script>";
 			} elseif ($reason == "profile_modification" or $reason == "professional_modification" or $reason == "account_modification") {
-				$lk = $reason == "profile_modification" ? "settings?profile_settings" :
-					($reason == "professional_modification" ? "settings?professional_settings" : "settings?account_settings");
+				$lk = $reason == "profile_modification" ? "settings?profile_settings" : ($reason == "professional_modification" ? "settings?professional_settings" : "settings?account_settings");
 				echo "<script>window.open('{$lk}','_self');</script>";
 			} elseif ($reason == "profile_approved" or $reason == "professional_approved" or $reason == "account_approved") {
-				$lk = $reason == "profile_approved" ? "settings?profile_settings" :
-					($reason == "professional_approved" ? "settings?professional_settings" : "settings?account_settings");
+				$lk = $reason == "profile_approved" ? "settings?profile_settings" : ($reason == "professional_approved" ? "settings?professional_settings" : "settings?account_settings");
 				echo "<script>window.open('{$lk}','_self');</script>";
 			} else {
 				echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";
@@ -79,23 +77,90 @@ if (isset($_GET['delete'])) {
 	<?php if (!empty($site_favicon)) { ?>
 		<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
 	<?php } ?>
+
+	<style>
+		.alter-top-margin0{
+			/* margin-top:-100px; */
+			padding: 2rem;
+		}
+		@media (max-width:768px) {
+			.full-width-margin {
+				width: 100%;
+				display: flex;
+				margin-top: 2vh;
+				margin-bottom: -2vh;
+				/* color: #256156; */
+				/* font-size: 20px !important; */
+			}
+			.alter-top-margin0{
+			/* margin-top:-125px; */
+			padding: 0;
+		}
+		
+			.text-align-center {
+				text-align: center;
+				margin: auto;
+			}
+
+			.full-width-1 {
+				width: 95%;
+				margin-left: 0px !important;
+				display: flex;
+				/* color: #256156; */
+				font-size: 20px !important;
+			}
+
+			.text-align-center-1 {
+				text-align: center;
+				margin: auto;
+			}
+
+			.font-size-3 {
+				font-size: 13px !important;
+				text-align: center;
+				padding-left: 5px !important;
+				padding-right: 5px !important;
+			}
+
+			.content-center {
+				/* border: 1px solid green !important; */
+				padding-top: 3vh !important;
+			}
+
+			.content-center-1 {
+				/* border: 1px solid green !important; */
+				padding-top: 3vh !important;
+			}
+
+			.content-center-2 {
+				/* border: 1px solid green !important; */
+				padding-top: 2.5vh !important;
+			}
+
+			.font-size {
+				font-size: 14px !important;
+			}
+
+		
+		}
+	</style>
 </head>
 
 <body class="is-responsive">
 	<?php require_once("includes/user_header.php"); ?>
 	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12 mt-5">
-				<h2> <?= $lang["titles"]["notifications"]; ?> </h2>
-				<div class="table-responsive box-table mt-5">
-					<h2 class="mt-3 mb-3 ml-3"> <?= $lang["notifications"]["all"]; ?> </h2>
+		<div class="row alter-top-margin0">
+			<div class="col-md-12">
+				<h2 class="full-width-margin"><span class="text-align-center"><?= $lang["titles"]["notifications"]; ?></span></h2>
+				<div class="table-responsive box-table mt-4">
+					<h2 class="mt-3 mb-3 ml-3 full-width-1"> <span class="text-align-center-1"><?= $lang["notifications"]["all"]; ?> </span></h2>
 					<table class="table table-bordered inbox-conversations">
 						<thead>
 							<tr>
-								<th><?= $lang['th']['sender']; ?></th>
-								<th><?= $lang['th']['message']; ?></th>
-								<th><?= $lang['th']['date']; ?></th>
-								<th><?= $lang['th']['delete']; ?></th>
+								<th class="font-size-3"><?= $lang['th']['sender']; ?></th>
+								<th class="font-size-3"><?= $lang['th']['message']; ?></th>
+								<th class="font-size-3"><?= $lang['th']['date']; ?></th>
+								<th class="font-size-3"><?= $lang['th']['delete']; ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -128,7 +193,7 @@ if (isset($_GET['delete'])) {
 								<tr class="<?php if ($status == 'unread') {
 												echo 'table-active';
 											} ?>">
-									<td class="inbox-seller">
+									<td class="inbox-seller content-center-1 font-size">
 										<?php if (!empty($sender_image)) { ?>
 											<?php if (strpos($sender_id, "admin_") !== false) { ?>
 												<img src="<?= $sender_image; ?>" class="rounded-circle">
@@ -138,17 +203,17 @@ if (isset($_GET['delete'])) {
 										<?php } else { ?>
 											<img src="user_images/empty-image.png" class="rounded-circle">
 										<?php } ?>
-										<h6 class="mb-4">
+										<h6 class="mb-4 content-center-2">
 											<a href="<?= $site_url; ?>/notifications?n_id=<?= $notification_id; ?>"><?= $sender_user_name; ?></a>
 										</h6>
 									</td>
-									<td width="400">
+									<td width="400" class="font-size">
 										<a href="<?= $site_url; ?>/notifications?n_id=<?= $notification_id; ?>">
 											<?= include("includes/comp/notification_reasons.php"); ?>
 										</a>
-									</td>
+								 	</td>
 									<td> <?= $date; ?> </td>
-									<td>
+									<td class="content-center">
 										<a href="notifications?delete=<?= $notification_id; ?>" class="text-white btn btn-danger">
 											<i class="fa fa-trash-o"></i>
 										</a>

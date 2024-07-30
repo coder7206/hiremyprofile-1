@@ -1,84 +1,97 @@
-<div class="mp-gig-top-nav" style="margin-top: 116px;">
-  <nav>
-    <ul class="container text-center" id="mainNav">
+<style>
+  .margin-top-7rem {
+    margin-top: 10.5rem;
+  }
+</style>
+<div class="container margin-top-7rem" id="introduction">
+  <div class="mp-gig-top-nav">
+    <nav>
+      <ul class="container text-center" id="mainNav">
 
-      <li class="selected">
-        <a href="#introduction" class="gig-page-nav-link"><?= $lang['proposal']['nav']['introduction']; ?></a>
-      </li>
-
-      <li>
-        <a href="#details" class="gig-page-nav-link"><?= $lang['proposal']['nav']['details']; ?></a>
-      </li>
-
-      <?php if ($count_faq != 0) { ?>
-        <li>
-          <a href="#faq" class="gig-page-nav-link"><?= $lang['proposal']['nav']['faq']; ?></a>
+        <li class="selected">
+          <a href="#introduction" class="gig-page-nav-link"><?= $lang['proposal']['nav']['introduction']; ?></a>
         </li>
-      <?php } ?>
 
-      <li>
-        <a href="#reviews" class="gig-page-nav-link"><?= $lang['proposal']['nav']['reviews']; ?></a>
-      </li>
-
-      <li>
-        <a href="#related" class="gig-page-nav-link"><?= $lang['proposal']['nav']['related']; ?></a>
-      </li>
-
-      <?php if ($proposal_seller_vacation == "off") { ?>
         <li>
-          <a href="#redirect" onclick="window.location.href='<?= $site_url ?>/conversations/message.php?seller_id=<?= $proposal_seller_id; ?>'" class="gig-page-nav-link">
-            <i class="fa fa-comments-o fa-lg"></i> <?= $lang['proposal']['nav']['message_seller']; ?></a>
+          <a href="#details" class="gig-page-nav-link"><?= $lang['proposal']['nav']['details']; ?></a>
         </li>
-      <?php } ?>
 
-      <?php if ($proposal_price != 0) { ?>
+        <?php if ($count_faq != 0) { ?>
+          <li>
+            <a href="#faq" class="gig-page-nav-link"><?= $lang['proposal']['nav']['faq']; ?></a>
+          </li>
+        <?php } ?>
+
+        <li>
+          <a href="#reviews" class="gig-page-nav-link"><?= $lang['proposal']['nav']['reviews']; ?></a>
+        </li>
+
+        <li>
+          <a href="#related" class="gig-page-nav-link"><?= $lang['proposal']['nav']['related']; ?></a>
+        </li>
+
+        <?php if ($proposal_seller_vacation == "off") { ?>
+          <li>
+            <a href="#redirect" onclick="window.location.href='<?= $site_url ?>/conversations/message.php?seller_id=<?= $proposal_seller_id; ?>'" class="gig-page-nav-link">
+              <i class="fa fa-comments-o fa-lg"></i> <?= $lang['proposal']['nav']['message_seller']; ?></a>
+          </li>
+        <?php } ?>
+
+        <?php if ($proposal_price != 0) { ?>
+          <li class="btns d-none float-right">
+            <button class="order-now btn btn-secondary">
+              <?= $lang['proposal']['nav']['order_now']; ?> (<?= showPrice($proposal_price, "total-price") ?>)
+            </button>
+          </li>
+        <?php } ?>
+
         <li class="btns d-none float-right">
-          <button class="order-now btn btn-secondary">
-            <?= $lang['proposal']['nav']['order_now']; ?> (<?= showPrice($proposal_price, "total-price") ?>)
-          </button>
+          <!--        --><?php //if(@$count_p_cart == 1){
+                          ?>
+          <!--          <button class="btn btn-secondary">-->
+          <!--            --><?php //include("../images/svg/cart.svg");
+                              ?>
+          <!-- --><? //= $lang['proposal']['nav']['already_in_cart'];
+                  ?>
+          <!--          </button>-->
+          <!--        --><?php //}else{
+                          ?>
+          <!--<!--          <button class="add-to-cart btn btn-secondary">-->
+          <!--<!--            --><?php ////include("../images/svg/cart.svg");
+                                  ?>
+          <!--<!-- --><? ////= $lang['proposal']['nav']['add_to_cart'];
+                      ?>
+          <!--<!--          </button>-->
+          <!--        --><?php //}
+                          ?>
         </li>
-      <?php } ?>
 
-      <li class="btns d-none float-right">
-        <!--        --><?php //if(@$count_p_cart == 1){
-                        ?>
-        <!--          <button class="btn btn-secondary">-->
-        <!--            --><?php //include("../images/svg/cart.svg");
-                            ?>
-        <!-- --><? //= $lang['proposal']['nav']['already_in_cart'];
-                ?>
-        <!--          </button>-->
-        <!--        --><?php //}else{
-                        ?>
-        <!--<!--          <button class="add-to-cart btn btn-secondary">-->
-        <!--<!--            --><?php ////include("../images/svg/cart.svg");
-                                ?>
-        <!--<!-- --><? ////= $lang['proposal']['nav']['add_to_cart'];
-                    ?>
-        <!--<!--          </button>-->
-        <!--        --><?php //}
-                        ?>
-      </li>
-
-    </ul>
-  </nav>
-</div>
-
-<div class="container mt-5" id="introduction">
+      </ul>
+    </nav>
+  </div>
   <!-- Container starts -->
   <div class="row">
-    <div class="col-lg-8 col-md-7 mb-3">
+    <div class="col-lg-8 col-md-7 mb-3 p-4 box-shadow-outset">
       <!--- col-lg-8 col-md-7 mb-3 Starts --->
       <div class="card rounded-0 mb-5 border-0">
         <div class="card-body details pt-0">
           <div class="proposal-info <?= ($lang_dir == "right" ? 'text-right' : '') ?>">
-            <h3><?= ucfirst($proposal_title); ?></h3>
+            <h3>
+              <?php
+              $max_length = 60;
+              $truncated_title = (strlen($proposal_title) > $max_length) ? substr(ucfirst($proposal_title), 0, $max_length) . '...' : ucfirst($proposal_title);
+              echo $truncated_title;
+              ?>
+            </h3>
             <hr>
-            <nav class="breadcrumbs h-text-truncate mb-2">
-              <a href="<?=$site_url?>">Home</a>
-              <a href="<?=$site_url?>/categories/<?= $proposal_cat_url; ?>"> <?= $proposal_cat_title; ?> </a>
-              <a href="<?=$site_url?>/categories/<?= $proposal_cat_url; ?>/<?= $proposal_child_url; ?>">
+            <nav class="breadcrumbs h-text-truncate mb-2">   
+              <a href="<?= $site_url ?>">Home</a>
+              <a href="<?= $site_url ?>/categories/<?= $proposal_cat_url; ?>"> <?= $proposal_cat_title; ?> </a>
+              <a href="<?= $site_url ?>/categories/<?= $proposal_cat_url; ?>/<?= $proposal_child_url; ?>">
                 <?= $proposal_child_title; ?>
+              </a>
+              <a href="<?= $site_url ?>/categories/<?= $proposal_cat_url; ?>/<?= $proposal_child_url; ?>/<?= $proposal_attr_title ?>">
+                <?= $proposal_attr_title; ?>
               </a>
             </nav>
             <?php
@@ -98,7 +111,7 @@
 
       <?php if ($proposal_price == 0) { ?>
         <div class="card rounded-0 mb-3 <?= ($lang_dir == "right" ? 'text-right' : '') ?>" id="compare">
-          <div class="card-header">
+          <div class="card-header box-shadow-cheader">
             <h5>Compare Packages</h5>
           </div>
           <div class="card-body p-0">
@@ -142,22 +155,22 @@
 
                   ?>
                   <tr class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>">
-                    <td class="b-ccc"> </td>
-                    <td>
+                    <td class="b-ccc box-shadow-cheader"> </td>
+                    <td class="box-shadow-cheader">
                       <h5><?= $lang['packages']['basic']; ?></h5>
                     </td>
-                    <td>
+                    <td class="box-shadow-cheader">
                       <h5><?= $lang['packages']['standard']; ?></h5>
                     </td>
-                    <td>
+                    <td class="box-shadow-cheader">
                       <h5><?= $lang['packages']['advance']; ?></h5>
                     </td>
                   </tr>
                   <tr class="<?= ($lang_dir == "right" ? 'text-right' : '') ?>" width="20">
-                    <td class="b-ccc">Description</td>
-                    <td><?= $p_description_1; ?></td>
-                    <td><?= $p_description_2; ?></td>
-                    <td><?= $p_description_3; ?></td>
+                    <td class="b-ccc box-shadow-cheader">Description</td>
+                    <td class="box-shadow-cbody2"><?= $p_description_1; ?></td>
+                    <td class="box-shadow-cbody2"><?= $p_description_2; ?></td>
+                    <td class="box-shadow-cbody2"><?= $p_description_3; ?></td>
                   </tr>
 
                   <?php
@@ -168,7 +181,7 @@
                     $a_value = $row_a->attribute_value;
                   ?>
                     <tr>
-                      <td class="b-ccc" width="150"> <?= $a_name; ?> </td>
+                      <td class="b-ccc box-shadow-cheader" width="150"> <?= $a_name; ?> </td>
                       <td><?= $a_value; ?> </td>
                       <?php
                       $get_v = $db->query("select * from package_attributes where proposal_id='$proposal_id' and attribute_name='$a_name' and not attribute_id='$a_id'");
@@ -181,21 +194,21 @@
                   <?php } ?>
 
                   <tr>
-                    <td class="b-ccc" width="150"> Revisions </td>
-                    <td><?= ucwords($p_revisions_1); ?></td>
-                    <td><?= ucwords($p_revisions_2); ?></td>
-                    <td><?= ucwords($p_revisions_3); ?></td>
+                    <td class="b-ccc box-shadow-cheader" width="150"> Revisions </td>
+                    <td class="box-shadow-cbody2"><?= ucwords($p_revisions_1); ?></td>
+                    <td class="box-shadow-cbody2"><?= ucwords($p_revisions_2); ?></td>
+                    <td class="box-shadow-cbody2"><?= ucwords($p_revisions_3); ?></td>
                   </tr>
                   <tr>
-                    <td class="b-ccc" width="150"> Delivery Time </td>
-                    <td><?= $p_delivery_time_1; ?> Days</td>
-                    <td><?= $p_delivery_time_2; ?> Days</td>
-                    <td><?= $p_delivery_time_3; ?> Days</td>
+                    <td class="b-ccc box-shadow-cheader" width="150"> Delivery Time </td>
+                    <td class="box-shadow-cbody2"><?= $p_delivery_time_1; ?> Days</td>
+                    <td class="box-shadow-cbody2"><?= $p_delivery_time_2; ?> Days</td>
+                    <td class="box-shadow-cbody2"><?= $p_delivery_time_3; ?> Days</td>
                   </tr>
                   <tr>
-                    <td class="b-ccc"> Qty </td>
-                    <td>
-                      <form method="post" action="<?=$site_url?>/checkout">
+                    <td class="b-ccc box-shadow-cheader"> Qty </td>
+                    <td class="box-shadow-cbody2">
+                      <form method="post" action="<?= $site_url ?>/checkout">
                         <input type="hidden" name="proposal_id" value="<?= $proposal_id; ?>">
                         <input type="hidden" name="package_id" value="<?= $p_id_1; ?>">
                         <select class="form-control mb-2" name="proposal_qty">
@@ -205,14 +218,14 @@
                           <option>4</option>
                         </select>
                         <?php if ($proposal_seller_id == @$login_seller_id) { ?>
-                          <a class="btn btn-success text-white btn-block" href="<?=$site_url?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>&pricing">Edit Package</a>
+                          <a class="btn btn-success text-white btn-block box-shadow-cheader" href="<?= $site_url ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>&pricing">Edit Package</a>
                         <?php } else { ?>
-                          <button class="btn btn-success text-white btn-block" type="submit" name="add_order" <?= $disabled; ?>>Select <?= showPrice($p_price_1); ?></button>
+                          <button class="btn btn-success text-white btn-block box-shadow-cheader" type="submit" name="add_order" <?= $disabled; ?>>Select <?= showPrice($p_price_1); ?></button>
                         <?php } ?>
                       </form>
                     </td>
-                    <td>
-                      <form method="post" action="<?=$site_url?>/checkout">
+                    <td class="box-shadow-cbody2">
+                      <form method="post" action="<?= $site_url ?>/checkout">
                         <input type="hidden" name="proposal_id" value="<?= $proposal_id; ?>">
                         <input type="hidden" name="package_id" value="<?= $p_id_2; ?>">
                         <select class="form-control mb-2" name="proposal_qty">
@@ -222,14 +235,14 @@
                           <option>4</option>
                         </select>
                         <?php if ($proposal_seller_id == @$login_seller_id) { ?>
-                          <a class="btn btn-success text-white btn-block" href="<?=$site_url?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>&pricing">Edit Package</a>
+                          <a class="btn btn-success text-white btn-block box-shadow-cheader" href="<?= $site_url ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>&pricing">Edit Package</a>
                         <?php } else { ?>
-                          <button class="btn btn-success text-white btn-block" type="submit" name="add_order" <?= $disabled; ?>>Select <?= showPrice($p_price_2); ?></button>
+                          <button class="btn btn-success text-white btn-block box-shadow-cheader" type="submit" name="add_order" <?= $disabled; ?>>Select <?= showPrice($p_price_2); ?></button>
                         <?php } ?>
                       </form>
                     </td>
-                    <td>
-                      <form method="post" action="<?=$site_url?>/checkout">
+                    <td class="box-shadow-cbody2">
+                      <form method="post" action="<?= $site_url ?>/checkout">
                         <input type="hidden" name="proposal_id" value="<?= $proposal_id; ?>">
                         <input type="hidden" name="package_id" value="<?= $p_id_3; ?>">
                         <select class="form-control mb-2" name="proposal_qty">
@@ -239,9 +252,9 @@
                           <option>4</option>
                         </select>
                         <?php if ($proposal_seller_id == @$login_seller_id) { ?>
-                          <a class="btn btn-success text-white btn-block" href="<?=$site_url?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>&pricing">Edit Package</a>
+                          <a class="btn btn-success text-white btn-block box-shadow-cheader" href="<?= $site_url ?>/proposals/edit_proposal?proposal_id=<?= $proposal_id; ?>&pricing">Edit Package</a>
                         <?php } else { ?>
-                          <button class="btn btn-success text-white btn-block" type="submit" name="add_order" <?= $disabled; ?>>Select <?= showPrice($p_price_3); ?></button>
+                          <button class="btn btn-success text-white btn-block box-shadow-cheader" type="submit" name="add_order" <?= $disabled; ?>>Select <?= showPrice($p_price_3); ?></button>
                         <?php } ?>
                       </form>
                     </td>
@@ -254,10 +267,10 @@
       <?php } ?>
 
       <div class="card rounded-0 mb-5 <?= ($lang_dir == "right" ? 'text-right' : '') ?>" id="details">
-        <div class="card-header">
+        <div class="card-header box-shadow-cheader">
           <h4>About This Proposal</h4>
         </div>
-        <div class="card-body proposal-desc"><?= $proposal_desc; ?></div>
+        <div class="card-body proposal-desc box-shadow-cbody2"><?= $proposal_desc; ?></div>
       </div>
 
       <?php if ($count_faq > 0) { ?>
@@ -290,7 +303,7 @@
       <?php } ?>
 
       <div class="card proposal-reviews rounded-0 mb-5" id="reviews">
-        <div class="card-header">
+        <div class="card-header box-shadow-cheader">
           <h4 class="mb-0 <?= ($lang_dir == "right" ? 'text-right' : '') ?>">
             <div class="float-left">
               <span class="mr-2"> <?= $count_reviews; ?> Reviews </span>
@@ -302,12 +315,12 @@
                 echo " <img class='mb-2' src='" . $site_url . "/images/user_rate_blank_big.png' > ";
               }
               ?> <span class="text-muted ml-2"> <?php
-                                          if ($proposal_rating == "0") {
-                                            echo "0.0";
-                                          } else {
-                                            printf("%.1f", $average_rating);
-                                          }
-                                          ?> </span>
+                                                if ($proposal_rating == "0") {
+                                                  echo "0.0";
+                                                } else {
+                                                  printf("%.1f", $average_rating);
+                                                }
+                                                ?> </span>
             </div>
             <div class="float-right">
               <button id="dropdown-button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
@@ -321,7 +334,7 @@
             </div>
           </h4>
         </div>
-        <div class="card-body <?= ($lang_dir == "right" ? 'text-right' : '') ?>">
+        <div class="card-body <?= ($lang_dir == "right" ? 'text-right' : '') ?> box-shadow-cbody2">
           <?php include("includes/proposal_reviews.php") ?>
         </div>
       </div>
@@ -333,7 +346,7 @@
           // $tag = str_replace(" ","-",$tag);
           // $tag = strtolower($tag);
         ?>
-          <div class="proposal-tag mb-3" style="<?= ($lang_dir == "right" ? 'float: right;' : '') ?>"><a href="<?=$site_url?>/tags/<?= str_replace(" ", "-", $tag); ?>"><span><?= $tag; ?></span></a></div>
+          <div class="proposal-tag mb-3" style="<?= ($lang_dir == "right" ? 'float: right;' : '') ?>"><a href="<?= $site_url ?>/tags/<?= str_replace(" ", "-", $tag); ?>"><span><?= $tag; ?></span></a></div>
         <?php } ?>
       </div>
       <!--- proposal-tags-container Ends --->

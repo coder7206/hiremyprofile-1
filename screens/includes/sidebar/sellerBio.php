@@ -17,7 +17,15 @@
     $average_rating = "0";
   }
   ?>
-  <div class="card seller-bio mb-3 rounded-0">
+  <style>
+    .profile_image_round_circle{
+      width: 130px;
+      height: 130px;
+      overflow: hidden;
+      border-radius: 100px;      
+    }
+  </style>
+  <div class="card seller-bio mb-3 rounded-0 box-shadow-cbody2">
     <div class="card-body <?= ($lang_dir == "right" ? 'text-right' : '') ?>">
 
       <?php if (check_status($proposal_seller_id) == "Online") { ?>
@@ -26,33 +34,39 @@
 
       <center class="mb-4">
         <?php if (!empty($proposal_seller_image)) { ?>
-          <img src="<?= getImageUrl2("sellers", "seller_image", $proposal_seller_image); ?>" width="130" class="rounded-circle">
+          <div class="profile_image_round_circle">
+            <img src="<?= getImageUrl2("sellers", "seller_image", $proposal_seller_image); ?>" width="100%" height="100%" class="">
+          </div>
         <?php } else { ?>
-          <img src="<?=$site_url?>/user_images/empty-image.png" width="130" class="rounded-circle">
+          <div class="profile_image_round_circle">
+            <img src="<?= $site_url ?>/user_images/empty-image.png" width="100%" height="100%" class="">
+          </div>
         <?php } ?>
       </center>
       <h3 class="text-center h3">
-        <a class="text-success" href="<?=$site_url?>/<?= $proposal_seller_user_name; ?>">
+        <a class="text-success" href="<?= $site_url ?>/<?= $proposal_seller_user_name; ?>">
           <?= ucfirst($proposal_seller_user_name); ?>
         </a> <span class="divider"> </span> <span class="text-muted"><?= $level_title; ?></span>
       </h3>
       <div class="star-rating text-warning text-center pb-1">
-      <?php
-      for ($seller_i = 0; $seller_i < $average_rating; $seller_i++) {
-        echo " <i class='fa fa-star'></i> ";
-      }
-      for ($seller_i = $average_rating; $seller_i < 5; $seller_i++) {
-        echo " <i class='fa fa-star-o'></i> ";
-      }
-      ?>
-      <span class="text-dark m-1"><strong>
-        <?php printf("%.1f", $average); ?></strong> (<?= $count_reviews; ?>)</span>
+        <?php
+        for ($seller_i = 0; $seller_i < $average_rating; $seller_i++) {
+          echo " <i class='fa fa-star'></i> ";
+        }
+        for ($seller_i = $average_rating; $seller_i < 5; $seller_i++) {
+          echo " <i class='fa fa-star-o'></i> ";
+        }
+        ?>
+        <span class="text-dark m-1"><strong>
+            <?php printf("%.1f", $average); ?></strong> (<?= $count_reviews; ?>)</span>
       </div>
       <p><small><i class="fa fa-thumbs-o-up" data-toggle="tooltip" data-placement="top" title="Recommend"></i> 0 recommendation</small></p>
-      <?php if ($proposal_seller_vacation == "on") { ?>
-        <a href="#" class="btn btn-lg btn-block btn-message rounded-0">Sorry I’m away</a>
+      <?php
+
+      if (!isset($_SESSION['seller_user_name'])) { ?>
+        <a href="#" data-toggle="modal" data-target="#login-modal" class="btn btn-lg btn-block btn-success rounded-0 box-shadow-cheader">Message me</a>
       <?php } else { ?>
-        <a href="<?=$site_url?>/conversations/message?seller_id=<?= $proposal_seller_id; ?>" class="btn btn-lg btn-block btn-success rounded-0">Message me</a>
+        <a href="<?= $site_url ?>/conversations/message?seller_id=<?= $proposal_seller_id; ?>" class="btn btn-lg btn-block btn-success rounded-0 box-shadow-cheader">Message me</a>
       <?php } ?>
       <hr>
       <div class="row">
@@ -92,7 +106,7 @@
       </div>
       <hr>
       <p class="text-left <?= ($lang_dir == "right" ? 'text-right' : '') ?>"> <?= $proposal_seller_about; ?> </p>
-      <a href="<?=$site_url?>/<?= $proposal_seller_user_name; ?>" class="text-success"> Read More </a>
+      <a href="<?= $site_url ?>/<?= $proposal_seller_user_name; ?>" class="text-success"> Read More </a>
     </div>
 
   </div>

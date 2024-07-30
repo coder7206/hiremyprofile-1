@@ -1,8 +1,13 @@
+<style>
+    /* .padding-three-rem{
+			padding-right:4rem;
+		} */
+</style>
 <div class="col-sm-7">
 
 </div>
 
-<div class="col-sm-5">
+<div class="col-sm-5 padding-three-rem">
 
    <div class="user-area dropdown float-right">
 

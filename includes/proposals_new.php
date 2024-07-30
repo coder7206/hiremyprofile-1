@@ -2,7 +2,7 @@
 		
 	$get_delivery = $db->select("instant_deliveries",['proposal_id'=>$proposal_id]);
 	$row_delivery = $get_delivery->fetch();
-	$enable_delivery = $row_delivery->enable;
+	// $enable_delivery = $row_delivery->enable;
 
 	if($videoPlugin == 1){
 		$proposal_videosettings =  $db->select("proposal_videosettings",array('proposal_id'=>$proposal_id))->fetch();

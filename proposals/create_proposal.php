@@ -67,13 +67,13 @@ $pendingProposal = $membershipData['pending_gig'];
 
   if ($seller_verification != "ok" || $totalWeight < 70) {
     if ( $totalWeight < 70) {
-			echo "
-		<div class='container-fluid py-5'>
+      echo "
+			<div class='container-fluid py-5'>
 			<div class='alert alert-danger rounded-0 mt-0 text-center'>
-			In other to add, Please complete your profile and professional info first.
+      In order to create a proposal, please complete your <a href='https://hiremyprofile.com//settings?profile_settings' class='text-primary'><u>profile</u></a>.
 			</div>
 		</div>
-		";
+		";  
 		} else {
     echo "
     <div class='container mt-5 mb-5'>
@@ -148,7 +148,7 @@ $pendingProposal = $membershipData['pending_gig'];
               $("#sub-category").html(data);
             }
           });
-        });
+        });    
 
         $image_crop = $('#image_demo').croppie({
           enableExif: true,

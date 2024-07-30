@@ -1,23 +1,63 @@
+<style>
+	@media(max-width:768px) {
+		.centre-text {
+			text-align: center;
+			margin-top: 0.5rem;
+			margin-bottom: 1.5rem;
+			font-size: 20px;
+		}
+
+		.half-width {
+			width: 50%;
+			text-align: center;
+		}
+
+	
+	}
+	.half-width1 {
+			width: 50%;
+			text-align: center;
+		}
+		.centre-text {
+			text-align: center;
+			margin-top: 0.5rem;
+			margin-bottom: 1.3rem;
+			/* font-size: 20px; */
+		}
+		.table{
+			margin-bottom:0px;
+		}
+	.box-shadow-cbody{
+		/* box-shadow: 0px 0px 3px black, inset 0px 0px 15px gray; */
+	}
+	.box-shadow-chead{
+		/* box-shadow: 0px 0px 3px black, inset 0px 0px 15px #00c8d4; */
+	}
+	.box-shadow-c-body{
+		/* box-shadow:0px 0px 5px black, inset 0px 0px 25px gray; */
+	}
+</style>
+
 <div class="card mb-3 contacts-sidebar">
-	<div class="card-header">
-		<h5 class="h5"><i class="fa fa-address-book "></i> <?= $lang["dashboard"]['my_contacts']; ?> </h5>
+	<div class="card-header box-shadow-chead">
+		<h5 class="h5 centre-text"><i class="fa fa-address-book "></i> <?= $lang["dashboard"]['my_contacts']; ?> </h5>
 		<ul class="nav nav-tabs card-header-tabs">
-			<li class="nav-item">
-				<a href="#my_buyers" data-toggle="tab" class="nav-link make-black active "> <?= $lang['tabs']['my_buyers']; ?> </a>
+			<li class="nav-item half-width half-width1">
+				<a href="#my_buyers" data-toggle="tab" class="nav-link make-black active"> <?= $lang['tabs']['my_buyers']; ?> </a>
 			</li>
-			<li class="nav-item">
+			<li class="nav-item half-width half-width1">
 				<a href="#my_sellers" data-toggle="tab" class="nav-link make-black"> <?= $lang['tabs']['my_sellers']; ?> </a>
 			</li>
 		</ul>
 	</div>
-	<div class="card-body">
+	<div class="card-body box-shadow-cbody">
 		<div class="tab-content">
 			<div id="my_buyers" class="tab-pane fade show active">
 				<div class="table-responsive">
 					<table class="table table-bordered">
 						<thead>
 							<tr>
-								<th class="gray"><?= $lang['th']['buyer_names']; ?></th>
+								<th class="gray box-shadow-chead"><?= $lang['th']['buyer_names']; ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -53,7 +93,7 @@
 					<table class="table table-bordered">
 						<thead>
 							<tr>
-								<th class="gray"><?= $lang['th']['seller_names']; ?></th>
+								<th class="gray box-shadow-chead"><?= $lang['th']['seller_names']; ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -81,14 +121,14 @@
 								</tr>
 							<?php } ?>
 						</tbody>
-					</table>
+					</table>   
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 <div class="card rounded-0  mb-3 card_user ">
-	<div class="card-body">
+	<div class="card-body box-shadow-c-body">
 		<img src="images/sales.png" class="img-fluid center-block" alt="none">
 		<h4><?= $lang['sidebar']['start_selling']['title']; ?></h4>
 		<p><?= $lang['sidebar']['start_selling']['desc']; ?></p>

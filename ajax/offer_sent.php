@@ -87,9 +87,9 @@ if ($rowCount > 0) {
             </ul>
         </div>';
         $data .= "</td>";
-        $data .= '<td>' . $delivery_time . '</td>
-        <td>' . $s_currency . $amount . '</td>
-        <td>
+        $data .= '<td class="text-align-center">' . $delivery_time . '</td>
+        <td class="text-align-center">' . $s_currency . $amount . '</td>
+        <td class="width_45percent">
             <strong>' . $proposal_title . '</strong>
             <p>
                ' . $description . '
@@ -105,7 +105,7 @@ if ($rowCount > 0) {
 } else {
     $data = "
     <tr class='table-danger'>
-        <td colspan='5'><center><h3 class='pb-4 pt-4'><i class='fa fa-meh-o'></i> You've sent any offer yet!</h3></center></td>
+        <td colspan='5' class='box-shadow-head_3'><center><h3 class='pb-4 pt-4 heading_3'><i class='fa fa-meh-o'></i> You've sent any offer yet!</h3></center></td>
     </tr>
     ";
     $paginationData = null;
