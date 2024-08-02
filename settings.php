@@ -101,6 +101,7 @@ if ($oSellerWeight) {
 	<?php } ?>
 	<script src="<?= $site_url; ?>/js/jquery.easy-autocomplete.min.js"></script>
 	<link href="<?= $site_url; ?>/styles/easy-autocomplete.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	<style>
 		@media (max-width:768px) {
 			.full-width {
@@ -339,7 +340,7 @@ if ($oSellerWeight) {
 		</div>
 	</div>
 
-	<div id="insertimageModal" class="modal" role="dialog">
+	<!-- <div id="insertimageModal" class="modal" role="dialog">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -356,7 +357,7 @@ if ($oSellerWeight) {
 			</div>
 		</div>
 	</div>
-	<div id="wait"></div>
+	<div id="wait"></div> -->
 
 	<?php require_once("includes/footer.php"); ?>
 </body>

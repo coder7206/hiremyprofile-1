@@ -40,7 +40,7 @@ require_once("social-config.php");
         <hr>
       </div>
     </div>
-
+    
 
     <style>
       .heading_font_our_policies {
