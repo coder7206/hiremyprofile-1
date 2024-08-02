@@ -15,7 +15,7 @@ if ($videoPlugin == 1) {
 
 <style>
 	.favoriteIcon-style {
-		position: absolute;
+		position: absolute; 
 		left: 10px;  
 		top: 10px;     
 	}
@@ -26,7 +26,7 @@ if ($videoPlugin == 1) {
 	<div class="proposal_image_div_style">
 		<a href="<?= $site_url; ?>/proposals/<?= $seller_user_name; ?>/<?= $proposal_url; ?>">
 			<img src="<?= $proposal_img1; ?>" class="">
-		</a>
+		</a>z
 
 		<?php if (isset($_SESSION['seller_user_name'])) { ?>
 			<?php if ($proposal_seller_id != $login_seller_id) { ?>

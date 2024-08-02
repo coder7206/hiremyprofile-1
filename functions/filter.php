@@ -322,7 +322,6 @@ function get_proposals($filter_type)
          $show_favorite_class = $count_favorites == 0 ? "proposal-favorite" : "proposal-unfavorite";
 
          echo '<div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-3">';
-         var_dump(11);
          require("$dir/includes/proposals.php");
          echo '</div>';
       }

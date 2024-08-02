@@ -10,16 +10,6 @@ if (isset($_SESSION['cat_child_id'])) {
   $child_parent_id = $get_child_cats->fetch()->child_parent_id;
 }
 
-if (isset($_SESSION['child_attr_id'])) {
-  $session_child_attr_id = $_SESSION['child_attr_id'];
-  $get_child_attr = $db->select("cat_attribute", array("attr_id" => $session_child_attr_id));
-  $row_child_attr = $get_child_attr->fetch();
-  $child_id = $row_child_attr->child_id;
-  $child_parent_id = $row_child_attr->child_parent_id;  
-}
- 
-
-
 $online_sellers = array();
 $delivery_time = array();
 $seller_level = array();
@@ -112,7 +102,7 @@ if (isset($_GET['seller_language'])) {
               $child_title = $row_meta->child_title;
               if (!empty($child_title)) {
             ?>
-                <li> 
+                <li>
                   <a class="nav-link text-success <?php if ($child_id == @$_SESSION['cat_child_id']) {
                                                     echo "active";
                                                   } ?>" href="<?= $site_url; ?>/categories/<?= $cat_url; ?>/<?= $child_url; ?>">
@@ -125,7 +115,7 @@ if (isset($_GET['seller_language'])) {
         </li>
       <?php } ?>
     </ul>
-  </div>
+  </div> 
 </div>
 
 

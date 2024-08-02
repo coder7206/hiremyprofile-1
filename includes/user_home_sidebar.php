@@ -346,8 +346,8 @@
 		<button onclick="location.href='start_selling'" class="btn get_btn"><?= $lang['sidebar']['start_selling']['button']; ?></button>
 	</div>
 </div>
-<br>
-<script>
+<br>  
+<script> 
 	$(document).ready(function() {
 		// Sticky Code start //
 		if ($(window).width() < 767) { 

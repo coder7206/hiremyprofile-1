@@ -107,7 +107,7 @@ $row_meta = $get_meta->fetch();
 @$proposal_child_title = $row_meta->child_title;
 
 
-// select proposal attribute category
+// select proposal attribute categoryz
 
 $get_attribute = $db->select("cat_attribute", array("attr_id" => $proposal_attr_id));
 if ($get_attribute->rowCount() > 0) {

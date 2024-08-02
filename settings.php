@@ -20,6 +20,9 @@ $login_seller_cover_image = $row_login_seller->seller_cover_image;
 $login_seller_image_s3 = $row_login_seller->seller_image_s3;
 $login_seller_cover_image_s3 = $row_login_seller->seller_cover_image_s3;
 
+$login_seller_address_img1 = $row_login_seller->seller_address_img1;
+
+
 $login_seller_headline = $row_login_seller->seller_headline;
 $login_seller_country = $row_login_seller->seller_country;
 $login_seller_city = $row_login_seller->seller_city;
@@ -186,7 +189,7 @@ if ($oSellerWeight) {
 		}
 
 		.background_color_greys {
-			background-color: #e5e5e5;
+			/* background-color: #e5e5e5; */
 			margin-bottom: 3px;
 		}
 
@@ -225,11 +228,11 @@ if ($oSellerWeight) {
 <body class="is-responsive">
 	<?php require_once("includes/user_header.php"); ?>
 	<div class="container-fluid p-5">
-		<div class="row terms-page" style="<?= ($lang_dir == "right" ? 'direction: rtl;' : '') ?>">
+		<div class="row terms-page justify-content-center" style="<?= ($lang_dir == "right" ? 'direction: rtl;' : '') ?>">
 			<div class="col-md-3 mb-3">
 				<div class="card">
 					<div class="card-body box-shadow8">
-						<ul class="nav nav-pills flex-column mt-4 mb-4">
+						<ul class="nav nav-pills flex-column  mb-4">
 							<li class="nav-item background_color_greys">
 								<a data-toggle="pill" href="#profile_settings" class="nav-link border border12
 						<?php
@@ -304,7 +307,7 @@ if ($oSellerWeight) {
 					</div>
 				</div>
 			</div>
-			<div class="col-md-9 mb-4">
+			<div class="col-md-8 mb-4">
 				<div class="card box-shadow-8">
 					<div class="card-body m-1 p-3">
 						<div class="tab-content">

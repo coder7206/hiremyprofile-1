@@ -378,7 +378,7 @@ echo "<option ".($get_level_id == $level_id ? "selected" : "")." value='$level_i
 $values = array();
 
 $query_where = "";
-
+ 
 if(isset($_GET['cat_id'])){
 
   $query_where .= "proposal_cat_id=:c_id";

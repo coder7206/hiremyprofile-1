@@ -140,7 +140,7 @@ function get_search_proposals()
 function get_search_pagination()
 {
 	get_pagination("search");
-}
+}    
 
 /// get_search_pagination Function Ends ///
 

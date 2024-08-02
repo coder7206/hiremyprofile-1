@@ -36,7 +36,7 @@
   }
 
   if(isset($_GET['cat_id'])){
-    foreach($_GET['cat_id'] as $value){
+    foreach($_GET['cat_id'] as $value){ 
       $cat_id[$value] = $value;
     }
   }

@@ -388,48 +388,6 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
             text-decoration: underline;
             border: 3px solid green;
         }
-
-        /* .create_proposal_atleast {
-            border: 1px solid #e5e5e5;
-            background-color: #e5e5e5;
-            margin: 24px 0 0 0;
-            border-radius: 3px;
-            padding: 1px 15px 0 15px;
-        } */
-
-        .create_proposal_atleast {
-            font-size: 13.5px;
-            font-weight: 500;
-            display: flex;
-            width: 100%;
-            padding: 13px;
-            border-radius: 3px;
-            background-color: white;
-            border: 1px solid #00C8D4;
-
-        }
-
-        .create_proposal_atleast button {
-            float: inline-end;
-            font-size: 17px;
-            padding: 10px 25px;
-            border: none;
-            color: #fff;
-            background-color: #00c8d4;
-            border-radius: 3px;
-            display: flex;
-            width: 40%;
-        }
-
-        .papargraph_block {
-            display: block;
-            width: 100%;
-            margin: auto;
-        }
-
-        .span_restyling_sect {
-            width: 100%;
-        }
     }
 
     .strong-text {
@@ -462,6 +420,50 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
         color: #00cedc;
         padding-top: 4px;
     }
+
+    .create_proposal_atleast {       
+        display: flex;
+        width: 100%;
+        padding: 13px;
+        border-radius: 3px;
+        background-color: white;
+        /* border: 1px solid #00C8D4; */
+        margin-top: 1rem;
+    }
+
+    .papargraph_block {
+        display: block;
+        width: 100%;
+        margin: auto;
+        font-size: 19px;
+        /* background-color: green; */
+    }
+
+    .icon_bblock {
+        display: block;
+        width: 30%;
+        margin: auto;
+        /* background-color: blue; */
+    }
+
+    .btn_bblock {
+        display: block;
+        width: 50%;
+        margin: auto;
+        text-align: center;
+        /* background-color: red; */
+    }
+
+    .btn_get_btn {
+        background-color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        border:1px solid #00cedc;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+
 
     /* respo-nsive-screen-for-size-between-768px-to-1600px-section-end */
 </style>
@@ -769,62 +771,24 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                             </div>
                             <!-- Buy again End -->
                             <!-- Buyer Videos -->
-                            <div class="row">
-                                <div class="body-max-width px-3 py-5 home-section4">
-                                </div>
-                            </div>
-                            <!-- Seller Videos -->
+                        
+                            <!-- Seller Videos --> 
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane fade <?= $activeTab == "seller" ? "show active" : "" ?>" id="Seller" role="tabpanel">
                     <div>
                         <div id="seller-sidebar" style="<?= $activeTab == "buyer" ? "display: none" : "" ?>">
-                            <div class="card card1  text-dark border-0 px-4 py-3 mb-4 box-shadow-buyer1">
-                                <div class="d-flex align-items-center justify-content-space-between">
-                                    <h6>Set up your account</h6>
-                                    <h6><?= $totalWeight ?>%</h6>
-                                </div>
-                                <div class="progress" style="height: 10px; border-radius: 1rem;">
-                                    <div class="progress-bar" role="progressbar" style="width: <?= $totalWeight ?>%;" aria-valuenow="<?= $totalWeight ?>" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <?php if ($profileWeight == 0) { ?>
-                                <div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row mb-4 box-shadow-buyer1">
-                                    <a href="<?= $site_url ?>/settings?profile_settings">
-                                        <h6 class="mb-0 text-white"> <i class="fa fa-user mr-3"></i> <span>Complete your profile</span></h6>
-                                    </a>
-                                    <label class="mb-0 text-white font-weight-bold">+40%</label>
-                                </div>
-                            <?php
-                            }
-                            if ($professionalWeight == 0) {
-                            ?>
-                                <div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row mb-4 box-shadow-buyer1">
-                                    <a href="<?= $site_url ?>/settings?professional_settings">
-                                        <h6 class="mb-0 text-white"> <i class="fa fa-briefcase mr-3"></i> <span>Complete your professional</span></h6>
-                                    </a>
-                                    <label class="mb-0 text-white font-weight-bold">+40%</label>
-                                </div>
-                            <?php
-                            }
-                            if ($accountWeight == 0) {
-                            ?>
-                                <div class="card card1 theme-bg text-white border-0  px-sm-4 px-2  py-3 d-flex align-items-center justify-content-space-between w-100 flex-row mb-4 box-shadow-buyer1">
-                                    <a href="<?= $site_url ?>/settings?account_settings">
-                                        <h6 class="mb-0 text-white"> <i class="fa fa-money mr-3"></i> <span>Complete your account</span></h6>
-                                    </a>
-                                    <label class="mb-0 text-white font-weight-bold">+20%</label>
-                                </div>
-                            <?php } ?>
+
                         </div>
 
 
-
-
                         <div class="create_proposal_atleast">
-                            <p class="papargraph_block">Start Selling</p>
-                            <span class="span_restyling_sect"><button type="button">Create proposal</button></span>
+                            <div class="icon_bblock"> <img src="images/sales.png" class="img-fluid center-block" alt="none"></div>
+                            <div class="papargraph_block"><?= $lang['sidebar']['start_selling']['desc']; ?></div>
+                            <div class="btn_bblock"> <button onclick="location.href='settings?profile_settings'" class="btn_get_btn">
+                                    <?= $lang['sidebar']['start_selling']['button']; ?>
+                                </button></div>
                         </div>
 
                         <div class="about-section-2 pt-5">
@@ -918,22 +882,7 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                 </div>
                                 <!-- End Buyer Contacts -->
                                 <!-- Seller Videos -->
-                                <div class="row">
-                                    <div class="body-max-width px-3 py-5 home-section4">
-                                        <div id="carouselExampleControls" class="carousel slide py-5" data-ride="carousel">
-                                            <div class="carousel-inner">
-                                                <?php include('seller_videos.php'); ?>
-                                            </div>
-                                            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                                                <span class="fa fa-chevron-left" aria-hidden="true">
-                                                </span>
-                                            </a>
-                                            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                                                <span class="fa fa-chevron-right" aria-hidden="true"></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                               
                                 <!-- Seller Videos -->
                             </div>
                         </div>

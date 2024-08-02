@@ -45,7 +45,7 @@ if (isset($_GET['cat_child_url'])) {
 if (isset($_GET['attr_child_url'])) {
     unset($_SESSION['cat_id']);
     unset($_SESSION['cat_child_id']);
-
+   
     $get_cat = $db->select("categories", array('cat_url' => urlencode($cat_url)));
     $cat_id = $get_cat->fetch()->cat_id;
     $get_child = $db->select("categories_children", array('child_parent_id' => $cat_id, 'child_url' => urlencode($input->get('cat_child_url'))));
@@ -489,6 +489,12 @@ if (isset($_GET['attr_child_url'])) {
                     var attr_child_url = "<?= $input->get('attr_child_url'); ?>";
                     sPath = sPath + 'attr_child_url=' + attr_child_url + '&';
 
+                  var url_plus = "../";
+
+                <?php } else { ?>
+
+                    var url_plus = "";
+
                 <?php } ?>
 
                 var aInputs = Array();
@@ -606,7 +612,7 @@ if (isset($_GET['attr_child_url'])) {
 
                 });
 
-                $.ajax({ 
+                $.ajax({
 
                     url: url_plus + "../category_load",
                     method: "POST",

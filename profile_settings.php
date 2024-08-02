@@ -77,7 +77,10 @@ if (isset($_POST['submit_change_password'])) {
 }
 // Profile form
 if (isset($_POST['submit'])) {
-  $rules = array(
+ 
+var_dump($_POST);
+exit;
+$rules = array(
     "seller_name" => "required",
     "seller_country" => "required",
     "seller_language" => "required"
@@ -90,11 +93,7 @@ if (isset($_POST['submit'])) {
   ];
 
   $val = new Validator($_POST, $rules, $messages);
-  echo "<pre>";
-  echo json_encode($_POST);
-  echo "</pre>";
 
-  exit();
   if ($val->run() == false) {
     Flash::add("form_errors", $val->get_all_errors());
     Flash::add("form_data", $_POST);
@@ -105,13 +104,16 @@ if (isset($_POST['submit'])) {
     $seller_phone = strip_tags($input->post('country_code')) . " " . strip_tags($input->post('seller_phone'));
     $seller_country = strip_tags($input->post('seller_country'));
     $seller_city = strip_tags($input->post('seller_city'));
+    $seller_address = strip_tags($input->post('seller_address'));
     $seller_timezone = strip_tags($input->post('seller_timezone'));
     $seller_language = strip_tags($input->post('seller_language'));
     $seller_headline = strip_tags($input->post('seller_headline'));
     $seller_about = strip_tags($input->post('seller_about'));
     $profile_photo = strip_tags($input->post('profile_photo'));
     $profile_photo = strip_tags($input->post('profile_photo'));
+    $seller_address_img1 = strip_tags($input->post('seller_address_img1'));
     $form_state = strip_tags($input->post('form_state'));
+
 
     $cover_photo = $_FILES['cover_photo']['name'];
     $cover_photo_tmp = $_FILES['cover_photo']['tmp_name'];
@@ -124,15 +126,42 @@ if (isset($_POST['submit'])) {
       exit();
     }
 
+
+    $targetDir = "uploads/"; // Directory where files will be uploaded
+    $seller_address_img1 = basename($_FILES["seller_address_img1"]["name"]); // Get the file name
+    $targetFilePath = $targetDir . $seller_address_img1; // Target file path
+    $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION); // File extension
+
+    $allowTypes = array('jpg', 'png', 'jpeg', 'gif'); // Allowed file types
+
+    // Check if the file type is allowed
+    if (in_array($fileType, $allowTypes)) {
+        // Move the file to the target directory
+        if (move_uploaded_file($_FILES["seller_address_img1"]["tmp_name"], $targetFilePath)) {
+            echo "The file " . htmlspecialchars($seller_address_img1) . " has been uploaded.";
+        } else {
+            echo "Sorry, there was an error uploading your file.";
+            exit();
+        }
+    } else {
+        echo "Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.";
+        exit();
+    }
+var_dump($seller_address_img1);
+exit;
+   
+
     $updateForm = [
       "seller_id" => $login_seller_id,
       "seller_name" => $seller_name,
       "seller_phone" => $seller_phone,
       "seller_country" => $seller_country,
       "seller_city" => $seller_city,
+      "seller_address" => $seller_address,
       "seller_timezone" => $seller_timezone,
       "seller_headline" => $seller_headline,
       "seller_about" => $seller_about,
+      "seller_address_img1" => $seller_address_img1,
       "seller_language" => $seller_language,
       "status" => 0,
     ];
@@ -156,6 +185,26 @@ if (isset($_POST['submit'])) {
       $seller_cover_image_s3 = $enable_s3;
       $updateForm["seller_cover_image"] = $cover_photo;
       $updateForm["seller_cover_image_s3"] = $seller_image_s3;
+    }
+
+    if (empty($seller_address_img1)) {
+      // $cover_photo = $login_seller_cover_image;
+      // $seller_cover_image_s3 = $login_seller_cover_image_s3;
+    } else {
+      $targetDir = "uploads/";
+      $seller_address_img1 = basename($_FILES["seller_address_img1"]["name"]);
+      $targetFilePath = $targetDir . $seller_address_img1;
+      $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+      $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
+      if (in_array($fileType, $allowTypes)) {
+        if (move_uploaded_file($_FILES["seller_address_img1"]["tmp_name"], $targetFilePath)) {
+          echo "The file " . htmlspecialchars($seller_address_img1) . " has been uploaded.";
+        } else {
+          echo "Sorry, there was an error uploading your file.";
+        }
+      } else {
+        echo "Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.";
+      }
     }
 
 
@@ -213,6 +262,8 @@ if ($oSellerUpdate) {
   $login_seller_phone = $oSellerUpdate->seller_phone;
   $login_seller_country = $oSellerUpdate->seller_country;
   $login_seller_city = $oSellerUpdate->seller_city;
+  $login_seller_address = $oSellerUpdate->seller_address;
+  $login_seller_address_img1 = $oSellerUpdate->seller_address_img1;
   $login_seller_timzeone = $oSellerUpdate->seller_timezone;
   $login_seller_language = $oSellerUpdate->seller_language;
   $login_seller_image = $oSellerUpdate->seller_image;
@@ -314,7 +365,303 @@ $phone_no = explode(" ", $login_seller_phone ?? "");
     width: 2.5%;
     float: inline-end
   }
+
+  .profile-setting {
+    display: none;
+  }
+
+  .profile-setting:first-child {
+    display: flex;
+  }
+
+  .btn-submit {
+    display: none;
+  }
 </style>
+
+<hr />
+<?php
+$form_errors = Flash::render("form_errors");
+$form_data = Flash::render("form_data");
+if (is_array($form_errors)) {
+?>
+  <div class="alert alert-danger">
+    <!--- alert alert-danger Starts --->
+    <ul class="list-unstyled mb-0">
+      <?php $i = 0;
+      foreach ($form_errors as $error) {
+        $i++;
+      ?>
+        <li class="list-unstyled-item"><?= $i ?>. <?= ucfirst($error); ?></li>
+      <?php } ?>
+    </ul>
+  </div>
+  <!--- alert alert-danger Ends --->
+<?php } ?>
+<h5 class="mb-4 full-width-b"><span class="text-align-center-a">Profile Information</span></h5>
+<?php if ($reviewRemark == 'review') { ?>
+  <div class="alert alert-warning text-align-center">
+    Your profile is under review.
+  </div>
+<?php } ?>
+<?php if ($reviewRemark == 'modification') { ?>
+  <div class="alert alert-primary text-align-center">
+    Your profile needs modification, here is the message from ADMIN: <br /> <?= $modificationMsg ?>
+    <style>
+      .profile-setting {
+        display: flex !important;
+      }
+
+      .profile-setting:first-child {
+        display: flex;
+      }
+
+      .btn-submit {
+        display: block !important;
+      }
+    </style>
+  </div>
+<?php } ?>
+<?php if ($reviewRemark == 'active') { ?>
+  <div class="alert alert-success text-align-center box-shadow-8b">
+    Your profile is active.
+  </div>
+  <style>
+    .profile-setting {
+      display: flex !important;
+    }
+
+    .profile-setting:first-child {
+      display: flex;
+    }
+
+    .btn-submit {
+      display: block !important;
+    }
+  </style>
+<?php
+}
+// SHOW FORMS IF the modification request is needed or review is null
+if (is_null($reviewRemark) || $reviewRemark == 'modification' || $reviewRemark == 'active') {
+?>
+  <form method="post" enctype="multipart/form-data" runat="server" autocomplete="off" id="progressiveForm">
+    <div class="form-group row profile-setting">
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['full_name']; ?> </label>
+      <div class="col-md-9">
+        <input type="text" name="seller_name" value="<?= $login_seller_name; ?>" class="form-control box-shadow-allpros" required>
+      </div>
+    </div>
+
+    <div class="form-group row profile-setting">
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['phone']; ?> </label>
+      <div class="col-md-9 phoneNo">
+        <div class="input-group">
+          <span class="input-group-addon p-0 border-0 rounded-0" style="width: 28%;">
+            <?php include("includes/country_codes.php"); ?>
+          </span>
+          <input type="text" class="form-control box-shadow-allpros" name="seller_phone" placeholder="<?= $lang['placeholder']['phone']; ?>" value="<?= @$phone_no[1]; ?>" required />
+        </div>
+        <small class="text-muted">Please enter 10 digit phone number only like this: <b>2561040358</b> </small>
+      </div>
+    </div>
+
+    <div class="form-group row profile-setting"><!-- form-group row Starts -->
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['country']; ?> </label>
+      <div class="col-md-9">
+        <select name="seller_country" class="form-control box-shadow-allpros" required>
+          <?php
+          $get_countries = $db->select("countries");
+          while ($row_countries = $get_countries->fetch()) {
+            $id = $row_countries->id;
+            $name = $row_countries->name;
+
+            $get_code = $db->select("country", ['nicname' => $name]);
+
+            echo "<option value='$name'" . ($name == $login_seller_country ? "selected" : "") . ">$name</option>";
+          }
+          ?>
+        </select>
+
+      </div>
+
+    </div><!-- form-group row Ends -->
+
+    <div class="form-group row profile-setting"><!-- form-group row Starts -->
+
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['city']; ?> </label>
+
+      <div class="col-md-9">
+        <input type="text" name="seller_city" placeholder="<?= $lang['placeholder']['city']; ?>" value="<?= $login_seller_city; ?>" class="form-control box-shadow-allpros" required="" />
+      </div>
+    </div><!-- form-group row Ends -->
+
+    <div class="form-group row profile-setting"><!-- form-group row Starts -->
+
+      <label class="font-size-16 col-md-3 col-form-label"> Address </label>
+
+      <div class="col-md-9">
+        <input type="text" name="seller_address" placeholder="Enter your address" value="<?= $login_seller_address; ?>" class="form-control box-shadow-allpros" required="" />
+      </div>
+      <div class="col-md-9">
+        <input type="file" name="seller_address_img1" class="form-control box-shadow-allpros" required="" />
+      </div>
+
+    </div><!-- form-group row Ends -->
+
+    <div class="form-group row profile-setting">
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['timezone']; ?> </label>
+      <div class="col-md-9">
+        <select name="seller_timezone" class="form-control box-shadow-allpros site_logo_type" required="">
+          <?php foreach ($timezones as $key => $zone) { ?>
+            <option <?= ($login_seller_timzeone == $zone) ? "selected=''" : ""; ?> value="<?= $zone; ?>">
+              <?= $zone; ?>
+            </option>
+          <?php } ?>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group row profile-setting">
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['main_language']; ?> </label>
+      <div class="col-md-9">
+        <select name="seller_language" class="form-control box-shadow-allpros" required="">
+          <?php if ($login_seller_language == 0) { ?>
+            <option class="hidden" value=""> Select Language </option>
+            <?php
+            $get_languages = $db->select("seller_languages");
+            while ($row_languages = $get_languages->fetch()) {
+              $language_id = $row_languages->language_id;
+              $language_title = $row_languages->language_title;
+            ?>
+              <option value="<?= $language_id; ?>"> <?= $language_title; ?> </option>
+            <?php } ?>
+          <?php } else { ?>
+            <?php
+            $get_languages = $db->select("seller_languages");
+            while ($row_languages = $get_languages->fetch()) {
+              $language_id = $row_languages->language_id;
+              $language_title = $row_languages->language_title;
+            ?>
+              <option value="<?= $language_id; ?>" <?php if ($language_id == $login_seller_language) {
+                                                      echo "selected";
+                                                    } ?>> <?= $language_title; ?> </option>
+            <?php } ?>
+          <?php } ?>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row profile-setting">
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['profile_photo']; ?> </label>
+      <div class="col-md-9">
+        <input type="file" name="profile_photo" class="form-control box-shadow-allpros" accept="image/*" id="profileImg" onchange="loadFile(event)">
+        <p id="profileInfo"></p>
+        <input type="hidden" name="profile_photo">
+
+        <p class="mt-2">
+          <?= str_replace('{site_name}', $site_name, $lang['note']['profile_photo']); ?>
+        </p>
+        <?php if (!empty($login_seller_image)) { ?>
+          <img src="<?= $site_url ?>/user_images/<?= $login_seller_image ?>" width="80" class="img-thumbnail img-circle" />
+        <?php } else { ?>
+          <img id="output" width="80" max-filesize>
+        <?php } ?>
+      </div>
+    </div>
+
+
+
+    <div class="form-group row profile-setting">
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['cover_photo']; ?> </label>
+      <div class="col-md-9">
+        <input type="file" name="cover_photo" id="cover" class="form-control box-shadow-allpros" accept="image/*" onchange="loadinFile(event)">
+        <p id="pictureInfo"></p>
+        <p class="mt-2">
+          <?= str_replace('{url}', "$site_url/{$_SESSION['seller_user_name']}", $lang['note']['cover_photo']); ?>
+        </p>
+        <?php if (!empty($login_seller_cover_image)) { ?>
+          <img src="<?= $site_url ?>/cover_images/<?= $login_seller_cover_image ?>" width="80" class="img-thumbnail img-circle" />
+        <?php } else { ?>
+          <img id="flicker" width="80">
+        <?php } ?>
+      </div>
+    </div>
+
+
+    <div class="form-group row profile-setting">
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['headline']; ?> </label>
+      <div class="col-md-9">
+        <textarea name="seller_headline" id="textarea-headline" rows="3" class="form-control box-shadow-for3" required maxlength="200"><?= $login_seller_headline; ?></textarea>
+        <span class="float-right mt-1">
+          <span class="count-headline"> 0 </span> / 200 <?= $lang['label']['max']; ?>
+        </span>
+      </div>
+    </div>
+    <div class="form-group row profile-setting">
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['description']; ?></label>
+      <div class="col-md-9">
+        <textarea name="seller_about" id="textarea-about" rows="5" class="form-control box-shadow-for3" required maxlength="350" placeholder="<?= $lang['placeholder']['description']; ?>"><?= $login_seller_about; ?></textarea>
+        <span class="float-right mt-1">
+          <span class="count-about"> 0 </span> / 350 <?= $lang['label']['max']; ?>
+        </span>
+      </div>
+    </div>
+    <hr>
+    <input type="hidden" name="form_state" value="<?= $reviewRemark ?>">
+    <div class="di-flex btn-submit">
+      <button type="submit" name="submit" class="btn btn-success increase-width2  <?= $floatRight ?>" style="<?= ($lang_dir == "right" ? 'margin-left: 110px;' : '') ?>">
+        <i class="fa fa-floppy-o"></i> &nbsp; <?= $lang['button']['save_changes']; ?>
+      </button>
+    </div>
+  </form>
+<?php
+} // $reviewRemark
+else {
+?>
+  <div class="row">
+    <div class="col-md-3"><?= $lang['label']['full_name']; ?></div>
+    <div class="col-md-9"><?= $login_seller_name; ?></div>
+
+    <div class="col-md-3"><?= $lang['label']['phone']; ?></div>
+    <div class="col-md-9"><?= $login_seller_phone; ?></div>
+
+    <div class="col-md-3"><?= $lang['label']['country']; ?></div>
+    <div class="col-md-9"><?= $login_seller_country; ?></div>
+
+    <div class="col-md-3"><?= $lang['label']['city']; ?></div>
+    <div class="col-md-9"><?= $login_seller_city; ?></div>
+
+    <div class="col-md-3">Address</div>
+    <div class="col-md-9"><?= $login_seller_address; ?></div>
+
+    <div class="col-md-3">Address file</div>
+    <div class="col-md-9"><?= $login_seller_address_img1; ?></div>
+
+    <div class="col-md-3"><?= $lang['label']['timezone']; ?></div>
+    <div class="col-md-9"><?= $login_seller_city; ?></div>
+
+    <div class="col-md-3"><?= $lang['label']['profile_photo']; ?></div>
+    <div class="col-md-9"><?php if (!empty($login_seller_image)) { ?>
+        <img src="<?= $site_url ?>/user_images/<?= $login_seller_image ?>" width="80" class="img-thumbnail img-circle" />
+      <?php } ?>
+    </div>
+
+    <div class="col-md-3"><?= $lang['label']['cover_photo']; ?></div>
+    <div class="col-md-9"><?php if (!empty($login_seller_cover_image)) { ?>
+        <img src="<?= $site_url ?>/cover_images/<?= $login_seller_cover_image ?>" width="80" class="img-thumbnail img-circle" />
+      <?php } ?>
+    </div>
+
+    <div class="col-md-3"><?= $lang['label']['headline']; ?></div>
+    <div class="col-md-9"><?= $login_seller_headline; ?></div>
+
+    <div class="col-md-3"><?= $lang['label']['description']; ?></div>
+    <div class="col-md-9"><?= $login_seller_about; ?></div>
+  </div>
+<?php } ?>
+
+<!--  -->
+<br><br>
+<hr>
 <h5 class="mb-4 full-width-a"><span class="text-align-center-a">Account Information</span></h5>
 <form method="post" class="clearfix mb-3">
   <div class="form-group row">
@@ -350,256 +697,10 @@ $phone_no = explode(" ", $login_seller_phone ?? "");
   </div>
 </form>
 
-<hr />
-<?php
-$form_errors = Flash::render("form_errors");
-$form_data = Flash::render("form_data");
-if (is_array($form_errors)) {
-?>
-  <div class="alert alert-danger">
-    <!--- alert alert-danger Starts --->
-    <ul class="list-unstyled mb-0">
-      <?php $i = 0;
-      foreach ($form_errors as $error) {
-        $i++;
-      ?>
-        <li class="list-unstyled-item"><?= $i ?>. <?= ucfirst($error); ?></li>
-      <?php } ?>
-    </ul>
-  </div>
-  <!--- alert alert-danger Ends --->
-<?php } ?>
-<h5 class="mb-4 full-width-b"><span class="text-align-center-a">Profile Information</span></h5>
-<?php if ($reviewRemark == 'review') { ?>
-  <div class="alert alert-warning text-align-center">
-    Your profile is under review.
-  </div>
-<?php } ?>
-<?php if ($reviewRemark == 'modification') { ?>
-  <div class="alert alert-primary text-align-center">
-    Your profile needs modification, here is the message from ADMIN: <br /> <?= $modificationMsg ?>
-  </div>
-<?php } ?>
-<?php if ($reviewRemark == 'active') { ?>
-  <div class="alert alert-success text-align-center box-shadow-8b">
-    Your profile is active.
-  </div>
-<?php
-}
-// SHOW FORMS IF the modification request is needed or review is null
-if (is_null($reviewRemark) || $reviewRemark == 'modification' || $reviewRemark == 'active') {
-?>
-  <form method="post" enctype="multipart/form-data" runat="server" autocomplete="off">
-    <div class="form-group row">
-      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['full_name']; ?> </label>
-      <div class="col-md-9">
-        <input type="text" name="seller_name" value="<?= $login_seller_name; ?>" class="form-control box-shadow-allpros" required>
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['phone']; ?> </label>
-      <div class="col-md-9 phoneNo">
-        <div class="input-group">
-          <span class="input-group-addon p-0 border-0 rounded-0" style="width: 28%;">
-            <?php include("includes/country_codes.php"); ?>
-          </span>
-          <input type="text" class="form-control box-shadow-allpros" name="seller_phone" placeholder="<?= $lang['placeholder']['phone']; ?>" value="<?= @$phone_no[1]; ?>" required />
-        </div>
-        <small class="text-muted">Please enter 10 digit phone number only like this: <b>2561040358</b> </small>
-      </div>
-    </div>
-
-    <div class="form-group row"><!-- form-group row Starts -->
-      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['country']; ?> </label>
-      <div class="col-md-9">
-        <select name="seller_country" class="form-control box-shadow-allpros" required>
-          <?php
-          $get_countries = $db->select("countries");
-          while ($row_countries = $get_countries->fetch()) {
-            $id = $row_countries->id;
-            $name = $row_countries->name;
-
-            $get_code = $db->select("country", ['nicname' => $name]);
-
-            echo "<option value='$name'" . ($name == $login_seller_country ? "selected" : "") . ">$name</option>";
-          }
-          ?>
-        </select>
-
-      </div>
-
-    </div><!-- form-group row Ends -->
-
-    <div class="form-group row"><!-- form-group row Starts -->
-
-      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['city']; ?> </label>
-
-      <div class="col-md-9">
-        <input type="text" name="seller_city" placeholder="<?= $lang['placeholder']['city']; ?>" value="<?= $login_seller_city; ?>" class="form-control box-shadow-allpros" required="" />
-      </div>
-    </div><!-- form-group row Ends -->
-
-    <div class="form-group row">
-      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['timezone']; ?> </label>
-      <div class="col-md-9">
-        <select name="seller_timezone" class="form-control box-shadow-allpros site_logo_type" required="">
-          <?php foreach ($timezones as $key => $zone) { ?>
-            <option <?= ($login_seller_timzeone == $zone) ? "selected=''" : ""; ?> value="<?= $zone; ?>">
-              <?= $zone; ?>
-            </option>
-          <?php } ?>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['main_language']; ?> </label>
-      <div class="col-md-9">
-        <select name="seller_language" class="form-control box-shadow-allpros" required="">
-          <?php if ($login_seller_language == 0) { ?>
-            <option class="hidden" value=""> Select Language </option>
-            <?php
-            $get_languages = $db->select("seller_languages");
-            while ($row_languages = $get_languages->fetch()) {
-              $language_id = $row_languages->language_id;
-              $language_title = $row_languages->language_title;
-            ?>
-              <option value="<?= $language_id; ?>"> <?= $language_title; ?> </option>
-            <?php } ?>
-          <?php } else { ?>
-            <?php
-            $get_languages = $db->select("seller_languages");
-            while ($row_languages = $get_languages->fetch()) {
-              $language_id = $row_languages->language_id;
-              $language_title = $row_languages->language_title;
-            ?>
-              <option value="<?= $language_id; ?>" <?php if ($language_id == $login_seller_language) {
-                                                      echo "selected";
-                                                    } ?>> <?= $language_title; ?> </option>
-            <?php } ?>
-          <?php } ?>
-        </select>
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['profile_photo']; ?> </label>
-      <div class="col-md-9">
-        <input type="file" name="profile_photo" class="form-control box-shadow-allpros" accept="image/*" id="profileImg" onchange="loadFile(event)">
-        <p id="profileInfo"></p>
-        <input type="hidden" name="profile_photo">
-
-        <p class="mt-2">
-          <?= str_replace('{site_name}', $site_name, $lang['note']['profile_photo']); ?>
-        </p>
-        <?php if (!empty($login_seller_image)) { ?>
-          <img src="<?= $site_url ?>/user_images/<?= $login_seller_image ?>" width="80" class="img-thumbnail img-circle" />
-        <?php } else { ?>
-          <img id="output" width="80" max-filesize>
-        <?php } ?>
-      </div>
-    </div>
 
 
-    <script>
-      var loadFile = function(event) {
-        var output = document.getElementById("output");
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = function() {
-          URL.revokeObjectURL(output.src)
-        }
-      }
-    </script>
-    <div class="form-group row">
-      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['cover_photo']; ?> </label>
-      <div class="col-md-9">
-        <input type="file" name="cover_photo" id="cover" class="form-control box-shadow-allpros" accept="image/*" onchange="loadinFile(event)">
-        <p id="pictureInfo"></p>
-        <p class="mt-2">
-          <?= str_replace('{url}', "$site_url/{$_SESSION['seller_user_name']}", $lang['note']['cover_photo']); ?>
-        </p>
-        <?php if (!empty($login_seller_cover_image)) { ?>
-          <img src="<?= $site_url ?>/cover_images/<?= $login_seller_cover_image ?>" width="80" class="img-thumbnail img-circle" />
-        <?php } else { ?>
-          <img id="flicker" width="80">
-        <?php } ?>
-      </div>
-    </div>
 
-    <script>
-      var loadinFile = function(event) {
-        var flicker = document.getElementById("flicker");
-        flicker.src = URL.createObjectURL(event.target.files[0]);
-        flicker.onload = function() {
-          URL.revokeObjectURL(flicker.src)
-        }
-      }
-    </script>
-    <div class="form-group row">
-      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['headline']; ?> </label>
-      <div class="col-md-9">
-        <textarea name="seller_headline" id="textarea-headline" rows="3" class="form-control box-shadow-for3" required maxlength="200"><?= $login_seller_headline; ?></textarea>
-        <span class="float-right mt-1">
-          <span class="count-headline"> 0 </span> / 200 <?= $lang['label']['max']; ?>
-        </span>
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['description']; ?></label>
-      <div class="col-md-9">
-        <textarea name="seller_about" id="textarea-about" rows="5" class="form-control box-shadow-for3" required maxlength="350" placeholder="<?= $lang['placeholder']['description']; ?>"><?= $login_seller_about; ?></textarea>
-        <span class="float-right mt-1">
-          <span class="count-about"> 0 </span> / 350 <?= $lang['label']['max']; ?>
-        </span>
-      </div>
-    </div>
-    <hr>
-    <input type="hidden" name="form_state" value="<?= $reviewRemark ?>">
-    <div class="di-flex">
-      <button type="submit" name="submit" class="btn btn-success increase-width2 <?= $floatRight ?>" style="<?= ($lang_dir == "right" ? 'margin-left: 110px;' : '') ?>">
-        <i class="fa fa-floppy-o"></i> &nbsp; <?= $lang['button']['save_changes']; ?>
-      </button>
-    </div>
-  </form>
-<?php
-} // $reviewRemark
-else {
-?>
-  <div class="row">
-    <div class="col-md-3"><?= $lang['label']['full_name']; ?></div>
-    <div class="col-md-9"><?= $login_seller_name; ?></div>
 
-    <div class="col-md-3"><?= $lang['label']['phone']; ?></div>
-    <div class="col-md-9"><?= $login_seller_phone; ?></div>
-
-    <div class="col-md-3"><?= $lang['label']['country']; ?></div>
-    <div class="col-md-9"><?= $login_seller_country; ?></div>
-
-    <div class="col-md-3"><?= $lang['label']['city']; ?></div>
-    <div class="col-md-9"><?= $login_seller_city; ?></div>
-
-    <div class="col-md-3"><?= $lang['label']['timezone']; ?></div>
-    <div class="col-md-9"><?= $login_seller_city; ?></div>
-
-    <div class="col-md-3"><?= $lang['label']['profile_photo']; ?></div>
-    <div class="col-md-9"><?php if (!empty($login_seller_image)) { ?>
-        <img src="<?= $site_url ?>/user_images/<?= $login_seller_image ?>" width="80" class="img-thumbnail img-circle" />
-      <?php } ?>
-    </div>
-
-    <div class="col-md-3"><?= $lang['label']['cover_photo']; ?></div>
-    <div class="col-md-9"><?php if (!empty($login_seller_cover_image)) { ?>
-        <img src="<?= $site_url ?>/cover_images/<?= $login_seller_cover_image ?>" width="80" class="img-thumbnail img-circle" />
-      <?php } ?>
-    </div>
-
-    <div class="col-md-3"><?= $lang['label']['headline']; ?></div>
-    <div class="col-md-9"><?= $login_seller_headline; ?></div>
-
-    <div class="col-md-3"><?= $lang['label']['description']; ?></div>
-    <div class="col-md-9"><?= $login_seller_about; ?></div>
-  </div>
-<?php } ?>
 <script>
   $(document).ready(function() {
     $image_crop = $('#image_demo').croppie({
@@ -719,4 +820,47 @@ else {
       "File size: " + file.size + " bytes";
     document.getElementById('pictureInfo').innerHTML = fileInfo;
   });
+</script>
+<script>
+  var loadinFile = function(event) {
+    var flicker = document.getElementById("flicker");
+    flicker.src = URL.createObjectURL(event.target.files[0]);
+    flicker.onload = function() {
+      URL.revokeObjectURL(flicker.src)
+    }
+  }
+</script>
+<script>
+  var loadFile = function(event) {
+    var output = document.getElementById("output");
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src)
+    }
+  }
+</script>
+<script>
+  document.getElementById("progressiveForm").addEventListener("input", function(event) {
+    var currentElement = event.target.closest(".profile-setting");
+    var nextElement = currentElement.nextElementSibling;
+    if (nextElement && event.target.checkValidity()) {
+      nextElement.style.display = "flex";
+    }
+    checkAllInputsFilled(); // Call the function to check textarea
+  });
+
+  document.getElementById("progressiveForm").addEventListener("change", function(event) {
+    var currentElement = event.target.closest(".profile-setting");
+    var nextElement = currentElement.nextElementSibling;
+    if (nextElement && event.target.checkValidity()) {
+      nextElement.style.display = "flex";
+    }
+    checkAllInputsFilled(); // Call the function to check textarea
+  });
+
+  function checkAllInputsFilled() {
+    var lastTextarea = document.querySelector("#textarea-about");
+    var submitButton = document.querySelector(".btn-submit");
+    submitButton.style.display = lastTextarea.value.trim() !== "" ? "block" : "none";
+  }
 </script>
