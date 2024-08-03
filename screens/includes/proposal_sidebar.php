@@ -14,7 +14,7 @@
   </div>
   <!--- card-body Ends --->
 </div>
-<?php
+<?php 
 include('sidebar/referralBox.php');
 include('sidebar/sellerBio.php');
 include('sidebar/copyrightBox.php');

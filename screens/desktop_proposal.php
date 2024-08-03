@@ -107,7 +107,7 @@
           </div>
           <?php include("includes/proposal_slider.php"); ?>
         </div>
-      </div>
+      </div>    
 
       <?php if ($proposal_price == 0) { ?>
         <div class="card rounded-0 mb-3 <?= ($lang_dir == "right" ? 'text-right' : '') ?>" id="compare">
