@@ -84,7 +84,7 @@
               ?>
             </h3>
             <hr>
-            <nav class="breadcrumbs h-text-truncate mb-2">   
+            <nav class="breadcrumbs h-text-truncate mb-2">
               <a href="<?= $site_url ?>">Home</a>
               <a href="<?= $site_url ?>/categories/<?= $proposal_cat_url; ?>"> <?= $proposal_cat_title; ?> </a>
               <a href="<?= $site_url ?>/categories/<?= $proposal_cat_url; ?>/<?= $proposal_child_url; ?>">
@@ -107,7 +107,7 @@
           </div>
           <?php include("includes/proposal_slider.php"); ?>
         </div>
-      </div>    
+      </div>
 
       <?php if ($proposal_price == 0) { ?>
         <div class="card rounded-0 mb-3 <?= ($lang_dir == "right" ? 'text-right' : '') ?>" id="compare">
@@ -350,9 +350,137 @@
         <?php } ?>
       </div>
       <!--- proposal-tags-container Ends --->
+      <br><br>
 
+      <h4 class="mt-3">Portfolio</h4>
+
+      <style>
+        .ramrow {
+          display: flex;
+          flex-wrap: wrap;
+          /* justify-content: space-evenly; */
+        }
+
+        .ramcard {
+          width: 30%;
+          padding: 10px;
+          border: 1px solid lightgray;
+          border-radius: 5px;
+          margin: 10px;
+          position: relative;
+        }
+
+        .ramspan {
+          margin: auto;
+          color: white;
+        }
+
+        .rambazz-placeholder {
+          height: 30px;
+          width: 50px;
+          margin-top: -30px;
+          /* to offset the margin-top from rambazz */
+        }
+
+        .rambazz {
+          height: 30px;
+          display: flex;
+          align-items: center;
+          background-color: rgba(0, 0, 0, 0.5);
+          /* transparent black */
+          width: 50px;
+          position: absolute;
+          left: 76.5%;
+          top: 199px;
+          /* adjust as necessary */
+          border-radius: 5px;
+        }
+
+        .ramimg {
+          width: 100%;
+          height: 220px;
+          border-radius: 5px;
+          border: 1px solid lightgray;
+        }
+
+        @media (max-width: 600px) {
+          .ramcard {
+            width: 100%;
+            margin: 10px 0;
+          }
+        }
+
+        .mbbm {
+          margin: 0;
+          padding: 0;
+        }
+      </style>
+      <!-- portfolio -->
+      <?php
+
+      // Fetch portfolios
+      $portfolios = $db->select("portfolios", array("seller_id" => $proposal_seller_id));
+      while ($portfolio = $portfolios->fetch()) {
+        $seller_id =  $portfolio->seller_id;
+        $portfolio_id = $portfolio->id;
+        $projectTitle = $portfolio->project_title;
+        $description = $portfolio->description;
+        $referenced_url = $portfolio->referenced_url;
+
+
+       function limitWords($text, $limit) {
+    $words = explode(' ', $text);
+    if (count($words) > $limit) {
+        return implode(' ', array_slice($words, 0, $limit)) . '...';
+    }
+    return $text;
+}
+
+// Assuming you have already fetched $projectTitle and $description from the database
+$limitedTitle = limitWords($projectTitle, 1); // Limit to 10 words
+$limitedDescription = limitWords($description, 3); // Adjust the limit as needed
+?>
+      ?>
+
+        <div class="row ramrow">
+          <div class="ramcard">
+            <?php
+            // Fetch and display images
+            $images = $db->select("portfolio_images", array("portfolio_id" => $portfolio_id));
+            if ($images) {
+              while ($image = $images->fetch()) {
+                $image_path = $image->image_path;
+              }
+            }
+            echo "<img src='../../portfolio/" . $image_path . "' alt='Portfolio Image' class='ramimg'><br>";
+            ?>
+            <div class="rambazz-placeholder"></div>
+            <div class="rambazz">
+              <p class="ramspan"><span><i class="fa fa-image"></i></span>
+                1</p>
+            </div>
+            <!--<h2 class="mt-4" style="overflow-wrap: break-word;"><?= $limitedTitle; ?> </h2>-->
+            <!--<p class="mbbm"><?= $limitedDescription; ?></p>-->
+            
+            <h2 class="mt-4" style="overflow-wrap: break-word;"><?= $limitedTitle; ?> </h2>
+            <p class="mbbm"><?= $limitedDescription; ?></p>
+            
+            
+            <p class="mt-3 pb-"><a href="<?= $referenced_url; ?>">Link</a></p>
+          </div>
+        </div>
+
+      <?php
+
+        echo "<hr>";
+      }
+
+      ?>
     </div>
     <!--- col-lg-8 col-md-7 mb-3 Ends --->
+
+
+
 
     <div class="col-lg-4 col-md-5 proposal-sidebar">
       <!-- Col starts -->

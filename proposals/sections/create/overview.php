@@ -242,9 +242,9 @@ if (isset($_POST['submit'])) {
         <?php } ?>
         <div class="col-md-3 padding-left"><?= $lang['label']['proposal_title']; ?></div>
         <div class="col-md-9 div-textarea">
-            <textarea name="proposal_title" id="proposal_title" rows="3" required="" placeholder="Example: I can make program in core php." class="form-control " minlength="50" maxlength="200"></textarea>
+            <textarea name="proposal_title" id="proposal_title" rows="3" required="" placeholder="Example: I can make program in core php." class="form-control " minlength="30" maxlength="100"></textarea>
             <small class="form-text text-danger"><?= ucfirst($form_errors['proposal_description'] ?? ""); ?></small>
-            <span class="text-dark d-block font-size-small ">min: 50 max: 200 characters <span class="pull-right"><i class="text-danger" id="typed-characters">0</i> characters</span></span>
+            <span class="text-dark d-block font-size-small ">min: 30 max: 100 characters <span class="pull-right"><i class="text-danger" id="typed-characters">0</i> characters</span></span>
         </div>
     </div>
     <!--- form-group row Ends --->
@@ -359,7 +359,7 @@ if (isset($_POST['submit'])) {
         <div class="col-md-3 padding-left">  </div>
         <div class="col-md-9">
             <div class="add-more-category-btn-div">
-                <a href="<?= $site_url ?>/settings?professional_settings">
+                <a href="<?= $site_url ?>/settings?professional_settings" target="_blank">
                     <span class="add-more-category-btn"> <i class="fa fa-plus"></i> Add more skills</span>
                 </a>
             </div>
