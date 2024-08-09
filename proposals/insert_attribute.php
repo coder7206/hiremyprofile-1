@@ -16,7 +16,7 @@ $rules = array(
 "proposal_id" => "required",
 "attribute_name" => "required");
 
-$val = new Validator($_POST,$rules);
+$val = new Validator($_POST,$rules); 
 
 if($val->run() == false){
 

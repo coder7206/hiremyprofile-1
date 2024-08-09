@@ -11,7 +11,7 @@ echo "<script>window.open('../login','_self')</script>";
 }
 
 
-if(isset($_POST["proposal_id"])){
+if(isset($_POST["proposal_id"])){ 
 	$status = $_POST['change_status'];
 	$proposal_id = $_POST['proposal_id'];
 	if($status == 'true'){

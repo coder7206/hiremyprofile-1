@@ -77,10 +77,8 @@ if (isset($_POST['submit_change_password'])) {
 }
 // Profile form
 if (isset($_POST['submit'])) {
- 
-var_dump($_POST);
-exit;
-$rules = array(
+
+  $rules = array(
     "seller_name" => "required",
     "seller_country" => "required",
     "seller_language" => "required"
@@ -112,6 +110,9 @@ $rules = array(
     $profile_photo = strip_tags($input->post('profile_photo'));
     $profile_photo = strip_tags($input->post('profile_photo'));
     $seller_address_img1 = strip_tags($input->post('seller_address_img1'));
+    $seller_address_img2 = strip_tags($input->post('seller_address_img2'));
+    $seller_postal_code = strip_tags($input->post('seller_postal_code'));
+    $seller_region = strip_tags($input->post('seller_region'));
     $form_state = strip_tags($input->post('form_state'));
 
 
@@ -136,20 +137,38 @@ $rules = array(
 
     // Check if the file type is allowed
     if (in_array($fileType, $allowTypes)) {
-        // Move the file to the target directory
-        if (move_uploaded_file($_FILES["seller_address_img1"]["tmp_name"], $targetFilePath)) {
-            echo "The file " . htmlspecialchars($seller_address_img1) . " has been uploaded.";
-        } else {
-            echo "Sorry, there was an error uploading your file.";
-            exit();
-        }
-    } else {
-        echo "Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.";
+      // Move the file to the target directory
+      if (move_uploaded_file($_FILES["seller_address_img1"]["tmp_name"], $targetFilePath)) {
+        echo "The file " . htmlspecialchars($seller_address_img1) . " has been uploaded.";
+      } else {
+        echo "Sorry, there was an error uploading your file.";
         exit();
+      }
+    } else {
+      echo "Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.";
+      exit();
     }
-var_dump($seller_address_img1);
-exit;
-   
+
+    $targetDir2 = "uploads/"; // Directory where files will be uploaded
+    $seller_address_img2 = basename($_FILES["seller_address_img2"]["name"]); // Get the file name
+    $targetFilePath2 = $targetDir2 . $seller_address_img2; // Target file path
+    $fileType2 = pathinfo($targetFilePath2, PATHINFO_EXTENSION); // File extension
+
+    $allowTypes2 = array('jpg', 'png', 'jpeg', 'gif'); // Allowed file types
+
+    // Check if the file type is allowed
+    if (in_array($fileType2, $allowTypes2)) {
+      // Move the file to the target directory
+      if (move_uploaded_file($_FILES["seller_address_img2"]["tmp_name"], $targetFilePath2)) {
+        echo "The file " . htmlspecialchars($seller_address_img2) . " has been uploaded.";
+      } else {
+        echo "Sorry, there was an error uploading your file.";
+        exit();
+      }
+    } else {
+      echo "Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.";
+      exit();
+    }
 
     $updateForm = [
       "seller_id" => $login_seller_id,
@@ -162,52 +181,70 @@ exit;
       "seller_headline" => $seller_headline,
       "seller_about" => $seller_about,
       "seller_address_img1" => $seller_address_img1,
+      "seller_address_img2" => $seller_address_img2,
+      "seller_postal_code" => $seller_postal_code,
+      "seller_region" => $seller_region,
       "seller_language" => $seller_language,
       "status" => 0,
     ];
 
-    if (empty($profile_photo)) {
-      // $profile_photo = $login_seller_image;
-      // $seller_image_s3 = $login_seller_image_s3;
-    } else {
-      $seller_image_s3 = $enable_s3;
-      $updateForm["seller_image"] = $profile_photo;
-      $updateForm["seller_image_s3"] = $seller_image_s3;
-    }
+    $allowedTypes = array('jpg', 'jpeg', 'png', 'gif');
 
-    if (empty($cover_photo)) {
-      // $cover_photo = $login_seller_cover_image;
-      // $seller_cover_image_s3 = $login_seller_cover_image_s3;
-    } else {
-      $cover_photo = pathinfo($cover_photo, PATHINFO_FILENAME);
-      $cover_photo = $cover_photo . "_" . time() . ".$cover_file_extension";
-      uploadToS3("cover_images/$cover_photo", $cover_photo_tmp);
-      $seller_cover_image_s3 = $enable_s3;
-      $updateForm["seller_cover_image"] = $cover_photo;
-      $updateForm["seller_cover_image_s3"] = $seller_image_s3;
-    }
-
-    if (empty($seller_address_img1)) {
-      // $cover_photo = $login_seller_cover_image;
-      // $seller_cover_image_s3 = $login_seller_cover_image_s3;
-    } else {
-      $targetDir = "uploads/";
-      $seller_address_img1 = basename($_FILES["seller_address_img1"]["name"]);
-      $targetFilePath = $targetDir . $seller_address_img1;
-      $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-      $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
-      if (in_array($fileType, $allowTypes)) {
-        if (move_uploaded_file($_FILES["seller_address_img1"]["tmp_name"], $targetFilePath)) {
-          echo "The file " . htmlspecialchars($seller_address_img1) . " has been uploaded.";
-        } else {
-          echo "Sorry, there was an error uploading your file.";
-        }
+    // Upload profile photo if provided
+    if (!empty($profile_photo)) {
+      $profile_photo_ext = pathinfo($profile_photo, PATHINFO_EXTENSION);
+      if (in_array($profile_photo_ext, $allowedTypes)) {
+        move_uploaded_file($_FILES["profile_photo"]["tmp_name"], "user_images/" . $profile_photo);
+        $updateForm["seller_image"] = $profile_photo;
+        $updateForm["seller_image_s3"] = $enable_s3;
       } else {
-        echo "Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.";
+        echo "<script>alert('Invalid file type for profile photo.');</script>";
+        echo "<script>window.open('settings?profile_settings', '_self');</script>";
+        exit();
       }
     }
 
+    if (!empty($cover_photo)) {
+      $cover_file_extension = pathinfo($cover_photo, PATHINFO_EXTENSION);
+      if (in_array($cover_file_extension, $allowedTypes)) {
+        $cover_photo = pathinfo($cover_photo, PATHINFO_FILENAME) . "_" . time() . ".$cover_file_extension";
+        move_uploaded_file($cover_photo_tmp, "cover_images/" . $cover_photo);
+        $updateForm["seller_cover_image"] = $cover_photo;
+        $updateForm["seller_cover_image_s3"] = $enable_s3;
+      } else {
+        echo "<script>alert('Invalid file type for cover photo.');</script>";
+        echo "<script>window.open('settings?profile_settings', '_self');</script>";
+        exit();
+      }
+    }
 
+     // Upload seller address image 1 if provided
+  if (!empty($seller_address_img1)) {
+    $fileType1 = pathinfo($seller_address_img1, PATHINFO_EXTENSION);
+    if (in_array($fileType1, $allowedTypes)) {
+      move_uploaded_file($_FILES["seller_address_img1"]["tmp_name"], "uploads/" . $seller_address_img1);
+      $updateForm["seller_address_img1"] = $seller_address_img1;
+    } else {
+      echo "<script>alert('Invalid file type for address image 1.');</script>";
+      echo "<script>window.open('settings?profile_settings', '_self');</script>";
+      exit();
+    }
+  }
+
+    // Upload seller address image 2 if provided
+    if (!empty($seller_address_img2)) {
+      $fileType2 = pathinfo($seller_address_img2, PATHINFO_EXTENSION);
+      if (in_array($fileType2, $allowedTypes)) {
+        move_uploaded_file($_FILES["seller_address_img2"]["tmp_name"], "uploads/" . $seller_address_img2);
+        $updateForm["seller_address_img2"] = $seller_address_img2;
+      } else {
+        echo "<script>alert('Invalid file type for address image 2.');</script>";
+        echo "<script>window.open('settings?profile_settings', '_self');</script>";
+        exit();
+      }
+    }
+
+   
     if ($form_state)
       $inserted = $db->update("sellers_profile_tmp", $updateForm, ['seller_id' => $seller_id, 'status' => 2]); // update only if modification is done
     else
@@ -264,6 +301,9 @@ if ($oSellerUpdate) {
   $login_seller_city = $oSellerUpdate->seller_city;
   $login_seller_address = $oSellerUpdate->seller_address;
   $login_seller_address_img1 = $oSellerUpdate->seller_address_img1;
+  $login_seller_address_img2 = $oSellerUpdate->seller_address_img2;
+  $login_seller_postal_code = $oSellerUpdate->seller_postal_code;
+  $login_seller_region = $oSellerUpdate->seller_region;
   $login_seller_timzeone = $oSellerUpdate->seller_timezone;
   $login_seller_language = $oSellerUpdate->seller_language;
   $login_seller_image = $oSellerUpdate->seller_image;
@@ -278,106 +318,7 @@ require 'admin/timezones.php';
 
 $phone_no = explode(" ", $login_seller_phone ?? "");
 ?>
-<style>
-  @media (max-width:768px) {
-    .full-width-a {
-      width: 100%;
-      /* border:1px solid green; */
-      font-size: 18px !important;
-      display: flex;
-      margin-top: -10px !important;
-    }
 
-    .full-width-b {
-      width: 100%;
-      /* border:1px solid green; */
-      font-size: 18px !important;
-      display: flex;
-      margin-top: 20px !important;
-    }
-
-    .text-align-center-a {
-      text-align: center;
-      margin: auto;
-      /* color: #186b64; */
-    }
-
-    .full-width {
-      width: 100%;
-      display: flex;
-      /* border:1px solid green; */
-    }
-
-    .text-align-center {
-      text-align: center;
-      margin: auto;
-    }
-  }
-
-  .box-shadow-allpros {
-    /* box-shadow:0px 0px 5px gray ,inset 0px 0px 15px lightgray; */
-    border: 1px solid gray;
-    height: 45px !important;
-    padding-top: 7px;
-    font-size: 15px;
-  }
-
-  .box-shadow-for3 {
-    /* box-shadow:0px 0px 5px gray ,inset 0px 0px 25px lightgray; */
-    border: 1px solid gray;
-    font-size: 15px;
-  }
-
-  .increase-width2 {
-    width: 100%;
-    /* margin: auto; */
-    height: 50px !important;
-    /* box-shadow:2px 2px 5px black, inset 0px 0px 15px black; */
-    border: 1px solid gray;
-    font-size: 16px !important;
-  }
-
-  .di-flex {
-    width: 100%;
-    padding-right: 3px;
-    /* display: flex; */
-  }
-
-  .font-size-16 {
-    font-size: 16px;
-    /* font-weight: 500; */
-  }
-
-  .box-shadow-8b {
-    border: 1px solid gray;
-    /* box-shadow:0px 0px 5px black, inset 0px 0px 25px lightseagreen; */
-    padding: 15px;
-  }
-
-  #profileimgclosed {
-    margin: -33px 10px 0 0;
-    width: 2.5%;
-    float: inline-end
-  }
-
-  #profileimgopen {
-    margin: -33px 10px 0 0;
-    width: 2.5%;
-    float: inline-end
-  }
-
-  .profile-setting {
-    display: none;
-  }
-
-  .profile-setting:first-child {
-    display: flex;
-  }
-
-  .btn-submit {
-    display: none;
-  }
-</style>
 
 <hr />
 <?php
@@ -465,6 +406,52 @@ if (is_null($reviewRemark) || $reviewRemark == 'modification' || $reviewRemark =
       </div>
     </div>
 
+
+
+    <div class="form-group row profile-setting"><!-- form-group row Starts -->
+
+      <label class="font-size-16 col-md-3 col-form-label"> Address </label>
+
+      <div class="col-md-9">
+        <input type="text" name="seller_address" placeholder="Enter your address" value="<?= $login_seller_address; ?>" class="form-control box-shadow-allpros" required="" />
+      </div>
+      <label class="font-size-16 col-md-3 col-form-label"> </label>
+      <div class="col-md-4">
+        <input type="file" name="seller_address_img1" class="form-control box-shadow-allpros" required="" />
+      </div>
+      <div class="col-md-4">
+        <input type="file" name="seller_address_img2" class="form-control box-shadow-allpros" required="" />
+      </div>
+
+    </div><!-- form-group row Ends -->
+
+    <div class="form-group row profile-setting"><!-- form-group row Starts -->
+
+      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['city']; ?> </label>
+
+      <div class="col-md-9">
+        <input type="text" name="seller_city" placeholder="<?= $lang['placeholder']['city']; ?>" value="<?= $login_seller_city; ?>" class="form-control box-shadow-allpros" required="" />
+      </div>
+    </div><!-- form-group row Ends -->
+
+    <div class="form-group row profile-setting"><!-- form-group row Starts -->
+
+      <label class="font-size-16 col-md-3 col-form-label"> ZIP / Postal code </label>
+
+      <div class="col-md-9">
+        <input type="text" name="seller_postal_code" placeholder="Enter your ZIP / Postal code" value="" class="form-control box-shadow-allpros" required="" />
+      </div>
+    </div><!-- form-group row Ends -->
+
+    <div class="form-group row profile-setting"><!-- form-group row Starts -->
+
+      <label class="font-size-16 col-md-3 col-form-label"> State / Region </label>
+
+      <div class="col-md-9">
+        <input type="text" name="seller_region" placeholder="" value="" class="form-control box-shadow-allpros" required="" />
+      </div>
+    </div><!-- form-group row Ends -->
+
     <div class="form-group row profile-setting"><!-- form-group row Starts -->
       <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['country']; ?> </label>
       <div class="col-md-9">
@@ -482,28 +469,6 @@ if (is_null($reviewRemark) || $reviewRemark == 'modification' || $reviewRemark =
           ?>
         </select>
 
-      </div>
-
-    </div><!-- form-group row Ends -->
-
-    <div class="form-group row profile-setting"><!-- form-group row Starts -->
-
-      <label class="font-size-16 col-md-3 col-form-label"> <?= $lang['label']['city']; ?> </label>
-
-      <div class="col-md-9">
-        <input type="text" name="seller_city" placeholder="<?= $lang['placeholder']['city']; ?>" value="<?= $login_seller_city; ?>" class="form-control box-shadow-allpros" required="" />
-      </div>
-    </div><!-- form-group row Ends -->
-
-    <div class="form-group row profile-setting"><!-- form-group row Starts -->
-
-      <label class="font-size-16 col-md-3 col-form-label"> Address </label>
-
-      <div class="col-md-9">
-        <input type="text" name="seller_address" placeholder="Enter your address" value="<?= $login_seller_address; ?>" class="form-control box-shadow-allpros" required="" />
-      </div>
-      <div class="col-md-9">
-        <input type="file" name="seller_address_img1" class="form-control box-shadow-allpros" required="" />
       </div>
 
     </div><!-- form-group row Ends -->
@@ -633,8 +598,18 @@ else {
     <div class="col-md-3">Address</div>
     <div class="col-md-9"><?= $login_seller_address; ?></div>
 
-    <div class="col-md-3">Address file</div>
+    <div class="col-md-3">Address file front</div>
     <div class="col-md-9"><?= $login_seller_address_img1; ?></div>
+
+    <div class="col-md-3">Address file back</div>
+    <div class="col-md-9"><?= $login_seller_address_img2; ?></div>
+
+
+    <div class="col-md-3">ZIP / Postal code</div>
+    <div class="col-md-9"><?= $login_seller_postal_code; ?></div>
+
+    <div class="col-md-3">State / Region </div>
+    <div class="col-md-9"><?= $login_seller_region; ?></div>
 
     <div class="col-md-3"><?= $lang['label']['timezone']; ?></div>
     <div class="col-md-9"><?= $login_seller_city; ?></div>
@@ -864,3 +839,104 @@ else {
     submitButton.style.display = lastTextarea.value.trim() !== "" ? "block" : "none";
   }
 </script>
+
+<style>
+  @media (max-width:768px) {
+    .full-width-a {
+      width: 100%;
+      /* border:1px solid green; */
+      font-size: 18px !important;
+      display: flex;
+      margin-top: -10px !important;
+    }
+
+    .full-width-b {
+      width: 100%;
+      /* border:1px solid green; */
+      font-size: 18px !important;
+      display: flex;
+      margin-top: 20px !important;
+    }
+
+    .text-align-center-a {
+      text-align: center;
+      margin: auto;
+      /* color: #186b64; */
+    }
+
+    .full-width {
+      width: 100%;
+      display: flex;
+      /* border:1px solid green; */
+    }
+
+    .text-align-center {
+      text-align: center;
+      margin: auto;
+    }
+  }
+
+  .box-shadow-allpros {
+    /* box-shadow:0px 0px 5px gray ,inset 0px 0px 15px lightgray; */
+    border: 1px solid gray;
+    height: 45px !important;
+    padding-top: 7px;
+    font-size: 15px;
+  }
+
+  .box-shadow-for3 {
+    /* box-shadow:0px 0px 5px gray ,inset 0px 0px 25px lightgray; */
+    border: 1px solid gray;
+    font-size: 15px;
+  }
+
+  .increase-width2 {
+    width: 100%;
+    /* margin: auto; */
+    height: 50px !important;
+    /* box-shadow:2px 2px 5px black, inset 0px 0px 15px black; */
+    border: 1px solid gray;
+    font-size: 16px !important;
+  }
+
+  .di-flex {
+    width: 100%;
+    padding-right: 3px;
+    /* display: flex; */
+  }
+
+  .font-size-16 {
+    font-size: 16px;
+    /* font-weight: 500; */
+  }
+
+  .box-shadow-8b {
+    border: 1px solid gray;
+    /* box-shadow:0px 0px 5px black, inset 0px 0px 25px lightseagreen; */
+    padding: 15px;
+  }
+
+  #profileimgclosed {
+    margin: -33px 10px 0 0;
+    width: 2.5%;
+    float: inline-end
+  }
+
+  #profileimgopen {
+    margin: -33px 10px 0 0;
+    width: 2.5%;
+    float: inline-end
+  }
+
+  .profile-setting {
+    display: none;
+  }
+
+  .profile-setting:first-child {
+    display: flex;
+  }
+
+  .btn-submit {
+    display: none;
+  }
+</style>

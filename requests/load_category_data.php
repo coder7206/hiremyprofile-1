@@ -37,7 +37,7 @@ if ($requests_query != "")
 	// if ($relevant_requests == "no") {
 	// 	$requests_query = "";
 	// }
-;
+; 
 
 
 $data = "
@@ -46,7 +46,7 @@ $data = "
 			Please create a proposal in order to find relevant job. <a href='{$site_url}/proposals/create_proposal' class='text-info'>Click here</a> to create proposal
 		</h3></center></td>
 		</tr>
-	";
+	"; 
 $paginationData = null;
 $total = 0;
 // if (!empty($requests_query) or $relevant_requests == "no") {

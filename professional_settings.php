@@ -4,322 +4,547 @@ require_once("includes/db.php");
 if (!isset($_SESSION['seller_user_name'])) {
     echo "<script>window.open('login','_self')</script>";
 }
+
+if (isset($_POST['submit_professional'])) {
+
+    $occupations = $input->post("occupation");
+    $form_status = $input->post("form_status");
+    $inserted = 0;
+
+    // OCCUPATIONS
+    if (count($occupations) > 0) {
+        // delete
+        if (!is_null($form_status)) {
+            $db->query("DELETE spi, spio FROM seller_pro_info spi LEFT JOIN seller_pro_info_options spio ON spi.id = spio.seller_pro_info_id WHERE spi.seller_id = :seller_id;", ['seller_id' => $login_seller_id]);
+        }
+        foreach ($occupations as $key => $occupation) {
+
+            $form = [];
+            $form['category_id'] = $occupation['category_id'];
+            $form['sub_category_id'] = $occupation['sub_category_id'];
+            $form['still_working'] = $occupation['still_working'];
+            $form['description'] = $occupation['description'];
+            $form['start_date'] = $occupation['start_date'];
+            $form['end_date'] = $occupation['end_date'];
+            $form['status'] = 0;
+            $form['seller_id'] = $login_seller_id;
+
+            // Assuming $occupation is being populated from $_POST['occupation']
+            $occupation = isset($_POST['occupation']) ? $_POST['occupation'] : [];
+
+            $insertForm = $db->insert("seller_pro_info", $form);
+            if ($insertForm) {
+                $newId = $db->lastInsertId();
+                $options = isset($occupation['option_id']) ? $occupation['option_id'] : false;
+
+                if ($options) {
+                    foreach ($options as $j => $option) {
+                        $optionForm = ["seller_pro_info_id" => $newId];
+                        $optionForm['professional_info_id'] = $option;
+                        $db->insert("seller_pro_info_options", $optionForm);
+                        $inserted++;
+                    }
+                }
+                $inserted++;
+            }
+        }
+
+        if ($form_status == 1) {
+            $db->update('seller_profile_weights', ['professional_weight' => null], ['seller_id' => $login_seller_id]);
+        }
+    }
+
+    // SKILLS
+    $formSkills = $_POST['skills'];
+    $skill_cat_id = $_POST['skill_cat_id'];
+    $skill_child_id = $_POST['skill_child_id'];
+    $skill_sub_child_id = $_POST['skill_sub_child_id'];
+
+    //     echo "<pre>";
+    //     print_r($skill_cat_id);
+    //     echo "</pre>";
+    // exit();
+    if (count($formSkills) > 0) {
+        $skillsTotalAdded = $db->count("skills_relation", ["seller_id" => $login_seller_id]);
+        $skillsTotalForm = count($formSkills);
+
+        $skillsTotalCanAdd = $skillsTotalAdded > 0 ? $skillsTotalForm - $skillsTotalAdded : $skillsTotalForm;
+
+        // If skills exceeds avaiable quota
+        if ($skillsTotalCanAdd > $skills) {
+            echo "<script>
+              swal({
+                type: 'warning',
+                text: 'Available No of skills quota exceeds.',
+                timer: 3000,
+                onOpen: function(){
+                  swal.showLoading()
+                }
+              }).then(function(){
+                // Read more about handling dismissals
+                window.open('settings?professional_settings','_self');
+              });
+              </script>";
+            exit();
+        }
+
+        $skillError = [];
+        $formSkills = $_POST['skills'];
+        foreach ($formSkills as $key => $skill) {
+            $skillId = $skill['id'];
+            $skillLevel = $skill['level'];
+            $cat_id = $skill_cat_id;
+            $child_id = $skill_child_id;
+            $sub_child_id = $skill_sub_child_id;
+
+            if ($skillId == "custom") {
+                $skill_name = $input->post('skill_name');
+                $count = $db->count("seller_skills", ["skill_title" => $skill_name]);
+
+                if ($count == 1) {
+                    $skillError = $lang['alert']['skill_already_added'];
+                } else {
+                    $insert_skill = $db->insert("seller_skills", array("skill_title" => $skill_name));
+                    $skillId = $db->lastInsertId();
+                    $inserted++;
+                }
+            } else {
+                $skillCountAlready = $db->count("skills_relation", ["seller_id" => $login_seller_id, 'skill_id' => $skillId]);
+                // Add only if new found
+                if ($skillCountAlready == 0) {
+                    $sForm = [
+                        "skill_id" => $skillId,
+                        "skill_level" => $skillLevel,
+                        "seller_id" => $login_seller_id,
+                        "skill_cat_id" => $cat_id,
+                        "skill_child_id" => $child_id,
+                        "skill_sub_child_id" => $sub_child_id
+                    ];
+                    $db->insert("skills_relation", $sForm);
+                    $inserted++;
+                }
+            }
+        }
+    }
+
+    if ($inserted > 0) {
+        echo "<script>
+              swal({
+                type: 'success',
+                text: 'Professional Info updated successfully!',
+                timer: 3000,
+                onOpen: function(){
+                  swal.showLoading()
+                }
+              }).then(function(){
+                // Read more about handling dismissals
+                window.open('settings?professional_settings','_self');
+              });
+              </script>";
+        exit();
+    } else {
+        echo "<script>
+              swal({
+                type: 'warning',
+                text: 'Professional Info didnot updated.',
+                timer: 3000,
+                onOpen: function(){
+                  swal.showLoading()
+                }
+              }).then(function(){
+                // Read more about handling dismissals
+                window.open('settings?professional_settings','_self');
+              });
+              </script>";
+        exit();
+    }
+}
+
+
+
+$qProInfo = $db->select("seller_pro_info", array("seller_id" => $login_seller_id));
+$getProInfo = $qProInfo;
+$cProInfo = $qProInfo->rowCount();
+
+$formStatus = true;
+$showPendingMsg = false;
+$modificationMsg = '';
+$proStatus = null;
+if ($cProInfo > 0) {
+    $proInfoData = [];
+    while ($oProInfo = $qProInfo->fetch()) {
+        $proInfoData[] = $oProInfo;
+        $proStatus = $oProInfo->status; // 1=active, 0=pending,2=modification
+        $modificationMsg = $oProInfo->feedback;
+        // $formStatus = $proStatus == 2 ? true : false;
+        if ($proStatus == 0) {
+            $showPendingMsg = true;
+            $formStatus = false;
+        }
+    }
+}
+
+$totalProInfForm = $cProInfo > 0 ? $cProInfo : 1;
+
+$earliest_year = 1950;
+$form_errors = Flash::render("form_errors");
+$form_data = Flash::render("form_data");
+
+if ($formStatus) : //Show Form if needs to
+    if ($modificationMsg != '') {
 ?>
+        <div class="alert alert-warning" role="alert">
+            Modification Message From Admin:<br /><?= $modificationMsg ?>
+        </div>
+    <?php } ?>
+    <?php if ($proStatus == 1) { ?>
+        <div class="col-md-12">
+            <div class="alert alert-success" role="alert">
+                Your Professional Info is active.
+            </div>
+        </div>
+    <?php } ?>
+    <form method="post" runat="server" autocomplete="off">
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label"> <?= $lang['label']['occupation']; ?></label>
+            <div class="col-md-10 p-0 m-0">
+                <div id="clone-area">
+                    <?php
+                    for ($i = 0; $totalProInfForm > $i; $i++) :
+                        $catId = $startDate = $endDate = '';
+                        $cOptions = 0;
+                        if (isset($proInfoData)) {
+                            $spiId = $proInfoData[$i]->id;
+                            $catId = $proInfoData[$i]->category_id;
+                            $subCatId = $proInfoData[$i]->sub_category_id;
+                            $startDate = $proInfoData[$i]->start_date;
+                            $endDate = $proInfoData[$i]->end_date;
+
+                            $qOptions = $db->select("professional_info", array("category_id" => $catId, "sub_category_id" => $subCatId,  "status" => 1));
+                            $cOptions = $qOptions->rowCount();
+                        }
+                    ?>
+                        <div class="cloneArea">
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3 pl-0">
+                                    <label for="category_0">title</label>
+                                    <input type="text" id="category_0" class=" form-control category_change" name="occupation[<?= $i ?>][category_id]" required>
+
+                                </div>
+
+                                <div class="col-md-6 mb-3 pl-0" id="sub-category">
+                                    <label for="sub-category_0">organization</label>
+                                    <input type="text" id="sub-category_0" class=" form-control sub-category_change" name="occupation[<?= $i ?>][sub_category_id]" required>
+
+                                </div>
+
+                                <div class="col-md-6 mb-3 pl-0">
+                                    <label class="control-label" for="startdate_0">From</label>
+                                    <input type="date" id="startdate_0" class=" form-control" name="occupation[<?= $i ?>][start_date]" required>
+
+                                </div>
+
+                                <div class="col-md-6 mb-3 pl-0">
+                                    <label class="control-label" for="enddate_0">to</label>
+                                    <input type="date" id="enddate_0" class=" form-control w-100" name="occupation[<?= $i ?>][end_date]">
+
+                                </div>
+
+                                <div class="col-md-6 mb-3 pl-0">
+                                    <label class="control-label" for="">still working</label>
+                                    <input type="checkbox" id="" class=" form-control w-100" name="occupation[<?= $i ?>][still_working]">
+
+                                </div>
+                                <div class="col-md-6 mb-3 pl-0">
+                                    <label class="control-label" for=""> description </label>
+                                    <textarea id="" class=" form-control w-100" name="occupation[<?= $i ?>][description]" required></textarea>
+                                </div>
 
 
-<?php
-// if (isset($_POST['experience_add'])) {
+                            </div>
 
-//     $job_title = $_POST['job_title'];
-//     $organization = $_POST['organization'];
-//     $start_from = $_POST['start_from'];
-//     $still_working = $_POST['still_working'];
-//     $end_to = $_POST['end_to'];
-//     $description = $_POST['description'];
-//     $seller_id = $login_seller_id;
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <a href="javascript:void(0)" class="remove-item btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endfor; ?>
+                </div>
+            </div>
+            <label class="col-md-2 col-form-label"></label>
+            <div class="col-md-10 p-0">
+                <a class="btn btn-primary btn-sm" id="add-more" href="javascript:;" role="button"><i class="fa fa-plus"></i> Add more occupation</a>
+                <hr />
+            </div>
+        </div>
+        <style>
+            #custom_input_skill_add {
+                width: 100%;
+                padding: 6px;
+                border-radius: 3px;
+                border: 1px solid lightgrey;
+            }
 
-//     $add_experience = $db->insert("past_experience", array("job_title" => $job_title, "organization" => $organization, "start_from" => $start_from, "still_working" => $still_working, "end_to" => $end_to, "description" => $description, "seller_id" =>  $seller_id));
+            #custom_input_skill_add:focus {
+                border: 1px solid lightblue;
+                /* Border style on focus */
+                outline: none;
+                /* Remove the default outline */
+            }
+        </style>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label"> <?= $lang['label']['skills']; ?> </label>
+            <div class="col-md-10 pl-0">
+                <div class="row mb-2 pl-3">
+                    <!-- category -->
+                    <div class="col pl-0 ">
+                        <select class="custom-select w-100" name="skill_cat_id" id="category_skills">
+                            <option value="" class="hidden">
+                                <?= $lang['placeholder']['select_category']; ?>
+                            </option>
+                            <?php
+                            $get_cats = $db->select("categories");
+                            while ($row_cats = $get_cats->fetch()) {
+                                $cat_id = $row_cats->cat_id;
+                                $get_meta = $db->select("cats_meta", ["cat_id" => $cat_id, "language_id" => $siteLanguage]);
+                                $row_meta = $get_meta->fetch();
+                                $cat_title = $row_meta->cat_title;
+                            ?>
+                                <option value="<?= $cat_id; ?>">
+                                    <?= $cat_title; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <!-- sub category -->
+                    <div class="col pl-0 display-sub-none" style="display: none;">
+                        <select class="custom-select w-100" name="skill_child_id" id="skill-sub-category">
+                            <option value="select-sub-category" selected> Select A Sub Category</option>
+                            <?php
+                            $get_c_cats = $db->select("categories_children");
+                            while ($row_c_cats = $get_c_cats->fetch()) {
+                                $child_id = $row_c_cats->child_id;
+                                $child_parent_id = $row_c_cats->child_parent_id;
+                                $get_meta = $db->select("child_cats_meta", array("child_id" => $child_id, "language_id" => $siteLanguage));
+                                $row_meta = $get_meta->fetch();
+                                $child_title = $row_meta->child_title;
+                            ?>
+                                <option class="sub-category-option" data-parent="<?= $child_parent_id; ?>" value="<?= $child_id; ?>">
+                                    <?= $child_title; ?><?= $child_id; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <!-- sub-sub-category -->
+                    <div class="col pl-0 display-sub-sub-none" style="display: none;">
+                        <select class="form-control box-shadow-post-req" name="skill_sub_child_id" id="skil-sub-sub-category">
+                            <option value="" class="hidden">
+                                <?= $lang['placeholder']['select_sub_sub_category']; ?>
+                            </option>
+                        </select>
+                    </div>
+                    <!-- skills -->
 
-//     if ($add_experience) {
-//         echo "<p>Experience added successfully!</p>";
-//     } else {
-//         echo "<p>Failed to add experience. Please try again.</p>";
-//     }
-// }
-
-
-?>
-
-<!-- // /add experience -->
-<style>
-    #end_date_wrapper {
-        display: block;
-    }
-
-    #form_for_pastexperience {
-        border: 1px solid lightgrey;
-        border-radius: 10px;
-    }
-
-    .both-half {
-        width: 95%;
-        display: flex;
-    }
-
-    .first-half {
-        width: 45%;
-        display: block;
-        margin: 0 auto;
-    }
-
-    .second-half {
-        display: block;
-        width: 45%;
-        margin: 0 auto;
-    }
-
-    #main-experience-from {
-        background-color: greenyellow;
-    }
-
-    #job_title {
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    #organization {
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    #start_from {
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    /* #still_working {
-        padding: 1rem;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    } */
-
-    #end_to {
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    #description {
-        padding: 1rem;
-        margin: auto;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-        width: 95%;
-    }
-
-    #description::placeholder {
-        color: lightgray;
-    }
-
-    .submit_experiences_btn_style {
-        margin: auto;
-        width: 25%;
-        border: none;
-        padding: 1rem;
-        border-radius: 5px;
-        background-color: #e5e5e5;
-        border: 3px solid #00cedc;
-        font-size: 18px;
-    }
-
-    .description-div {
-        width: 100%;
-        margin: auto;
-    }
-
-    .description-div-outer {
-        width: 95%;
-        margin: auto;
-    }
-
-    input[type="date"] {
-        color: lightgray !important;
-    }
-
-    input::placeholder {
-        color: lightgray;
-    }
-
-    .add_experience_btn_style {
-        /* margin: auto; */
-        padding: 1rem 2rem;
-        border-radius: 5px;
-        border: none;
-    }
-
-    .remove-btn {
-        padding: 3px 9px;
-        border-radius: 5px;
-        color: white;
-        border: none;
-        background-color: #ca0000;
-    }
-</style>
-<div class="form_for_pastexperience">
-    <h4 class="text-center mb-4"><u>Past Experience</u></h4>
-    <div class="main-experience-form">
-        <form id="experience_form" method="post" autocomplete="on">
-            <div class="both-half">
-                <div class="first-half">
-                    <label for="job_title" class="col-md-12 pl-0">Title</label><br>
-                    <input type="text" class="col-md-12" name="job_title" id="job_title" placeholder="Enter your job title"><br>
-
-                    <label for="start_from" class="col-md-12 pl-0">From</label><br>
-                    <input type="date" class="col-md-12" name="start_from" id="start_from"><br>
-
-                    <div class="d-flex checkbox-input-div">
-                        <input type="checkbox" class="col-md-1 pl-0 mb-0" name="still_working" id="still_working">
-                        <label for="still_working" class="col-md-6 mb-0">I am still working</label><br>
+                    <div class="col pl-0 w-100 display-sub-skill-none" style="display: none;">
+                        <select name="skill_id" id="custom_input_skill_add">
+                            <option value="">select skill</option>
+                        </select>
                     </div>
 
-                    <br>
-                </div>
-                <div class="second-half">
-                    <label for="organization" class="col-md-12 pl-0">Organization</label><br>
-                    <input type="text" class="col-md-12" name="organization" id="organization" placeholder="Enter organization name"><br>
-
-                    <div id="end_date_wrapper">
-                        <label for="end_to" class="col-md-12 pl-0">To</label><br>
-                        <input type="date" class="col-md-12" name="end_to" id="end_to">
+                    <!-- levels -->
+                    <div class="col pl-0 display-sub-skill-none" style="display: none;">
+                        <select class="custom-select w-100" name="skill_level">
+                            <option value="" class="hidden"><?= $lang['label']['select_level']; ?></option>
+                            <option>Beginner</option>
+                            <option>Intermediate</option>
+                            <option>Expert</option>
+                        </select>
                     </div>
                 </div>
+                <?php
+
+                ?>
+                <table class="table table-striped pl-0" id="tblSkills">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Category</th>
+                            <th scope="col">Sub category</th>
+                            <th scope="col">Attribute</th>
+                            <th scope="col">Skills</th>
+                            <th scope="col">Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $q_skills_relation = $db->select("skills_relation", array("seller_id" => $login_seller_id));
+                        if ($q_skills_relation->rowCount() > 0) {
+                            $i = 0;
+                            while ($row_seller_skills = $q_skills_relation->fetch()) {
+                                $skill_cat_id = $row_seller_skills->skill_cat_id;
+                                $skill_child_id = $row_seller_skills->skill_child_id;
+                                $skill_sub_child_id = $row_seller_skills->skill_sub_child_id;
+                                $relation_id = $row_seller_skills->relation_id;
+                                $skill_id = $row_seller_skills->skill_id;
+                                $skill_level = $row_seller_skills->skill_level;
+
+                                $get_skill = $db->select("seller_skills", array("skill_id" => $skill_id));
+                                $row_skill = $get_skill->fetch();
+                                $skill_title = $row_skill->skill_title;
+
+                                $get_skill_category = $db->select("cats_meta", array("cat_id" => $skill_cat_id));
+                                $row_skill_category = $get_skill_category->fetch();
+                                $skill_category_details = $row_skill_category->cat_title;
+
+                                $get_skill_sub_category = $db->select("child_cats_meta", array("child_id" => $skill_child_id));
+                                $row_skill_sub_category = $get_skill_sub_category->fetch();
+                                $skill_sub_category_details = $row_skill_sub_category->child_title;
+
+                                $get_skill_attribute = $db->select("sub_subcategories", array("attr_id" => $skill_sub_child_id));
+                                $row_skill_attribute = $get_skill_attribute->fetch();
+                                $skill_sub_subcategory = $row_skill_attribute->sub_subcategory_name;
+
+                        ?>
+                                <tr>
+                                    <td><?= $skill_category_details; ?></td>
+                                    <td><?= $skill_sub_category_details; ?></td>
+                                    <td><?= $skill_sub_subcategory ?></td>
+                                    <th scope="row"><?= $skill_title; ?><input type="hidden" name="skills[<?= $i ?>][id]" value="<?= $skill_id; ?>"></th>
+                                    <td><?= $skill_level; ?><input type="hidden" name="skills[<?= $i ?>][level]" value="<?= $skill_level; ?>">
+
+                                        <a href="javascript:;" onclick="deleteSkill(<?= $relation_id; ?>)" class="text-primary"><i class="fa fa-trash-o"></i></a>
+                                    </td>
+
+                                </tr>
+                            <?php
+                                $i++;
+                            }
+                        } else {
+                            ?>
+                            <tr class="table-danger">
+                                <th colspan="2" scope="row">0 Skill added, please use above form to addss your skillsets.</th>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+                <div class="col p-0 m-0">
+                    <a href="javascript:;" class="btn btn-info" onclick="addSkill()"><i class="fa fa-plus"></i> Add more skills</a>
+                </div>
+                <small class="text-muted">Note: Please press "Save Changes" button to save the changes.</small>
             </div>
-            <div class="description-div-outer">
-                <div class="description-div">
-                    <label for="description" class="col-md-12 pl-0">Description</label><br>
-                    <textarea name="description" class="col-md-12" rows="4" id="description" placeholder="Describe your work experience"></textarea>
+        </div>
+
+        <hr>
+        <button type="submit" name="submit_professional" class="btn btn-success <?= $floatRight ?>" style="<?= ($lang_dir == "right" ? 'margin-left: 110px;' : '') ?>">
+            <i class="fa fa-floppy-o"></i> <?= $lang['button']['save_changes']; ?>
+        </button>
+        <input type="hidden" name="form_status" value="<?= $proStatus ?>">
+    </form>
+<?php else : ?>
+    <div class="row">
+        <?php if ($showPendingMsg) { ?>
+            <div class="col-md-12">
+                <div class="alert alert-warning" role="alert">
+                    Your4 latest Professional Info update request is in pending state. After approval, this message will disappear.
                 </div>
             </div>
+        <?php } ?>
+        <div class="col-md-3">
+            <?= $lang['label']['occupation']; ?>
+        </div>
+        <div class="col-md-9">
+            <?php if ($cProInfo > 0) {
+                foreach ($proInfoData as $proRow) {
+                    // dump($proRow);
+                    $proInfoId = $proRow->id;
+                    $categoryId = $proRow->category_id;
+                    $still_working = $proRow->still_working;
+                    $description = $proRow->description;
+                    $start_date = $proRow->start_date;
+                    $end_date = $proRow->end_date;
+                    $subCategoryId = $proRow->sub_category_id;
 
-            <div class="d-flex py-3 description-div-outer">
-                <button type="button" id="add_experience" class="add_experience_btn_style">Add Experience</button>
-            </div>
-        </form>
+            ?>
+                    <div class="d-flex align-items-start flex-column border border-info mb-1">
+                        <div class="p-2">
+                            <b><?= $categoryId; ?> | <?= $subCategoryId ?> | <?= $description ?></b> - <br> <small class="text-muted"><?= $start_date; ?> | <?= $end_date ?></small>
+                        </div>
 
-        <div class="table-container">
-            <table id="experience_table" class="table">
-                <thead>
+                    </div>
+            <?php
+                }
+            } //$cProInfo
+            ?>
+        </div>
+        <div class="col-md-12">
+            <hr />
+        </div>
+        <div class="col-md-3">
+            <?= $lang['label']['skills']; ?>
+        </div>
+        <div class="col-md-9">
+            <table class="table table-striped" id="tblSkills">
+                <thead class="thead-light">
                     <tr>
-                        <th>Title</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Organization</th>
-                        <th>Description</th>
-                        <th>Action</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Sub category</th>
+                        <th scope="col">Attribute</th>
+                        <th scope="col">Skills</th>
+                        <th scope="col">Level</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Experience rows will be added here -->
+                    <?php
+                    $q_skills_relation = $db->select("skills_relation", array("seller_id" => $login_seller_id));
+                    if ($q_skills_relation->rowCount() > 0) {
+                        $i = 0;
+                        while ($row_seller_skills = $q_skills_relation->fetch()) {
+
+                            $relation_id = $row_seller_skills->relation_id;
+                            $skill_id = $row_seller_skills->skill_id;
+                            $skill_level = $row_seller_skills->skill_level;
+                            $skill_cat_id = $row_seller_skills->skill_cat_id;
+                            $skill_child_id = $row_seller_skills->skill_child_id;
+                            $skill_sub_child_id = $row_seller_skills->skill_sub_child_id;
+
+                            $get_skill = $db->select("seller_skills", array("skill_id" => $skill_id));
+                            $row_skill = $get_skill->fetch();
+                            $skill_title = $row_skill->skill_title;
+
+                            $getskillcat = $db->select("cats_meta", ["cat_id" => $skill_cat_id]);
+                            $rowskillcat = $getskillcat->fetch();
+                            $cat_title = $rowskillcat->cat_title;
+
+                            $getskillchild = $db->select("child_cats_meta", ["child_id" => $skill_child_id]);
+                            $rowskillchild = $getskillchild->fetch();
+                            $child_title = $rowskillchild->child_title;
+
+                            $getskillsubchild = $db->select("sub_subcategories", ["attr_id" => $skill_sub_child_id]);
+                            $rowskillsubchild = $getskillsubchild->fetch();
+                            $sub_subcategory_name = $rowskillsubchild->sub_subcategory_name;
+
+                    ?>
+                            <tr>
+                                <th scope="row"><?= $cat_title; ?></th>
+                                <th scope="row"><?= $child_title; ?></th>
+                                <th scope="row"><?= $sub_subcategory_name; ?></th>
+                                <th scope="row"><?= $skill_title; ?></th>
+                                <td><?= $skill_level; ?></td>
+                            </tr>
+                        <?php
+                            $i++;
+                        }
+                    } else {
+                        ?>
+                        <tr class="table-danger">
+                            <th colspan="2" scope="row">0 Skill added, please use above form to adds your skillsets.</th>
+                        </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>
-
-        <div class="d-flex w-100 py-3">
-            <button type="submit" id="submit_experiences" class="submit_experiences_btn_style">Submit Experience</button>
-        </div>
     </div>
-</div>
-
-<script>
-    document.getElementById('add_experience').addEventListener('click', function() {
-        const jobTitle = document.getElementById('job_title').value;
-        const startFrom = document.getElementById('start_from').value;
-        const endTo = document.getElementById('end_to').value;
-        const organization = document.getElementById('organization').value;
-        const description = document.getElementById('description').value;
-        const stillWorking = document.getElementById('still_working').checked;
-
-        // Check if all required fields are filled
-        if (!jobTitle || !startFrom || !organization || (endTo === '' && !stillWorking)) {
-            alert('Please fill all required fields.');
-            return;
-        }
-
-        // Check if max number of experiences (5) is exceeded
-        const tableRows = document.querySelectorAll('#experience_table tbody tr').length;
-        if (tableRows >= 5) {
-            alert('You can only add up to 5 experiences.');
-            return;
-        }
-
-        // Add experience to table
-        const tableBody = document.getElementById('experience_table').getElementsByTagName('tbody')[0];
-        const newRow = tableBody.insertRow();
-
-        newRow.insertCell(0).innerText = jobTitle;
-        newRow.insertCell(1).innerText = startFrom;
-        newRow.insertCell(2).innerText = endTo || 'Present';
-        newRow.insertCell(3).innerText = organization;
-        newRow.insertCell(4).innerText = description;
-        newRow.insertCell(5).innerHTML = '<button type="button" class="remove-btn">Remove</button>';
-
-        // Clear form inputs
-        document.getElementById('experience_form').reset();
-    });
-
-    document.getElementById('experience_table').addEventListener('click', function(e) {
-        if (e.target && e.target.classList.contains('remove-btn')) {
-            e.target.parentElement.parentElement.remove();
-        }
-    });
-
-    document.getElementById('submit_experiences').addEventListener('click', function() {
-        // Collect all experiences from the table
-        const experiences = [];
-        document.querySelectorAll('#experience_table tbody tr').forEach(row => {
-            const cells = row.getElementsByTagName('td');
-            experiences.push({
-                job_title: cells[0].innerText,
-                start_from: cells[1].innerText,
-                end_to: cells[2].innerText,
-                organization: cells[3].innerText,
-                description: cells[4].innerText
-            });
-        });
-
-        if (experiences.length === 0) {
-            alert('No experiences to submit.');
-            return;
-        }
-
-        // Submit all experiences via AJAX
-        $.ajax({
-            url: 'submit_experiences', // Your server-side script to handle the submission
-            method: 'POST',
-            data: {
-                experiences: JSON.stringify(experiences)
-            },
-            success: function(response) {
-                alert('Data submitted successfully.');
-                // Optionally clear the table or provide user feedback
-                document.querySelector('#experience_table tbody').innerHTML = '';
-            },
-            error: function(xhr, status, error) {
-                alert('An error occurred while submitting data.');
-                console.error('Submission error:', error);
-            }
-        });
-    });
-</script>
-
-<hr>
-
-<script>
-    const still_workingCheckbox = document.getElementById('still_working');
-    const endDateWrapper = document.getElementById('end_date_wrapper');
-
-    still_workingCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            endDateWrapper.style.display = 'none';
-        } else {
-            endDateWrapper.style.display = 'block';
-        }
-    });
-
-    // Check the initial state of the checkbox to set the correct visibility on page load
-    if (still_workingCheckbox.checked) {
-        endDateWrapper.style.display = 'none';
-    } else {
-        endDateWrapper.style.display = 'block';
-    }
-</script>
+<?php endif; ?>
 <!--  -->
 <style>
     .img-thumbnail {
@@ -464,7 +689,14 @@ if (!isset($_SESSION['seller_user_name'])) {
         border: 1px solid lightgray;
         border-radius: 5px;
     }
+    #attribute_details{
+        padding: 1.7rem 1rem;
+        /* margin-bottom: 1.5rem; */
+        border: 1px solid lightgray;
+        border-radius: 5px;
+    }
 </style>
+
 <?php
 session_start();
 
@@ -486,7 +718,7 @@ if (!isset($_SESSION['uploadedImages'])) {
 
 // Check if the form is submitted
 if (isset($_POST['portfolio_form'])) {
-   
+
     $projectTitle = $_POST['projectTitle'];
     $referenced_url = $_POST['referenced_url'];
     $skills = explode(',', $_POST['projectskills']); // assuming skills are passed as a comma-separated string
@@ -521,12 +753,12 @@ if (isset($_POST['portfolio_form'])) {
     }
 
     // Debugging to check the session uploaded images array
-    echo "<pre>";
-    print_r($_SESSION['uploadedImages']);
-    print_r($videoUrls);
-    echo "</pre>";
+    // echo "<pre>";
+    // print_r($_SESSION['uploadedImages']);
+    // print_r($videoUrls);
+    // echo "</pre>";
 
-   
+
     // Store data in database
     $portfolio = $db->insert("portfolios", array("project_title" => $projectTitle, "referenced_url" => $referenced_url, "description" => $description, "seller_id" => $seller_id));
 
@@ -566,29 +798,61 @@ if (isset($_POST['portfolio_form'])) {
     }
 }
 ?>
-
 <div class="container p-0 mt-5">
-    <h4 class="text-center mb-4"><u>Add to Portfolio</u></h4>
+    <h4 class="text-center mb-4"><u>Add Portfolio</u></h4>
     <form id="portfolioForm" method="post" enctype="multipart/form-data">
         <div class="portfolio-from-div">
             <div class="portfolio-first">
                 <label for="projectTitle" class="col-md-12 pl-0">Project Title</label><br>
                 <input type="text" class="form-control col-md-12" id="projectTitle" name="projectTitle" placeholder="Enter your project title..." required>
-            </div>
-            <div class="portfolio-second">
-                <label for="referenced_url" class="col-md-12 pl-0">Reference Link</label>
-                <input type="url" class="form-control col-md-12" name="referenced_url" id="referenced_url" placeholder="Enter your project referenc url">
-            </div>
-        </div>
-        <div class="description_portfolio_div">
-            <div class="description_portfolio_divinner">
                 <br>
-                <label for="projectskills" class="col-md-12 pl-0">Skills</label>
+                <label for="projectskills" class="col-md-12 pl-0">Tags</label>
                 <input type="text" class="form-control col-md-12" id="projectskills" name="projectskills" placeholder="Enter skills and press Enter">
                 <div id="skillsContainer" class="mt-2 mb-2">
                     <!-- Tags will be appended here -->
                 </div>
                 <small id="tagLimitMessage" class="limit-message"></small>
+
+            </div>
+            <div class="portfolio-second">
+                <label for="referenced_url" class="col-md-12 pl-0">Reference Link</label>
+                <input type="url" class="form-control col-md-12" name="referenced_url" id="referenced_url" placeholder="Enter your project referenc url">
+                <br>
+                <label for="attribute_details" class="col-md-12 pl-0">Attribute</label>
+                <select name="attribute_details" id="attribute_details" class="form-control col-md-12" >
+                    <?php
+                    $q_skills_relation = $db->select("skills_relation", array("seller_id" => $login_seller_id));
+                    if ($q_skills_relation->rowCount() > 0) {
+                        $i = 0;
+                        while ($row_seller_skills = $q_skills_relation->fetch()) {
+
+                            $relation_id = $row_seller_skills->relation_id;
+                            $skill_id = $row_seller_skills->skill_id;
+                            $skill_level = $row_seller_skills->skill_level;
+                            $skill_cat_id = $row_seller_skills->skill_cat_id;
+                            $skill_child_id = $row_seller_skills->skill_child_id;
+                            $skill_sub_child_id = $row_seller_skills->skill_sub_child_id;
+
+                            $getskillsubchild = $db->select("sub_subcategories", ["attr_id" => $skill_sub_child_id]);
+                            $rowskillsubchild = $getskillsubchild->fetch();
+                            $attr_id = $rowskillsubchild->attr_id;
+                            $sub_subcategory_name = $rowskillsubchild->sub_subcategory_name;
+
+                            echo $sub_subcategory_name;
+                    ?>
+                            <option class="" value="<?= $attr_id; ?>">
+                                <?= $sub_subcategory_name; ?>
+                            </option>
+                    <?php  }
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+        <div class="description_portfolio_div">
+            <div class="description_portfolio_divinner">
+                <br>
+
                 <br>
                 <label for="portfolio-description" class="col-md-12 pl-0">Description</label><br>
                 <textarea class="form-control col-md-12" id="portfolio-description" name="portfolio-description" placeholder="Enter your project description..." rows="3" required></textarea>
@@ -619,9 +883,6 @@ if (isset($_POST['portfolio_form'])) {
     </form>
 </div>
 <hr>
-
-
-
 <script>
     const maxTags = 5; // Maximum number of tags
     const maxImages = 3; // Maximum number of images
@@ -756,442 +1017,18 @@ if (isset($_POST['portfolio_form'])) {
 </script>
 <!--  -->
 <!-- skills -->
-<?php
-if (isset($_POST['submit_professional'])) {
-
-
-    $form_status = $input->post("form_status");
-    $inserted = 0;
 
 
 
-    // SKILLS
-    $formSkills = $_POST['skills'];
-    $skill_cat_id = $_POST['skill_cat_id'];
-    $skill_child_id = $_POST['skill_child_id'];
-    $skill_sub_child_id = $_POST['skill_sub_child_id'];
-
-    //     echo "<pre>";
-    //     print_r($skill_cat_id);
-    //     echo "</pre>";
-    // exit();
-    if (count($formSkills) > 0) {
-        $skillsTotalAdded = $db->count("skills_relation", ["seller_id" => $login_seller_id]);
-        $skillsTotalForm = count($formSkills);
-
-        $skillsTotalCanAdd = $skillsTotalAdded > 0 ? $skillsTotalForm - $skillsTotalAdded : $skillsTotalForm;
-
-        // If skills exceeds avaiable quota
-        if ($skillsTotalCanAdd > $skills) {
-            echo "<script>
-              swal({
-                type: 'warning',
-                text: 'Available No of skills quota exceeds.',
-                timer: 3000,
-                onOpen: function(){
-                  swal.showLoading()
-                }
-              }).then(function(){
-                // Read more about handling dismissals
-                window.open('settings?professional_settings','_self');
-              });
-              </script>";
-            exit();
-        }
-
-        $skillError = [];
-        $formSkills = $_POST['skills'];
-        foreach ($formSkills as $key => $skill) {
-            $skillId = $skill['id'];
-            $skillLevel = $skill['level'];
-            $cat_id = $skill_cat_id;
-            $child_id = $skill_child_id;
-            $sub_child_id = $skill_sub_child_id;
-
-            if ($skillId == "custom") {
-                $skill_name = $input->post('skill_name');
-                $count = $db->count("seller_skills", ["skill_title" => $skill_name]);
-
-                if ($count == 1) {
-                    $skillError = $lang['alert']['skill_already_added'];
-                } else {
-                    $insert_skill = $db->insert("seller_skills", array("skill_title" => $skill_name));
-                    $skillId = $db->lastInsertId();
-                    $inserted++;
-                }
-            } else {
-                $skillCountAlready = $db->count("skills_relation", ["seller_id" => $login_seller_id, 'skill_id' => $skillId]);
-                // Add only if new found
-                if ($skillCountAlready == 0) {
-                    $sForm = [
-                        "skill_id" => $skillId,
-                        "skill_level" => $skillLevel,
-                        "seller_id" => $login_seller_id,
-                        "skill_cat_id" => $cat_id,
-                        "skill_child_id" => $child_id,
-                        "skill_sub_child_id" => $sub_child_id
-                    ];
-                    $db->insert("skills_relation", $sForm);
-                    $inserted++;
-                }
-            }
-        }
-    }
-}
 
 
 
-$qProInfo = $db->select("seller_pro_info", array("seller_id" => $login_seller_id));
-$getProInfo = $qProInfo;
-$cProInfo = $qProInfo->rowCount();
-
-$formStatus = true;
-$showPendingMsg = false;
-$modificationMsg = '';
-$proStatus = null;
-if ($cProInfo > 0) {
-    $proInfoData = [];
-    while ($oProInfo = $qProInfo->fetch()) {
-        $proInfoData[] = $oProInfo;
-        $proStatus = $oProInfo->status; // 1=active, 0=pending,2=modification
-        $modificationMsg = $oProInfo->feedback;
-        // $formStatus = $proStatus == 2 ? true : false;
-        if ($proStatus == 0) {
-            $showPendingMsg = true;
-            $formStatus = false;
-        }
-    }
-}
-
-$totalProInfForm = $cProInfo > 0 ? $cProInfo : 1;
-
-$earliest_year = 1950;
-$form_errors = Flash::render("form_errors");
-$form_data = Flash::render("form_data");
-
-if ($formStatus) : //Show Form if needs to
-    if ($modificationMsg != '') {
-?>
-        <div class="alert alert-warning" role="alert">
-            Modification Message From Admin:<br /><?= $modificationMsg ?>
-        </div>
-    <?php } ?>
-    <?php if ($proStatus == 1) { ?>
-        <div class="col-md-12">
-            <div class="alert alert-success" role="alert">
-                Your Professional Info is active.
-            </div>
-        </div>
-    <?php } ?>
 
 
-    <form method="post" runat="server" autocomplete="off">
-
-        <style>
-            #custom_input_skill_add {
-                width: 100%;
-                padding: 6px;
-                border-radius: 3px;
-                border: 1px solid lightgrey;
-            }
-
-            #custom_input_skill_add:focus {
-                border: 1px solid lightblue;
-                /* Border style on focus */
-                outline: none;
-                /* Remove the default outline */
-            }
-
-            .skill_table_styleing {
-                width: 95%;
-                margin: auto;
-            }
-
-            .skill_table_select {
-                height: 3.3rem !important;
-            }
-
-            .new_half_part_select_first {
-                width: 45%;
-                /* border: 1px solid grey; */
-                margin: 0 auto;
-            }
-
-            .new_half_part_select_sec {
-                width: 45%;
-                /* border: 1px solid grey; */
-                margin: 0 auto;
-            }
-
-            .new_both_skill_half_one {
-                width: 95%;
-                display: flex;
-            }
-
-            .new_level_select_style {
-                width: 95%;
-                display: flex;
-            }
-
-            .new_level_select_teg_style {
-                width: 95%;
-                margin: auto;
-                height: 3.3rem;
-            }
-        </style>
-        <div class="skill_table_styleing">
-            <label class="col-md-2 col-form-label"> <?= $lang['label']['skills']; ?> </label>
-            <div class="form-group row">
-                <div class="new_both_skill_half_one">
-                    <div class="new_half_part_select_first">
-                        <!-- category -->
-                        <div class="col-md-12 px-0 mb-4">
-                            <select class="custom-select skill_table_select" name="skill_cat_id" id="category_skills" required>
-                                <option value="" class="hidden">
-                                    <?= $lang['placeholder']['select_category']; ?>
-                                </option>
-                                <?php
-                                $get_cats = $db->select("categories");
-                                while ($row_cats = $get_cats->fetch()) {
-                                    $cat_id = $row_cats->cat_id;
-                                    $get_meta = $db->select("cats_meta", ["cat_id" => $cat_id, "language_id" => $siteLanguage]);
-                                    $row_meta = $get_meta->fetch();
-                                    $cat_title = $row_meta->cat_title;
-                                ?>
-                                    <option value="<?= $cat_id; ?>">
-                                        <?= $cat_title; ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <!-- sub-sub-category -->
-                        <div class="col-md-12 px-0 mb-4 display-sub-sub-none" style="display: none;" required>
-                            <select class="form-control box-shadow-post-req skill_table_select" name="skill_sub_child_id" id="skil-sub-sub-category">
-                                <option value="" class="hidden">
-                                    <?= $lang['placeholder']['select_sub_sub_category']; ?>
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="new_half_part_select_sec">
-                        <!-- sub category -->
-                        <div class="col-md-12 px-0 mb-4 display-sub-none" style="display: none;">
-                            <select class="custom-select skill_table_select" name="skill_child_id" id="skill-sub-category" required>
-                                <option value="select-sub-category" selected> Select A Sub Category</option>
-                                <?php
-                                $get_c_cats = $db->select("categories_children");
-                                while ($row_c_cats = $get_c_cats->fetch()) {
-                                    $child_id = $row_c_cats->child_id;
-                                    $child_parent_id = $row_c_cats->child_parent_id;
-                                    $get_meta = $db->select("child_cats_meta", array("child_id" => $child_id, "language_id" => $siteLanguage));
-                                    $row_meta = $get_meta->fetch();
-                                    $child_title = $row_meta->child_title;
-                                ?>
-                                    <option class="sub-category-option" data-parent="<?= $child_parent_id; ?>" value="<?= $child_id; ?>">
-                                        <?= $child_title; ?><?= $child_id; ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <!-- skills -->
-                        <div class="col-md-12 px-0 mb-4 display-sub-skill-none" style="display: none;">
-                            <select name="skill_id" id="custom_input_skill_add" class="skill_table_select">
-                                <option value="">select skill</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <!-- levels -->
-                <div class="new_level_select_style  display-sub-skill-none" style="display: none;">
-                    <select class="custom-select new_level_select_teg_style" name="skill_level" required>
-                        <option value="" class="hidden"><?= $lang['label']['select_level']; ?></option>
-                        <option>Beginner</option>
-                        <option>Intermediate</option>
-                        <option>Expert</option>
-                    </select>
-                </div>
-            </div>
-            <?php
-
-            ?>
-            <table class="table table-striped pl-0" id="tblSkills">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Category</th>
-                        <th scope="col">Sub category</th>
-                        <th scope="col">Attribute</th>
-                        <th scope="col">Skills</th>
-                        <th scope="col">Level</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $q_skills_relation = $db->select("skills_relation", array("seller_id" => $login_seller_id));
-                    if ($q_skills_relation->rowCount() > 0) {
-                        $i = 0;
-                        while ($row_seller_skills = $q_skills_relation->fetch()) {
-                            $skill_cat_id = $row_seller_skills->skill_cat_id;
-                            $skill_child_id = $row_seller_skills->skill_child_id;
-                            $skill_sub_child_id = $row_seller_skills->skill_sub_child_id;
-                            $relation_id = $row_seller_skills->relation_id;
-                            $skill_id = $row_seller_skills->skill_id;
-                            $skill_level = $row_seller_skills->skill_level;
-
-                            $get_skill = $db->select("seller_skills", array("skill_id" => $skill_id));
-                            $row_skill = $get_skill->fetch();
-                            $skill_title = $row_skill->skill_title;
-
-                            $get_skill_category = $db->select("cats_meta", array("cat_id" => $skill_cat_id));
-                            $row_skill_category = $get_skill_category->fetch();
-                            $skill_category_details = $row_skill_category->cat_title;
-
-                            $get_skill_sub_category = $db->select("child_cats_meta", array("child_id" => $skill_child_id));
-                            $row_skill_sub_category = $get_skill_sub_category->fetch();
-                            $skill_sub_category_details = $row_skill_sub_category->child_title;
-
-                            $get_skill_attribute = $db->select("sub_subcategories", array("attr_id" => $skill_sub_child_id));
-                            $row_skill_attribute = $get_skill_attribute->fetch();
-                            $skill_sub_subcategory = $row_skill_attribute->sub_subcategory_name;
-
-                    ?>
-                            <tr>
-                                <td><?= $skill_category_details; ?></td>
-                                <td><?= $skill_sub_category_details; ?></td>
-                                <td><?= $skill_sub_subcategory ?></td>
-                                <th scope="row"><?= $skill_title; ?><input type="hidden" name="skills[<?= $i ?>][id]" value="<?= $skill_id; ?>"></th>
-                                <td><?= $skill_level; ?><input type="hidden" name="skills[<?= $i ?>][level]" value="<?= $skill_level; ?>">
-
-                                    <a href="javascript:;" onclick="deleteSkill(<?= $relation_id; ?>)" class="text-primary"><i class="fa fa-trash-o"></i></a>
-                                </td>
-
-                            </tr>
-                        <?php
-                            $i++;
-                        }
-                    } else {
-                        ?>
-                        <tr class="table-danger">
-                            <th colspan="5" scope="row">0 Skill added, please use above form to addss your skillsets.</th>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-            <div class="col p-0 m-0">
-                <a href="javascript:;" class="btn btn-info" onclick="addSkill()"><i class="fa fa-plus"></i> Add more skills</a>
-            </div>
-            <small class="text-muted">Note: Please press "Save Changes" button to save the changes.</small>
-        </div>
 
 
-        <hr>
-        <button type="submit" name="submit_professional" class="btn btn-success <?= $floatRight ?>" style="<?= ($lang_dir == "right" ? 'margin-left: 110px;' : '') ?>">
-            <i class="fa fa-floppy-o"></i> <?= $lang['button']['save_changes']; ?>
-        </button>
-        <input type="hidden" name="form_status" value="<?= $proStatus ?>">
 
-    </form>
-<?php else : ?>
-    <div class="row">
-        <?php if ($showPendingMsg) { ?>
-            <div class="col-md-12">
-                <div class="alert alert-warning" role="alert">
-                    Your latest Professional Info update request is in pending state. After approval, this message will disappear.
-                </div>
-            </div>
-        <?php } ?>
-        <div class="col-md-3">
-            <?= $lang['label']['occupation']; ?>
-        </div>
-        <div class="col-md-9">
-            <?php if ($cProInfo > 0) {
-                foreach ($proInfoData as $proRow) {
-                    // dump($proRow);
-                    $proInfoId = $proRow->id;
-                    $categoryId = $proRow->category_id;
-                    $subCategoryId = $proRow->sub_category_id;
-                    $qCategory = $db->select("cats_meta", array("cat_id" => $categoryId, "language_id" => 1));
-                    $oCategory = $qCategory->fetch();
-                    $catTitle = $oCategory->cat_title;
-                    $sbCategory = $db->select("child_cats_meta", array("child_id" => $subCategoryId, "language_id" => 1));
-                    $bsCategory = $sbCategory->fetch();
-                    $childTitle = $bsCategory->child_title;
-                    $childId = $bsCategory->child_id;
 
-                    $qOptions = $db->select("seller_pro_info_options", array("seller_pro_info_id" => $proInfoId));
-                    $cOptions = $qOptions->rowCount();
-
-            ?>
-                    <div class="d-flex align-items-start flex-column border border-info mb-1">
-                        <div class="p-2">
-                            <b><?= $catTitle ?> - <?= $childTitle ?></b> - <small class="text-muted"><?= $proRow->start_date ?>-<?= $proRow->end_date ?></small>
-                        </div>
-                        <?php if ($cOptions > 0) : ?>
-                            <div class="p-2">
-                                <?php
-                                while ($oOption = $qOptions->fetch()) {
-                                    $professional_info_id = $oOption->professional_info_id;
-                                    $qProInf = $db->select("professional_info", array("id" => $professional_info_id, "sub_category_id" => $childId));
-                                    $oProInf = $qProInf->fetch();
-                                    $oProInfTitle = $oProInf->title;
-                                    $subcatids = $oProInf->sub_category_id;
-                                ?>
-                                    <span class="badge badge-dark"><?= $oProInfTitle ?></span>
-                                <?php } ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-            <?php
-                }
-            } //$cProInfo
-            ?>
-        </div>
-        <div class="col-md-12">
-            <hr />
-        </div>
-        <div class="col-md-3">
-            <?= $lang['label']['skills']; ?>
-        </div>
-        <div class="col-md-9">
-            <table class="table table-striped" id="tblSkills">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Skills</th>
-                        <th scope="col">Level</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $q_skills_relation = $db->select("skills_relation", array("seller_id" => $login_seller_id));
-                    if ($q_skills_relation->rowCount() > 0) {
-                        $i = 0;
-                        while ($row_seller_skills = $q_skills_relation->fetch()) {
-
-                            $relation_id = $row_seller_skills->relation_id;
-                            $skill_id = $row_seller_skills->skill_id;
-                            $skill_level = $row_seller_skills->skill_level;
-
-                            $get_skill = $db->select("seller_skills", array("skill_id" => $skill_id));
-                            $row_skill = $get_skill->fetch();
-                            $skill_title = $row_skill->skill_title;
-                    ?>
-                            <tr>
-                                <th scope="row"><?= $skill_title; ?></th>
-                                <td><?= $skill_level; ?></td>
-                            </tr>
-                        <?php
-                            $i++;
-                        }
-                    } else {
-                        ?>
-                        <tr class="table-danger">
-                            <th colspan="5" scope="row">0 Skill added, please use above form to adds your skillsets.</th>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-<?php endif; ?>
 
 
 <script src="<?= $site_url ?>/js/cloneData.js" type="text/javascript"></script>
@@ -1296,21 +1133,12 @@ if ($formStatus) : //Show Form if needs to
         var skillSelectedValue = $('select[name=skill_id]').find(":selected").text();
         var levelSelectedId = $('select[name=skill_level]').find(":selected").val();
         var levelSelectedValue = $('select[name=skill_level]').find(":selected").text();
-
-        var skillCategoryId = $('select[name=skill_cat_id]').find(":selected").val();
-        var skillCategoryValue = $('select[name=skill_cat_id]').find(":selected").text();
-        var skillSubCategoryId = $('select[name=skill_child_id]').find(":selected").val();
-        var skillSubCategoryValue = $('select[name=skill_child_id]').find(":selected").text();
-        var skillsubsubCategoryId = $('select[name=skill_sub_child_id]').find(":selected").val();
-        var skillsubsubCategoryValue = $('select[name=skill_sub_child_id]').find(":selected").text();
-
-
         // alert(optionSelectedId)
-        // if (skillSelectedId === '') {
-        //     alert("Please select skill");
-        //     $('select[name=skill_id]').focus();
-        //     return false
-        // }
+        if (skillSelectedId === '') {
+            alert("Please select skill");
+            $('select[name=skill_id]').focus();
+            return false
+        }
 
         if (levelSelectedId === '') {
             alert("Please select skill level");
@@ -1330,9 +1158,6 @@ if ($formStatus) : //Show Form if needs to
         // if (trCount > 1)
         // index = trCount - 1;
         var buffer = '<tr class="new">';
-        buffer += '<th scope="row">' + skillCategoryValue + '<input type="hidden" name="skills[' + index + '][id]" value="' + skillCategoryId + '"></th>';
-        buffer += '<th scope="row">' + skillSubCategoryValue + '<input type="hidden" name="skills[' + index + '][id]" value="' + skillSubCategoryId + '"></th>';
-        buffer += '<th scope="row">' + skillsubsubCategoryValue + '<input type="hidden" name="skills[' + index + '][id]" value="' + skillsubsubCategoryId + '"></th>';
         buffer += '<th scope="row">' + skillSelectedValue + '<input type="hidden" name="skills[' + index + '][id]" value="' + skillSelectedId + '"></th>';
         buffer += '<td>' + levelSelectedValue + '<input type="hidden" name="skills[' + index + '][level]" value="' + levelSelectedValue + '"> <a href="javascript:;" onclick="deleteThis(this, null)" class="text-danger"><i class="fa fa-trash-o"></i></a></td>'
         buffer += '</tr>';
@@ -1367,6 +1192,8 @@ if ($formStatus) : //Show Form if needs to
         }
     }
 </script>
+
+
 
 <script>
     $(document).ready(function() {

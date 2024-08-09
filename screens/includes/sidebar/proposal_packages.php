@@ -21,7 +21,7 @@
             <li class="nav-item">
             <a class="nav-link active" href="#tab_40" data-toggle="tab" formid="checkoutForm1">
                 Basic		</a>
-        </li>
+        </li> 
             <li class="nav-item">
             <a class="nav-link" href="#tab_41" data-toggle="tab" formid="checkoutForm2">
                 Standard		</a>

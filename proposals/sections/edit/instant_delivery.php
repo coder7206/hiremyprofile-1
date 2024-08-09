@@ -20,24 +20,24 @@
   ! Instant Delivery Will Only Work When Some One Buy This Proposal Directly Or Buy Cart.
 </div>
 
-<div class="alert alert-info">
+<div class="alert alert-info form_style_instant_delivery">
   <?= $lang['edit_proposal']['instant_delivery']['alert1']; ?>
 </div>
 
 <form action="#" enctype="multipart/form-data" method="post" id="delivery-form">
   <!--- form Starts -->
 
-  <div class="form-group">
+  <div class="form-group form_style_instant_delivery">
     <p class="mb-2">Message</p>
     <textarea name="message" id="instant_delivery_message" placeholder="Message" rows="4" class="form-control" minlength="50" maxlength="500" <?php if ($enable_delivery == 1) echo "required" ?>><?= $delivery_message; ?></textarea>
-    <span class="text-dark d-block">min: 50 max: 500 characters  <span class="pull-right"><i class="text-danger" id="msg-typed-characters"><?=strlen($delivery_message) > 0 ? strlen($delivery_message) : 0; ?></i> characters</span></span>
+    <span class="text-dark d-block">min: 50 max: 500 characters <span class="pull-right"><i class="text-danger" id="msg-typed-characters"><?= strlen($delivery_message) > 0 ? strlen($delivery_message) : 0; ?></i> characters</span></span>
   </div>
 
-  <div class="alert alert-info">
+  <div class="alert alert-info form_style_instant_delivery">
     <?= $lang['edit_proposal']['instant_delivery']['alert2']; ?>
   </div>
 
-  <div class="form-group float-left">
+  <div class="form-group float-left form_style_instant_delivery">
     <input type="file" id="deliveryFile" name="file" class="mb-3" />
     <div id="downloadFile">
       <?php if (!empty($delivery_file)) { ?>
@@ -66,10 +66,10 @@
   </div>
   <?php if ($d_proposal_status == 'active') { ?>
     <div class="clearfix"></div>
-	<div class="form-group mb-0 float-right">
-		<small class="text-muted">Your proposal is "Active", if you edits the form it will go to reviews.</small>
-	</div>
-	<?php } ?>
+    <div class="form-group mb-0 float-right">
+      <small class="text-muted">Your proposal is "Active", if you edits the form it will go to reviews.</small>
+    </div>
+  <?php } ?>
   <!--- form-group Starts --->
 
 </form>
@@ -87,7 +87,25 @@
     }
     msgTypedCharactersElement.textContent = msgTypedCharacters;
   });
+
+
   $(document).ready(function() {
+    function updateBorder() {
+      if ($('#enable_button').is(':checked')) {
+        $('.form_style_instant_delivery').css('opacity', '1');
+      } else {
+        $('.form_style_instant_delivery').css('opacity', '0.4');
+      }
+    }
+
+    // Initial update
+    updateBorder();
+
+    // Update on change
+    $('#enable_button').change(function() {
+      updateBorder();
+    });
+
 
     $('.instant-slider').click(function() {
       var value = $('#enable_button').val();

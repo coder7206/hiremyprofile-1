@@ -101,7 +101,7 @@ $d_delivery_id = $row_proposal->delivery_id;
 
 <div class="packages"><?php include("packages.php"); ?></div>
 
-<div class="form-group row add-attribute justify-content-center">
+<!-- <div class="form-group row add-attribute justify-content-center">
   <div class="col-md-7">
     <div class="input-group">
       <input class="form-control form-control-sm attribute-name" placeholder="Add New Attribute" name="">
@@ -110,7 +110,22 @@ $d_delivery_id = $row_proposal->delivery_id;
       </button>
     </div>
   </div>
+</div> -->
+
+<div class="form-group row add-attribute justify-content-center">
+  <div class="col-md-7">
+    <div class="input-group">
+      <input class="form-control form-control-sm attribute-name" placeholder="Add New Attribute" name="">
+      <button class="btn btn-success input-group-addon insert-attribute">
+        <i class="fa fa-cloud-upload"></i> &nbsp;Insert
+      </button>
+    </div>
+  </div>
 </div>
+
+
+
+
 
 <div class="card rounded-0">
   <div class="card-body bg-light pt-3 pb-0">
@@ -133,10 +148,10 @@ $d_delivery_id = $row_proposal->delivery_id;
 
 <?php if ($d_proposal_status == 'active') { ?>
   <div class="clearfix"></div>
-	<div class="form-group mb-0 float-right">
-		<small class="text-muted">Your proposal is "Active", if you edits the form it will go to reviews.</small>
-	</div>
-	<?php } ?>
+  <div class="form-group mb-0 float-right">
+    <small class="text-muted">Your proposal is "Active", if you edits the form it will go to reviews.</small>
+  </div>
+<?php } ?>
 <script>
   $(document).ready(function() {
 
@@ -148,7 +163,7 @@ $d_delivery_id = $row_proposal->delivery_id;
 
 
 
-        
+
       <?php } else if ($d_proposal_price != "0" and !isset($_POST["fixedPriceOff"])) { ?>
 
         $('.packages input[name="proposal_packages[1][price]"]').attr('min', 0);
@@ -349,56 +364,6 @@ $d_delivery_id = $row_proposal->delivery_id;
 
     });
 
-    function processAttributeRequest(attribute_name, status) {
-      $.ajax({
-        method: "POST",
-        url: "ajax/insert_attribute",
-        data: {
-          attribute_name: attribute_name,
-          proposal_id: <?= $proposal_id; ?>,
-          change_status: status
-        },
-        success: function(data) {
-          if (data == "error") {
-            $('#wait').removeClass("loader");
-            swal({
-              type: 'warning',
-              text: 'You Must Need To Give A Name To Attribute Before Inserting It.'
-            });
-          } else {
-            $('#wait').removeClass("loader");
-            $('.attribute-name').val("");
-            result = $.parseJSON(data);
-            var form_data = new FormData(document.querySelector(".pricing-form"));
-            form_data.append('proposal_id', <?= $proposal_id; ?>);
-            $.ajax({
-              method: "POST",
-              url: "ajax/save_pricing",
-              data: form_data,
-              async: false,
-              cache: false,
-              contentType: false,
-              processData: false
-            }).done(function(data) {
-              // this code makes problem
-              $.ajax({
-                method: "POST",
-                url: "sections/edit/pricing",
-                data: {
-                  proposal_id: <?= $proposal_id; ?>,
-                  fixedPriceOff: 1
-                },
-                success: function(show_data) {
-                  $("#pricing").html(show_data);
-                }
-              });
-            });
-          }
-        }
-      });
-
-    }
-
     function attributeRequest(attribute_name, status = false) {
       if (status == true) {
         swal({
@@ -425,6 +390,7 @@ $d_delivery_id = $row_proposal->delivery_id;
       var attribute_name = $('.attribute-name').val();
       var minLen = 5;
       var maxLen = 20;
+
       if (attribute_name == '') {
         alert("Please enter some text");
         $('.attribute-name').focus();
@@ -435,6 +401,57 @@ $d_delivery_id = $row_proposal->delivery_id;
         $('.attribute-name').focus();
         return;
       }
+
+      function processAttributeRequest(attribute_name, status) {
+        $.ajax({
+          method: "POST",
+          url: "ajax/insert_attribute",
+          data: {
+            attribute_name: attribute_name,
+            proposal_id: <?= $proposal_id; ?>,
+            change_status: status
+          },
+          success: function(data) {
+            if (data == "error") {
+              $('#wait').removeClass("loader");
+              swal({
+                type: 'warning',
+                text: 'You Must Need To Give A Name To Attribute Before Inserting It.'
+              });
+            } else {
+              $('#wait').removeClass("loader");
+              $('.attribute-name').val("");
+              result = $.parseJSON(data);
+              var form_data = new FormData(document.querySelector(".pricing-form"));
+              form_data.append('proposal_id', <?= $proposal_id; ?>);
+              $.ajax({
+                method: "POST",
+                url: "ajax/save_pricing",
+                data: form_data,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false
+              }).done(function(data) {
+                // this code makes problem
+                $.ajax({
+                  method: "POST",
+                  url: "sections/edit/pricing",
+                  data: {
+                    proposal_id: <?= $proposal_id; ?>,
+                    fixedPriceOff: 1
+                  },
+                  success: function(show_data) {
+                    $("#pricing").html(show_data);
+                  }
+                });
+              });
+            }
+          }
+        });
+      }
+
+
 
       $('#wait').addClass("loader");
 
@@ -456,6 +473,8 @@ $d_delivery_id = $row_proposal->delivery_id;
         }
       });
     });
+
+
 
 
     function processPricingForm(form_data, status) {

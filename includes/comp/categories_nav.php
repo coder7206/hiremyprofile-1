@@ -5,7 +5,7 @@
 </style>
 <div class="sub_header col-xs-12 sm-hidden box-shadow-cat-nav">
   <div class="sub_header_inner row">
-    <div class="col-sm-6">     
+    <div class="col-sm-6">
       <ul class="sub_header_menu">
         <li>
           <a href="<?= $site_url ?>/categories/graphics-design">
@@ -13,9 +13,25 @@
           </a>
         </li>
         <li>
-          <a href="<?= $site_url ?>/requests/post_request">
+          <!-- <a href="<?= $site_url ?>/requests/post_request">
             <i class="fa fa-pencil"></i> Post Job Free
-          </a>
+          </a> -->
+          <?php if (isset($_SESSION['seller_user_name'])) {
+          ?>
+            <a href="<?= $site_url ?>/requests/post_request">
+              <i class="fa fa-pencil"></i> Post Job Free
+            </a>
+          <?php
+          } else {
+          ?>
+            <a href="<?= $site_url ?>/login">
+              <i class="fa fa-pencil"></i> Post Job Free
+            </a>
+          <?php
+          }
+
+          ?>
+
         </li>
         <li>
           <a href="<?= $site_url ?>/freelancers">

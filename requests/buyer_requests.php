@@ -98,9 +98,7 @@ $login_seller_offers = $row_login_seller->seller_offers;
 
       }
 
-      .width-99 {
-        /* border: 2px solid green; */
-      }
+     
 
       .font-size-th {
         padding: 1px !important;

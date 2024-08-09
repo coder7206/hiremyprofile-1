@@ -5,157 +5,69 @@ if (!isset($_SESSION['seller_user_name'])) {
     echo "<script>window.open('login','_self')</script>";
 }
 ?>
+<link rel="stylesheet" href="styles/professional_setting_page.css">
+
 
 
 <?php
-// if (isset($_POST['experience_add'])) {
+if (isset($_POST['add_experience'])) {
 
-//     $job_title = $_POST['job_title'];
-//     $organization = $_POST['organization'];
-//     $start_from = $_POST['start_from'];
-//     $still_working = $_POST['still_working'];
-//     $end_to = $_POST['end_to'];
-//     $description = $_POST['description'];
-//     $seller_id = $login_seller_id;
 
-//     $add_experience = $db->insert("past_experience", array("job_title" => $job_title, "organization" => $organization, "start_from" => $start_from, "still_working" => $still_working, "end_to" => $end_to, "description" => $description, "seller_id" =>  $seller_id));
+    $job_title = $_POST['job_title'];
+    $organization = $_POST['organization'];
+    $start_from = $_POST['start_from'];
+    $still_working = isset($_POST['still_working']) ? 1 : 0;
+    $end_to = $_POST['end_to'];
+    $description = $_POST['description'];
+    $exp_status = $_POST['experience_status'];
+    $seller_id = $login_seller_id;
 
-//     if ($add_experience) {
-//         echo "<p>Experience added successfully!</p>";
-//     } else {
-//         echo "<p>Failed to add experience. Please try again.</p>";
-//     }
-// }
+
+
+    $add_experience = $db->insert("past_experience", array(
+        "job_title" => $job_title,
+        "organization" => $organization,
+        "start_from" => $start_from,
+        "still_working" => $still_working,
+        "end_to" => $end_to,
+        "description" => $description,
+        "seller_id" => $seller_id,
+        "status" => $exp_status
+    ));
+
+    if ($add_experience) {
+        // echo "<p>Experience added successfully!</p>";
+    } else {
+        echo "<p>Failed to add experience. Please try again.</p>";
+    }
+}
+
+
+$added_experience = $db->select("past_experience", array("seller_id" => $login_seller_id));
+$count_added_experience = $added_experience->rowCount();
+
+$limit = 5; // Define the limit for the number of experiences                     
 
 
 ?>
 
+
+
+
 <!-- // /add experience -->
-<style>
-    #end_date_wrapper {
-        display: block;
-    }
 
-    #form_for_pastexperience {
-        border: 1px solid lightgrey;
-        border-radius: 10px;
-    }
-
-    .both-half {
-        width: 95%;
-        display: flex;
-    }
-
-    .first-half {
-        width: 45%;
-        display: block;
-        margin: 0 auto;
-    }
-
-    .second-half {
-        display: block;
-        width: 45%;
-        margin: 0 auto;
-    }
-
-    #main-experience-from {
-        background-color: greenyellow;
-    }
-
-    #job_title {
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    #organization {
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    #start_from {
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    /* #still_working {
-        padding: 1rem;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    } */
-
-    #end_to {
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    #description {
-        padding: 1rem;
-        margin: auto;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-        width: 95%;
-    }
-
-    #description::placeholder {
-        color: lightgray;
-    }
-
-    .submit_experiences_btn_style {
-        margin: auto;
-        width: 25%;
-        border: none;
-        padding: 1rem;
-        border-radius: 5px;
-        background-color: #e5e5e5;
-        border: 3px solid #00cedc;
-        font-size: 18px;
-    }
-
-    .description-div {
-        width: 100%;
-        margin: auto;
-    }
-
-    .description-div-outer {
-        width: 95%;
-        margin: auto;
-    }
-
-    input[type="date"] {
-        color: lightgray !important;
-    }
-
-    input::placeholder {
-        color: lightgray;
-    }
-
-    .add_experience_btn_style {
-        /* margin: auto; */
-        padding: 1rem 2rem;
-        border-radius: 5px;
-        border: none;
-    }
-
-    .remove-btn {
-        padding: 3px 9px;
-        border-radius: 5px;
-        color: white;
-        border: none;
-        background-color: #ca0000;
-    }
-</style>
 <div class="form_for_pastexperience">
-    <h4 class="text-center mb-4"><u>Past Experience</u></h4>
+    <h4 class="mb-4"><u>Past Experience</u></h4>
     <div class="main-experience-form">
-        <form id="experience_form" method="post" autocomplete="on">
+   <?php if ($count_added_experience > $limit) {
+    echo "Limit exceeded";?>
+    
+
+<?php } else {
+    $remaining = $limit - $count_added_experience;
+    echo "Remaining: $remaining"; ?>
+
+        <form id="experience_form" method="post" action="">
             <div class="both-half">
                 <div class="first-half">
                     <label for="job_title" class="col-md-12 pl-0">Title</label><br>
@@ -168,8 +80,6 @@ if (!isset($_SESSION['seller_user_name'])) {
                         <input type="checkbox" class="col-md-1 pl-0 mb-0" name="still_working" id="still_working">
                         <label for="still_working" class="col-md-6 mb-0">I am still working</label><br>
                     </div>
-
-                    <br>
                 </div>
                 <div class="second-half">
                     <label for="organization" class="col-md-12 pl-0">Organization</label><br>
@@ -181,43 +91,73 @@ if (!isset($_SESSION['seller_user_name'])) {
                     </div>
                 </div>
             </div>
-            <div class="description-div-outer">
+            <div class="description-div-outer mt-4">
                 <div class="description-div">
                     <label for="description" class="col-md-12 pl-0">Description</label><br>
                     <textarea name="description" class="col-md-12" rows="4" id="description" placeholder="Describe your work experience"></textarea>
                 </div>
             </div>
 
+            <input type="hidden" name="experience_status" value="pending">
+
             <div class="d-flex py-3 description-div-outer">
-                <button type="button" id="add_experience" class="add_experience_btn_style">Add Experience</button>
+                <button type="submit" name="add_experience" class="add_experience_btn_style">Add Experience</button>
             </div>
         </form>
+<?php } ?>
 
         <div class="table-container">
             <table id="experience_table" class="table">
                 <thead>
                     <tr>
                         <th>Title</th>
-                        <th>From</th>
-                        <th>To</th>
                         <th>Organization</th>
-                        <th>Description</th>
-                        <th>Action</th>
+                        <th>start_from</th>
+                        <th>end_to</th>
+                        <th>description</th>
+                        <th>status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Experience rows will be added here -->
+                    <?php
+                    while ($show_history = $added_experience->fetch()) {
+                        $job_title = $show_history->job_title;
+                        $organization = $show_history->organization;
+                        $start_from = $show_history->start_from;
+                        $still_working = $show_history->still_working;
+                        $end_to = $show_history->end_to;
+                        $description = $show_history->description;
+                        $status = $show_history->status;
+                    ?>
+                        <tr>
+                            <td><?= $job_title; ?></td>
+                            <td><?= $organization; ?></td>
+                            <td><?= $start_from; ?></td>
+                            <td>
+                                <?php
+                                if ($still_working > 0) {
+                                    echo "Still working";
+                                } else {
+                                    echo  $end_to;
+                                }
+                                ?>
+                            </td>
+                            <td><?= $description; ?></td>
+                            <td><?= $status; ?></td>
+                        </tr>
+                    <?php  }
+                    ?>
                 </tbody>
             </table>
         </div>
 
-        <div class="d-flex w-100 py-3">
-            <button type="submit" id="submit_experiences" class="submit_experiences_btn_style">Submit Experience</button>
-        </div>
+        <!-- <div class="d-flex w-100 py-3">
+            <button type="submit" id="submit_experiences" class="submit_experiences_btn_style">Save</button>
+        </div> -->
     </div>
 </div>
 
-<script>
+<!-- <script>
     document.getElementById('add_experience').addEventListener('click', function() {
         const jobTitle = document.getElementById('job_title').value;
         const startFrom = document.getElementById('start_from').value;
@@ -297,7 +237,7 @@ if (!isset($_SESSION['seller_user_name'])) {
             }
         });
     });
-</script>
+</script> -->
 
 <hr>
 
@@ -320,459 +260,12 @@ if (!isset($_SESSION['seller_user_name'])) {
         endDateWrapper.style.display = 'block';
     }
 </script>
-<!--  -->
-<style>
-    .img-thumbnail {
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
-        margin: 5px;
-        position: relative;
-    }
-
-    .remove-img {
-        cursor: pointer;
-        color: red;
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        font-size: 20px;
-        background: white;
-        border-radius: 50%;
-        padding: 2px;
-    }
-
-    .image-preview-container {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .limit-message {
-        color: red;
-    }
-
-    .tag {
-        background-color: green;
-        color: white;
-        padding: 5px 10px;
-        margin: 5px 5px 5px 0;
-        line-height: 2rem;
-        font-size: 13px;
-        border-radius: 5px;
-    }
-
-    .portfolio-from-div {
-        width: 95%;
-        display: flex;
-    }
-
-    .portfolio-first {
-        width: 45%;
-        margin: 0 auto;
-    }
-
-    .portfolio-second {
-        width: 45%;
-        margin: 0 auto;
-    }
-
-    #projectTitle {
-        padding: 1.7rem 1rem;
-        /* margin-bottom: 1.5rem; */
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    #portfolio-description {
-        padding: 1rem;
-        /* margin-bottom: 1.5rem; */
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    #projectskills {
-        padding: 1.7rem 1rem;
-        /* margin-bottom: 1.5rem; */
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    #imageUpload {
-        padding: 0.9rem;
-        /* margin-bottom: 1.5rem; */
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    #videoUrl {
-        padding: 1.7rem 1rem;
-        /* margin-bottom: 1.5rem; */
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    .portfolio-submit-btn {
-        margin: 0 auto 1rem;
-        width: 25%;
-        padding: 1rem;
-        font-size: 18px !important;
-        background-color: #e5e5e5 !important;
-        color: black !important;
-        border: none;
-    }
-
-
-    #projectTitle::placeholder {
-        color: lightgrey;
-    }
-
-    #projectskills::placeholder {
-        color: lightgrey;
-    }
-
-    #portfolio-description::placeholder {
-        color: lightgrey;
-    }
-
-    #videoUrl::placeholder {
-        color: lightgrey;
-    }
-
-    #imageUpload::placeholder {
-        color: lightgrey;
-    }
-
-    .media-item {
-        padding: 5px 10px;
-        background-color: lightgray;
-        border-radius: 5px;
-        margin: 10px 0;
-    }
-
-    .description_portfolio_div {
-        width: 95%;
-        margin: auto;
-    }
-
-    .description_portfolio_divinner {
-        width: 95%;
-    }
-
-    #referenced_url {
-        padding: 1.7rem 1rem;
-        /* margin-bottom: 1.5rem; */
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-</style>
-<?php
-session_start();
-
-// Define maximum limits
-$maxTags = 5;
-$maxImages = 3;
-$maxVideos = 3;
-
-// Function to generate a unique filename
-function generateUniqueFilename($extension)
-{
-    return uniqid('img_', true) . '.' . $extension;
-}
-
-// Initialize session array for uploaded images if not already set
-if (!isset($_SESSION['uploadedImages'])) {
-    $_SESSION['uploadedImages'] = [];
-}
-
-// Check if the form is submitted
-if (isset($_POST['portfolio_form'])) {
-    $projectTitle = $_POST['projectTitle'];
-    $referenced_url = $_POST['referenced_url'];
-    $skills = explode(',', $_POST['projectskills']); // assuming skills are passed as a comma-separated string
-    $description = $_POST['portfolio-description'];
-    $videoUrls = isset($_POST['videoUrls[]']) ? $_POST['videoUrls[]'] : []; // video URLs are now an array
-    $seller_id = $login_seller_id;
-
-    // Handle file uploads
-    if (isset($_FILES['images']) && count($_FILES['images']['name']) > 0) {
-        for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-            $targetDir = "portfolio/";
-            $imageFileType = strtolower(pathinfo($_FILES['images']['name'][$i], PATHINFO_EXTENSION));
-            $uniqueFilename = generateUniqueFilename($imageFileType);
-            $targetFile = $targetDir . $uniqueFilename;
-            $check = getimagesize($_FILES['images']['tmp_name'][$i]);
-
-            // Debugging Step: Print each file being processed
-            echo "Processing file: " . $_FILES['images']['name'][$i] . "<br>";
-
-            // Check if image file is an actual image or fake image
-            if ($check !== false) {
-                // Move uploaded file to target directory
-                if (move_uploaded_file($_FILES['images']['tmp_name'][$i], $targetFile)) {
-                    // Only add new images to the session array
-                    if (!in_array($uniqueFilename, $_SESSION['uploadedImages'])) {
-                        $_SESSION['uploadedImages'][] = $uniqueFilename;
-                    }
-                } else {
-                    echo "There was an error uploading image: " . $_FILES['images']['name'][$i];
-                }
-            } else {
-                echo "File is not an image: " . $_FILES['images']['name'][$i];
-            }
-        }
-    }
-
-    // Debugging to check the session uploaded images array
-    echo "<pre>";
-    print_r($_SESSION['uploadedImages']);
-    echo "</pre>";
-
-    // Store data in database
-    $portfolio = $db->insert("portfolios", array("project_title" => $projectTitle, "referenced_url" => $referenced_url, "description" => $description, "seller_id" => $seller_id));
-
-    // Get the last inserted portfolio ID
-    $portfolio_id = $db->lastInsertId();
-
-    // Insert skills
-    foreach ($skills as $skill) {
-        $portfolio_skills = $db->insert("portfolio_skills", array("portfolio_id" => $portfolio_id, "skill" => $skill));
-        if (!$portfolio_skills) {
-            echo "There Is Error In : " . $db->error;
-        }
-    }
-
-    // Insert images
-    foreach ($_SESSION['uploadedImages'] as $image) {
-        $portfolio_images = $db->insert("portfolio_images", array("portfolio_id" => $portfolio_id, "image_path" => $image));
-        if (!$portfolio_images) {
-            echo "There Is Error In : " . $db->error;
-        }
-    }
-
-    // Insert videos
-    foreach ($videoUrls as $videoUrl) {
-        $portfolio_videos = $db->insert("portfolio_videos", array("portfolio_id" => $portfolio_id, "video_url" => $videoUrl));
-        if (!$portfolio_videos) {
-            echo "There Is Error In : " . $db->error;
-        }
-    }
-
-    // Clear session images after successful portfolio insert
-    if ($portfolio) {
-        $_SESSION['uploadedImages'] = [];
-        echo "Portfolio insert success";
-    } else {
-        echo "Portfolio insert decline";
-    }
-    if ($portfolio_videos) {
-        echo "done";
-    } else {
-        echo "not done";
-    }
-}
-?>
-
-<div class="container p-0 mt-5">
-    <h4 class="text-center mb-4"><u>Add to Portfolio</u></h4>
-    <form id="portfolioForm" method="post" enctype="multipart/form-data">
-        <div class="portfolio-from-div">
-            <div class="portfolio-first">
-                <label for="projectTitle" class="col-md-12 pl-0">Project Title</label><br>
-                <input type="text" class="form-control col-md-12" id="projectTitle" name="projectTitle" placeholder="Enter your project title..." required>
-            </div>
-            <div class="portfolio-second">
-                <label for="referenced_url" class="col-md-12 pl-0">Reference Link</label>
-                <input type="url" class="form-control col-md-12" name="referenced_url" id="referenced_url" placeholder="Enter your project referenc url">
-            </div>
-        </div>
-        <div class="description_portfolio_div">
-            <div class="description_portfolio_divinner">
-                <br>
-                <label for="projectskills" class="col-md-12 pl-0">Skills</label>
-                <input type="text" class="form-control col-md-12" id="projectskills" name="projectskills" placeholder="Enter skills and press Enter">
-                <div id="skillsContainer" class="mt-2 mb-2">
-                    <!-- Tags will be appended here -->
-                </div>
-                <small id="tagLimitMessage" class="limit-message"></small>
-                <br>
-                <label for="portfolio-description" class="col-md-12 pl-0">Description</label><br>
-                <textarea class="form-control col-md-12" id="portfolio-description" name="portfolio-description" placeholder="Enter your project description..." rows="3" required></textarea>
-                <br>
-            </div>
-        </div>
-        <div class="portfolio-from-div">
-            <div class="portfolio-first">
-                <label for="images" class="col-md-12 pl-0">Upload Images (Max 3)</label>
-                <input type="file" class="form-control-file col-md-12" id="imageUpload" name="images[]" accept="image/*" multiple>
-                <div id="imagePreview" class="image-preview-container mt-2">
-                    <!-- Image previews will be appended here -->
-                </div>
-                <small id="imageLimitMessage" class="limit-message"></small> <br>
-            </div>
-            <div class="portfolio-second">
-                <label for="videoUrl" class="col-md-12 pl-0">Add Video URLs (Max 3)</label>
-                <input type="url" class="form-control col-md-12" id="videoUrl" placeholder="Enter video URL and press Enter">
-                <div id="videoList" class="mt-2">
-                    <!-- Video URLs will be appended here -->
-                </div>
-                <small id="videoLimitMessage" class="limit-message"></small>
-            </div>
-        </div>
-        <div class="w-100 d-flex mt-0">
-            <button type="submit" class="btn btn-primary portfolio-submit-btn" name="portfolio_form">Submit</button>
-        </div>
-    </form>
-</div>
-<hr>
-
-<hr>
-
-<script>
-    const maxTags = 5; // Maximum number of tags
-    const maxImages = 3; // Maximum number of images
-    const maxVideos = 3; // Maximum number of videos
-
-    // Handle tag input
-    document.getElementById('projectskills').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const input = e.target;
-            const value = input.value.trim();
-            const skillsContainer = document.getElementById('skillsContainer');
-            const tagLimitMessage = document.getElementById('tagLimitMessage');
-            const currentTagCount = skillsContainer.getElementsByClassName('tag').length;
-
-            if (value) {
-                if (currentTagCount < maxTags) {
-                    const tag = document.createElement('span');
-                    tag.className = 'tag';
-                    tag.textContent = value;
-                    skillsContainer.appendChild(tag);
-                    input.value = '';
-                    tagLimitMessage.textContent = '';
-                } else {
-                    tagLimitMessage.textContent = `You can only add up to ${maxTags} tags.`;
-                }
-            }
-        }
-    });
-
-    // Handle image upload
-    document.getElementById('imageUpload').addEventListener('change', function(e) {
-        const files = e.target.files;
-        const imagePreview = document.getElementById('imagePreview');
-        const imageLimitMessage = document.getElementById('imageLimitMessage');
-        const existingImages = imagePreview.getElementsByClassName('img-thumbnail').length;
-
-        if (files.length + existingImages > maxImages) {
-            imageLimitMessage.textContent = `You can only upload up to ${maxImages} images.`;
-            return;
-        }
-
-        imageLimitMessage.textContent = ''; // Clear any previous error messages
-        Array.from(files).forEach(file => {
-            if (file.type.startsWith('image/')) {
-                const imgContainer = document.createElement('div');
-                imgContainer.className = 'position-relative';
-
-                const img = document.createElement('img');
-                img.className = 'img-thumbnail';
-                img.file = file;
-                imgContainer.appendChild(img);
-
-                const removeBtn = document.createElement('span');
-                removeBtn.className = 'remove-img';
-                removeBtn.textContent = '×';
-                removeBtn.onclick = function() {
-                    imgContainer.remove();
-                    const fileInput = document.getElementById('imageUpload');
-                    const dataTransfer = new DataTransfer();
-                    Array.from(fileInput.files).forEach(f => {
-                        if (f !== file) dataTransfer.items.add(f);
-                    });
-                    fileInput.files = dataTransfer.files;
-                };
-                imgContainer.appendChild(removeBtn);
-
-                imagePreview.appendChild(imgContainer);
-
-                const reader = new FileReader();
-                reader.onload = (function(aImg) {
-                    return function(e) {
-                        aImg.src = e.target.result;
-                    };
-                })(img);
-                reader.readAsDataURL(file);
-            }
-        });
-    });
-
-    // Handle video URL input
-    document.getElementById('videoUrl').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const input = e.target;
-            const value = input.value.trim();
-            const videoList = document.getElementById('videoList');
-            const videoLimitMessage = document.getElementById('videoLimitMessage');
-            const currentVideoCount = videoList.getElementsByClassName('media-item').length;
-
-            if (value) {
-                if (currentVideoCount < maxVideos) {
-                    const videoItem = document.createElement('div');
-                    videoItem.className = 'media-item';
-                    videoItem.textContent = value;
-                    videoList.appendChild(videoItem);
-                    input.value = '';
-                    videoLimitMessage.textContent = '';
-                } else {
-                    videoLimitMessage.textContent = `You can only add up to ${maxVideos} videos.`;
-                }
-            }
-        }
-    });
-
-    // Handle form submission
-    document.getElementById('portfolioForm').addEventListener('submit', function(e) {
-        // Serialize skills
-        const skillsContainer = document.getElementById('skillsContainer');
-        const tags = skillsContainer.getElementsByClassName('tag');
-        let skillValues = [];
-        for (let i = 0; i < tags.length; i++) {
-            skillValues.push(tags[i].textContent);
-        }
-        const skillsInput = document.createElement('input');
-        skillsInput.type = 'hidden';
-        skillsInput.name = 'projectskills';
-        skillsInput.value = skillValues.join(',');
-        this.appendChild(skillsInput);
-
-        // Serialize video URLs
-        const videoList = document.getElementById('videoList');
-        const videos = videoList.getElementsByClassName('media-item');
-        let videoValues = [];
-        for (let i = 0; i < videos.length; i++) {
-            videoValues.push(videos[i].textContent);
-        }
-        videoValues.forEach(videoValue => {
-            const videoInput = document.createElement('input');
-            videoInput.type = 'hidden';
-            videoInput.name = 'videoUrls[]';
-            videoInput.value = videoValue;
-            this.appendChild(videoInput);
-        });
-    });
-</script>
-<!--  -->
-<!-- skills -->
 <?php
 if (isset($_POST['submit_professional'])) {
 
 
     $form_status = $input->post("form_status");
     $inserted = 0;
-
-
 
     // SKILLS
     $formSkills = $_POST['skills'];
@@ -854,6 +347,11 @@ $qProInfo = $db->select("seller_pro_info", array("seller_id" => $login_seller_id
 $getProInfo = $qProInfo;
 $cProInfo = $qProInfo->rowCount();
 
+// add code
+
+
+
+
 $formStatus = true;
 $showPendingMsg = false;
 $modificationMsg = '';
@@ -893,6 +391,8 @@ if ($formStatus) : //Show Form if needs to
         </div>
     <?php } ?>
 
+
+    <h4 class="">Current Skills</h4>
 
     <form method="post" runat="server" autocomplete="off">
 
@@ -1201,6 +701,492 @@ if ($formStatus) : //Show Form if needs to
         </div>
     </div>
 <?php endif; ?>
+
+
+
+
+<!--  -->
+<style>
+    .img-thumbnail {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin: 5px;
+        position: relative;
+    }
+
+    .remove-img {
+        cursor: pointer;
+        color: red;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 20px;
+        background: white;
+        border-radius: 50%;
+        padding: 2px;
+    }
+
+    .image-preview-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .limit-message {
+        color: red;
+    }
+
+    .tag {
+        background-color: green;
+        color: white;
+        padding: 5px 10px;
+        margin: 5px 5px 5px 0;
+        line-height: 2rem;
+        font-size: 13px;
+        border-radius: 5px;
+    }
+
+    .portfolio-from-div {
+        width: 95%;
+        display: flex;
+    }
+
+    .portfolio-first {
+        width: 45%;
+        margin: 0 auto;
+    }
+
+    .portfolio-second {
+        width: 45%;
+        margin: 0 auto;
+    }
+
+    #projectTitle {
+        padding: 1.7rem 1rem;
+        /* margin-bottom: 1.5rem; */
+        border: 1px solid lightgray;
+        border-radius: 5px;
+    }
+
+    #portfolio-description {
+        padding: 1rem;
+        /* margin-bottom: 1.5rem; */
+        border: 1px solid lightgray;
+        border-radius: 5px;
+    }
+
+    #projectskills {
+        padding: 1.7rem 1rem;
+        /* margin-bottom: 1.5rem; */
+        border: 1px solid lightgray;
+        border-radius: 5px;
+    }
+
+    #imageUpload {
+        padding: 0.9rem;
+        /* margin-bottom: 1.5rem; */
+        border: 1px solid lightgray;
+        border-radius: 5px;
+    }
+
+    #videoUrl {
+        padding: 1.7rem 1rem;
+        /* margin-bottom: 1.5rem; */
+        border: 1px solid lightgray;
+        border-radius: 5px;
+    }
+
+    .portfolio-submit-btn {
+        margin: 0 auto 1rem;
+        width: 25%;
+        padding: 1rem;
+        font-size: 18px !important;
+        background-color: #e5e5e5 !important;
+        color: black !important;
+        border: none;
+    }
+
+
+    #projectTitle::placeholder {
+        color: lightgrey;
+    }
+
+    #projectskills::placeholder {
+        color: lightgrey;
+    }
+
+    #portfolio-description::placeholder {
+        color: lightgrey;
+    }
+
+    #videoUrl::placeholder {
+        color: lightgrey;
+    }
+
+    #imageUpload::placeholder {
+        color: lightgrey;
+    }
+
+    .media-item {
+        padding: 5px 10px;
+        background-color: lightgray;
+        border-radius: 5px;
+        margin: 10px 0;
+    }
+
+    .description_portfolio_div {
+        width: 95%;
+        margin: auto;
+    }
+
+    .description_portfolio_divinner {
+        width: 95%;
+    }
+
+    #referenced_url {
+        padding: 1.7rem 1rem;
+        /* margin-bottom: 1.5rem; */
+        border: 1px solid lightgray;
+        border-radius: 5px;
+    }
+</style>
+
+<?php
+session_start();
+
+// Define maximum limits
+$maxTags = 5;
+$maxImages = 3;
+$maxVideos = 3;
+
+// Function to generate a unique filename
+function generateUniqueFilename($extension)
+{
+    return uniqid('img_', true) . '.' . $extension;
+}
+
+// Initialize session array for uploaded images if not already set
+if (!isset($_SESSION['uploadedImages'])) {
+    $_SESSION['uploadedImages'] = [];
+}
+
+// Check if the form is submitted
+if (isset($_POST['portfolio_form'])) {
+
+    $projectTitle = $_POST['projectTitle'];
+    $referenced_url = $_POST['referenced_url'];
+    $skills = explode(',', $_POST['projectskills']); // assuming skills are passed as a comma-separated string
+    $description = $_POST['portfolio-description'];
+    $videoUrls = explode(',', $_POST['videoUrls']); // assuming video URLs are passed as a comma-separated string
+    $seller_id = $login_seller_id;
+
+    // Handle file uploads
+    if (isset($_FILES['images']) && count($_FILES['images']['name']) > 0) {
+        for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+            $targetDir = "portfolio/";
+            $imageFileType = strtolower(pathinfo($_FILES['images']['name'][$i], PATHINFO_EXTENSION));
+            $uniqueFilename = generateUniqueFilename($imageFileType);
+            $targetFile = $targetDir . $uniqueFilename;
+            $check = getimagesize($_FILES['images']['tmp_name'][$i]);
+
+            // Debugging Step: Print each file being processed
+            echo "Processing file: " . $_FILES['images']['name'][$i] . "<br>";
+
+            // Check if image file is an actual image or fake image
+            if ($check !== false) {
+                // Move uploaded file to target directory
+                if (move_uploaded_file($_FILES['images']['tmp_name'][$i], $targetFile)) {
+                    $_SESSION['uploadedImages'][] = $uniqueFilename;
+                } else {
+                    echo "There was an error uploading image: " . $_FILES['images']['name'][$i];
+                }
+            } else {
+                echo "File is not an image: " . $_FILES['images']['name'][$i];
+            }
+        }
+    }
+
+    // Debugging to check the session uploaded images array
+    // echo "<pre>";
+    // print_r($_SESSION['uploadedImages']);
+    // print_r($videoUrls);
+    // echo "</pre>";
+
+
+    // Store data in database
+    $portfolio = $db->insert("portfolios", array("project_title" => $projectTitle, "referenced_url" => $referenced_url, "description" => $description, "seller_id" => $seller_id));
+
+    // Get the last inserted portfolio ID
+    $portfolio_id = $db->lastInsertId();
+
+    // Insert skills
+    foreach ($skills as $skill) {
+        $portfolio_skills = $db->insert("portfolio_skills", array("portfolio_id" => $portfolio_id, "skill" => $skill));
+        if (!$portfolio_skills) {
+            echo "There Is Error In : " . $db->error;
+        }
+    }
+
+    // Insert images
+    foreach ($_SESSION['uploadedImages'] as $image) {
+        $portfolio_images = $db->insert("portfolio_images", array("portfolio_id" => $portfolio_id, "image_path" => $image));
+        if (!$portfolio_images) {
+            echo "There Is Error In : " . $db->error;
+        }
+    }
+
+    // Insert videos
+    foreach ($videoUrls as $videoUrl) {
+        $portfolio_videos = $db->insert("portfolio_videos", array("portfolio_id" => $portfolio_id, "video_url" => $videoUrl));
+        if (!$portfolio_videos) {
+            echo "There Is Error In : " . $db->error;
+        }
+    }
+
+    // Clear session images after successful portfolio insert
+    if ($portfolio) {
+        $_SESSION['uploadedImages'] = [];
+        echo "Portfolio insert success";
+    } else {
+        echo "Portfolio insert decline";
+    }
+}
+?>
+
+
+
+<div class="container p-0 mt-5">
+    <h4 class="text-center mb-4"><u>Add Portfolio</u></h4>
+    <form id="portfolioForm" method="post" enctype="multipart/form-data">
+        <div class="portfolio-from-div">
+            <div class="portfolio-first">
+                <label for="projectTitle" class="col-md-12 pl-0">Project Title</label><br>
+                <input type="text" class="form-control col-md-12" id="projectTitle" name="projectTitle" placeholder="Enter your project title..." required>
+                <br>
+                <label for="projectskills" class="col-md-12 pl-0">Tags</label>
+                <input type="text" class="form-control col-md-12" id="projectskills" name="projectskills" placeholder="Enter skills and press Enter">
+                <div id="skillsContainer" class="mt-2 mb-2">
+                    <!-- Tags will be appended here -->
+                </div>
+                <small id="tagLimitMessage" class="limit-message"></small>
+
+            </div>
+            <div class="portfolio-second">
+                <label for="referenced_url" class="col-md-12 pl-0">Reference Link</label>
+                <input type="url" class="form-control col-md-12" name="referenced_url" id="referenced_url" placeholder="Enter your project referenc url">
+                <br>
+                <label for="referenced_url" class="col-md-12 pl-0">Attribute</label>
+                <select name="" id="">
+                    <?php $get_sub_attr = $db->select("cat_attribute");
+                    while ($get_sub_attrs = $get_sub_attr->fetch()) {
+                        $attr_id = $get_sub_attrs->attr_id;
+                        $language_id = $get_sub_attrs->language_id;
+
+                        $select_attribute = $db->select("sub_subcategories", array("attr_id" => $attr_id, "language_id" => $language_id));
+                        $get_select_attribute = $select_attribute->fetch();
+                        $attr_id = $get_select_attribute->attr_id;
+                        $sub_subcategory_name = $get_select_attribute->sub_subcategory_name;
+                    ?>
+
+                        <option class="" value="<?= $attr_id; ?>">
+                            <?= $sub_subcategory_name; ?>
+                        </option>
+                    <?php     }
+                    ?>
+
+                </select>
+
+
+            </div>
+        </div>
+        <div class="description_portfolio_div">
+            <div class="description_portfolio_divinner">
+                <br>
+
+                <br>
+                <label for="portfolio-description" class="col-md-12 pl-0">Description</label><br>
+                <textarea class="form-control col-md-12" id="portfolio-description" name="portfolio-description" placeholder="Enter your project description..." rows="3" required></textarea>
+                <br>
+            </div>
+        </div>
+        <div class="portfolio-from-div">
+            <div class="portfolio-first">
+                <label for="images" class="col-md-12 pl-0">Upload Images (Max 3)</label>
+                <input type="file" class="form-control-file col-md-12" id="imageUpload" name="images[]" accept="image/*" multiple>
+                <div id="imagePreview" class="image-preview-container mt-2">
+                    <!-- Image previews will be appended here -->
+                </div>
+                <small id="imageLimitMessage" class="limit-message"></small> <br>
+            </div>
+            <div class="portfolio-second">
+                <label for="videos" class="col-md-12 pl-0">Add Video URLs (Max 3)</label>
+                <input type="url" class="form-control col-md-12" name="videoUrls" id="videoUrl" placeholder="Enter video URL and press Enter">
+                <div id="videoList" class="mt-2">
+                    <!-- Video URLs will be appended here -->
+                </div>
+                <small id="videoLimitMessage" class="limit-message"></small>
+            </div>
+        </div>
+        <div class="w-100 d-flex mt-0">
+            <button type="submit" class="btn btn-primary portfolio-submit-btn" name="portfolio_form">Submit</button>
+        </div>
+    </form>
+</div>
+<hr>
+
+
+
+<script>
+    const maxTags = 5; // Maximum number of tags
+    const maxImages = 3; // Maximum number of images
+    const maxVideos = 3; // Maximum number of videos
+
+    // Handle tag input
+    document.getElementById('projectskills').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const input = e.target;
+            const value = input.value.trim();
+            const skillsContainer = document.getElementById('skillsContainer');
+            const tagLimitMessage = document.getElementById('tagLimitMessage');
+            const currentTagCount = skillsContainer.getElementsByClassName('tag').length;
+
+            if (value) {
+                if (currentTagCount < maxTags) {
+                    const tag = document.createElement('span');
+                    tag.className = 'tag';
+                    tag.textContent = value;
+                    skillsContainer.appendChild(tag);
+                    input.value = '';
+                    tagLimitMessage.textContent = '';
+                } else {
+                    tagLimitMessage.textContent = `You can only add up to ${maxTags} tags.`;
+                }
+            }
+        }
+    });
+
+    // Handle image upload
+    document.getElementById('imageUpload').addEventListener('change', function(e) {
+        const files = e.target.files;
+        const imagePreview = document.getElementById('imagePreview');
+        const imageLimitMessage = document.getElementById('imageLimitMessage');
+        const existingImages = imagePreview.getElementsByClassName('img-thumbnail').length;
+
+        if (files.length + existingImages > maxImages) {
+            imageLimitMessage.textContent = `You can only upload up to ${maxImages} images.`;
+            return;
+        }
+
+        imageLimitMessage.textContent = ''; // Clear any previous error messages
+        Array.from(files).forEach(file => {
+            if (file.type.startsWith('image/')) {
+                const imgContainer = document.createElement('div');
+                imgContainer.className = 'position-relative';
+
+                const img = document.createElement('img');
+                img.className = 'img-thumbnail';
+                img.file = file;
+                imgContainer.appendChild(img);
+
+                const removeBtn = document.createElement('span');
+                removeBtn.className = 'remove-img';
+                removeBtn.textContent = '×';
+                removeBtn.onclick = function() {
+                    imgContainer.remove();
+                    const fileInput = document.getElementById('imageUpload');
+                    const dataTransfer = new DataTransfer();
+                    Array.from(fileInput.files).forEach(f => {
+                        if (f !== file) dataTransfer.items.add(f);
+                    });
+                    fileInput.files = dataTransfer.files;
+                };
+                imgContainer.appendChild(removeBtn);
+
+                imagePreview.appendChild(imgContainer);
+
+                const reader = new FileReader();
+                reader.onload = (function(aImg) {
+                    return function(e) {
+                        aImg.src = e.target.result;
+                    };
+                })(img);
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    // Handle video URL input
+    document.getElementById('videoUrl').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const value = e.target.value.trim();
+            const videoList = document.getElementById('videoList');
+            const videoLimitMessage = document.getElementById('videoLimitMessage');
+            const currentVideoCount = videoList.getElementsByClassName('media-item').length;
+
+            if (value) {
+                if (currentVideoCount < maxVideos) {
+                    const videoItem = document.createElement('div');
+                    videoItem.className = 'media-item';
+                    videoItem.textContent = value;
+                    videoList.appendChild(videoItem);
+                    e.target.value = '';
+                    videoLimitMessage.textContent = '';
+                } else {
+                    videoLimitMessage.textContent = `You can only add up to ${maxVideos} videos.`;
+                }
+            }
+        }
+    });
+
+    document.getElementById('portfolioForm').addEventListener('submit', function(e) {
+        // Serialize skills
+        const skillsContainer = document.getElementById('skillsContainer');
+        const tags = skillsContainer.getElementsByClassName('tag');
+        let skillValues = [];
+        for (let i = 0; i < tags.length; i++) {
+            skillValues.push(tags[i].textContent);
+        }
+        const skillsInput = document.createElement('input');
+        skillsInput.type = 'hidden';
+        skillsInput.name = 'projectskills';
+        skillsInput.value = skillValues.join(',');
+        this.appendChild(skillsInput);
+
+        // Serialize video URLs
+        const videoList = document.getElementById('videoList');
+        const videos = videoList.getElementsByClassName('media-item');
+        let videoValues = [];
+        for (let i = 0; i < videos.length; i++) {
+            videoValues.push(videos[i].textContent);
+        }
+        const videosInput = document.createElement('input');
+        videosInput.type = 'hidden';
+        videosInput.name = 'videoUrls';
+        videosInput.value = videoValues.join(',');
+        this.appendChild(videosInput);
+    });
+</script>
+<!--  -->
+<!-- skills -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="<?= $site_url ?>/js/cloneData.js" type="text/javascript"></script>

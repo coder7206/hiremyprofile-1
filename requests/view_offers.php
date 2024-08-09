@@ -80,7 +80,7 @@ $count_offers = $get_offers->rowCount();
 							<i class="fa fa-clock-o"></i> <span> Request Duration: </span><span class="text-muted"> <?= $request_delivery_time; ?> </span> <br>
 							<i class="fa fa-archive"></i> <span> Request Category: </span><span class="text-muted"> <?= $request_cat_title; ?> / <?= $request_child_title; ?> </span>
 						</p>
-					</div>
+					</div>  
 				</div>
 				<?php if ($count_offers == "0") { ?>
 					<div class="card rounded-0 mb-3">

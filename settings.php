@@ -17,6 +17,13 @@ $login_seller_payoneer_email = $row_login_seller->seller_payoneer_email;
 $login_seller_image = $row_login_seller->seller_image;
 $login_seller_cover_image = $row_login_seller->seller_cover_image;
 
+$login_seller_address = $row_login_seller->seller_address;
+// $login_seller_cover_image = $row_login_seller->seller_cover_image;
+// $login_seller_cover_image = $row_login_seller->seller_cover_image;
+// $login_seller_cover_image = $row_login_seller->seller_cover_image;
+// $login_seller_cover_image = $row_login_seller->seller_cover_image;
+
+
 $login_seller_image_s3 = $row_login_seller->seller_image_s3;
 $login_seller_cover_image_s3 = $row_login_seller->seller_cover_image_s3;
 
@@ -112,7 +119,7 @@ if ($oSellerWeight) {
 			}
 
 			.text-align-center {
-				text-align: center;
+				text-align: center !important;
 				margin: auto;
 				/* color: #2e8780; */
 			}
@@ -340,7 +347,7 @@ if ($oSellerWeight) {
 		</div>
 	</div>
 
-	<!-- <div id="insertimageModal" class="modal" role="dialog">
+	<div id="insertimageModal" class="modal" role="dialog">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -357,7 +364,7 @@ if ($oSellerWeight) {
 			</div>
 		</div>
 	</div>
-	<div id="wait"></div> -->
+	<div id="wait"></div>
 
 	<?php require_once("includes/footer.php"); ?>
 </body>

@@ -14,13 +14,9 @@ $relevant_requests = $row_general_settings->relevant_requests;
             text-align: center;
             justify-content: center;
             align-items: center;
-
         }
 
-        .nav-item-width:hover {
-            /* border: 1px solid #00c8d4 !important; */
-        }
-
+       
         .badge-float-right {
             float: right;
             margin-top: -3px;

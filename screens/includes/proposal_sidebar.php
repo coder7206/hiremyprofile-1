@@ -11,7 +11,7 @@
       include("sidebar/sellerVacationOff.php");
     }
     ?>
-  </div>
+  </div> 
   <!--- card-body Ends --->
 </div>
 <?php 

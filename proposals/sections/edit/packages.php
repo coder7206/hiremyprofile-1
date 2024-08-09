@@ -164,14 +164,16 @@ if ($enable_unlimited_revisions == 1) {
 			</tr>
 
 			<tr>
-				<td>Price</td>
+				<td>Price (<b>$</b>) </td>
 				<td class="p-0">
 
 					<input type="number" min='<?= $min_proposal_price; ?>' required name="proposal_packages[1][price]" form="pricing-form" value="<?= $row_1->price; ?>" class="form-control">
 				</td>
 				<td class="p-0">
+
 					<input type="number" min='<?= $min_proposal_price; ?>' required name="proposal_packages[2][price]" form="pricing-form" value="<?= $row_2->price; ?>" class="form-control">
 				</td>
+
 				<td class="p-0">
 
 					<input type="number" min='5' required name="proposal_packages[3][price]" form="pricing-form" value="<?= $row_3->price; ?>" class="form-control">
@@ -180,6 +182,7 @@ if ($enable_unlimited_revisions == 1) {
 		</form>
 	</tbody>
 </table>
+
 
 <!-- Modal -->
 <div class="modal fade" id="edit-modal" role="dialog">
@@ -205,6 +208,7 @@ if ($enable_unlimited_revisions == 1) {
 		</div>
 	</div>
 </div>
+
 
 <script>
   const basicTextAreaElement = document.querySelector("#basic-desc");

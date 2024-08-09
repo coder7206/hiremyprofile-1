@@ -370,6 +370,11 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                         $seller_cover_image_s3 = $oSellerUpdate->seller_cover_image_s3;
                                         $seller_headline = $oSellerUpdate->seller_headline;
                                         $seller_about = $oSellerUpdate->seller_about;
+                                        $seller_address = $oSellerUpdate->seller_address;
+                                        $seller_address_img1 = $oSellerUpdate->seller_address_img1;
+                                        $seller_address_img2 = $oSellerUpdate->seller_address_img2;
+                                        $seller_region = $oSellerUpdate->seller_region;
+                                        $seller_postal_code = $oSellerUpdate->seller_postal_code;
                                     ?>
                                         <?php if ($reviewRemark == 'review') : ?>
                                             <tr class="table-info">
@@ -380,13 +385,49 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                                 <td><?= $lang['label']['phone']; ?></td>
                                                 <td><?= $seller_phone ?></td>
                                             </tr>
+                                            <!-- address -->
                                             <tr class="table-info">
-                                                <td><?= $lang['label']['country']; ?></td>
-                                                <td><?= $seller_country ?></td>
+                                                <td>Address</td>
+                                                <td><?= $seller_address ?></td>
                                             </tr>
+                                            <!-- Address img1 -->
+                                            <tr class="table-info">
+                                                <td>Address img front</td>
+                                                <td><?php
+                                                if(!empty($seller_address_img1)){?>
+                                                        <a href="../uploads/<?= $seller_address_img1; ?>" target="_blank"><img src="../uploads/<?= $seller_address_img1; ?>" width="80" class="rounded img-fluid"></a>
+                                                <?php }
+                                                ?></td>
+                                            </tr>
+                                            <!-- address img2 -->
+                                            <tr class="table-info">
+                                                <td>Address img back</td>
+                                                <td><?php
+                                                 if(!empty($seller_address_img2)){?>
+                                                        <a href="../uploads/<?= $seller_address_img2; ?>" target="_blank"><img src="../uploads/<?= $seller_address_img2; ?>" width="80" class="rounded img-fluid"></a>
+
+                                                 
+                                                <?php } ?>
+                                            </td>
+                                            </tr>
+                                            <!-- postal code -->
+                                            <tr class="table-info">
+                                                <td>Postal code</td>
+                                                <td><?= $seller_postal_code ?></td>
+                                            </tr>
+                                            <!-- region -->
+                                            <tr class="table-info">
+                                                <td>Region / state</td>
+                                                <td><?= $seller_region ?></td>
+                                            </tr>
+
                                             <tr class="table-info">
                                                 <td><?= $lang['label']['city']; ?></td>
                                                 <td><?= $seller_city ?></td>
+                                            </tr>
+                                            <tr class="table-info">
+                                                <td><?= $lang['label']['country']; ?></td>
+                                                <td><?= $seller_country ?></td>
                                             </tr>
                                             <tr class="table-info">
                                                 <td><?= $lang['label']['timezone']; ?></td>
@@ -468,9 +509,10 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                 <thead>
                                     <!--- thead Starts --->
                                     <tr>
-                                        <th>Category</th>
-                                        <th>Sub category</th>
-                                        <th>Attribute</th>
+                                        <th>Title</th>
+                                        <th>Organization</th>
+                                        <th>Description</th>
+                                        <th>Duration</th>
                                     </tr>
                                 </thead>
                                 <!--- thead Ends --->
@@ -483,11 +525,20 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                         $professionalStatus = null;
                                         while ($oProfessional = $qProfessional->fetch()) {
 
-                                            $proId = $oProfessional->id;
-                                            $catId = $oProfessional->category_id;
-                                            $subCatId = $oProfessional->sub_category_id;
-                                            $startDate = $oProfessional->start_date;
-                                            $endDate = $oProfessional->end_date;
+                                            // $proId = $oProfessional->id;
+                                            // $catId = $oProfessional->category_id;
+                                            // $subCatId = $oProfessional->sub_category_id;
+                                            // $startDate = $oProfessional->start_date;
+                                            // $endDate = $oProfessional->end_date;
+
+                                            $proInfoId = $oProfessional->id;
+                                            $categoryId = $oProfessional->category_id;
+                                            $still_working = $oProfessional->still_working;
+                                            $description = $oProfessional->description;
+                                            $start_date = $oProfessional->start_date;
+                                            $end_date = $oProfessional->end_date;
+                                            $subCategoryId = $oProfessional->sub_category_id;
+
                                             $professionalStatus = $status = $oProfessional->status; // 1=active 0=pending 2=modification
                                             $trClass = $status == 1 ? 'table-success' : ($status == 2 ? 'table-info' : 'table-warning');
                                             if ($status == 0) {
@@ -495,32 +546,22 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                             }
                                             $sellerProInfo[] = $proId;
 
-                                            $category_meta = $db->select("cats_meta", ["cat_id" => $catId])->fetch();
-                                            $subcat_meta = $db->select("child_cats_meta", ["child_id" => $subCatId])->fetch();
                                     ?>
                                             <tr class="<?= $trClass ?>">
                                                 <td>
-                                                    <?= $category_meta->cat_title; ?>
-                                                    <small class="text-muted"><?= $startDate ?>-<?= $endDate ?></small>
-                                                </td>
-                                                <td>
-                                                    <?= $subcat_meta->child_title; ?>
+                                                    <?= $categoryId; ?>
                                                 </td>
 
                                                 <td>
-                                                    <?php
-                                                    $qProOptions = $db->select("seller_pro_info_options", ["seller_pro_info_id" => $proId]);
-                                                    $cProOption = $qProOptions->rowCount();
-                                                    if ($cProOption > 0) :
-                                                        while ($oProOption = $qProOptions->fetch()) :
-                                                            $proInfoId = $oProOption->professional_info_id;
-                                                            $info = $db->select("professional_info", array("id" => $proInfoId, "sub_category_id" =>  $subcat_meta->child_id))->fetch();
-                                                    ?>
-                                                            <span class="badge badge-info"><?= $info->title ?></span>
-                                                    <?php
-                                                        endwhile;
-                                                    endif;
-                                                    ?>
+                                                    <?= $subCategoryId; ?>
+                                                </td>
+
+                                                <td>
+                                                    <?= $description; ?>
+                                                </td>
+
+                                                <td>
+                                                    <?= $start_date; ?> | <?= $end_date; ?>
                                                 </td>
                                             </tr>
                                         <?php
@@ -528,14 +569,14 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                         if ($professionalStatus == 0) :
                                         ?>
                                             <tr class="table-info">
-                                                <td colspan="3" class="font-weight-light">Seller have requested to review their professional information updates.</td>
+                                                <td colspan="4" class="font-weight-light">Seller have requested to review their professional information updates.</td>
                                             </tr>
                                         <?php
                                         endif;
                                         if ($professionalStatus == 2) :
                                         ?>
                                             <tr class="table-warning">
-                                                <td colspan="3" class="font-weight-light">You have send modification requests.</td>
+                                                <td colspan="4" class="font-weight-light">You have send modification requests.</td>
                                             </tr>
                                         <?php
                                         endif;
@@ -543,7 +584,7 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                             $proInfoIds = count($sellerProInfo) > 0 ? implode(', ', $sellerProInfo) : '';
                                         ?>
                                             <tr class="table-info">
-                                                <td colspan="3">
+                                                <td colspan="4">
                                                     <form action="" method="POST" class="mb-1">
                                                         <button class="btn btn-success" type="submit" name="professional-approve" formaction=""><i class="fa fa-thumbs-o-up"></i> Approve</button>
                                                     </form>
@@ -559,7 +600,7 @@ $cSellerUpdate = $qSellerUpdate->rowCount();
                                         endif;
                                     } else { ?>
                                         <tr class="table-danger">
-                                            <td colspan="3">Seller haven't added thier professional info yet.</td>
+                                            <td colspan="4">Seller haven't added thier professional info yet.</td>
                                         </tr>
                                     <?php } ?>
                                 </tbody><!--- tbody Ends --->

@@ -21,7 +21,7 @@
 		</div>
 		<a id="chatBtn" data-toggle="tooltip" data-placement="top" title="Chat With Me" href="conversations/message.php?seller_id=<?= $seller_id; ?>" class="btn btn-success mt-4 text-white "><i class="fa fa-comments-o" aria-hidden="true"></i> Chat</a>
   </figure>
-	<div class="request-description">
+	<div class="request-description">  
 		<div class="row">
 			<div class="col-lg-9 col-md-12">
 				<a href="<?= $seller_user_name; ?>">
