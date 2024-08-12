@@ -240,14 +240,14 @@ function get_proposals($filter_type)
    else
       $where_limit = " ORDER BY created_at {$orderBy} LIMIT {$per_page} OFFSET {$start_from}";
 
-   if (isset($_SESSION['cat_child_id']) || isset($_SESSION['cat_id']) || isset($_SESSION['child_attr_id'])) {
-      $child_attr_id = $_SESSION['child_attr_id'] ?? null;
+   if (isset($_SESSION['cat_child_id']) || isset($_SESSION['cat_id']) || isset($_SESSION['attr_id'])) {
+      $attr_id = $_SESSION['attr_id'] ?? null;
       $cat_child_id = $_SESSION['cat_child_id'] ?? null;
       $cat_id = $_SESSION['cat_id'] ?? null;
 
-      if ($child_attr_id) {
-         $query_where .= " AND proposals.proposal_attr_id = :child_attr_id";
-         $where_values[':child_attr_id'] = $child_attr_id;
+      if ($attr_id) {
+         $query_where .= " AND proposals.proposal_attr_id = :attr_id";
+         $where_values[':attr_id'] = $attr_id;
       }
 
       if ($cat_child_id) {
@@ -267,6 +267,7 @@ function get_proposals($filter_type)
                    {$query_where} {$where_limit}";
    $qProposals = $db->query($sProposals, $where_values);
    if ($qProposals->rowCount() > 0) {
+      echo "hello";
       while ($row_proposals = $qProposals->fetch()) {
          $proposal_id = $row_proposals->proposal_id;
          $proposal_title = $row_proposals->proposal_title;
@@ -326,6 +327,7 @@ function get_proposals($filter_type)
          echo '</div>';
       }
    } else {
+      echo "bye";
       if ($filter_type == "search") {
          echo "
             <div class='col-md-12'>

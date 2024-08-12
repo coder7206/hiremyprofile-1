@@ -25,13 +25,13 @@ RewriteRule ^(.*)$ $1.php
 RewriteCond %{HTTP_HOST} =localhost
 RewriteRule ^([\S\s/+.]+)/?$ category.php?cat_url=$1&%{QUERY_STRING}
 RewriteRule ^([\S\s/+.]+)/([\S\s/+.]+)/?$ category.php?cat_url=$1&cat_child_url=$2&%{QUERY_STRING}
-RewriteRule ^([\S\s/+.]+)/([\S\s/+.]+)/([\S\s/+.]+)/?$ category.php?cat_url=$1&cat_child_url=$2&attr_child_url=$3&%{QUERY_STRING}
+RewriteRule ^([\S\s/+.]+)/([\S\s/+.]+)/([\S\s/+.]+)/?$ category.php?cat_url=$1&cat_child_url=$2&cat_attr=$3&%{QUERY_STRING}
 
 # For other hosts
 RewriteCond %{HTTP_HOST} !=localhost
 RewriteRule ^([\S\s/+.]+)/?$ category.php?cat_url=$1&%{QUERY_STRING}
 RewriteRule ^([\S\s/+.]+)/([\S\s/+.]+)/?$ category.php?cat_url=$1&cat_child_url=$2&%{QUERY_STRING}
-RewriteRule ^([\S\s/+.]+)/([\S\s/+.]+)/([\S\s/+.]+)/?$ category.php?cat_url=$1&cat_child_url=$2&attr_child_url=$3&%{QUERY_STRING}
+RewriteRule ^([\S\s/+.]+)/([\S\s/+.]+)/([\S\s/+.]+)/?$ category.php?cat_url=$1&cat_child_url=$2&cat_attr=$3&%{QUERY_STRING}
 
 
 

@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+// error_reporting(0);
 session_start();
 require_once("../includes/db.php");
 require_once("../functions/functions.php");
@@ -16,7 +16,7 @@ if (isset($_GET['cat_url'])) {
         $cat_url = $input->get('cat_url');
     }
     unset($_SESSION['cat_child_id']);
-    unset($_SESSION['child_attr_id']); // Unset sub-sub-category session
+    unset($_SESSION['attr_id']); // Unset sub-sub-category session
     $get_cat = $db->select("categories", array('cat_url' => urlencode($cat_url)));
     $count_cat = $get_cat->rowCount();
     if ($count_cat == 0) {
@@ -28,7 +28,7 @@ if (isset($_GET['cat_url'])) {
 
 if (isset($_GET['cat_child_url'])) {
     unset($_SESSION['cat_id']);
-    unset($_SESSION['child_attr_id']); // Unset sub-sub-category session
+    unset($_SESSION['attr_id']); // Unset sub-sub-category session
 
     $get_cat = $db->select("categories", array('cat_url' => urlencode($cat_url)));
     $cat_id = $get_cat->fetch()->cat_id;
@@ -42,16 +42,16 @@ if (isset($_GET['cat_child_url'])) {
     $_SESSION['cat_child_id'] = $child_id;
 }
 
-if (isset($_GET['attr_child_url'])) {
+if (isset($_GET['cat_attr'])) {
     unset($_SESSION['cat_id']);
     unset($_SESSION['cat_child_id']);
-   
+    var_dump(1);
     $get_cat = $db->select("categories", array('cat_url' => urlencode($cat_url)));
     $cat_id = $get_cat->fetch()->cat_id;
     $get_child = $db->select("categories_children", array('child_parent_id' => $cat_id, 'child_url' => urlencode($input->get('cat_child_url'))));
 
 
-    $get_attr_child = $db->select("cat_attribute", array('cat_attr' => urlencode($input->get('attr_child_url'))));
+    $get_attr_child = $db->select("cat_attribute", array('cat_attr' => urlencode($input->get('cat_attr'))));
     $sub_sub_child = $get_attr_child->fetch();
     $attr_title = $sub_sub_child->cat_attr;
     $attr_id = $sub_sub_child->attr_id;
@@ -60,7 +60,7 @@ if (isset($_GET['attr_child_url'])) {
     if ($count_attr_child == 0) {
         // echo "<script>window.open('$site_url/index?not_available','_self');</script>";
     } else {
-        $_SESSION['child_attr_id'] =  $attr_id;
+        $_SESSION['attr_id'] = $attr_id;
     }
 }
 
@@ -100,9 +100,9 @@ if (isset($_GET['attr_child_url'])) {
     <!-- end sub category -->
     <!-- attribute -->
     <?php
-    if (isset($_SESSION['child_attr_id'])) {
-        $child_attr_id = $_SESSION['child_attr_id'];
-        $get_meta = $db->select("sub_subcategories", array("attr_id" => $child_attr_id, "language_id" => $siteLanguage));
+    if (isset($_SESSION['attr_id'])) {
+        $attr_id = $_SESSION['attr_id'];
+        $get_meta = $db->select("sub_subcategories", array("attr_id" => $attr_id, "language_id" => $siteLanguage));
         $row_meta = $get_meta->fetch();
         $sub_subcategory_name = $row_meta->sub_subcategory_name;
         // $child_desc = $row_meta->child_desc;
@@ -176,9 +176,9 @@ if (isset($_GET['attr_child_url'])) {
                     <!-- sub category -->
 
                     <?php
-                    if (isset($_SESSION['child_attr_id'])) {
-                        $child_attr_id = $_SESSION['child_attr_id'];
-                        $get_meta = $db->select("sub_subcategories", array("attr_id" => $child_attr_id, "language_id" => $siteLanguage));
+                    if (isset($_SESSION['attr_id'])) {
+                        $attr_id = $_SESSION['attr_id'];
+                        $get_meta = $db->select("sub_subcategories", array("attr_id" => $attr_id, "language_id" => $siteLanguage));
                         $row_meta = $get_meta->fetch();
                         $sub_subcategory_name = $row_meta->sub_subcategory_name;
                         // $child_desc = $row_meta->child_desc;
@@ -221,7 +221,7 @@ if (isset($_GET['attr_child_url'])) {
                         ?>
                                     <div class="sub-sub-category-tablet">
 
-                                        <a class="nav-link text-info d-flex p-0 <?php if ($attr_id == @$_SESSION['child_attr_id']) {
+                                        <a class="nav-link text-info d-flex p-0 <?php if ($attr_id == @$_SESSION['attr_id']) {
                                                                                     echo "active";
                                                                                 } ?>" href="<?= $site_url; ?>/categories/<?= $cat_url; ?>/<?= $child_url; ?>/<?= $cat_attr; ?>">
                                             <div class="icon-sub-sub-category"><img class="image-style-icon" src="<?= $image_path; ?>" alt="img"></div>
@@ -313,6 +313,7 @@ if (isset($_GET['attr_child_url'])) {
                         height: 4rem;
                         align-content: center;
                     }
+
                     .skills_name_showing:hover {
                         background-color: #d3d3d3a8;
                     }
@@ -343,9 +344,9 @@ if (isset($_GET['attr_child_url'])) {
 
                 <div class="w-100 d-flex">
                     <?php
-                    if (isset($_SESSION['child_attr_id'])) {
-                        $child_attr_id = $_SESSION['child_attr_id'];
-                        $get_meta = $db->select("sub_subcategories", array("attr_id" => $child_attr_id, "language_id" => $siteLanguage));
+                    if (isset($_SESSION['attr_id'])) {
+                        $attr_id = $_SESSION['attr_id'];
+                        $get_meta = $db->select("sub_subcategories", array("attr_id" => $attr_id, "language_id" => $siteLanguage));
                         $row_meta = $get_meta->fetch();
                         $attr_id = $row_meta->attr_id;
 
@@ -485,11 +486,11 @@ if (isset($_GET['attr_child_url'])) {
 
                 <?php } ?>
 
-                <?php if (isset($_REQUEST['attr_child_url'])) { ?>
-                    var attr_child_url = "<?= $input->get('attr_child_url'); ?>";
-                    sPath = sPath + 'attr_child_url=' + attr_child_url + '&';
+                <?php if (isset($_REQUEST['cat_attr'])) { ?>
+                    var cat_attr = "<?= $input->get('cat_attr'); ?>";
+                    sPath = sPath + 'cat_attr=' + cat_attr + '&';
 
-                  var url_plus = "../";
+                    var url_plus = "../";
 
                 <?php } else { ?>
 

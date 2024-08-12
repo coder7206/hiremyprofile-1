@@ -511,13 +511,13 @@
         image.onload = function() {
           var height = this.height;
           var width = this.width;
-          var minHeight = 550
-          var minWidth = 370
-          var maxHeight = 1650
-          var maxWidth = 1110
+          var minHeight = 370
+          var minWidth = 550
+          var maxHeight = 1110
+          var maxWidth = 1650
           // alert(height + " " + minHeight + " " + maxHeight + " " + width + " " + minWidth + " " + maxWidth)
           if (height < minHeight || width < minWidth) {
-            alert("Height and Width must be atleast" + minHeight + "x" + minWidth + "px");
+            alert("Height and Width must be atleast " + minHeight + "x" + minWidth + "px");
             return false;
           }
           if (height > maxHeight || width > maxWidth) {

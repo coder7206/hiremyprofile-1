@@ -82,6 +82,7 @@ if (isset($_POST['submit'])) {
                 $data['direct_order'] = $direct_order;
                 $data['proposal_attr_id'] = $input->post("proposal_attr_id");
                 $data['skill_title_id'] = $input->post("skill_title_id");
+              
 
 
                 $insert_proposal = $db->insert("proposals", $data);

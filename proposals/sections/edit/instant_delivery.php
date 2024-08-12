@@ -12,6 +12,14 @@
   </label>
 </div>
 
+<style>
+  .input_file_type_style {
+    border: 1px solid lightgray;
+    padding: 1rem 13px !important;
+    border-radius: 5px;
+  }
+</style>
+
 <div class="clearfix"></div>
 
 <hr class="mt-0">
@@ -29,16 +37,18 @@
 
   <div class="form-group form_style_instant_delivery">
     <p class="mb-2">Message</p>
-    <textarea name="message" id="instant_delivery_message" placeholder="Message" rows="4" class="form-control" minlength="50" maxlength="500" <?php if ($enable_delivery == 1) echo "required" ?>><?= $delivery_message; ?></textarea>
-    <span class="text-dark d-block">min: 50 max: 500 characters <span class="pull-right"><i class="text-danger" id="msg-typed-characters"><?= strlen($delivery_message) > 0 ? strlen($delivery_message) : 0; ?></i> characters</span></span>
+    <textarea name="message" id="instant_delivery_message" placeholder="Message" rows="4" class="form-control" minlength="30" maxlength="500" <?php if ($enable_delivery == 1) echo "required" ?>><?= $delivery_message; ?></textarea>
+    <span class="text-dark d-block">min: 30 max: 500 characters <span class="pull-right"><i class="text-danger" id="msg-typed-characters"><?= strlen($delivery_message) > 0 ? strlen($delivery_message) : 0; ?></i> characters</span></span>
   </div>
 
   <div class="alert alert-info form_style_instant_delivery">
     <?= $lang['edit_proposal']['instant_delivery']['alert2']; ?>
   </div>
 
-  <div class="form-group float-left form_style_instant_delivery">
-    <input type="file" id="deliveryFile" name="file" class="mb-3" />
+
+
+  <div class="form-group float-left form_style_instant_delivery col-md-12 p-0">
+    <input type="file" id="deliveryFile" name="file" accept=".jpeg,.jpg,.gif,.png,.tif" class="mb-3 input_file_type_style col-md-12" />
     <div id="downloadFile">
       <?php if (!empty($delivery_file)) { ?>
         <a href="download?proposal_id=<?= $proposal_id; ?>" target="_blank" class="instant_file_loaded">
@@ -47,6 +57,12 @@
       <?php } ?>
     </div>
   </div>
+
+  <div class="form-group float-left form_style_instant_delivery col-md-12 p-0">
+    <input type="url" id="video_url_instant" name="video_url_instant" placeholder="Enter video url: https://" class="mb-3 input_file_type_style col-md-12" />
+  </div>
+
+
 
   <?php if (@$enable_watermark == 1) { ?>
     <div class="form-group float-right">
@@ -133,7 +149,7 @@
 
       size = this.files[0].size / 1024;
       // alert(size);
-      if (size > 100000) {
+      if (size > 5000) {
         alert("You exceeded our max upload size limit.");
         $(this).val("");
       }
@@ -220,7 +236,7 @@
             $('#tabs a[href="#requirements"]').addClass('d-none');
             $('#pricing .float-right.switch-box').hide();
             $('.packages').hide();
-            $('.add-attribute').hide();
+            $('.add-attribute').hide(); 
             $('.proposal-price').show();
             $('.proposal-price input[name="proposal_price"]').attr('min', <?= $min_proposal_price; ?>);
           } else {
@@ -278,6 +294,7 @@
       event.preventDefault();
       var instant_delivery_message = $('#instant_delivery_message').val();
       var instant_delivery_file = $('#deliveryFile').val();
+      var video_url_instant = $('#video_url_instant').val();
       var enable_button = $('#enable_button').val();
       var loaded_file = parseInt($('.instant_file_loaded').length);
 

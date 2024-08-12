@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 // require_once("$dir/social-config.php");
 require_once("$dir/functions/filter.php");
 

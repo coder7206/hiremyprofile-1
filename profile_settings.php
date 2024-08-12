@@ -218,18 +218,18 @@ if (isset($_POST['submit'])) {
       }
     }
 
-     // Upload seller address image 1 if provided
-  if (!empty($seller_address_img1)) {
-    $fileType1 = pathinfo($seller_address_img1, PATHINFO_EXTENSION);
-    if (in_array($fileType1, $allowedTypes)) {
-      move_uploaded_file($_FILES["seller_address_img1"]["tmp_name"], "uploads/" . $seller_address_img1);
-      $updateForm["seller_address_img1"] = $seller_address_img1;
-    } else {
-      echo "<script>alert('Invalid file type for address image 1.');</script>";
-      echo "<script>window.open('settings?profile_settings', '_self');</script>";
-      exit();
+    // Upload seller address image 1 if provided
+    if (!empty($seller_address_img1)) {
+      $fileType1 = pathinfo($seller_address_img1, PATHINFO_EXTENSION);
+      if (in_array($fileType1, $allowedTypes)) {
+        move_uploaded_file($_FILES["seller_address_img1"]["tmp_name"], "uploads/" . $seller_address_img1);
+        $updateForm["seller_address_img1"] = $seller_address_img1;
+      } else {
+        echo "<script>alert('Invalid file type for address image 1.');</script>";
+        echo "<script>window.open('settings?profile_settings', '_self');</script>";
+        exit();
+      }
     }
-  }
 
     // Upload seller address image 2 if provided
     if (!empty($seller_address_img2)) {
@@ -244,13 +244,17 @@ if (isset($_POST['submit'])) {
       }
     }
 
-   
-    if ($form_state)
+
+    if ($form_state) {
       $inserted = $db->update("sellers_profile_tmp", $updateForm, ['seller_id' => $seller_id, 'status' => 2]); // update only if modification is done
-    else
+    
+    } else {
       $inserted = $db->insert("sellers_profile_tmp", $updateForm);
+      
+    }
 
     if ($inserted) {
+    
       echo "<script>
               swal({
                 type: 'success',
@@ -265,6 +269,7 @@ if (isset($_POST['submit'])) {
               });
               </script>";
     } else {
+    
       echo "<script>
               swal({
                 type: 'warning',
@@ -282,6 +287,7 @@ if (isset($_POST['submit'])) {
   }
 }
 
+
 // IS PROFILE UPATE REQUEST IS SENT
 // sellers_profile_tmp
 $qSellerUpdate = $db->query("SELECT * FROM sellers_profile_tmp WHERE seller_id = :seller_id ORDER BY 1 DESC LIMIT 1", ['seller_id' => $login_seller_id]);
@@ -289,8 +295,12 @@ $oSellerUpdate = $qSellerUpdate->fetch();
 $reviewRemark = null;
 $tblSeller = "sellers";
 $modificationMsg = '';
+
 if ($oSellerUpdate) {
+
   $userStatus = $oSellerUpdate->status;
+
+  
   $reviewRemark = $userStatus == 0 ? 'review' : ($userStatus == 2 ? 'modification' : 'active');
   $modificationMsg = $userStatus == 2 ? $oSellerUpdate->feedback : '';
   $tblSeller = "sellers_profile_tmp";
@@ -312,6 +322,9 @@ if ($oSellerUpdate) {
   $login_seller_cover_image_s3 = $oSellerUpdate->seller_cover_image_s3;
   $login_seller_headline = $oSellerUpdate->seller_headline;
   $login_seller_about = $oSellerUpdate->seller_about;
+}else{
+  var_dump("bye");
+  exit;
 }
 
 require 'admin/timezones.php';

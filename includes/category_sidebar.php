@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 if (isset($_SESSION['cat_id'])) {
   $session_cat_id = $_SESSION['cat_id'];
 }
@@ -22,7 +22,7 @@ if (isset($_GET['online_sellers'])) {
 }
 
 if (isset($_REQUEST['instant_delivery'])) {
-  $instant_delivery = $_REQUEST['instant_delivery'][0];
+  $instant_delivery = $_REQUEST['instant_delivery'][0];   
 } else {
   $instant_delivery = 0;
 }

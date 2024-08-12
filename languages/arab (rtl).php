@@ -802,8 +802,8 @@ $lang['edit_proposal']['instant_delivery']['title'] = "Instant Delivery";
 $lang['edit_proposal']['instant_delivery']['enable'] = "Enable Instant Delivery:";
 $lang['edit_proposal']['instant_delivery']['alert1'] = "With this, any item uploaded on here will be available for instant download after purchase.";
 $lang['edit_proposal']['instant_delivery']['alert2'] = "
-   <p class='mb-1'>Accepted Files: jpeg, jpg, gif, png, tif, avi, mpeg, mpg, mov, rm, 3gp, flv, mp4, zip, rar, mp3, wav, docx, csv, xls, pptx, pdf, txt</p>
-   <p class='mb-0'>Max Upload Size: 100mb</p>
+   <p class='mb-1'>Accepted Files:  JPEG, JPG, GIF, PNG, TIF</p>
+   <p class='mb-0'>Max Upload Size: 5mb</p>
 ";
 
 $lang['edit_proposal']['pricing']['warning1'] = "If you want to use packages, you need to set this field value to 0.";
